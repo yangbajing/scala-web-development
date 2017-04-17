@@ -1,0 +1,36 @@
+{
+  "root": "./docs",
+  "plugins": [
+    "include-codeblock",
+    "mermaid",
+    "prism",
+    "-highlight",
+    "disqus",
+    "github-buttons",
+    "image-captions",
+    "splitter"
+  ],
+  "pluginsConfig": {
+    "disqus": {
+      "shortName": "yangbajing"
+    },
+    "github-buttons": {
+      "repo": "yangbajing/scala-web-development",
+      "types": [
+        "star",
+        "watch"
+      ],
+      "size": "small"
+    },
+    "sharing": {
+      "weibo": true,
+      "all": [
+        "facebook",
+        "google",
+        "twitter",
+        "weibo",
+        "instapaper"
+      ]
+    }
+  }
+}
