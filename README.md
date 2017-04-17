@@ -1,6 +1,6 @@
 # Scala Web Development
 
-**Scala Web 开发 - 使用Akka
+**Scala Web 开发 - 使用Akka**
 
 - 作者：杨景（羊八井）
 - 邮箱：yangbajing at gmail com

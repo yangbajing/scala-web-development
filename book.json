@@ -1,9 +1,8 @@
 {
   "root": "./docs",
+  "branch": "master",
   "title": "Scala Web 开发 - 使用 Akka",
   "author": "杨景（羊八井）yangbajing at gmail.com",
-  "description": "Scala Web 开发 - 使用 Akka",
-  "keywords": "akka,akka-http,scala",
   "plugins": [
     "include-codeblock",
     "mermaid",
@@ -25,6 +24,12 @@
         "watch"
       ],
       "size": "small"
+    },
+    "image-captions": {
+      "attributes": {
+        "width": "600"
+      },
+      "caption": "图 _PAGE_LEVEL_._PAGE_IMAGE_NUMBER_ - _CAPTION_"
     },
     "sharing": {
       "weibo": true,
