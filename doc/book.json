@@ -1,0 +1,20 @@
+{
+  "plugins": [
+    "include-codeblock",
+    "mermaid",
+        "prism",
+        "-highlight"
+  ],
+  "pluginsConfig": {
+    "sharing": {
+      "weibo": true,
+      "all": [
+        "facebook",
+        "google",
+        "twitter",
+        "weibo",
+        "instapaper"
+      ]
+    }
+  }
+}
