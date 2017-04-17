@@ -150,3 +150,20 @@ fabric.properties
 将删除 sdk-csharp/sdk-csharp/sdk-csharp.csproj
 /sdk-node.js/node_modules/
 /sdk-doc/node_modules/
+### GitBook template
+# Node rules:
+## Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
+.grunt
+
+## Dependency directory
+## Commenting this out is preferred by some people, see
+## https://docs.npmjs.com/misc/faq#should-i-check-my-node_modules-folder-into-git
+node_modules
+
+# Book build output
+_book
+
+# eBook build output
+*.epub
+*.mobi
+*.pdf

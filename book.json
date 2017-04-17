@@ -2,20 +2,28 @@
   "root": "./docs",
   "branch": "master",
   "title": "Scala Web 开发 - 使用 Akka",
+  "description": "Scala Web 开发 - 使用 Akka",
   "author": "杨景（羊八井）yangbajing at gmail.com",
+  "language": "zh-hans",
   "plugins": [
     "include-codeblock",
+    "ace",
     "mermaid",
     "prism",
     "-highlight",
     "disqus",
     "github-buttons",
     "image-captions",
-    "splitter"
+    "splitter",
+    "-search",
+    "search-pro"
   ],
   "pluginsConfig": {
     "disqus": {
       "shortName": "yangbajing"
+    },
+    "search-pro": {
+      "cutWordLib": "nodejieba"
     },
     "github-buttons": {
       "repo": "yangbajing/scala-web-development",
