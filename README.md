@@ -7,4 +7,4 @@
 - Weibo: @yangbajing
 - 微信公众号：yangbajing-garden
 
-    ![yangbajing-garden](doc/imgs/qrcode_for_gh_70b815e4a7cd_344.jpg)
+    ![yangbajing-garden](docs/imgs/qrcode_for_gh_70b815e4a7cd_344.jpg)

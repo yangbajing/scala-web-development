@@ -14,3 +14,11 @@
   * [trait](02.7.md)
   * [并发](02.8.md)
   * [小结](02.9.md)
+* [Web基础](03.0.md)
+  * [web工作方式](03.1.md)
+  * [使用Akka Http搭建一个简单的Web服务](03.2.md)
+  * [Scala如何使得Web工作](03.3.md)
+  * [Akka的HTTP包详解](03.4.md)
+  * [指令（Directives）](03.5.md)
+  * [小结](03.z.md)
+

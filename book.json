@@ -1,5 +1,9 @@
 {
   "root": "./docs",
+  "title": "Scala Web 开发 - 使用 Akka",
+  "author": "杨景（羊八井）yangbajing at gmail.com",
+  "description": "Scala Web 开发 - 使用 Akka",
+  "keywords": "akka,akka-http,scala",
   "plugins": [
     "include-codeblock",
     "mermaid",
