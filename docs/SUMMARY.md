@@ -18,7 +18,10 @@
   * [web工作方式](03.1.md)
   * [使用Akka HTTP 搭建一个简单的Web服务](03.2.md)
   * [Akka HTTP 如何使得 Web 工作](03.3.md)
-  * [Akka 的 HTTP 包](03.4.md)
+  * [Akka HTTP 的通用抽象](03.4.md)
   * [指令（Directives）](03.5.md)
   * [小结](03.z.md)
+* [参考资料](ref.md)
+* [附录](appendix.0.md)
+  * [专业术语](appendix.1.md)
 
