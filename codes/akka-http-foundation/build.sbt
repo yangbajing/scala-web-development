@@ -13,6 +13,9 @@ lazy val root = (project in file(".")).
       jacksonModuleScala,
       jacksonDatatypeJsr310,
       jacksonDatatypeJdk8,
+      postgresql,
+      cassandraDriverCore,
+      elastic4sTcp,
       scalaTest % Test
     )
   )
