@@ -3,22 +3,24 @@ package akkahttp.jdbc
 import java.sql.{Connection, PreparedStatement, SQLException}
 import javax.sql.DataSource
 
+import com.typesafe.scalalogging.StrictLogging
+
 import scala.collection.mutable
 import scala.util.control.NonFatal
 
-case class HlJdbcConnection(underlying: Connection, fetchSize: Int = 100)
+case class HlJdbcConnection(underlying: Connection, fetchSize: Int = 50)
 
 object HlJdbcConnection {
   final val empty: HlJdbcConnection = null
 }
 
-case class HlSqlMetaData(label: String, name: String, jdbcType: Int)
+case class HlSqlLabel(label: String, name: String, jdbcType: Int)
 
 /**
   *
   * @param dataSource 数据源
   */
-class JdbcTemplate private(val dataSource: DataSource) {
+class JdbcTemplate private(val dataSource: DataSource) extends StrictLogging {
 
   /**
     * 执行insert, update, delete, alert 语句
@@ -31,7 +33,7 @@ class JdbcTemplate private(val dataSource: DataSource) {
     */
   @throws(classOf[SQLException])
   def executeUpdate(sql: String,
-                    args: Object*)(
+                    args: scala.collection.Seq[Object] = Nil)(
                      implicit hlConn: HlJdbcConnection = HlJdbcConnection.empty
                    ): Int = {
     val func = (pstmt: PreparedStatement) => pstmt.executeUpdate()
@@ -40,18 +42,18 @@ class JdbcTemplate private(val dataSource: DataSource) {
   }
 
   def querySingle(sql: String,
-                  args: Object*)(
+                  args: scala.collection.Seq[Object] = Nil)(
                    implicit igConn: HlJdbcConnection = HlJdbcConnection.empty
-                 ): Option[(Map[String, Object], Vector[HlSqlMetaData])] = {
+                 ): Option[(Map[String, Object], Vector[HlSqlLabel])] = {
     val (results, metaDatas) = queryMany(sql, args)
     //    if (results.size > 1) throw new IllegalAccessException(s"$sql 返回结果大于1行")
     results.headOption.map(map => (map, metaDatas))
   }
 
   def queryMany(sql: String,
-                args: Object*)(
+                args: scala.collection.Seq[Object] = Nil)(
                  implicit igConn: HlJdbcConnection = HlJdbcConnection.empty
-               ): (Vector[Map[String, Object]], Vector[HlSqlMetaData]) = {
+               ): (Vector[Map[String, Object]], Vector[HlSqlLabel]) = {
     val func = (pstmt: PreparedStatement) => {
       val results = mutable.ArrayBuffer.empty[Map[String, Object]]
       val rs = pstmt.executeQuery()
@@ -60,7 +62,7 @@ class JdbcTemplate private(val dataSource: DataSource) {
       val range = (1 to metaData.getColumnCount).toVector
 
       val labels = range.map(column =>
-        HlSqlMetaData(
+        HlSqlLabel(
           metaData.getColumnLabel(column),
           metaData.getColumnName(column),
           metaData.getColumnType(column)))
@@ -76,14 +78,17 @@ class JdbcTemplate private(val dataSource: DataSource) {
   }
 
   def execute[R](resultSetFunc: PreparedStatement => R,
-                 sql: String, args: Object*)(
+                 sql: String, args: scala.collection.Seq[Object])(
                   implicit igConn: HlJdbcConnection = HlJdbcConnection.empty
                 ): R =
     _execute { conn =>
       val pstmt = conn.underlying.prepareStatement(sql)
+      pstmt.setFetchSize(conn.fetchSize)
       for ((arg, idx) <- args.zipWithIndex) {
         pstmt.setObject(idx + 1, arg)
       }
+
+      logger.debug("[SQL]: {} [ARGS]: {}", sql, args.mkString(", "))
 
       resultSetFunc(pstmt)
     }
@@ -109,6 +114,14 @@ class JdbcTemplate private(val dataSource: DataSource) {
 }
 
 object JdbcTemplate {
+
+  Class.forName("org.postgresql.Driver")
+
+  def sqlUpdateSets(names: Seq[String]): String = names.map(name => s""""$name" = ?""").mkString(", ")
+
+  def sqlNames(names: Seq[String]): String = names.mkString("\"", "\", \"", "\"")
+
+  def sqlArgs(args: Seq[_]): String = args.map(_ => "?").mkString(", ")
 
   def apply(dataSource: DataSource): JdbcTemplate = new JdbcTemplate(dataSource)
 

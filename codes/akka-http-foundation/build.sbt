@@ -16,6 +16,8 @@ lazy val root = (project in file(".")).
       postgresql,
       cassandraDriverCore,
       elastic4sTcp,
+      scalaLogging,
+      logbackClassic,
       scalaTest % Test
     )
   )
