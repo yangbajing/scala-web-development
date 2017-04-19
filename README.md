@@ -7,6 +7,8 @@
 - [https://github.com/yangbajing/scala-web-development](https://github.com/yangbajing/scala-web-development)
 - [http://git.oschina.net/yangbajing/scala-web-development](http://git.oschina.net/yangbajing/scala-web-development)
 
+有问题、建议请到 [https://github.com/yangbajing/scala-web-development/issues](https://github.com/yangbajing/scala-web-development/issues) 提供指导。
+
 - 作者：杨景（羊八井）
 - 邮箱：yangbajing at gmail com
 - Weibo: @yangbajing

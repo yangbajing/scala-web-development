@@ -29,11 +29,12 @@ Akka 是一个在 JVM 上构建高并发、分布式、弹性的消息驱动应�
 
 Akka HTTP 基于 `akka-actor` 和 `akka-stream` 完整实现了 HTTP 服务器和客户端协议。它不是一个 Web框架，而是一个更通用的工具包。
 
-本书源码在：
+*本书源码在：*
 
 - [https://github.com/yangbajing/scala-web-development](https://github.com/yangbajing/scala-web-development)
 - [http://git.oschina.net/yangbajing/scala-web-development](http://git.oschina.net/yangbajing/scala-web-development)
 
+有问题、建议请到 [https://github.com/yangbajing/scala-web-development/issues](https://github.com/yangbajing/scala-web-development/issues) 提供指导。
 
 ## 作者
 
