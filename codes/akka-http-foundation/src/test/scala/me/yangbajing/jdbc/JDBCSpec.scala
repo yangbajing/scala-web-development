@@ -1,4 +1,4 @@
-package akkahttp.jdbc
+package me.yangbajing.jdbc
 
 import org.postgresql.ds.PGSimpleDataSource
 import org.scalatest.{BeforeAndAfterAll, Suite}

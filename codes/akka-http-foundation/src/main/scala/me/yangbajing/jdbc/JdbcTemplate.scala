@@ -1,4 +1,4 @@
-package akkahttp.jdbc
+package me.yangbajing.jdbc
 
 import java.sql.{Connection, PreparedStatement, SQLException}
 import javax.sql.DataSource
@@ -117,10 +117,13 @@ object JdbcTemplate {
 
   Class.forName("org.postgresql.Driver")
 
+  // [name, age] => "name" = ?, "age" = ?
   def sqlUpdateSets(names: Seq[String]): String = names.map(name => s""""$name" = ?""").mkString(", ")
 
+  // [name, age] => "name", "age"
   def sqlNames(names: Seq[String]): String = names.mkString("\"", "\", \"", "\"")
 
+  // [value1, value2] => ?, ?
   def sqlArgs(args: Seq[_]): String = args.map(_ => "?").mkString(", ")
 
   def apply(dataSource: DataSource): JdbcTemplate = new JdbcTemplate(dataSource)

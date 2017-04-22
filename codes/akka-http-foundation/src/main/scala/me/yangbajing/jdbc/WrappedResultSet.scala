@@ -1,4 +1,4 @@
-package akkahttp.jdbc
+package me.yangbajing.jdbc
 
 import java.sql.ResultSet
 import java.time.LocalDateTime

@@ -1,10 +1,10 @@
 import Dependencies._
 
-lazy val root = (project in file(".")).
+lazy val `akka-http-foundation` = (project in file(".")).
   settings(
     inThisBuild(List(
       organization := "me.yangbajing",
-      scalaVersion := "2.12.1",
+      scalaVersion := "2.12.2",
       version := "0.1.0-SNAPSHOT"
     )),
     name := "akka-http-foundation",
@@ -14,6 +14,7 @@ lazy val root = (project in file(".")).
       jacksonDatatypeJsr310,
       jacksonDatatypeJdk8,
       postgresql,
+      alpakkaCassandra,
       cassandraDriverCore,
       elastic4sTcp,
       scalaLogging,

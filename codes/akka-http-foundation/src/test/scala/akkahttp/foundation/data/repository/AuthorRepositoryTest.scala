@@ -1,8 +1,8 @@
 package akkahttp.foundation.data.repository
 
-import akkahttp.MeSpec
 import akkahttp.foundation.data.entity.Author
-import akkahttp.jdbc.JDBCSpec
+import me.yangbajing.MeSpec
+import me.yangbajing.jdbc.JDBCSpec
 
 /**
   * Created by yangbajing(yangbajing@gmail.com) on 2017-04-19.
@@ -19,9 +19,11 @@ class AuthorRepositoryTest extends MeSpec with JDBCSpec {
     }
 
     "update" in {
-      val author = Author(3, "yangbajing", Some(32), Some("中国重庆江津"))
+      val author = Author(1, "羊八井", Some(32), None)
       val result = accountRepository.update(author)
       result.id mustBe author.id
+      result.name mustBe author.name
+      result.age mustBe author.age
     }
 
     "list" in {

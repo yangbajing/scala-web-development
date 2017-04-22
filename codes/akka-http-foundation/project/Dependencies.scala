@@ -5,6 +5,7 @@ object Dependencies {
   lazy val scalaTest = "org.scalatest" %% "scalatest" % "3.0.1"
 
   lazy val elastic4sTcp = "com.sksamuel.elastic4s" %% "elastic4s-tcp" % "5.3.1"
+  lazy val alpakkaCassandra = ("com.lightbend.akka" %% "akka-stream-alpakka-cassandra" % "0.7").exclude("com.datastax.cassandra", "cassandra-driver-core")
 
   lazy val scalaLogging = "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0"
 
