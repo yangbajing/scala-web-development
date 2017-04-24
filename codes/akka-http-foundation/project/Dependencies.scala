@@ -15,6 +15,7 @@ object Dependencies {
 
   lazy val postgresql = "org.postgresql" % "postgresql" % "42.0.0"
   lazy val cassandraDriverCore = "com.datastax.cassandra" % "cassandra-driver-core" % "3.2.0"
+  lazy val cassandraDriverExtras = "com.datastax.cassandra" % "cassandra-driver-extras" % "3.2.0"
 
   lazy val logbackClassic = "ch.qos.logback" % "logback-classic" % "1.1.7"
 

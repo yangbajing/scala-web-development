@@ -16,6 +16,7 @@ lazy val `akka-http-foundation` = (project in file(".")).
       postgresql,
       alpakkaCassandra,
       cassandraDriverCore,
+      cassandraDriverExtras,
       elastic4sTcp,
       scalaLogging,
       logbackClassic,
