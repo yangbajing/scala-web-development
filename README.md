@@ -1,6 +1,15 @@
-# Scala Web Development
+# Scala Web 开发 - 使用 Akka HTTP
 
-**Scala Web 开发 - 使用Akka**
+**本地阅读**
+
+```
+git clone https://github.com/yangbajing/scala-web-development.git
+cd scala-web-development
+gitbook install
+gitbook serve
+```
+
+打开浏览器，访问：[http://localhost:4000](http://localhost:4000) 本地阅读。
 
 本书源码在：
 
