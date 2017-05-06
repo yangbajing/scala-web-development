@@ -1,0 +1,890 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Akka HTTP 的通用抽象 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.2">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="03.4.html" />
+    
+    
+    <link rel="prev" href="03.2.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="01.0.html">
+            
+                <a href="01.0.html">
+            
+                    
+                    Scala环境配置
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="01.1.html">
+            
+                <a href="01.1.html">
+            
+                    
+                    Sbt
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="01.2.html">
+            
+                <a href="01.2.html">
+            
+                    
+                    IDE开发工具
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="01.z.html">
+            
+                <a href="01.z.html">
+            
+                    
+                    小结
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="02.0.html">
+            
+                <a href="02.0.html">
+            
+                    
+                    Scala语言基础
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="02.1.html">
+            
+                <a href="02.1.html">
+            
+                    
+                    你好，Scala
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="02.2.html">
+            
+                <a href="02.2.html">
+            
+                    
+                    Scala基础
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="02.3.html">
+            
+                <a href="02.3.html">
+            
+                    
+                    流程和函数
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.4" data-path="02.4.html">
+            
+                <a href="02.4.html">
+            
+                    
+                    集合
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.5" data-path="02.5.html">
+            
+                <a href="02.5.html">
+            
+                    
+                    class和object
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6" data-path="02.6.html">
+            
+                <a href="02.6.html">
+            
+                    
+                    函数式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.7" data-path="02.7.html">
+            
+                <a href="02.7.html">
+            
+                    
+                    trait
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.8" data-path="02.8.html">
+            
+                <a href="02.8.html">
+            
+                    
+                    并发
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.9" data-path="02.z.html">
+            
+                <a href="02.z.html">
+            
+                    
+                    小结
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="03.0.html">
+            
+                <a href="03.0.html">
+            
+                    
+                    Akka HTTP 基础
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="03.1.html">
+            
+                <a href="03.1.html">
+            
+                    
+                    Web 工作方式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="03.2.html">
+            
+                <a href="03.2.html">
+            
+                    
+                    使用 Akka HTTP 搭建一个简单的 Web 服务
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.4.3" data-path="03.3.html">
+            
+                <a href="03.3.html">
+            
+                    
+                    Akka HTTP 的通用抽象
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4" data-path="03.4.html">
+            
+                <a href="03.4.html">
+            
+                    
+                    Akka HTTP 如何使得 Web 工作
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.5" data-path="03.5.html">
+            
+                <a href="03.5.html">
+            
+                    
+                    高级服务端 API
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.6" data-path="03.z.html">
+            
+                <a href="03.z.html">
+            
+                    
+                    小结
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="05.0.html">
+            
+                <a href="05.0.html">
+            
+                    
+                    访问数据库
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="05.1.html">
+            
+                <a href="05.1.html">
+            
+                    
+                    使用 JDBC 访问 PostgreSQL
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="05.2.html">
+            
+                <a href="05.2.html">
+            
+                    
+                    访问 Cassandra 数据库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.3" data-path="05.3.html">
+            
+                <a href="05.3.html">
+            
+                    
+                    使用 Redis/Elasticsearch
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.4" data-path="05.z.html">
+            
+                <a href="05.z.html">
+            
+                    
+                    小结
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="ref.html">
+            
+                <a href="ref.html">
+            
+                    
+                    参考资料
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="appendix.0.html">
+            
+                <a href="appendix.0.html">
+            
+                    
+                    附录
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" data-path="appendix.1.html">
+            
+                <a href="appendix.1.html">
+            
+                    
+                    专业术语
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >Akka HTTP 的通用抽象</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="akka-http-&#x7684;&#x901A;&#x7528;&#x62BD;&#x8C61;">Akka HTTP &#x7684;&#x901A;&#x7528;&#x62BD;&#x8C61;</h1>
+<p>HTTP &#x89C4;&#x8303;&#x5B9A;&#x4E49;&#x4E86;&#x5927;&#x91CF;&#x6982;&#x5FF5;&#x548C;&#x529F;&#x80FD;&#xFF0C;&#x5B83;&#x4EEC;&#x662F;&#x4E0D;&#x7279;&#x5B9A;&#x4E8E;&#x5177;&#x4F53;&#x5B9E;&#x73B0;&#x7684;&#x3002;&#x672C;&#x8282;&#x5C06;&#x4ECB;&#x7ECD;&#x901A;&#x7528;&#x4E8E; client/server&#x3000;&#x7684; API&#x3002;</p>
+<ul>
+<li><strong>HTTP Model</strong>&#xFF1A;&#x5305;&#x62EC;&#x5E38;&#x89C1;&#x7684;&#x8BF7;&#x6C42;&#x3001;&#x54CD;&#x5E94;&#x3001;headers&#x7B49;&#x7ED3;&#x6784;&#xFF0C;&#x4EE3;&#x7801;&#x90FD;&#x5728; <code>akka-http-core</code> &#x6A21;&#x5757;&#xFF0C;&#x5B83;&#x4EEC;&#x662F;&#x6784;&#x5EFA;&#x5927;&#x591A;&#x6B21; Akka HTTP API&#x7684;&#x57FA;&#x7840;&#x3002;</li>
+<li><strong>URI Model</strong>&#xFF1A;&#x6839;&#x636E; <a href="https://tools.ietf.org/html/rfc3986#section-1.1.2" target="_blank">RFC 3986</a> &#x5B9E;&#x73B0;&#x4E86; URI &#x89E3;&#x6790;&#x89C4;&#x5219;&#x3002;</li>
+<li><strong>Marshalling</strong>&#xFF1A;&#x5C06;&#x9AD8;&#x7EA7;&#xFF08;&#x5BF9;&#x8C61;&#xFF09;&#x7ED3;&#x6784;&#x8F6C;&#x6362;&#x6210;&#x67D0;&#x79CD;&#x4F4E;&#x7EA7;&#x8868;&#x793A;&#x5F62;&#x5F0F;&#x7684;&#x8FC7;&#x7A0B;&#xFF0C;&#x5176;&#x5B83;&#x6D41;&#x884C;&#x7684;&#x540D;&#x79F0;&#x6709;&#xFF1A;<strong>Serialization</strong> &#x548C; <strong>Pickling</strong>&#x3002;</li>
+<li><strong>Unmarshalling</strong>&#xFF1A;&#x5C06;&#x4F4E;&#x7EA7;&#x8868;&#x793A;&#x5F62;&#x5F0F;&#x8F6C;&#x6362;&#x6210;&#x67D0;&#x79CD;&#x9AD8;&#x7EA7;&#xFF08;&#x5BF9;&#x8C61;&#xFF09;&#x7ED3;&#x6784;&#x7684;&#x8FC7;&#x7A0B;&#xFF0C;&#x5176;&#x5B83;&#x6D41;&#x884C;&#x7684;&#x540D;&#x79F0;&#x6709;&#xFF1A;<strong>Deserialization</strong> &#x548C; <strong>Unpickling</strong>&#x3002;</li>
+<li><strong>Encoding / Decoding</strong>&#xFF1A;<a href="http://tools.ietf.org/html/rfc7231#section-3.1.2.1" target="_blank">HTTP spec</a>&#x5B9A;&#x4E49;&#x4E86; <code>Content-Encoding</code>&#x5934;&#xFF0C;&#x5B9E;&#x73B0;&#x4E86; HTTP &#x6D88;&#x606F;&#x7684;&#x538B;&#x7F29;&#x3001;&#x89E3;&#x538B;&#x7F29;&#x3002;&#x5982;&#xFF1A;<code>gzip</code>&#x3001;<code>deflate</code>&#x2026;&#x2026;</li>
+<li><strong>JSON Support</strong>&#xFF1A;&#x6839;&#x636E; <strong>marshalling</strong> &#x548C; <strong>unmarshalling</strong> &#x5B9E;&#x73B0;&#x7684; JSON &#x89E3;&#x6790;&#xFF0C;&#x9ED8;&#x8BA4;&#x63D0;&#x4F9B;&#x4E86; <code>akka-http-spray-json</code> &#x6A21;&#x5757;&#x3002;&#x4E5F;&#x53EF;&#x5F88;&#x5BB9;&#x6613;&#x7684;&#x5B9A;&#x4E49;&#x81EA;&#x5DF1;&#x7684; JSON &#x89E3;&#x6790;&#x3002;</li>
+<li><strong>XML Support</strong>&#xFF1A;&#x6839;&#x636E; <strong>marshalling</strong> &#x548C; <strong>unmarshalling</strong> &#x5B9E;&#x73B0;&#x7684; <a href="https://github.com/scala/scala-xml" target="_blank">Scala XML</a> &#x89E3;&#x6790;&#xFF0C;&#x9ED8;&#x8BA4;&#x63D0;&#x4F9B;&#x4E86; <code>akka-http-xml</code> &#x6A21;&#x5757;&#x3002;&#x4E5F;&#x53EF;&#x5F88;&#x5BB9;&#x6613;&#x7684;&#x5B9A;&#x4E49;&#x81EA;&#x5DF1;&#x7684; XML &#x89E3;&#x6790;&#x3002;</li>
+<li><strong>Akka HTTP Timeouts</strong>&#xFF1A;&#x5185;&#x5EFA;&#x591A;&#x79CD;&#x8D85;&#x65F6;&#x673A;&#x5236;&#x6765;&#x4FDD;&#x62A4;&#x670D;&#x52A1;&#x5668;&#x514D;&#x53D7;&#x6076;&#x610F;&#x653B;&#x51FB;&#x548C;&#x7F16;&#x7A0B;&#x9519;&#x8BEF;&#x3002;&#x7528;&#x6237;&#x4EE3;&#x7801;&#x4E2D;&#x53EF;&#x4F7F;&#x7528;&#x914D;&#x7F6E;&#x9009;&#x9879;&#x6216;API&#x6765;&#x5B9A;&#x5236;&#x3002;</li>
+</ul>
+<h2 id="http-model">HTTP Model</h2>
+<p><code>akka-http-core</code> &#x63D0;&#x4F9B;&#x4E86; HTTP &#x6570;&#x636E;&#x7ED3;&#x6784;&#x7684;&#x6838;&#x5FC3;&#xFF0C;&#x5F88;&#x591A;&#x7684;&#x5730;&#x65B9;&#xFF08;&#x5305;&#x62EC;&#x4F60;&#x81EA;&#x5DF1;&#x7684;&#x4EE3;&#x7801;&#xFF09;&#x90FD;&#x5BFC;&#x5165;&#x4E86;&#x8FD9;&#x4E9B;&#x6570;&#x636E;&#x7ED3;&#x6784;&#x3002;&#x4E3B;&#x8981;&#x7684;&#x7C7B;&#x578B;&#x6709;&#xFF1A;</p>
+<ul>
+<li><code>HttpRequest</code> &#x548C; <code>HttpResponse</code>&#xFF1A;&#x4E3B;&#x8981;&#x7684;&#x6D88;&#x606F;&#x6A21;&#x578B;</li>
+<li><code>headers</code>&#xFF1A;&#x8FD9;&#x4E2A; package &#x5305;&#x542B;&#x4E86;&#x6240;&#x6709;&#x7684;&#x9884;&#x5B9A;&#x4E49; HTTP header &#x548C;&#x652F;&#x6301;&#x548C;&#x7C7B;&#x578B;</li>
+<li>&#x652F;&#x6301;&#x7684;&#x7C7B;&#x578B;&#xFF0C;&#x6BD4;&#x5982;&#xFF1A;<code>Uri</code>&#x3001;<code>HttpMethods</code>&#x3001;<code>MediaTypes</code>&#x3001;<code>StatusCodes</code>&#x7B49;</li>
+</ul>
+<p>&#x901A;&#x5E38;&#xFF0C;&#x4E00;&#x4E2A;&#x5B9E;&#x4F53;&#x6A21;&#x578B;&#x8868;&#x73B0;&#x4E3A;&#x4E00;&#x4E2A;&#x4E0D;&#x53EF;&#x53D8;&#x7C7B;&#x578B;&#xFF08;class &#x6216; trait&#xFF09;&#x3002;&#x7531; HTTP &#x89C4;&#x8303;&#x5B9A;&#x4E49;&#x7684;&#x5B9E;&#x4F53;&#x7C7B;&#x578B;&#x7684;&#x9884;&#x5B9A;&#x4E49;&#x5B9E;&#x4F8B;&#x90FD;&#x653E;&#x5728;&#x540C;&#x540D;&#x7C7B;&#x578B;&#x540D;&#x52A0;&#x4E2A;&#x4E00;&#x4E2A; <code>s</code> &#x7684;&#x590D;&#x6570;&#x5F62;&#x5F0F; object &#x91CC;&#x3002;</p>
+<p>&#x6BD4;&#x5982;&#xFF1A;</p>
+<ul>
+<li>&#x5B9A;&#x4E49;&#x7684; <code>HttpMethod</code> &#x5728; <code>HttpMethods</code> object&#x3002;</li>
+<li>&#x5B9A;&#x4E49;&#x7684; <code>HttpCharset</code> &#x5728; <code>HttpCharsets</code> object&#x3002;</li>
+<li>&#x5B9A;&#x4E49;&#x7684; <code>HttpEncoding</code> &#x5728; <code>HttpEncodings</code> object&#x3002;</li>
+<li>&#x5B9A;&#x4E49;&#x7684; <code>HttpProtocol</code> &#x5728; <code>HttpProtocols</code> object&#x3002;</li>
+<li>&#x5B9A;&#x4E49;&#x7684; <code>MediaType</code> &#x5728; <code>MediaTypes</code> object&#x3002;</li>
+<li>&#x5B9A;&#x4E49;&#x7684; <code>StatusCode</code> &#x5728; <code>StatusCodes</code> object&#x3002;</li>
+</ul>
+<h2 id="uri-model">URI Model</h2>
+<p>&#x5F53;&#x5C1D;&#x8BD5;&#x89E3;&#x6790; <code>URI</code> &#x5B57;&#x7B26;&#x4E32;&#x65F6;&#xFF0C;Akka HTTP &#x5C06;&#x5728;&#x5185;&#x90E8;&#x521B;&#x5EFA; <code>URI</code> &#x7684;&#x5B9E;&#x4F8B;&#x3002;&#x4E0B;&#x9762;&#x662F;&#x5E38;&#x89C1;&#x7684;&#x4E00;&#x4E9B;&#x6709;&#x6548;&#x7684; URI &#x5B9E;&#x4F8B;&#xFF1A;</p>
+<pre><code class="lang-scala"><span class="hljs-type">Uri</span>(<span class="hljs-string">&quot;ftp://ftp.is.co.za/rfc/rfc1808.txt&quot;</span>) shouldEqual
+  <span class="hljs-type">Uri</span>.from(scheme = <span class="hljs-string">&quot;ftp&quot;</span>, host = <span class="hljs-string">&quot;ftp.is.co.za&quot;</span>, path = <span class="hljs-string">&quot;/rfc/rfc1808.txt&quot;</span>)
+
+<span class="hljs-type">Uri</span>(<span class="hljs-string">&quot;http://www.ietf.org/rfc/rfc2396.txt&quot;</span>) shouldEqual
+  <span class="hljs-type">Uri</span>.from(scheme = <span class="hljs-string">&quot;http&quot;</span>, host = <span class="hljs-string">&quot;www.ietf.org&quot;</span>, path = <span class="hljs-string">&quot;/rfc/rfc2396.txt&quot;</span>)
+
+<span class="hljs-type">Uri</span>(<span class="hljs-string">&quot;ldap://[2001:db8::7]/c=GB?objectClass?one&quot;</span>) shouldEqual
+  <span class="hljs-type">Uri</span>.from(scheme = <span class="hljs-string">&quot;ldap&quot;</span>, host = <span class="hljs-string">&quot;[2001:db8::7]&quot;</span>, path = <span class="hljs-string">&quot;/c=GB&quot;</span>, queryString = <span class="hljs-type">Some</span>(<span class="hljs-string">&quot;objectClass?one&quot;</span>))
+
+<span class="hljs-type">Uri</span>(<span class="hljs-string">&quot;mailto:John.Doe@example.com&quot;</span>) shouldEqual
+  <span class="hljs-type">Uri</span>.from(scheme = <span class="hljs-string">&quot;mailto&quot;</span>, path = <span class="hljs-string">&quot;John.Doe@example.com&quot;</span>)
+
+<span class="hljs-type">Uri</span>(<span class="hljs-string">&quot;news:comp.infosystems.www.servers.unix&quot;</span>) shouldEqual
+  <span class="hljs-type">Uri</span>.from(scheme = <span class="hljs-string">&quot;news&quot;</span>, path = <span class="hljs-string">&quot;comp.infosystems.www.servers.unix&quot;</span>)
+
+<span class="hljs-type">Uri</span>(<span class="hljs-string">&quot;tel:+1-816-555-1212&quot;</span>) shouldEqual
+  <span class="hljs-type">Uri</span>.from(scheme = <span class="hljs-string">&quot;tel&quot;</span>, path = <span class="hljs-string">&quot;+1-816-555-1212&quot;</span>)
+
+<span class="hljs-type">Uri</span>(<span class="hljs-string">&quot;telnet://192.0.2.16:80/&quot;</span>) shouldEqual
+  <span class="hljs-type">Uri</span>.from(scheme = <span class="hljs-string">&quot;telnet&quot;</span>, host = <span class="hljs-string">&quot;192.0.2.16&quot;</span>, port = <span class="hljs-number">80</span>, path = <span class="hljs-string">&quot;/&quot;</span>)
+
+<span class="hljs-type">Uri</span>(<span class="hljs-string">&quot;urn:oasis:names:specification:docbook:dtd:xml:4.1.2&quot;</span>) shouldEqual
+  <span class="hljs-type">Uri</span>.from(scheme = <span class="hljs-string">&quot;urn&quot;</span>, path = <span class="hljs-string">&quot;oasis:names:specification:docbook:dtd:xml:4.1.2&quot;</span>)
+</code></pre>
+<h2 id="marshalling">Marshalling</h2>
+<p>Marshalling &#x662F;&#x5C06;&#x7C7B;&#x578B; A &#x7684;&#x5B9E;&#x4F8B;&#x8F6C;&#x6362;&#x6210;&#x7C7B;&#x578B; B &#x7684;&#x5B9E;&#x4F8B;&#xFF0C;&#x63D0;&#x4F9B;&#x4E8E; <code>Marshaller[A, B]</code>&#x3002;Akka HTTP &#x9884;&#x5B9A;&#x4E49;&#x4E86;&#x5F88;&#x591A;&#x8F6C;&#x6362;&#x7684;&#x522B;&#x540D;&#xFF0C;&#x53EF;&#x4EE5;&#x7B80;&#x5316;&#x65E5;&#x5E38;&#x5F00;&#x53D1;&#xFF1A;</p>
+<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">ToEntityMarshaller</span>[<span class="hljs-type">T</span>] </span>= <span class="hljs-type">Marshaller</span>[<span class="hljs-type">T</span>, <span class="hljs-type">MessageEntity</span>]
+<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">ToByteStringMarshaller</span>[<span class="hljs-type">T</span>] </span>= <span class="hljs-type">Marshaller</span>[<span class="hljs-type">T</span>, <span class="hljs-type">ByteString</span>]
+<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">ToHeadersAndEntityMarshaller</span>[<span class="hljs-type">T</span>] </span>= <span class="hljs-type">Marshaller</span>[<span class="hljs-type">T</span>, (immutable.<span class="hljs-type">Seq</span>[<span class="hljs-type">HttpHeader</span>], <span class="hljs-type">MessageEntity</span>)]
+<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">ToResponseMarshaller</span>[<span class="hljs-type">T</span>] </span>= <span class="hljs-type">Marshaller</span>[<span class="hljs-type">T</span>, <span class="hljs-type">HttpResponse</span>]
+<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">ToRequestMarshaller</span>[<span class="hljs-type">T</span>] </span>= <span class="hljs-type">Marshaller</span>[<span class="hljs-type">T</span>, <span class="hljs-type">HttpRequest</span>]
+</code></pre>
+<p><code>Marshaller[A, B]</code> &#x672C;&#x8D28;&#x4E0A;&#x7C7B;&#x4F3C;&#x4E8E; <code>A =&gt; Future[List[Marshalling[B]]]</code> &#x8FD9;&#x6837;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#xFF0C;&#x8FD9;&#x4E2A;&#x7B7E;&#x540D;&#x6BD4;&#x8F83;&#x590D;&#x6742;&#xFF0C;&#x4E0B;&#x9762;&#x6211;&#x4EEC;&#x6765;&#x89E3;&#x6790;&#x4E0B;&#x5B83;&#x3002;</p>
+<ol>
+<li><strong><code>Future</code></strong>&#xFF1A;&#x8FD9;&#x4E2A;&#x5F88;&#x660E;&#x663E;&#xFF0C;Marshaller &#x4E0D;&#x9700;&#x8981;&#x540C;&#x6B65;&#x7684;&#x4EA7;&#x751F;&#x4E00;&#x4E2A;&#x7ED3;&#x679C;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5F02;&#x6B65;&#x7684;&#x8FDB;&#x884C;&#x8FD9;&#x4E2A;&#x7F16;&#x7801;&#x8FC7;&#x7A0B;&#x3002;</li>
+<li><strong><code>List</code></strong>&#xFF1A;&#x5217;&#x8868;&#xFF0C;&#x8BF4;&#x660E;&#x5BF9;&#x4E8E;&#x7ED9;&#x5B9A;&#x7C7B;&#x578B; A &#xFF0C;&#x4E0D;&#x5230;&#x4E00;&#x4E2A; Marshaller &#x88AB;&#x4F5C;&#x7528;&#x4E8E;&#x5B83;&#x3002;&#x6BD4;&#x5982;&#x5BF9;&#x4E8E;&#xFF1A;<code>ToEntityMarshaller[OrderConfirmation]</code>&#xFF0C;&#x8BF7;&#x6C42;&#x53EF;
+&#x80FD;&#x4F7F;&#x7528; JSON &#x6216; XML &#x683C;&#x5F0F;&#xFF0C;&#x5BA2;&#x6237;&#x7AEF;&#x53EF;&#x4EE5;&#x6DFB;&#x52A0; <code>Accept</code> &#x8BF7;&#x6C42;&#x5934;&#x6765;&#x51B3;&#x5B9A;&#x4F7F;&#x7528;&#x54EA;&#x4E2A; Marshaller&#x3002;&#x82E5;&#x5BA2;&#x6237;&#x7AEF;&#x672A;&#x6307;&#x5B9A;&#xFF0C;&#x5219;&#x5728;&#x5E8F;&#x5217;&#x5316;&#x65F6;&#x5C06;&#x4F7F;&#x7528;&#x7B2C;&#x4E00;&#x4E2A;&#x3002;</li>
+<li><strong><code>Marshalling[B]</code></strong>&#xFF1A;&#x8FD9;&#x91CC;&#x6CA1;&#x6709;&#x76F4;&#x63A5;&#x8FD4;&#x56DE;&#x7C7B;&#x578B; B &#x7684;&#x5B9E;&#x4F8B;&#xFF0C;&#x800C;&#x662F;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A; <code>Marshalling[B]</code>&#x3002;&#x8FD9;&#x4F7F;&#x5F97;&#x5728;&#x7F16;&#x7801;&#x8FC7;&#x7A0B;&#x4E2D;&#x67E5;&#x8BE2; <code>MediaType</code> &#x548C;&#x68C0;&#x67E5;&#x53EF;
+&#x80FD;&#x7684; <code>HttpCharset</code> &#x6210;&#x4E3A;&#x4E86;&#x53EF;&#x80FD;&#xFF0C;&#x8FD9;&#x6837;&#x7684;&#x6761;&#x4EF6;&#x90FD;&#x5339;&#x914D;&#x540E;&#x624D;&#x4F1A;&#x89E6;&#x53D1;&#x7F16;&#x7801;&#x5DE5;&#x4F5C;&#x3002;&#x5728;&#x542F;&#x7528;&#x4E86;&#x8FD9;&#x6837;&#x7684;&#x7C7B;&#x578B;&#x534F;&#x5546;&#x7684;&#x65B9;&#x5F0F;&#x4E4B;&#x5916;&#xFF0C;&#x8FD9;&#x79CD;&#x8BBE;&#x8BA1;&#x8FD8;&#x5141;&#x8BB8;&#x5C06; marshalling &#x5BF9;&#x76EE;&#x6807;&#x5B9E;
+&#x4F8B;&#x7684;&#x6784;&#x9020;&#x5EF6;&#x8FDF;&#x5230;&#x771F;&#x6B63;&#x9700;&#x8981;&#x7684;&#x65F6;&#x523B;&#x3002;</li>
+</ol>
+<p><strong>&#x9884;&#x5B9A;&#x4E49; Marshallers</strong></p>
+<p>Akka HTTP &#x5DF2;&#x7ECF;&#x5305;&#x542B;&#x5927;&#x91CF;&#x9884;&#x5B9A;&#x4E49; marshallers&#xFF1A;</p>
+<ul>
+<li><a href="http://github.com/akka/akka-http/tree/v10.0.5/akka-http/src/main/scala/akka/http/scaladsl/marshalling/PredefinedToEntityMarshallers.scala" target="_blank">PredefinedToEntityMarshallers</a><ul>
+<li><code>Array[Byte]</code></li>
+<li><code>ByteString</code></li>
+<li><code>Array[Char]</code></li>
+<li><code>String</code></li>
+<li><code>akka.http.scaladsl.model.FormData</code></li>
+<li><code>akka.http.scaladsl.model.MessageEntity</code></li>
+<li><code>T &lt;: akka.http.scaladsl.model.Multipart</code></li>
+</ul>
+</li>
+<li><a href="http://github.com/akka/akka-http/tree/v10.0.5/akka-http/src/main/scala/akka/http/scaladsl/marshalling/PredefinedToResponseMarshallers.scala" target="_blank">PredefinedToResponseMarshallers</a><ul>
+<li><code>T</code>, &#x5982;&#x679C; <code>ToEntityMarshaller[T]</code> &#x53EF;&#x7528;</li>
+<li><code>HttpResponse</code></li>
+<li><code>StatusCode</code></li>
+<li><code>(StatusCode, T)</code>&#xFF0C;&#x5982;&#x679C; <code>ToEntityMarshaller[T]</code> &#x53EF;&#x7528;</li>
+<li><code>(Int, T)</code>&#xFF0C;&#x5982;&#x679C; <code>ToEntityMarshaller[T]</code> &#x53EF;&#x7528;</li>
+<li><code>(StatusCode, immutable.Seq[HttpHeader], T)</code>&#xFF0C;&#x5982;&#x679C; <code>ToEntityMarshaller[T]</code> &#x53EF;&#x7528;</li>
+<li><code>(Int, immutable.Seq[HttpHeader], T)</code>&#xFF0C;&#x5982;&#x679C; <code>ToEntityMarshaller[T]</code> &#x53EF;&#x7528;</li>
+</ul>
+</li>
+<li><a href="http://github.com/akka/akka-http/tree/v10.0.5/akka-http/src/main/scala/akka/http/scaladsl/marshalling/PredefinedToRequestMarshallers.scala" target="_blank">PredefinedToRequestMarshallers</a><ul>
+<li><code>HttpRequest</code></li>
+<li><code>Uri</code></li>
+<li><code>(HttpMethod, Uri, T)</code>&#xFF0C;&#x5982;&#x679C; <code>ToEntityMarshaller[T]</code> &#x53EF;&#x7528;</li>
+<li><code>(HttpMethod, Uri, immutable.Seq[HttpHeader], T)</code>&#xFF0C;&#x5982;&#x679C; <code>ToEntityMarshaller[T]</code> &#x53EF;&#x7528;</li>
+</ul>
+</li>
+<li><a href="http://github.com/akka/akka-http/tree/v10.0.5/akka-http/src/main/scala/akka/http/scaladsl/marshalling/GenericMarshallers.scala" target="_blank">GenericMarshallers</a><ul>
+<li><code>Marshaller[Throwable, T]</code></li>
+<li><code>Marshaller[Option[A], B]</code>&#xFF0C;&#x5982;&#x679C; <code>Marshaller[A, B]</code> &#x548C; <code>EmptyValue[B]</code> &#x53EF;&#x7528;</li>
+<li><code>Marshaller[Either[A1, A2], B]</code>&#xFF0C;&#x5982;&#x679C; <code>Marshaller[A1, B]</code> &#x548C; <code>Marshaller[A2, B]</code> &#x53EF;&#x7528;</li>
+<li><code>Marshaller[Future[A], B]</code>&#xFF0C;&#x5982;&#x679C; <code>Marshaller[A, B]</code> &#x53EF;&#x7528;</li>
+<li><code>Marshaller[Try[A], B]</code>&#xFF0C;&#x5982;&#x679C; <code>Marshaller[A, B]</code> &#x53EF;&#x7528;</li>
+</ul>
+</li>
+</ul>
+<p><strong>&#x9690;&#x5F0F;&#x89E3;&#x6790;</strong></p>
+<p>Akka HTTP &#x7684; marshalling &#x57FA;&#x7840;&#x8BBE;&#x65BD;&#x4F7F;&#x7528;&#x57FA;&#x4E8E; <strong>class</strong> &#x7684;&#x65B9;&#x5F0F;&#xFF0C;&#x8FD9;&#x610F;&#x5473;&#x7740; Marshaller &#x4ECE;&#x4E00;&#x4E2A;&#x7279;&#x5B9A; A &#x7C7B;&#x578B;&#x8F6C;&#x6362;&#x5230; B &#x7C7B;&#x578B;&#x5B9E;&#x4F8B;&#x662F;&#x9690;&#x5F0F;&#x53EF;&#x7528;&#x7684;&#x3002;</p>
+<p>Akka HTTP &#x9884;&#x5B9A;&#x4E49; <code>Marshaller</code> trait&#xFF0C;&#x5B83;&#x4EEC;&#x7684;&#x5B9A;&#x4E49;&#x90FD;&#x5728;&#x540C;&#x540D;&#x4F34;&#x751F;&#x5BF9;&#x8C61;&#x4E2D;&#xFF0C;&#x8FD9;&#x610F;&#x5473;&#x7740;&#x4EE3;&#x7801;&#x4E2D;&#x4E0D;&#x9700;&#x8981;&#x663E;&#x793A;&#x5BFC;&#x5165;&#x5373;&#x53EF;&#x7528;&#x3002;&#x540C;&#x65F6;&#xFF0C;&#x4F60;&#x4E5F;&#x53EF;&#x4EE5;&#x5B9A;&#x4E49;&#x81EA;&#x5DF1;&#x7684;&#x7248;&#x672C;&#x6765;&#x8986;&#x76D6;&#x5B83;&#x3002;</p>
+<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">Marshaller</span></span>
+  <span class="hljs-keyword">extends</span> <span class="hljs-type">GenericMarshallers</span>
+  <span class="hljs-keyword">with</span> <span class="hljs-type">PredefinedToEntityMarshallers</span>
+  <span class="hljs-keyword">with</span> <span class="hljs-type">PredefinedToResponseMarshallers</span>
+  <span class="hljs-keyword">with</span> <span class="hljs-type">PredefinedToRequestMarshallers</span> {
+  ...
+}
+</code></pre>
+<p><strong>&#x4F7F;&#x7528; Marshallers</strong></p>
+<p>&#x53EF;&#x4EE5;&#x5728;&#x4EE3;&#x7801;&#x4E2D;&#x76F4;&#x63A5;&#x4F7F;&#x7528; Marshallers&#xFF0C;<code>akka.http.scaladsl.marshalling.Marshal</code> object &#x662F;&#x4E00;&#x4E2A;&#x5F88;&#x597D;&#x7684;&#x5165;&#x53E3;&#xFF1A;</p>
+<pre><code class="lang-scala"><span class="hljs-keyword">import</span> scala.concurrent.<span class="hljs-type">Await</span>
+<span class="hljs-keyword">import</span> scala.concurrent.duration._
+<span class="hljs-keyword">import</span> akka.http.scaladsl.marshalling.<span class="hljs-type">Marshal</span>
+<span class="hljs-keyword">import</span> akka.http.scaladsl.model._
+
+<span class="hljs-keyword">import</span> system.dispatcher <span class="hljs-comment">// ExecutionContext</span>
+
+<span class="hljs-keyword">val</span> string = <span class="hljs-string">&quot;Yeah&quot;</span>
+<span class="hljs-keyword">val</span> entityFuture = <span class="hljs-type">Marshal</span>(string).to[<span class="hljs-type">MessageEntity</span>]
+<span class="hljs-keyword">val</span> entity = <span class="hljs-type">Await</span>.result(entityFuture, <span class="hljs-number">1.</span>second) <span class="hljs-comment">// &#x975E;&#x6D4B;&#x8BD5;&#x4EE3;&#x7801;&#x4E2D;&#x4E0D;&#x8981;&#x8FD9;&#x4E48;&#x4F7F;&#x7528;&#xFF01;</span>
+entity.contentType shouldEqual <span class="hljs-type">ContentTypes</span>.`text/plain(<span class="hljs-type">UTF</span><span class="hljs-number">-8</span>)`
+
+<span class="hljs-keyword">val</span> errorMsg = <span class="hljs-string">&quot;Easy, pal!&quot;</span>
+<span class="hljs-keyword">val</span> responseFuture = <span class="hljs-type">Marshal</span>(<span class="hljs-number">420</span> -&gt; errorMsg).to[<span class="hljs-type">HttpResponse</span>]
+<span class="hljs-keyword">val</span> response = <span class="hljs-type">Await</span>.result(responseFuture, <span class="hljs-number">1.</span>second) <span class="hljs-comment">// &#x975E;&#x6D4B;&#x8BD5;&#x4EE3;&#x7801;&#x4E2D;&#x4E0D;&#x8981;&#x8FD9;&#x4E48;&#x4F7F;&#x7528;&#xFF01;</span>
+response.status shouldEqual <span class="hljs-type">StatusCodes</span>.<span class="hljs-type">EnhanceYourCalm</span>
+response.entity.contentType shouldEqual <span class="hljs-type">ContentTypes</span>.`text/plain(<span class="hljs-type">UTF</span><span class="hljs-number">-8</span>)`
+
+<span class="hljs-keyword">val</span> request = <span class="hljs-type">HttpRequest</span>(headers = <span class="hljs-type">List</span>(headers.<span class="hljs-type">Accept</span>(<span class="hljs-type">MediaTypes</span>.`application/json`)))
+<span class="hljs-keyword">val</span> responseText = <span class="hljs-string">&quot;Plaintext&quot;</span>
+<span class="hljs-keyword">val</span> respFuture = <span class="hljs-type">Marshal</span>(responseText).toResponseFor(request) <span class="hljs-comment">// &#x6839;&#x636E;&#x8BF7;&#x6C42;&#x6765;&#x51B3;&#x5B9A;&#x4F7F;&#x7528;&#x54EA;&#x4E2A; Marshaller</span>
+a[<span class="hljs-type">Marshal</span>.<span class="hljs-type">UnacceptableResponseContentTypeException</span>] should be thrownBy {
+  <span class="hljs-type">Await</span>.result(respFuture, <span class="hljs-number">1.</span>second) <span class="hljs-comment">// &#x5BA2;&#x6237;&#x7AEF;&#x8BF7;&#x6C42; JSON &#x683C;&#x5F0F;&#xFF0C;&#x4F46;&#x8FD9;&#x91CC;&#x53EA;&#x63D0;&#x4F9B;&#x4E86; `text/plain` &#x7684;&#x7F16;&#x7801;&#x65B9;&#x5F0F;</span>
+}
+</code></pre>
+<h2 id="unmarshalling">Unmarshalling</h2>
+<p>Unmarshalling &#x5C06;&#x7C7B;&#x578B; A &#x7684;&#x5B9E;&#x4F8B;&#x8F6C;&#x6362;&#x6210;&#x7C7B;&#x578B; B&#xFF0C;<code>Unmarshaller[A, B]</code>&#x3002;Akka HTTP &#x9884;&#x5B9A;&#x4E49;&#x4E86;&#x5F88;&#x591A;&#x8F6C;&#x6362;&#x7684;&#x522B;&#x540D;&#xFF0C;&#x53EF;&#x4EE5;&#x7B80;&#x5316;&#x65E5;&#x5E38;&#x5F00;&#x53D1;&#xFF1A;</p>
+<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">FromEntityUnmarshaller</span>[<span class="hljs-type">T</span>] </span>= <span class="hljs-type">Unmarshaller</span>[<span class="hljs-type">HttpEntity</span>, <span class="hljs-type">T</span>]
+<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">FromMessageUnmarshaller</span>[<span class="hljs-type">T</span>] </span>= <span class="hljs-type">Unmarshaller</span>[<span class="hljs-type">HttpMessage</span>, <span class="hljs-type">T</span>]
+<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">FromResponseUnmarshaller</span>[<span class="hljs-type">T</span>] </span>= <span class="hljs-type">Unmarshaller</span>[<span class="hljs-type">HttpResponse</span>, <span class="hljs-type">T</span>]
+<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">FromRequestUnmarshaller</span>[<span class="hljs-type">T</span>] </span>= <span class="hljs-type">Unmarshaller</span>[<span class="hljs-type">HttpRequest</span>, <span class="hljs-type">T</span>]
+<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">FromByteStringUnmarshaller</span>[<span class="hljs-type">T</span>] </span>= <span class="hljs-type">Unmarshaller</span>[<span class="hljs-type">ByteString</span>, <span class="hljs-type">T</span>]
+<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">FromStringUnmarshaller</span>[<span class="hljs-type">T</span>] </span>= <span class="hljs-type">Unmarshaller</span>[<span class="hljs-type">String</span>, <span class="hljs-type">T</span>]
+<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">FromStrictFormFieldUnmarshaller</span>[<span class="hljs-type">T</span>] </span>= <span class="hljs-type">Unmarshaller</span>[<span class="hljs-type">StrictForm</span>.<span class="hljs-type">Field</span>, <span class="hljs-type">T</span>]
+</code></pre>
+<p>&#x6838;&#x5FC3;&#x7684; <code>Unmarshaller[A, B]</code> &#x7C7B;&#x578B;&#x975E;&#x5E38;&#x7C7B;&#x4F3C; <code>A =&gt; Future[B]</code> &#x51FD;&#x6570;&#xFF0C;&#x5B83;&#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x4E2A;&#x89E3;&#x7801;&#x7684;&#x8F6C;&#x6362;&#x6D41;&#x7A0B;&#x3002;</p>
+<p><strong>&#x9884;&#x5B9A;&#x4E49; Unmarshallers</strong></p>
+<p>Akka HTTP &#x5DF2;&#x7ECF;&#x9884;&#x5B9A;&#x4E49;&#x4E86;&#x5927;&#x91CF;&#x7684; marshallers&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5728;&#x4EE3;&#x7801;&#x4E2D;&#x76F4;&#x63A5;&#x4F7F;&#x7528;&#xFF1A;</p>
+<ul>
+<li><a href="http://github.com/akka/akka-http/tree/v10.0.5/akka-http/src/main/scala/akka/http/scaladsl/unmarshalling/PredefinedFromStringUnmarshallers.scala" target="_blank">PredefinedFromStringUnmarshallers</a><ul>
+<li><code>Byte</code></li>
+<li><code>Short</code></li>
+<li><code>Int</code></li>
+<li><code>Long</code></li>
+<li><code>Float</code></li>
+<li><code>Double</code></li>
+<li><code>Boolean</code></li>
+</ul>
+</li>
+<li><a href="http://github.com/akka/akka-http/tree/v10.0.5/akka-http/src/main/scala/akka/http/scaladsl/unmarshalling/PredefinedFromEntityUnmarshallers.scala" target="_blank">PredefinedFromEntityUnmarshallers</a><ul>
+<li><code>Array[Byte]</code></li>
+<li><code>ByteString</code></li>
+<li><code>Array[Char]</code></li>
+<li><code>String</code></li>
+<li><code>akka.http.scaladsl.model.FormData</code></li>
+</ul>
+</li>
+<li><a href="http://github.com/akka/akka-http/tree/v10.0.5/akka-http/src/main/scala/akka/http/scaladsl/unmarshalling/GenericUnmarshallers.scala" target="_blank">GenericUnmarshallers</a><ul>
+<li><code>Unmarshaller[T, T]</code> (identity unmarshaller)</li>
+<li><code>Unmarshaller[Option[A], B]</code>&#xFF0C;&#x5982;&#x679C; <code>Unmarshaller[A, B]</code> &#x53EF;&#x7528;</li>
+<li><code>Unmarshaller[A, Option[B]]</code>, &#x5982;&#x679C; <code>Unmarshaller[A, B]</code> &#x53EF;&#x7528;</li>
+</ul>
+</li>
+</ul>
+<p><strong>&#x9690;&#x5F0F;&#x89E3;&#x6790;</strong></p>
+<p>Akka HTTP &#x7684; unmarshalling &#x57FA;&#x7840;&#x8BBE;&#x65BD;&#x4F7F;&#x7528;&#x57FA;&#x4E8E; <strong>class</strong> &#x7684;&#x65B9;&#x5F0F;&#xFF0C;&#x8FD9;&#x610F;&#x5473;&#x7740; Unmarshaller &#x4ECE;&#x4E00;&#x4E2A;&#x7279;&#x5B9A; A &#x7C7B;&#x578B;&#x8F6C;&#x6362;&#x5230; B &#x7C7B;&#x578B;&#x5B9E;&#x4F8B;&#x662F;&#x9690;&#x5F0F;&#x53EF;&#x7528;&#x7684;&#x3002;</p>
+<p>Akka HTTP &#x9884;&#x5B9A;&#x4E49; <code>Unmarshaller</code> trait&#xFF0C;&#x5B83;&#x4EEC;&#x7684;&#x5B9A;&#x4E49;&#x90FD;&#x5728;&#x540C;&#x540D;&#x4F34;&#x751F;&#x5BF9;&#x8C61;&#x4E2D;&#xFF0C;&#x8FD9;&#x610F;&#x5473;&#x7740;&#x4EE3;&#x7801;&#x4E2D;&#x4E0D;&#x9700;&#x8981;&#x663E;&#x793A;&#x5BFC;&#x5165;&#x5373;&#x53EF;&#x7528;&#x3002;&#x540C;&#x65F6;&#xFF0C;&#x4F60;&#x4E5F;&#x53EF;&#x4EE5;&#x5B9A;&#x4E49;&#x81EA;&#x5DF1;&#x7684;&#x7248;&#x672C;&#x6765;&#x8986;
+&#x76D6;&#x5B83;&#x3002;</p>
+<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">object</span> <span class="hljs-title">Unmarshaller</span></span>
+  <span class="hljs-keyword">extends</span> <span class="hljs-type">GenericUnmarshallers</span>
+  <span class="hljs-keyword">with</span> <span class="hljs-type">PredefinedFromEntityUnmarshallers</span>
+  <span class="hljs-keyword">with</span> <span class="hljs-type">PredefinedFromStringUnmarshallers</span> {
+  ....
+}
+</code></pre>
+<p><strong>&#x4F7F;&#x7528; Unmarshallers</strong></p>
+<p>&#x5728; Akka HTTP &#x4E2D;&#x6709;&#x8BB8;&#x591A;&#x5730;&#x65B9;&#x9690;&#x5F0F;&#x7684;&#x4F7F;&#x7528;&#x4E86; Unmarshallers &#xFF0C;&#x6BD4;&#x5BF9; Routing DSL &#x91CC;&#x9762;&#x7684; <code>entity(as[T])</code>&#x3002;&#x4F46;&#x662F;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x663E;&#x793A;&#x7684;&#x4F7F;&#x7528;&#x5B83;&#xFF0C;&#x4E00;&#x4E2A;&#x5F88;&#x597D;&#x7684;&#x5207;
+&#x5165;&#x70B9;&#x662F;&#xFF1A;<code>akka.http.scaladsl.unmarshalling.Unmarshal</code> object&#xFF0C;&#x53EF;&#x4EE5;&#x5982;&#x4E0B;&#x4F7F;&#x7528;&#xFF1A;</p>
+<pre><code class="lang-scala"><span class="hljs-keyword">import</span> akka.http.scaladsl.unmarshalling.<span class="hljs-type">Unmarshal</span>
+<span class="hljs-keyword">import</span> system.dispatcher <span class="hljs-comment">// Optional ExecutionContext (default from Materializer)</span>
+<span class="hljs-keyword">implicit</span> <span class="hljs-keyword">val</span> materializer: <span class="hljs-type">Materializer</span> = <span class="hljs-type">ActorMaterializer</span>()
+
+<span class="hljs-keyword">import</span> scala.concurrent.<span class="hljs-type">Await</span>
+<span class="hljs-keyword">import</span> scala.concurrent.duration._
+
+<span class="hljs-keyword">val</span> intFuture = <span class="hljs-type">Unmarshal</span>(<span class="hljs-string">&quot;42&quot;</span>).to[<span class="hljs-type">Int</span>]
+<span class="hljs-keyword">val</span> int = <span class="hljs-type">Await</span>.result(intFuture, <span class="hljs-number">1.</span>second) <span class="hljs-comment">// don&apos;t block in non-test code!</span>
+int shouldEqual <span class="hljs-number">42</span>
+
+<span class="hljs-keyword">val</span> boolFuture = <span class="hljs-type">Unmarshal</span>(<span class="hljs-string">&quot;off&quot;</span>).to[<span class="hljs-type">Boolean</span>]
+<span class="hljs-keyword">val</span> bool = <span class="hljs-type">Await</span>.result(boolFuture, <span class="hljs-number">1.</span>second) <span class="hljs-comment">// don&apos;t block in non-test code!</span>
+bool shouldBe <span class="hljs-literal">false</span>
+</code></pre>
+<h2 id="encoding--decoding">Encoding / Decoding</h2>
+<p>&#x5F53;&#x524D; Akka HTTP &#x652F;&#x6301; <code>gzip</code> &#x548C; <code>deflate</code> &#x683C;&#x5F0F;&#x7684;&#x538B;&#x7F29;&#x3001;&#x89E3;&#x538B;&#x7F29;&#xFF0C;&#x5B83;&#x4EEC;&#x7684;&#x4EE3;&#x7801;&#x903B;&#x8F91;&#x90FD;&#x5728; <code>akka.http.scaladsl.coding</code> &#x5305;&#x4E2D;&#x3002;</p>
+<h2 id="json-support">JSON Support</h2>
+<p>Akka HTTP &#x5305;&#x542B;&#x4E86;&#x4E00;&#x4E2A; <code>akka-http-spary-json</code> &#x6A21;&#x5757;&#xFF0C;&#x5B83;&#x5B9E;&#x73B0;&#x4E86;&#x5B8C;&#x6574;&#x7684; JSON &#x652F;&#x6301;&#x3002;</p>
+<p><strong>JacksonSupport</strong></p>
+<p>TODO &#x672C;&#x6587;&#x5C06;&#x4E3B;&#x8981;&#x4F7F;&#x7528; Jackson &#x6765;&#x5B9E;&#x73B0; JSON &#x89E3;&#x6790;&#x5904;&#x7406;&#x3002;</p>
+<h2 id="xml-support">XML Support</h2>
+<p><strong>Scala XML&#x652F;&#x6301;</strong></p>
+<p>Scala&#x8BED;&#x8A00;&#x5185;&#x5EFA;&#x4E86; XML &#x652F;&#x6301;&#x3002; <a href="http://github.com/akka/akka-http/tree/v10.0.5/akka-http-marshallers-scala/akka-http-xml/src/main/scala/akka/http/scaladsl/marshallers/xml/ScalaXmlSupport.scala" target="_blank">ScalaXmlSupport</a> trait&#x3000;
+&#x63D0;&#x4F9B;&#x4E86; <code>FromEntityUnmarshaller[NodeSeq]</code> &#x548C; <code>ToEntityMarshaller[NodeSeq]</code>&#xFF0C;&#x53EF;&#x4EE5;&#x5728;&#x4EE3;&#x7801;&#x4E2D;&#x76F4;&#x63A5;&#x4F7F;&#x7528;&#x3002;</p>
+<ol>
+<li>&#x6DFB;&#x52A0;&#x5E93;&#x4F9D;&#x8D56;&#xFF1A;<code>&quot;com.typesafe.akka&quot; %% &quot;akka-http-xml&quot; % &quot;1.x&quot;</code></li>
+<li>&#x5F15;&#x5165;&#x9690;&#x5F0F;&#x8F6C;&#x6362; <code>import akka.http.scaladsl.marshallers.xml.ScalaXmlSupport._</code>&#xFF0C;&#x6216;&#x6DF7;&#x5165; <code>akka.http.scaladsl.marshallers.xml.ScalaXmlSupport</code> trait&#x3002;</li>
+</ol>
+<h2 id="akka-http-timeouts">Akka HTTP Timeouts</h2>
+<h3 id="&#x901A;&#x7528;&#x8D85;&#x65F6;">&#x901A;&#x7528;&#x8D85;&#x65F6;</h3>
+<p><code>idle-timeout</code> &#xFF08;&#x7A7A;&#x95F2;&#x8D85;&#x65F6;&#xFF09;&#x662F;&#x4E00;&#x4E2A;&#x5168;&#x5C40;&#x914D;&#x7F6E;&#x9879;&#xFF0C;&#x8BBE;&#x7F6E;&#x7ED9;&#x5B9A;&#x8FDE;&#x63A5;&#x7684;&#x6700;&#x5927;&#x975E;&#x6D3B;&#x52A8;&#x65F6;&#x95F4;&#x3002;&#x82E5;&#x4E00;&#x4E2A;&#x8FDE;&#x63A5;&#x662F;&#x6253;&#x5F00;&#x7684;&#xFF0C;&#x4F46;&#x5728;&#x7ED9;&#x5B9A;&#x65F6;&#x95F4;&#x5185;&#x6CA1;&#x6709;&#x8BF7;&#x6C42;/&#x54CD;&#x5E94;&#x6570;&#x636E;&#x5199;&#x5165;&#xFF0C;&#x5219;&#x8FDE;&#x63A5;&#x5C06;
+&#x88AB;&#x81EA;&#x52A8;&#x5173;&#x95ED;&#x3002;&#x5B83;&#x4EEC;&#x6709;&#x5982;&#x4E0B;&#x914D;&#x7F6E;&#x9879;&#xFF1A;</p>
+<ul>
+<li><code>akka.http.server.idle-timeout</code></li>
+<li><code>akka.http.client.idle-timeout</code></li>
+<li><code>akka.http.host-connection-pool.idle-timeout</code></li>
+<li><code>akka.http.host-connection-pool.client.idle-timeout</code></li>
+</ul>
+<h3 id="&#x670D;&#x52A1;&#x7AEF;&#x8D85;&#x65F6;">&#x670D;&#x52A1;&#x7AEF;&#x8D85;&#x65F6;</h3>
+<p><strong>&#x8BF7;&#x6C42;&#x8D85;&#x65F6;</strong></p>
+<p>&#x8BF7;&#x6C42;&#x8D85;&#x65F6;&#x8BBE;&#x7F6E;&#x670D;&#x52A1;&#x7AEF;&#x4EA7;&#x751F;&#x4E00;&#x4E2A; <code>HttpResponse</code> &#x54CD;&#x5E94;&#x7684;&#x6700;&#x5927;&#x8D85;&#x65F6;&#x65F6;&#x95F4;&#xFF0C;&#x82E5;&#x8D85;&#x65F6;&#x5230;&#xFF0C;&#x5219;&#x670D;&#x52A1;&#x7AEF;&#x5C06;&#x81EA;&#x52A8;&#x6CE8;&#x5165;&#x4E00;&#x4E2A; <strong>Unavailable HTTP</strong> &#x54CD;&#x5E94;&#x5E76;&#x5173;&#x95ED;&#x8FDE;&#x63A5;&#x3002;&#x9ED8;&#x8BA4;
+&#x7684;&#x8D85;&#x65F6;&#x65F6;&#x95F4;&#x662F; 20&#x79D2;&#xFF0C;&#x53EF;&#x901A;&#x8FC7; <code>akka.http.server.request-timeout</code> &#x8FDB;&#x884C;&#x914D;&#x7F6E;&#x3002;</p>
+<p><strong>Bind timeout&#xFF08;&#x7ED1;&#x5B9A;&#x8D85;&#x65F6;&#xFF09;</strong></p>
+<p>&#x5728;&#x7ED9;&#x5B9A;&#x65F6;&#x95F4;&#x5185;&#xFF0C;&#x4F7F;&#x7528; TCP &#x534F;&#x8BAE;&#x7ED1;&#x5B9A; address/port &#x7684;&#x8FDB;&#x7A0B;&#x5FC5;&#x9700;&#x5B8C;&#x6210;&#xFF08;&#x4EFB;&#x4F55; <code>Http().bind*</code> &#x65B9;&#x6CD5;&#xFF09;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; <code>akka.http.server.bind-timeout</code> 
+&#x8BBE;&#x7F6E;&#x3002;</p>
+<p><strong>Linger&#x8D85;&#x65F6;</strong></p>
+<p>Linger&#xFF08;&#x9017;&#x7559;&#xFF09;&#x8D85;&#x65F6;&#x662F;&#x6307;&#x670D;&#x52A1;&#x7AEF;&#x7684;&#x6240;&#x6709;&#x6570;&#x636E;&#x88AB;&#x4F20;&#x9012;&#x5230;&#x7F51;&#x7EDC;&#x5C42;&#x540E;&#x8FD8;&#x4FDD;&#x6301;&#x8FDE;&#x63A5;&#x6253;&#x5F00;&#x7684;&#x65F6;&#x95F4;&#x3002;&#x8FD9;&#x4E2A;&#x8BBE;&#x7F6E;&#x7C7B;&#x4F3C; <strong>SO_LINGER</strong> &#x5957;&#x63A5;&#x5B57;&#xFF08;Socket&#xFF09;&#x9009;&#x9879;&#xFF0C;&#x4F46;&#x8FD9;&#x91CC;&#x8FD8;&#x5305;&#x62EC;&#x4E86; 
+Akka IO &#x548C; Akka Streams &#x7F51;&#x7EDC;&#x6808;&#x3002;&#x8FD9;&#x662F;&#x4E00;&#x4E2A;&#x989D;&#x5916;&#x7684;&#x9884;&#x9632;&#x63AA;&#x65BD;&#xFF0C;&#x9632;&#x6B62;&#x5BA2;&#x6237;&#x7AEF;&#x957F;&#x65F6;&#x95F4;&#x4FDD;&#x6301;&#x6253;&#x5F00;&#x670D;&#x52A1;&#x7AEF;&#x5DF2;&#x88AB;&#x8BA4;&#x4E3A;&#x5B8C;&#x6210;&#x4E86;&#x7684;&#x8FDE;&#x63A5;&#x3002;</p>
+<h3 id="&#x5BA2;&#x6237;&#x7AEF;&#x8D85;&#x65F6;">&#x5BA2;&#x6237;&#x7AEF;&#x8D85;&#x65F6;</h3>
+<p><strong>&#x8FDE;&#x63A5;&#x8D85;&#x65F6;</strong></p>
+<p>&#x8FDE;&#x63A5;&#x8D85;&#x65F6;&#x662F;&#x5BA2;&#x6237;&#x7AEF;&#x901A;&#x8FC7; TCP &#x534F;&#x8BAE;&#x8FDE;&#x63A5;&#x4E0A;&#x670D;&#x52A1;&#x7AEF;&#x5FC5;&#x987B;&#x5B8C;&#x6210;&#x7684;&#x65F6;&#x95F4;&#xFF0C;&#x901A;&#x5E38;&#x4E0D;&#x9700;&#x8981;&#x4FEE;&#x6539;&#x5B83;&#x3002;&#x4F46;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; <code>akka.http.client.connecting-timeout</code> &#x8FDB;&#x884C;&#x81EA;&#x5B9A;&#x4E49;&#x3002;</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="03.2.html" class="navigation navigation-prev " aria-label="Previous page: 使用 Akka HTTP 搭建一个简单的 Web 服务">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="03.4.html" class="navigation navigation-next " aria-label="Next page: Akka HTTP 如何使得 Web 工作">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Akka HTTP 的通用抽象","level":"1.4.3","depth":2,"next":{"title":"Akka HTTP 如何使得 Web 工作","level":"1.4.4","depth":2,"path":"03.4.md","ref":"03.4.md","articles":[]},"previous":{"title":"使用 Akka HTTP 搭建一个简单的 Web 服务","level":"1.4.2","depth":2,"path":"03.2.md","ref":"03.2.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"03.3.md","mtime":"2017-04-18T09:30:06.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-05-06T16:09:49.257Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
