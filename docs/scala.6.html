@@ -1,0 +1,885 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>函数式 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="scala.7.html" />
+    
+    
+    <link rel="prev" href="scala.5.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="env.0.html">
+            
+                <a href="env.0.html">
+            
+                    
+                    Scala环境配置
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="env.1.html">
+            
+                <a href="env.1.html">
+            
+                    
+                    Sbt
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="env.2.html">
+            
+                <a href="env.2.html">
+            
+                    
+                    IDE开发工具
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="env.html">
+            
+                <a href="env.html">
+            
+                    
+                    小结
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="scala.0.html">
+            
+                <a href="scala.0.html">
+            
+                    
+                    Scala语言基础
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="scala.1.html">
+            
+                <a href="scala.1.html">
+            
+                    
+                    你好，Scala
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="scala.2.html">
+            
+                <a href="scala.2.html">
+            
+                    
+                    Scala基础
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="scala.3.html">
+            
+                <a href="scala.3.html">
+            
+                    
+                    流程和函数
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.4" data-path="scala.4.html">
+            
+                <a href="scala.4.html">
+            
+                    
+                    集合
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.5" data-path="scala.5.html">
+            
+                <a href="scala.5.html">
+            
+                    
+                    class和object
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.3.6" data-path="scala.6.html">
+            
+                <a href="scala.6.html">
+            
+                    
+                    函数式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.7" data-path="scala.7.html">
+            
+                <a href="scala.7.html">
+            
+                    
+                    trait
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.8" data-path="scala.8.html">
+            
+                <a href="scala.8.html">
+            
+                    
+                    并发
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.9" data-path="scala.z.html">
+            
+                <a href="scala.z.html">
+            
+                    
+                    小结
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="basic.0.html">
+            
+                <a href="basic.0.html">
+            
+                    
+                    Akka HTTP 基础
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="basic.1.html">
+            
+                <a href="basic.1.html">
+            
+                    
+                    Web 工作方式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="basic.2.html">
+            
+                <a href="basic.2.html">
+            
+                    
+                    使用 Akka HTTP 搭建一个简单的 Web 服务
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="basic.3.html">
+            
+                <a href="basic.3.html">
+            
+                    
+                    Akka HTTP 的通用抽象
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4" data-path="basic.4.html">
+            
+                <a href="basic.4.html">
+            
+                    
+                    Akka HTTP 如何使得 Web 工作
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.5" data-path="basic.5.html">
+            
+                <a href="basic.5.html">
+            
+                    
+                    高级服务端 API
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.6" data-path="basic.z.html">
+            
+                <a href="basic.z.html">
+            
+                    
+                    小结
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="test.0.html">
+            
+                <a href="test.0.html">
+            
+                    
+                    测试
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="test.1.html">
+            
+                <a href="test.1.html">
+            
+                    
+                    Scalatest
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="test.2.html">
+            
+                <a href="test.2.html">
+            
+                    
+                    测试异步代码
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.3" data-path="test.3.html">
+            
+                <a href="test.3.html">
+            
+                    
+                    端到端测试Route
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.4" data-path="test.z.html">
+            
+                <a href="test.z.html">
+            
+                    
+                    小结
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="storage.0.html">
+            
+                <a href="storage.0.html">
+            
+                    
+                    访问数据库
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="storage.1.html">
+            
+                <a href="storage.1.html">
+            
+                    
+                    使用 JDBC 访问 PostgreSQL
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="storage.2.html">
+            
+                <a href="storage.2.html">
+            
+                    
+                    访问 Cassandra 数据库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="storage.3.html">
+            
+                <a href="storage.3.html">
+            
+                    
+                    使用 Redis/Elasticsearch
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="storage.z.html">
+            
+                <a href="storage.z.html">
+            
+                    
+                    小结
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="ref.html">
+            
+                <a href="ref.html">
+            
+                    
+                    参考资料
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="appendix.0.html">
+            
+                <a href="appendix.0.html">
+            
+                    
+                    附录
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1" data-path="appendix.1.html">
+            
+                <a href="appendix.1.html">
+            
+                    
+                    专业术语
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >函数式</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x51FD;&#x6570;&#x5F0F;">&#x51FD;&#x6570;&#x5F0F;</h1>
+<h2 id="&#x51FD;&#x6570;">&#x51FD;&#x6570;</h2>
+<p>&#x5728;Scala&#x4E2D;&#xFF0C;&#x51FD;&#x6570;&#x662F;&#x4E00;&#x7B49;&#x516C;&#x6C11;&#x3002;&#x51FD;&#x6570;&#x53EF;&#x4EE5;&#x50CF;&#x7C7B;&#x578B;&#x4E00;&#x6837;&#x88AB;&#x8D4B;&#x503C;&#x7ED9;&#x4E00;&#x4E2A;&#x53D8;&#x91CF;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x505A;&#x4E3A;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#x7684;&#x53C2;&#x6570;&#x88AB;&#x4F20;&#x5165;&#xFF0C;&#x751A;&#x81F3;&#x8FD8;&#x53EF;&#x4EE5;&#x505A;&#x4E3A;&#x51FD;&#x6570;&#x7684;&#x8FD4;&#x56DE;&#x503C;&#x8FD4;&#x56DE;&#x3002;</p>
+<p>&#x4ECE;Java 8&#x5F00;&#x59CB;&#xFF0C;Java&#x4E5F;&#x5177;&#x5907;&#x4E86;&#x90E8;&#x5206;&#x51FD;&#x6570;&#x5F0F;&#x7F16;&#x7A0B;&#x7279;&#x6027;&#x3002;&#x5176;Lamdba&#x51FD;&#x6570;&#x5141;&#x8BB8;&#x5C06;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#x505A;&#x503C;&#x8D4B;&#x7ED9;&#x53D8;&#x91CF;&#x3001;&#x505A;&#x4E3A;&#x65B9;&#x6CD5;&#x53C2;&#x6570;&#x3001;&#x505A;&#x4E3A;&#x51FD;&#x6570;&#x8FD4;&#x56DE;&#x503C;&#x3002;</p>
+<p>&#x5728;Scala&#x4E2D;&#xFF0C;&#x4F7F;&#x7528;<code>def</code>&#x5173;&#x952E;ygnk&#x6765;&#x5B9A;&#x4E49;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#x65B9;&#x6CD5;&#xFF1A;</p>
+<pre><code class="lang-scala">scala&gt; <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">calc</span></span>(n1: <span class="hljs-type">Int</span>, n2: <span class="hljs-type">Int</span>): (<span class="hljs-type">Int</span>, <span class="hljs-type">Int</span>) = {
+     |   (n1 + n2, n1 * n2)
+     | }
+calc: (n1: <span class="hljs-type">Int</span>, n2: <span class="hljs-type">Int</span>)(<span class="hljs-type">Int</span>, <span class="hljs-type">Int</span>)
+
+scala&gt; <span class="hljs-keyword">val</span> (add, sub) = calc(<span class="hljs-number">5</span>, <span class="hljs-number">1</span>)
+add: <span class="hljs-type">Int</span> = <span class="hljs-number">6</span>
+sub: <span class="hljs-type">Int</span> = <span class="hljs-number">5</span>
+</code></pre>
+<p>&#x8FD9;&#x91CC;&#x5B9A;&#x4E49;&#x4E86;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#xFF1A;<code>calc</code>&#xFF0C;&#x5B83;&#x6709;&#x4E24;&#x4E2A;&#x53C2;&#x6570;&#xFF1A;<code>n1</code>&#x548C;<code>n2</code>&#xFF0C;&#x5176;&#x7C7B;&#x578B;&#x4E3A;&#xFF1A;<code>Int</code>&#x3002;<code>cala</code>&#x51FD;&#x6570;&#x7684;&#x8FD4;&#x56DE;&#x503C;&#x7C7B;&#x578B;&#x662F;&#x4E00;&#x4E2A;&#x6709;&#x4E24;&#x4E2A;&#x5143;&#x7D20;&#x7684;&#x5143;&#x7EC4;&#xFF0C;&#x5728;Scala&#x4E2D;&#x53EF;&#x4EE5;&#x7B80;&#x5199;&#x4E3A;&#xFF1A;<code>(Int, Int)</code>&#x3002;&#x5728;Scala&#x4E2D;&#xFF0C;&#x4EE3;&#x7801;&#x6BB5;&#x7684;&#x6700;&#x540E;&#x4E00;&#x53E5;&#x5C06;&#x505A;&#x4E3A;&#x51FD;&#x6570;&#x8FD4;&#x56DE;&#x503C;&#xFF0C;&#x6240;&#x4EE5;&#x8FD9;&#x91CC;&#x4E0D;&#x9700;&#x8981;&#x663E;&#x793A;&#x7684;&#x5199;<code>return</code>&#x5173;&#x952E;&#x5B57;&#x3002;</p>
+<p>&#x800C;<code>val (add, sub) = calc(5, 1)</code>&#x4E00;&#x53E5;&#xFF0C;&#x662F;Scala&#x4E2D;&#x7684;&#x62BD;&#x53D6;&#x529F;&#x80FD;&#x3002;&#x5B83;&#x76F4;&#x63A5;&#x628A;<code>calc</code>&#x51FD;&#x6570;&#x8FD4;&#x56DE;&#x7684;&#x4E00;&#x4E2A;<code>Tuple2</code>&#x503C;&#x8D4B;&#x7ED9;&#x4E86;<code>add</code>&#x4ED6;<code>sub</code>&#x4E24;&#x4E2A;&#x53D8;&#x91CF;&#x3002;</p>
+<p>&#x51FD;&#x6570;&#x53EF;&#x4EE5;&#x8D4B;&#x7ED9;&#x53D8;&#x91CF;&#xFF1A;</p>
+<pre><code class="lang-scala">scala&gt; <span class="hljs-keyword">val</span> calcVar = calc _
+calcVar: (<span class="hljs-type">Int</span>, <span class="hljs-type">Int</span>) =&gt; (<span class="hljs-type">Int</span>, <span class="hljs-type">Int</span>) = &lt;function2&gt;
+
+scala&gt; calcVar(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>)
+res4: (<span class="hljs-type">Int</span>, <span class="hljs-type">Int</span>) = (<span class="hljs-number">5</span>,<span class="hljs-number">6</span>)
+
+scala&gt; <span class="hljs-keyword">val</span> sum: (<span class="hljs-type">Int</span>, <span class="hljs-type">Int</span>) =&gt; <span class="hljs-type">Int</span> = (x, y) =&gt; x + y
+sum: (<span class="hljs-type">Int</span>, <span class="hljs-type">Int</span>) =&gt; <span class="hljs-type">Int</span> = &lt;function2&gt;
+
+scala&gt; sum(<span class="hljs-number">5</span>, <span class="hljs-number">7</span>)
+res5: <span class="hljs-type">Int</span> = <span class="hljs-number">12</span>
+</code></pre>
+<p>&#x5728;Scala&#x4E2D;&#xFF0C;&#x6709;&#x4E24;&#x79CD;&#x5B9A;&#x4E49;&#x51FD;&#x6570;&#x7684;&#x65B9;&#x5F0F;&#xFF1A;</p>
+<ol>
+<li>&#x5C06;&#x4E00;&#x4E2A;&#x73B0;&#x6210;&#x7684;&#x51FD;&#x6570;/&#x65B9;&#x6CD5;&#x8D4B;&#x503C;&#x7ED9;&#x4E00;&#x4E2A;&#x53D8;&#x91CF;&#xFF0C;&#x5982;&#xFF1A;<code>val calcVar = calc _</code>&#x3002;&#x4E0B;&#x5212;&#x7EBF;&#x5728;&#x6B64;&#x5904;&#x7684;&#x542B;&#x610F;&#x662F;&#x5C06;&#x51FD;&#x6570;&#x8D4B;&#x7ED9;&#x4E86;&#x53D8;&#x91CF;&#xFF0C;&#x51FD;&#x6570;&#x672C;&#x8EAB;&#x7684;&#x53C2;&#x6570;&#x5C06;&#x5728;&#x53D8;&#x91CF;&#x88AB;&#x8C03;&#x7528;&#x65F6;&#x518D;&#x4F20;&#x5165;&#x3002;</li>
+<li>&#x76F4;&#x63A5;&#x5B9A;&#x4E49;&#x51FD;&#x6570;&#x5E76;&#x540C;&#x65F6;&#x8D4B;&#x7ED9;&#x53D8;&#x91CF;&#xFF0C;&#x5982;&#xFF1A;<code>val sum: (Int, Int) =&gt; Int = (x, y) =&gt; x + y</code>&#xFF0C;&#x5728;&#x5192;&#x53F7;&#x4E4B;&#x540E;&#xFF0C;&#x7B49;&#x53F7;&#x4E4B;&#x524D;&#x90E8;&#x5206;&#xFF1A;<code>(Int, Int) =&gt; Int</code>&#x662F;&#x51FD;&#x6570;&#x7B7E;&#x540D;&#xFF0C;&#x4EE3;&#x8868;<code>sum</code>&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x503C;&#x63A5;&#x6536;&#x4E24;&#x4E2A;Int&#x7C7B;&#x578B;&#x53C2;&#x6570;&#x5E76;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;Int&#x7C7B;&#x578B;&#x53C2;&#x6570;&#x3002;&#x7B49;&#x53F7;&#x4E4B;&#x540E;&#x90E8;&#x5206;&#x662F;&#x51FD;&#x6570;&#x4F53;&#xFF0C;&#x5728;&#x51FD;&#x6570;&#x51FD;&#x6570;&#x65F6;&#xFF0C;<code>x</code>&#x3001;<code>y</code>&#x53C2;&#x6570;&#x7C7B;&#x578B;&#x53CA;&#x8FD4;&#x56DE;&#x503C;&#x7C7B;&#x578B;&#x5728;&#x6B64;&#x53EF;&#x4EE5;&#x7701;&#x7565;&#x3002;</li>
+</ol>
+<p><strong>&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#x793A;&#x4F8B;&#xFF1A;&#x81EA;&#x52A8;&#x8D44;&#x6E90;&#x7BA1;&#x7406;</strong></p>
+<p>&#x5728;&#x6211;&#x4EEC;&#x7684;&#x65E5;&#x5E38;&#x4EE3;&#x7801;&#x4E2D;&#xFF0C;&#x8D44;&#x6E90;&#x56DE;&#x6536;&#x662F;&#x4E00;&#x4E2A;&#x5F88;&#x5E38;&#x89C1;&#x7684;&#x64CD;&#x4F5C;&#x3002;&#x5728;Java 7&#x4E4B;&#x524D;&#xFF0C;&#x6211;&#x4EEC;&#x5FC5;&#x9700;&#x5199;&#x5F88;&#x591A;&#x7684;<code>try { ... } finally { xxx.close() }</code>&#x8FD9;&#x6837;&#x7684;&#x6837;&#x7248;&#x4EE3;&#x7801;&#x6765;&#x624B;&#x52A8;&#x56DE;&#x6536;&#x8D44;&#x6E90;&#x3002;Java 7&#x5F00;&#x59CB;&#xFF0C;&#x63D0;&#x4F9B;&#x4E86;<strong>try with close</strong>&#x8FD9;&#x6837;&#x7684;&#x81EA;&#x52A8;&#x8D44;&#x6E90;&#x56DE;&#x6536;&#x529F;&#x80FD;&#x3002;Scala&#x5E76;&#x4E0D;&#x80FD;&#x4F7F;&#x7528;Java 7&#x65B0;&#x52A0;&#x7684;<strong>try with close</strong>&#x8D44;&#x6E90;&#x81EA;&#x52A8;&#x56DE;&#x6536;&#x529F;&#x80FD;&#xFF0C;&#x4F46;Scala&#x4E2D;&#x6709;&#x5F88;&#x65B9;&#x4FBF;&#x7684;&#x65B9;&#x5F0F;&#x5B9E;&#x73B0;&#x7C7B;&#x4F3C;&#x529F;&#x80FD;&#xFF1A;</p>
+<pre><code class="lang-scala"><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">using</span></span>[<span class="hljs-type">T</span> &lt;: <span class="hljs-type">AutoCloseable</span>, <span class="hljs-type">R</span>](res: <span class="hljs-type">T</span>)(func: <span class="hljs-type">T</span> =&gt; <span class="hljs-type">R</span>): <span class="hljs-type">R</span> = {
+  <span class="hljs-keyword">try</span> {
+    func(res)
+  } <span class="hljs-keyword">finally</span> {
+    <span class="hljs-keyword">if</span> (res != <span class="hljs-literal">null</span>)
+      res.close()
+  }
+}
+
+<span class="hljs-keyword">val</span> allLine = using(<span class="hljs-type">Files</span>.newBufferedReader(<span class="hljs-type">Paths</span>.get(<span class="hljs-string">&quot;/etc/hosts&quot;</span>))) { reader =&gt;
+  <span class="hljs-meta">@tailrec</span>
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">readAll</span></span>(buffer: <span class="hljs-type">StringBuilder</span>, line: <span class="hljs-type">String</span>): <span class="hljs-type">String</span> = {
+    <span class="hljs-keyword">if</span> (line == <span class="hljs-literal">null</span>) buffer.toString
+    <span class="hljs-keyword">else</span> {
+      buffer.append(line).append(&apos;\n&apos;)
+      readAll(buffer, reader.readLine())
+    }
+  }
+
+  readAll(<span class="hljs-keyword">new</span> <span class="hljs-type">StringBuilder</span>(), reader.readLine())
+}
+
+println(allLine)
+</code></pre>
+<p><code>using</code>&#x662F;&#x6211;&#x4EEC;&#x5B9A;&#x4E49;&#x7684;&#x4E00;&#x4E2A;&#x81EA;&#x52A8;&#x5316;&#x8D44;&#x6E90;&#x7BA1;&#x5E2E;&#x52A9;&#x51FD;&#x6570;&#xFF0C;&#x5B83;&#x63A5;&#x7231;&#x4E24;&#x4E2A;&#x53C2;&#x6570;&#x5316;&#x7C7B;&#x578B;&#x53C2;&#x6570;&#xFF0C;&#x4E00;&#x4E2A;&#x662F;&#x5B9E;&#x73B0;&#x4E86;<code>AutoCloseable</code>&#x63A5;&#x53E3;&#x7684;&#x8D44;&#x6E90;&#x7C7B;&#xFF0C;&#x4E00;&#x4E2A;&#x662F;&#x5F62;&#x5982;&#xFF1A;<code>T =&gt; R</code>&#x7684;&#x51FD;&#x6570;&#x503C;&#x3002;<code>func</code>&#x662F;&#x7531;&#x7528;&#x6237;&#x5B9A;&#x4E49;&#x7684;&#x5BF9;<code>res</code>&#x8FDB;&#x884C;&#x64CD;&#x4F5C;&#x7684;&#x51FD;&#x6570;&#x4EE3;&#x7801;&#x4F53;&#xFF0C;&#x5B83;&#x5C06;&#x88AB;&#x4F20;&#x7ED9;<code>using</code>&#x51FD;&#x6570;&#x5E76;&#x7531;<code>using</code>&#x4EE3;&#x6267;&#x884C;&#x3002;&#x800C;<code>res</code>&#x8FD9;&#x4E2A;&#x8D44;&#x6E90;&#x5C06;&#x5728;<code>using</code>&#x6267;&#x884C;&#x5B8C;&#x6210;&#x8FD4;&#x56DE;&#x524D;&#x8C03;&#x7528;<code>finally</code>&#x4EE3;&#x7801;&#x5757;&#x6267;&#x884C;<code>.close</code>&#x65B9;&#x6CD5;&#x6765;&#x6E05;&#x7406;&#x6253;&#x5F00;&#x7684;&#x8D44;&#x6E90;&#x3002;</p>
+<p>&#x8FD9;&#x4E2A;&#xFF1A;<code>T &lt;: AutoCloseable</code>&#x8303;&#x578B;&#x53C2;&#x6570;&#x9650;&#x5236;&#x4E86;<strong>T</strong>&#x7C7B;&#x578B;&#x5FC5;&#x9700;&#x4E3A;<code>AutoCloseable</code>&#x7C7B;&#x578B;&#x6216;&#x5176;&#x5B50;&#x7C7B;&#x3002;<code>R</code>&#x8303;&#x578B;&#x6307;&#x5B9A;<code>using</code>&#x51FD;&#x6570;&#x7684;&#x8FD4;&#x56DE;&#x503C;&#x7C7B;&#x578B;&#x5C06;&#x5728;&#x5B9E;&#x9645;&#x8C03;&#x7528;&#x65F6;&#x88AB;&#x81EA;&#x52A8;&#x53C2;&#x6570;&#x5316;&#x63A8;&#x5BFC;&#x51FA;&#x6765;&#x3002;&#x6211;&#x4EEC;&#x5728;<strong>Scala Console</strong>&#x4E2D;&#x53C2;&#x770B;<code>allLine</code>&#x53D8;&#x91CF;&#x7684;&#x7C7B;&#x578B;&#x53EF;&#x4EE5;&#x770B;&#x5230; <code>allLine</code>&#x5C06;&#x88AB;&#x6B63;&#x786E;&#x7684;&#x8D4B;&#x4E88;<strong>String</strong>&#x7C7B;&#x578B;&#xFF0C;&#x56E0;&#x4E3A;&#x6211;&#x4EEC;&#x4F20;&#x7ED9;<code>using</code>&#x51FD;&#x6570;&#x53C2;&#x6570;<code>func</code>&#x7684;&#x51FD;&#x6570;&#x503C;&#x8FD4;&#x56DE;&#x7C7B;&#x578B;&#x5C31;&#x4E3A;<strong>String</strong>&#xFF1A;</p>
+<pre><code class="lang-scala">scala&gt; :<span class="hljs-class"><span class="hljs-keyword">type</span> <span class="hljs-title">allLine</span></span>
+<span class="hljs-type">String</span>
+</code></pre>
+<p>&#x5728;<code>readAll</code>&#x51FD;&#x6570;&#x7684;&#x5B9A;&#x4E49;&#x5904;&#xFF0C;&#x6709;&#x4E24;&#x4E2A;&#x7279;&#x522B;&#x7684;&#x5730;&#x65B9;&#xFF1A;</p>
+<ol>
+<li>&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x5B9A;&#x4E49;&#x5728;&#x4E86;&#x5176;&#x5B83;&#x51FD;&#x6570;&#x4EE3;&#x7801;&#x4F53;&#x5185;&#x90E8;</li>
+<li>&#x5B83;&#x6709;&#x4E00;&#x4E2A;<code>@tailrec</code>&#x6CE8;&#x89E3;</li>
+</ol>
+<p>&#x5728;Scala&#x4E2D;&#xFF0C;&#x56E0;&#x4E3A;&#x51FD;&#x6570;&#x662F;&#x7B2C;&#x4E00;&#x7C7B;&#x7684;&#xFF0C;&#x5B83;&#x53EF;&#x4EE5;&#x88AB;&#x8D4B;&#x503C;&#x7ED9;&#x4E00;&#x4E2A;&#x53D8;&#x91CF;&#x3002;&#x6240;&#x4EE5;Scala&#x4E2D;&#x7684;<code>def</code>&#x5B9A;&#x4E49;&#x51FD;&#x6570;&#x53EF;&#x4EE5;&#x7B49;&#x4EF7;<code>val func = (x: Int, y: Int) =&gt; x + y</code>&#x8FD9;&#x4E2A;&#x7684;&#x51FD;&#x6570;&#x5B57;&#x9762;&#x91CF;&#x5B9A;&#x4E49;&#x51FD;&#x6570;&#x5F62;&#x5F0F;&#x3002;&#x6240;&#x4EE5;&#xFF0C;&#x65E2;&#x7136;&#x901A;&#x8FC7;&#x53D8;&#x91CF;&#x5B9A;&#x4E49;&#x7684;&#x51FD;&#x6570;&#x53EF;&#x4EE5;&#x653E;&#x5728;&#x5176;&#x5B83;&#x51FD;&#x6570;&#x4EE3;&#x7801;&#x4F53;&#x5185;&#xFF0C;&#x901A;&#x8FC7;<code>def</code>&#x5B9A;&#x4E49;&#x7684;&#x51FD;&#x6570;&#x4E5F;&#x4E00;&#x6837;&#x53EF;&#x4EE5;&#x653E;&#x5728;&#x5176;&#x5B83;&#x4EE3;&#x7801;&#x4F53;&#x5185;&#xFF0C;&#x8FD9;&#x548C;<strong>Javascript</strong>&#x5F88;&#x50CF;&#x3002;</p>
+<p><code>@tailrec</code>&#x6CE8;&#x89E3;&#x7684;&#x542B;&#x4E49;&#x662F;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x662F;&#x5C3E;&#x9012;&#x5F52;&#x51FD;&#x6570;&#xFF0C;&#x7F16;&#x8BD1;&#x5668;&#x5728;&#x7F16;&#x8BD1;&#x65F6;&#x5C06;&#x5BF9;&#x5176;&#x4F18;&#x5316;&#x6210;&#x76F8;&#x5E94;&#x7684;<strong>while</strong>&#x5FAA;&#x73AF;&#x3002;&#x82E5;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#x4E0D;&#x662F;&#x5C3E;&#x9012;&#x5F52;&#x7684;&#xFF0C;&#x52A0;&#x4E0A;&#x6B64;&#x6CE8;&#x89E3;&#x5728;&#x7F16;&#x8BD1;&#x65F6;&#x5C06;&#x62A5;&#x9519;&#x3002;</p>
+<h2 id="&#x6A21;&#x5F0F;&#x5339;&#x914D;&#xFF08;match-case&#xFF09;">&#x6A21;&#x5F0F;&#x5339;&#x914D;&#xFF08;match case&#xFF09;</h2>
+<p>&#x6A21;&#x5F0F;&#x5339;&#x914D;&#x662F;&#x51FD;&#x6570;&#x5F0F;&#x7F16;&#x7A0B;&#x91CC;&#x9762;&#x5F88;&#x5F3A;&#x5927;&#x7684;&#x4E00;&#x4E2A;&#x7279;&#x6027;&#x3002;</p>
+<p>&#x4E4B;&#x524D;&#x5DF2;&#x7ECF;&#x89C1;&#x8BC6;&#x8FC7;&#x4E86;&#x6A21;&#x5F0F;&#x5339;&#x914D;&#x7684;&#x7B80;&#x5355;&#x4F7F;&#x7528;&#x65B9;&#x5F0F;&#xFF0C;&#x53EF;&#x4EE5;&#x7528;&#x5B83;&#x66FF;&#x4EE3;&#xFF1A;<strong>if else</strong>&#x3001;<strong>switch</strong>&#x8FD9;&#x6837;&#x7684;&#x5206;&#x652F;&#x5224;&#x65AD;&#x3002;&#x9664;&#x4E86;&#x8FD9;&#x4E9B;&#x7B80;&#x5355;&#x7684;&#x529F;&#x80FD;&#xFF0C;&#x6A21;&#x5F0F;&#x5339;&#x914D;&#x8FD8;&#x6709;&#x4E00;&#x7CFB;&#x5217;&#x5F3A;&#x5927;&#x3001;&#x6613;&#x7528;&#x7684;&#x7279;&#x6027;&#x3002;</p>
+<p><strong>match &#x4E2D;&#x7684;&#x503C;&#x3001;&#x53D8;&#x91CF;&#x548C;&#x7C7B;&#x578B;</strong></p>
+<pre><code class="lang-scala">scala&gt; <span class="hljs-keyword">for</span> {
+     |   x &lt;- <span class="hljs-type">Seq</span>(<span class="hljs-number">1</span>, <span class="hljs-literal">false</span>, <span class="hljs-number">2.7</span>, <span class="hljs-string">&quot;one&quot;</span>, <span class="hljs-symbol">&apos;four</span>, <span class="hljs-keyword">new</span> java.util.<span class="hljs-type">Date</span>(), <span class="hljs-keyword">new</span> <span class="hljs-type">RuntimeException</span>(<span class="hljs-string">&quot;&#x8FD0;&#x884C;&#x65F6;&#x5F02;&#x5E38;&quot;</span>))
+     | } {
+     |   <span class="hljs-keyword">val</span> str = x <span class="hljs-keyword">match</span> {
+     |     <span class="hljs-keyword">case</span> d: <span class="hljs-type">Double</span> =&gt; <span class="hljs-string">s&quot;double: <span class="hljs-subst">$d</span>&quot;</span>
+     |     <span class="hljs-keyword">case</span> <span class="hljs-literal">false</span> =&gt; <span class="hljs-string">&quot;boolean false&quot;</span>
+     |     <span class="hljs-keyword">case</span> d: java.util.<span class="hljs-type">Date</span> =&gt; <span class="hljs-string">s&quot;java.util.Date: <span class="hljs-subst">$d</span>&quot;</span>
+     |     <span class="hljs-keyword">case</span> <span class="hljs-number">1</span> =&gt; <span class="hljs-string">&quot;int 1&quot;</span>
+     |     <span class="hljs-keyword">case</span> s: <span class="hljs-type">String</span> =&gt; <span class="hljs-string">s&quot;string: <span class="hljs-subst">$s</span>&quot;</span>
+     |     <span class="hljs-keyword">case</span> symbol: <span class="hljs-type">Symbol</span> =&gt; <span class="hljs-string">s&quot;symbol: <span class="hljs-subst">$symbol</span>&quot;</span>
+     |     <span class="hljs-keyword">case</span> unexpected =&gt; <span class="hljs-string">s&quot;unexpected value: <span class="hljs-subst">$unexpected</span>&quot;</span>
+     |   }
+     |   println(str)
+     | }
+int <span class="hljs-number">1</span>
+boolean <span class="hljs-literal">false</span>
+double: <span class="hljs-number">2.7</span>
+string: one
+symbol: <span class="hljs-symbol">&apos;four</span>
+java.util.<span class="hljs-type">Date</span>: <span class="hljs-type">Sun</span> <span class="hljs-type">Jul</span> <span class="hljs-number">24</span> <span class="hljs-number">16</span>:<span class="hljs-number">51</span>:<span class="hljs-number">20</span> <span class="hljs-type">CST</span> <span class="hljs-number">2016</span>
+unexpected value: java.lang.<span class="hljs-type">RuntimeException</span>: &#x8FD0;&#x884C;&#x65F6;&#x5F02;&#x5E38;
+</code></pre>
+<p>&#x4E0A;&#x9762;&#x5C0F;&#x8BD5;&#x725B;&#x5200;&#x6821;&#x9A8C;&#x53D8;&#x91CF;&#x7C7B;&#x578B;&#x7684;&#x540C;&#x65F6;&#x5B8C;&#x6210;&#x7C7B;&#x578B;&#x8F6C;&#x6362;&#x529F;&#x80FD;&#x3002;&#x5728;Java&#x4E2D;&#xFF0C;&#x4F60;&#x80AF;&#x5B9A;&#x5199;&#x8FC7;&#x6216;&#x89C1;&#x8FC7;&#x5982;&#x4E0B;&#x7684;&#x4EE3;&#x7801;&#xFF1A;</p>
+<pre><code class="lang-java"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">receive</span><span class="hljs-params">(message: Object)</span> </span>{
+    <span class="hljs-keyword">if</span> (message isInstanceOf String) {
+        String strMsg = (String) message;
+        ....
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (message isInstanceOf java.util.Date) {
+        java.util.Date dateMsg = (java.util.Date) message;
+        ....
+    } ....
+}
+</code></pre>
+<p>&#x5BF9;&#x4E8E;&#x8FD9;&#x6837;&#x7684;&#x4EE3;&#x7801;&#xFF0C;&#x771F;&#x662F;&#x8FA3;&#x773C;&#x775B;&#x554A;~~~&#x3002;</p>
+<p><strong>&#x5E8F;&#x5217;&#x7684;&#x5339;&#x914D;</strong></p>
+<pre><code class="lang-scala">scala&gt; <span class="hljs-keyword">val</span> nonEmptySeq = <span class="hljs-type">Seq</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>)
+
+scala&gt; <span class="hljs-keyword">val</span> emptySeq = <span class="hljs-type">Seq</span>.empty[<span class="hljs-type">Int</span>]
+
+scala&gt; <span class="hljs-keyword">val</span> emptyList = <span class="hljs-type">Nil</span>
+
+scala&gt; <span class="hljs-keyword">val</span> nonEmptyList = <span class="hljs-type">List</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>)
+
+scala&gt; <span class="hljs-keyword">val</span> nonEmptyVector = <span class="hljs-type">Vector</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>)
+
+scala&gt; <span class="hljs-keyword">val</span> emptyVector = <span class="hljs-type">Vector</span>.empty[<span class="hljs-type">Int</span>]
+
+scala&gt; <span class="hljs-keyword">val</span> nonEmptyMap = <span class="hljs-type">Map</span>(<span class="hljs-string">&quot;one&quot;</span> -&gt; <span class="hljs-number">1</span>, <span class="hljs-string">&quot;two&quot;</span> -&gt; <span class="hljs-number">2</span>, <span class="hljs-string">&quot;three&quot;</span> -&gt; <span class="hljs-number">3</span>)
+
+scala&gt; <span class="hljs-keyword">val</span> emptyMap = <span class="hljs-type">Map</span>.empty[<span class="hljs-type">String</span>, <span class="hljs-type">Int</span>]
+
+scala&gt; <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">seqToString</span></span>[<span class="hljs-type">T</span>](seq: <span class="hljs-type">Seq</span>[<span class="hljs-type">T</span>]): <span class="hljs-type">String</span> = seq <span class="hljs-keyword">match</span> {
+     |   <span class="hljs-keyword">case</span> head +: tail =&gt; <span class="hljs-string">s&quot;<span class="hljs-subst">$head</span> +: &quot;</span> + seqToString(tail)
+     |   <span class="hljs-keyword">case</span> <span class="hljs-type">Nil</span> =&gt; <span class="hljs-string">&quot;Nil&quot;</span>
+     | }
+
+scala&gt; <span class="hljs-keyword">for</span> (seq &lt;- <span class="hljs-type">Seq</span>(
+     |   nonEmptySeq, emptySeq, nonEmptyList, emptyList,
+     |   nonEmptyVector, emptyVector, nonEmptyMap.toSeq, emptyMap.toSeq)) {
+     |   println(seqToString(seq))
+     | }
+<span class="hljs-number">1</span> +: <span class="hljs-number">2</span> +: <span class="hljs-number">3</span> +: <span class="hljs-number">4</span> +: <span class="hljs-number">5</span> +: <span class="hljs-type">Nil</span>
+<span class="hljs-type">Nil</span>
+<span class="hljs-number">1</span> +: <span class="hljs-number">2</span> +: <span class="hljs-number">3</span> +: <span class="hljs-number">4</span> +: <span class="hljs-number">5</span> +: <span class="hljs-type">Nil</span>
+<span class="hljs-type">Nil</span>
+<span class="hljs-number">1</span> +: <span class="hljs-number">2</span> +: <span class="hljs-number">3</span> +: <span class="hljs-number">4</span> +: <span class="hljs-number">5</span> +: <span class="hljs-type">Nil</span>
+<span class="hljs-type">Nil</span>
+(one,<span class="hljs-number">1</span>) +: (two,<span class="hljs-number">2</span>) +: (three,<span class="hljs-number">3</span>) +: <span class="hljs-type">Nil</span>
+<span class="hljs-type">Nil</span>
+</code></pre>
+<p>&#x6A21;&#x5F0F;&#x5339;&#x914D;&#x80FD;&#x5F88;&#x65B9;&#x4FBF;&#x7684;&#x62BD;&#x53D6;&#x5E8F;&#x5217;&#x7684;&#x5143;&#x7D20;&#xFF0C;<code>seqToString</code>&#x4F7F;&#x7528;&#x4E86;&#x6A21;&#x5F0F;&#x5339;&#x914D;&#x4EE5;&#x9012;&#x5F52;&#x7684;&#x65B9;&#x5F0F;&#x6765;&#x5C06;&#x5E8F;&#x5217;&#x8F6C;&#x6362;&#x6210;&#x5B57;&#x7B26;&#x4E32;&#x3002;<code>case head +: tail</code>&#x5C06;&#x5E8F;&#x5217;&#x62BD;&#x53D6;&#x6210;&#x201C;&#x5934;&#x90E8;&#x201D;&#x548C;&#x201C;&#x975E;&#x5934;&#x90E8;&#x5269;&#x4E0B;&#x201D;&#x4E24;&#x90E8;&#x5206;&#xFF0C;<code>head</code>&#x5C06;&#x4FDD;&#x5B58;&#x5E8F;&#x5217;&#x7B2C;&#x4E00;&#x4E2A;&#x5143;&#x7D20;&#xFF0C;<code>tail</code>&#x4FDD;&#x5B58;&#x5E8F;&#x5217;&#x5269;&#x4E0B;&#x90E8;&#x5206;&#x3002;&#x800C;<code>case Nil</code>&#x5C06;&#x5339;&#x914D;&#x4E00;&#x4E2A;&#x7A7A;&#x5E8F;&#x5217;&#x3002;</p>
+<p><strong>case class&#x7684;&#x5339;&#x914D;</strong></p>
+<pre><code class="lang-scala">scala&gt; <span class="hljs-class"><span class="hljs-keyword">trait</span> <span class="hljs-title">Person</span></span>
+
+scala&gt; <span class="hljs-keyword">case</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Man</span>(<span class="hljs-params">name: <span class="hljs-type">String</span>, age: <span class="hljs-type">Int</span></span>) <span class="hljs-keyword">extends</span> <span class="hljs-title">Person</span></span>
+
+scala&gt; <span class="hljs-keyword">case</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Woman</span>(<span class="hljs-params">name: <span class="hljs-type">String</span>, age: <span class="hljs-type">Int</span></span>) <span class="hljs-keyword">extends</span> <span class="hljs-title">Person</span></span>
+
+scala&gt; <span class="hljs-keyword">case</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Boy</span>(<span class="hljs-params">name: <span class="hljs-type">String</span>, age: <span class="hljs-type">Int</span></span>) <span class="hljs-keyword">extends</span> <span class="hljs-title">Person</span></span>
+
+scala&gt; <span class="hljs-keyword">val</span> father = <span class="hljs-type">Man</span>(<span class="hljs-string">&quot;&#x7236;&#x4EB2;&quot;</span>, <span class="hljs-number">33</span>)
+
+scala&gt; <span class="hljs-keyword">val</span> mather = <span class="hljs-type">Woman</span>(<span class="hljs-string">&quot;&#x6BCD;&#x4EB2;&quot;</span>, <span class="hljs-number">30</span>)
+
+scala&gt; <span class="hljs-keyword">val</span> son = <span class="hljs-type">Man</span>(<span class="hljs-string">&quot;&#x513F;&#x5B50;&quot;</span>, <span class="hljs-number">7</span>)
+
+scala&gt; <span class="hljs-keyword">val</span> daughter = <span class="hljs-type">Woman</span>(<span class="hljs-string">&quot;&#x5973;&#x513F;&quot;</span>, <span class="hljs-number">3</span>)
+
+scala&gt; <span class="hljs-keyword">for</span> (person &lt;- <span class="hljs-type">Seq</span>[<span class="hljs-type">Person</span>](father, mather, son, daughter)) {
+     |   person <span class="hljs-keyword">match</span> {
+     |     <span class="hljs-keyword">case</span> <span class="hljs-type">Man</span>(<span class="hljs-string">&quot;&#x7236;&#x4EB2;&quot;</span>, age) =&gt; println(<span class="hljs-string">s&quot;&#x7236;&#x4EB2;&#x4ECA;&#x5E74;<span class="hljs-subst">${age}</span>&#x5C81;&quot;</span>)
+     |     <span class="hljs-keyword">case</span> man: <span class="hljs-type">Man</span> <span class="hljs-keyword">if</span> man.age &lt; <span class="hljs-number">10</span> =&gt; println(<span class="hljs-string">s&quot;man is <span class="hljs-subst">$man</span>&quot;</span>)
+     |     <span class="hljs-keyword">case</span> <span class="hljs-type">Woman</span>(name, <span class="hljs-number">30</span>) =&gt; println(<span class="hljs-string">s&quot;<span class="hljs-subst">${name}</span>&#x4ECA;&#x5E74;&#x6709;30&#x5C81;&quot;</span>)
+     |     <span class="hljs-keyword">case</span> <span class="hljs-type">Woman</span>(name, age) =&gt; println(<span class="hljs-string">s&quot;<span class="hljs-subst">${name}</span>&#x4ECA;&#x5E74;&#x6709;<span class="hljs-subst">${age}</span>&#x5C81;&quot;</span>)
+     |   }
+     | }
+&#x7236;&#x4EB2;&#x4ECA;&#x5E74;<span class="hljs-number">33</span>&#x5C81;
+&#x6BCD;&#x4EB2;&#x4ECA;&#x5E74;&#x6709;<span class="hljs-number">30</span>&#x5C81;
+man is <span class="hljs-type">Man</span>(&#x513F;&#x5B50;,<span class="hljs-number">7</span>)
+&#x5973;&#x513F;&#x4ECA;&#x5E74;&#x6709;<span class="hljs-number">3</span>&#x5C81;
+</code></pre>
+<p>&#x5728;&#x6A21;&#x5F0F;&#x5339;&#x914D;&#x4E2D;&#x5BF9;<code>case class</code>&#x8FDB;&#x884C;<strong>&#x89E3;&#x6784;</strong>&#x64CD;&#x4F5C;&#xFF0C;&#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x63D0;&#x53D6;&#x51FA;&#x611F;&#x5174;&#x8DA3;&#x7684;&#x5B57;&#x6BB5;&#x5E76;&#x8D4B;&#x7ED9;&#x53D8;&#x91CF;&#x3002;&#x540C;&#x65F6;&#xFF0C;&#x6A21;&#x5F0F;&#x5339;&#x914D;&#x4E2D;&#x8FD8;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;<strong>guard</strong>&#x8BED;&#x53E5;&#xFF0C;&#x7ED9;&#x5339;&#x914D;&#x5224;&#x65AD;&#x6DFB;&#x52A0;&#x4E00;&#x4E2A;<code>if</code>&#x8868;&#x8FBE;&#x5F0F;&#x505A;&#x6761;&#x4EF6;&#x5224;&#x65AD;&#x3002;</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="scala.5.html" class="navigation navigation-prev " aria-label="Previous page: class和object">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="scala.7.html" class="navigation navigation-next " aria-label="Next page: trait">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"函数式","level":"1.3.6","depth":2,"next":{"title":"trait","level":"1.3.7","depth":2,"path":"scala.7.md","ref":"scala.7.md","articles":[]},"previous":{"title":"class和object","level":"1.3.5","depth":2,"path":"scala.5.md","ref":"scala.5.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"scala.6.md","mtime":"2018-05-07T10:15:56.940Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-07T10:32:22.496Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

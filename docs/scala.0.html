@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title> · GitBook</title>
+        <title>Scala语言基础 · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,6 +57,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="scala.1.html" />
+    
+    
+    <link rel="prev" href="env.html" />
     
 
     </head>
@@ -156,7 +160,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3" data-path="scala.0.html">
+        <li class="chapter active" data-level="1.3" data-path="scala.0.html">
             
                 <a href="scala.0.html">
             
@@ -606,7 +610,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." ></a>
+        <a href="." >Scala语言基础</a>
     </h1>
 </div>
 
@@ -621,7 +625,24 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="&#x8BCD;&#x6C47;&#x8868;">&#x8BCD;&#x6C47;&#x8868;</h1>
+                                <h1 id="scala-&#x8BED;&#x8A00;&#x57FA;&#x7840;">Scala &#x8BED;&#x8A00;&#x57FA;&#x7840;</h1>
+<p><strong>REPL</strong></p>
+<p>&#x6709;&#x4E24;&#x79CD;&#x542F;&#x52A8; <strong>REPL</strong> &#x7684;&#x65B9;&#x5F0F;&#xFF0C;&#x4E00;&#x79CD;&#x662F;&#x76F4;&#x63A5;&#x8FD0;&#x884C; <code>scala</code> &#x547D;&#x4EE4;&#xFF1A;</p>
+<pre><code>cd $SCALA_HOME
+./bin/scala
+</code></pre><p>&#x8FD8;&#x6709;&#x79CD;&#x662F;&#x5728; Sbt&#x5DE5;&#x7A0B;&#x767B;&#x5F55;&#x8FDB;&#x5165; <strong>Sbt Console</strong>&#xFF1A;</p>
+<pre><code>sbt console
+</code></pre><p>&#x6216;&#x8005;&#x5728;&#x8FDB;&#x5165; Sbt &#x4EA4;&#x4E92;&#x5F0F;&#x63A7;&#x5236;&#x53F0;&#x540E;&#x518D;&#x6267;&#x884C; <code>console</code> &#x547D;&#x4EE4;&#x3002;</p>
+<p>&#x542F;&#x52A8;Scala REPL&#xFF0C;&#x5B83;&#x662F;&#x4E00;&#x4E2A;&#x57FA;&#x4E8E;&#x547D;&#x4EE4;&#x884C;&#x7684;&#x4EA4;&#x4E92;&#x5F0F;&#x7F16;&#x7A0B;&#x73AF;&#x5883;&#x3002;&#x5BF9;&#x4E8E;&#x6709;&#x7740;Python&#x3001;Ruby&#x7B49;&#x52A8;&#x6001;&#x8BED;&#x8A00;&#x7684;&#x540C;&#x5B66;&#x6765;&#x8BF4;&#xFF0C;&#x8FD9;&#x662F;&#x4E00;&#x4E2A;&#x5F88;&#x5E38;&#x7528;&#x548C;&#x5DE5;&#x5177;&#x3002;&#x4F46;Javaer
+&#x4EEC;&#x7B2C;&#x4E00;&#x6B21;&#x89C1;&#x5230;&#x4F1A;&#x89C9;&#x5F97;&#x6BD4;&#x8F83;&#x795E;&#x5947;&#x3002;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5728;REPL&#x4E2D;&#x505A;&#x4E00;&#x4E9B;&#x4EE3;&#x7801;&#x5C1D;&#x8BD5;&#x800C;&#x4E0D;&#x7528;&#x542F;&#x52A8;&#x7B28;&#x62D9;&#x7684;IDE&#xFF0C;&#x8FD9;&#x5728;&#x6211;&#x4EEC;&#x601D;&#x8003;&#x95EE;&#x9898;&#x65F6;&#x975E;&#x5E38;&#x7684;&#x65B9;&#x4FBF;&#x3002;&#x5BF9;&#x4E8E;Javaer&#x6709;&#x4E00;&#x4E2A;&#x597D;&#x6D88;&#x606F;&#xFF0C;JDK 9&#x5F00;
+&#x59CB;&#x5C06;&#x5185;&#x5EFA;&#x652F;&#x6301;REPL&#x529F;&#x80FD;&#x3002;</p>
+<pre><code>sbt:scala-seed&gt; console
+[info] Starting scala interpreter...
+Welcome to Scala 2.12.4 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_151).
+Type in expressions for evaluation. Or try :help.
+
+scala&gt;
+</code></pre><p>&#x63A5;&#x4E0B;&#x6765;&#x6211;&#x4EEC;&#x5C06;&#x5728; Scala REPL &#x4E2D;&#x6D4B;&#x8BD5;&#x672C;&#x7AE0;&#x7684;&#x793A;&#x4F8B;&#x4EE3;&#x7801;&#x3002;</p>
 
                                 
                                 </section>
@@ -649,6 +670,14 @@
 
             
                 
+                <a href="env.html" class="navigation navigation-prev " aria-label="Previous page: 小结">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="scala.1.html" class="navigation navigation-next " aria-label="Next page: 你好，Scala">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -657,7 +686,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"GLOSSARY.md","mtime":"2017-09-05T10:13:33.872Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-07T10:32:22.496Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Scala语言基础","level":"1.3","depth":1,"next":{"title":"你好，Scala","level":"1.3.1","depth":2,"path":"scala.1.md","ref":"scala.1.md","articles":[]},"previous":{"title":"小结","level":"1.2.3","depth":2,"path":"env.md","ref":"env.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"scala.0.md","mtime":"2018-05-07T10:15:56.940Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-07T10:32:22.496Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

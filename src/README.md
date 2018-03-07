@@ -19,7 +19,7 @@ Akka 是一个在 JVM 上构建高并发、分布式、弹性的消息驱动应�
 - High Performance（高性能）：
     单机每秒 5000万 吞吐。较优的内存使用：每 1GB 堆内在可生成约 250万 个 actor。 
 
-- Elastic & Decentralized（弹性和分散）：
+- Elastic & Decentralized（弹性和去中心化）：
     自适应的集群管理、负载均衡、路由、分区和分版。
 
 - Extensible（可扩展）：

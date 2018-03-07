@@ -4,13 +4,12 @@ import akka.http.scaladsl.Http
 import akkahttp.foundation.route.Routes
 
 import scala.util.{Failure, Success}
+import akkahttp.server.Server._
 
 /**
   * Created by yangbajing(yangbajing@gmail.com) on 2017-04-17.
   */
 object Boot {
-
-  import akkahttp.foundation.server.Server._
 
   def main(args: Array[String]): Unit = {
     val bindingFuture = Http().bindAndHandle(

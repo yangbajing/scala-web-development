@@ -1,0 +1,843 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>访问 Cassandra 数据库 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="storage.3.html" />
+    
+    
+    <link rel="prev" href="storage.1.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="env.0.html">
+            
+                <a href="env.0.html">
+            
+                    
+                    Scala环境配置
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="env.1.html">
+            
+                <a href="env.1.html">
+            
+                    
+                    Sbt
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="env.2.html">
+            
+                <a href="env.2.html">
+            
+                    
+                    IDE开发工具
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="env.html">
+            
+                <a href="env.html">
+            
+                    
+                    小结
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="scala.0.html">
+            
+                <a href="scala.0.html">
+            
+                    
+                    Scala语言基础
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="scala.1.html">
+            
+                <a href="scala.1.html">
+            
+                    
+                    你好，Scala
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="scala.2.html">
+            
+                <a href="scala.2.html">
+            
+                    
+                    Scala基础
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="scala.3.html">
+            
+                <a href="scala.3.html">
+            
+                    
+                    流程和函数
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.4" data-path="scala.4.html">
+            
+                <a href="scala.4.html">
+            
+                    
+                    集合
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.5" data-path="scala.5.html">
+            
+                <a href="scala.5.html">
+            
+                    
+                    class和object
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.6" data-path="scala.6.html">
+            
+                <a href="scala.6.html">
+            
+                    
+                    函数式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.7" data-path="scala.7.html">
+            
+                <a href="scala.7.html">
+            
+                    
+                    trait
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.8" data-path="scala.8.html">
+            
+                <a href="scala.8.html">
+            
+                    
+                    并发
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.9" data-path="scala.z.html">
+            
+                <a href="scala.z.html">
+            
+                    
+                    小结
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="basic.0.html">
+            
+                <a href="basic.0.html">
+            
+                    
+                    Akka HTTP 基础
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="basic.1.html">
+            
+                <a href="basic.1.html">
+            
+                    
+                    Web 工作方式
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="basic.2.html">
+            
+                <a href="basic.2.html">
+            
+                    
+                    使用 Akka HTTP 搭建一个简单的 Web 服务
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="basic.3.html">
+            
+                <a href="basic.3.html">
+            
+                    
+                    Akka HTTP 的通用抽象
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4" data-path="basic.4.html">
+            
+                <a href="basic.4.html">
+            
+                    
+                    Akka HTTP 如何使得 Web 工作
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.5" data-path="basic.5.html">
+            
+                <a href="basic.5.html">
+            
+                    
+                    高级服务端 API
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.6" data-path="basic.z.html">
+            
+                <a href="basic.z.html">
+            
+                    
+                    小结
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="test.0.html">
+            
+                <a href="test.0.html">
+            
+                    
+                    测试
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="test.1.html">
+            
+                <a href="test.1.html">
+            
+                    
+                    Scalatest
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="test.2.html">
+            
+                <a href="test.2.html">
+            
+                    
+                    测试异步代码
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.3" data-path="test.3.html">
+            
+                <a href="test.3.html">
+            
+                    
+                    端到端测试Route
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.4" data-path="test.z.html">
+            
+                <a href="test.z.html">
+            
+                    
+                    小结
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="storage.0.html">
+            
+                <a href="storage.0.html">
+            
+                    
+                    访问数据库
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="storage.1.html">
+            
+                <a href="storage.1.html">
+            
+                    
+                    使用 JDBC 访问 PostgreSQL
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.6.2" data-path="storage.2.html">
+            
+                <a href="storage.2.html">
+            
+                    
+                    访问 Cassandra 数据库
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="storage.3.html">
+            
+                <a href="storage.3.html">
+            
+                    
+                    使用 Redis/Elasticsearch
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="storage.z.html">
+            
+                <a href="storage.z.html">
+            
+                    
+                    小结
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="ref.html">
+            
+                <a href="ref.html">
+            
+                    
+                    参考资料
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="appendix.0.html">
+            
+                <a href="appendix.0.html">
+            
+                    
+                    附录
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1" data-path="appendix.1.html">
+            
+                <a href="appendix.1.html">
+            
+                    
+                    专业术语
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >访问 Cassandra 数据库</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="&#x8BBF;&#x95EE;-cassandra-&#x6570;&#x636E;&#x5E93;">&#x8BBF;&#x95EE; Cassandra &#x6570;&#x636E;&#x5E93;</h1>
+<h2 id="cassandra-&#x6570;&#x636E;&#x6A21;&#x578B;">Cassandra &#x6570;&#x636E;&#x6A21;&#x578B;</h2>
+<p><strong>Cassandra &#x4E0E; &#x4F20;&#x7EDF;&#x5173;&#x7CFB;&#x6027;&#x6570;&#x636E;&#x5E93;&#x7684;&#x533A;&#x522B;&#x53CA;&#x7279;&#x6027;</strong></p>
+<ul>
+<li>No joins&#xFF1A;&#x6CA1;&#x6709;&#x5173;&#x8054;&#x64CD;&#x4F5C;&#xFF0C;&#x5BF9;&#x4E8E;&#x5728; SQL &#x4E2D;&#x8FD9;&#x7C7B;&#x64CD;&#x4F5C;&#x4F60;&#x9700;&#x8981;&#x5148;&#x83B7;&#x5F97;&#x4E3B;&#x8868;&#x6570;&#x636E;&#x540E;&#x518D;&#x901A;&#x8FC7; id &#x53BB;&#x5173;&#x8054;&#xFF0C;&#x6216;&#x8005;&#x53CD;&#x8303;&#x5F0F;&#x5316;&#x8BBE;&#x8BA1;&#x5C06;&#x5173;&#x8054;&#x8868;&#x6570;&#x636E;&#x505A;&#x4E3A;&#x6269;&#x5C55;&#x5185;
+&#x5BB9;&#x76F4;&#x63A5;&#x5B58;&#x5230;&#x4E3B;&#x8868;&#x4E2D;&#x3002;</li>
+<li>No referential integrity&#xFF1A;&#x6CA1;&#x6709;&#x5916;&#x952E;&#x7EA6;&#x675F;&#xFF0C;&#x6CA1;&#x6709;&#x53C2;&#x7167;&#x5B8C;&#x6574;&#x6027;&#xFF0C;&#x5F53;&#x7136;&#x4E5F;&#x6CA1;&#x6709;&#x7EA7;&#x8054;&#x64CD;&#x4F5C;&#x3002;&#x9700;&#x8981;&#x5728;&#x5E94;&#x7528;&#x4E2D;&#x5C0F;&#x5FC3;&#x6CE8;&#x610F;&#x5220;&#x9664;&#x6216;&#x4FEE;&#x6539;&#x5173;&#x8054;&#x6570;&#x636E;&#x3002;</li>
+<li>Denormalization&#xFF1A;&#x975E;&#x8303;&#x5F0F;&#x5316;&#xFF0C;&#x4F7F;&#x7528; Cassandra &#x8FDB;&#x884C;&#x6570;&#x636E;&#x5EFA;&#x6A21;&#x4F7F;&#x7528;&#x8303;&#x5F0F;&#x5316;&#x8BBE;&#x8BA1;&#x662F;&#x4E0D;&#x9AD8;&#x6548;&#x7684;&#x3002;</li>
+<li>Query-first design&#xFF1A;&#x67E5;&#x8BE2;&#x5148;&#x884C;&#x7684;&#x8BBE;&#x8BA1;&#xFF0C;&#x4F7F;&#x7528; Cassandra &#x5EFA;&#x6A21;&#x9700;&#x8981;&#x9996;&#x5148;&#x3001;&#x5C0F;&#x5FC3;&#x8BBE;&#x8BA1;&#x597D;&#x67E5;&#x8BE2;&#x65B9;&#x5F0F;&#x3002;&#x56E0;&#x4E3A;&#x5B83;&#x53EA;&#x6709;&#x5728;&#x6839;&#x636E;&#x4E3B;&#x952E;&#x641C;&#x7D22;&#x65F6;&#xFF08;3.0&#x5F00;&#x59CB;&#x652F;
+&#x6301;&#x7B2C;&#x4E8C;&#x7D22;&#x5F15;&#xFF0C;&#x4F46;&#x6548;&#x7387;&#x4E0D;&#x9AD8;&#xFF09;&#x624D;&#x80FD;&#x9AD8;&#x6548;&#x3002;</li>
+<li>Designing for optimal storage&#xFF1A;&#x5728;&#x5EFA;&#x6A21;&#x8BBE;&#x8BA1;&#x65F6;&#x5C31;&#x9700;&#x8981;&#x8003;&#x8651;&#x5B58;&#x50A8;&#x4F18;&#x5316;&#xFF0C;&#x4F7F;&#x7528;&#x5173;&#x7CFB;&#x6027;&#x6570;&#x636E;&#x5E93;&#x65F6;&#x4E00;&#x822C;&#x662F;&#x4E0D;&#x7528;&#x7BA1;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x7684;&#x3002;&#x4F46;&#x4F7F;&#x7528; Cassandra 
+&#x65F6;&#x5C31;&#x9700;&#x8981;&#x63D0;&#x524D;&#x89C4;&#x5212;&#xFF0C;&#x56E0;&#x4E3A; Cassandra &#x7684;&#x6570;&#x636E;&#x662F;&#x9ED8;&#x8BA4;&#x5206;&#x533A;&#x7684;&#xFF0C;&#x800C;&#x5206;&#x533A;&#x7684;&#x5F62;&#x5F0F;&#x5BF9;&#x6027;&#x80FD;&#x6709;&#x7740;&#x5F88;&#x5927;&#x7684;&#x5F71;&#x54CD;&#x3002;</li>
+<li>Sorting is a design decision&#xFF1A;&#x8BBE;&#x8BA1;&#x65F6;&#x9700;&#x8981;&#x51B3;&#x5B9A;&#x6392;&#x5E8F;&#x65B9;&#x5F0F;&#x3002;&#x5728;&#x5EFA;&#x8868;&#x65F6;&#x5C31;&#x51B3;&#x5B9A;&#x4E86;&#x6392;&#x5E8F;&#x65B9;&#x5F0F;&#xFF0C;&#x5E76;&#x4E14;&#x53EA;&#x6709; Cluster Key &#x652F;&#x6301;&#x6392;&#x5E8F;&#x3002;</li>
+</ul>
+<p>Cassandra &#x7684;&#x6570;&#x636E;&#x6A21;&#x578B;&#x53EF;&#x4EE5;&#x7B80;&#x5355;&#x7C7B;&#x6BD4;&#x4E3A;&#xFF1A;<code>Map&lt;PartitionKey, SortedMap&lt;ClusterKey, Value&gt;&gt;</code>&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x7B80;&#x5316;&#x6210;&#xFF1A;KKV&#x3002;</p>
+<p><img src="imgs/CassandraTable.png" alt="Cassandra Table"></p>
+<p>Cassandra &#x6709;&#x5982;&#x4E0B;&#x4E3B;&#x8981;&#x6570;&#x636E;&#x7ED3;&#x6784;&#xFF1A;</p>
+<ul>
+<li><strong>column</strong>&#xFF1A;&#x5217;&#xFF0C;&#x7C7B;&#x4F3C;&#x4E8E; name/value &#x5BF9;&#x3002;</li>
+<li><strong>row</strong>&#xFF1A;&#x5305;&#x542B;&#x591A;&#x4E2A;&#x5217;&#x7684;&#x5BB9;&#x5668;&#xFF0C;&#x5E76;&#x4F7F;&#x7528;&#x4E3B;&#x952E;&#x5F15;&#x7528;&#x3002;</li>
+<li><strong>table</strong>&#xFF1A;&#x5305;&#x542B;&#x591A;&#x4E2A;&#x884C;&#x7684;&#x5BB9;&#x5668;&#x3002;</li>
+<li><strong>keyspace</strong>&#xFF1A;&#x5305;&#x542B;&#x591A;&#x4E2A;&#x8868;&#x7684;&#x5BB9;&#x5668;&#x3002;</li>
+<li><strong>cluster</strong>&#xFF1A;&#x96C6;&#x7FA4;&#xFF0C;&#x5305;&#x542B;&#x591A;&#x4E2A; keyspace &#x7684;&#x5BB9;&#x5668;&#xFF0C;&#x4F7F;&#x7528;&#x4E00;&#x4E2A;&#x6216;&#x591A;&#x4E2A;&#x8282;&#x70B9;&#x3002;</li>
+</ul>
+<h2 id="&#x5B89;&#x88C5;&#x3001;&#x914D;&#x7F6E;-cassandra">&#x5B89;&#x88C5;&#x3001;&#x914D;&#x7F6E; Cassandra</h2>
+<p><strong>&#x4E0B;&#x8F7D;&#x3001;&#x5B89;&#x88C5;</strong></p>
+<pre><code>wget -c http://archive.apache.org/dist/cassandra/3.9/apache-cassandra-3.9-bin.tar.gz
+tar zxf apache-cassandra-3.9-bin.tar.gz
+cd apache-cassandra-3.9
+./bin/cassandra
+</code></pre><p><strong>&#x521D;&#x59CB;&#x5316;&#x6570;&#x636E;&#x5E93;&#x3001;&#x8868;</strong></p>
+<pre><code>./bin/cqlsh
+cqlsh&gt; CREATE KEYSPACE hldev WITH replication = {&apos;class&apos;: &apos;SimpleStrategy&apos;, &apos;replication_factor&apos;: &apos;1&apos;};
+cqlsh&gt; use hldev;
+cqlsh:hldev&gt; CREATE TABLE user(
+         ...   id TIMEUUID,
+         ...   email TEXT,
+         ...   name TEXT,
+         ...   created_at TIMESTAMP,
+         ...   salt blob,
+         ...   salt_password blob,
+         ...   PRIMARY KEY (id, email, name)
+         ... );
+</code></pre><p>&#x8FD9;&#x91CC;&#x521B;&#x5EFA;&#x4E86;&#x4E00;&#x4E2A; keyspace&#xFF0C;&#x4E00;&#x5F20;&#x8868;&#xFF0C;&#x5BF9;&#x4E8E;&#x6211;&#x4EEC;&#x7684;&#x793A;&#x4F8B;&#x8DB3;&#x591F;&#x4E86;&#x3002;</p>
+<h2 id="alpakka-cassandra-connector">Alpakka Cassandra Connector</h2>
+<p>&#x8FD9;&#x91CC;&#x6211;&#x4EEC;&#x4ECB;&#x7ECD;&#x600E;&#x6837;&#x4F7F;&#x7528; <a href="http://developer.lightbend.com/docs/alpakka/0.7/index.html" target="_blank">Alpakka</a> &#x7684; 
+<a href="http://developer.lightbend.com/docs/alpakka/0.7/cassandra.html" target="_blank">Cassandra Connector</a> &#x6765;&#x8BBF;&#x95EE; Cassandra&#x3002;
+Alpakka Cassandra&#x662F;&#x57FA;&#x4E8E; Akka Stream &#x7684;&#x4E00;&#x4E2A;Connector&#xFF0C;&#x5B83;&#x63D0;&#x4F9B;&#x4E86;&#x4F7F;&#x7528; Akka Stream &#x7684;&#x7F16;&#x7A0B;&#x6A21;&#x578B;&#x6765;&#x8BBF;&#x95EE; Cassandra &#x6570;&#x636E;&#x5E93;&#x7684;&#x529F;&#x80FD;&#x3002;</p>
+<p><strong>&#x6DFB;&#x52A0;&#x5E93;&#x4F9D;&#x8D56;</strong></p>
+<pre><code>libraryDependencies += &quot;com.lightbend.akka&quot; %% &quot;akka-stream-alpakka-cassandra&quot; % &quot;0.7&quot;
+</code></pre><p><strong>&#x8BBF;&#x95EE;Cassandra</strong></p>
+<p>&#x7EE7;&#x7EED;&#x80FD;&#x8FC7;&#x5355;&#x5143;&#x6D4B;&#x8BD5;&#x6765;&#x770B;&#x770B;&#x600E;&#x6837;&#x4F7F;&#x7528; Alpakka Cassandra Connector &#x8BBF;&#x95EE; Cassandra &#x6570;&#x636E;&#x5E93;&#x7684;&#x3002;</p>
+<pre><code class="lang-scala">sbt
+&gt; testOnly akkahttp.foundation.data.repository.<span class="hljs-type">UserRepositoryTest</span>
+</code></pre>
+<p>&#x6D4B;&#x8BD5;&#x7ED3;&#x679C;&#x5982;&#x4E0B;&#xFF1A;</p>
+<p><img src="imgs/testOnly-UserRepositoryTest.png" alt="testOnly akkahttp.foundation.data.repository.UserRepositoryTest"></p>
+<p>&#x8FD9;&#x91CC;&#xFF0C;&#x6211;&#x4EEC;&#x628A;&#x6CE8;&#x610F;&#x529B;&#x5173;&#x6CE8;&#x5728; <code>UserRepository.scala</code> &#x4E0A;&#xFF0C;<code>UserRepositoryTest</code> &#x5355;&#x5143;&#x6D4B;&#x8BD5;&#x548C;&#x4E0A;&#x4E00;&#x8282;&#x8BBF;&#x95EE; PostgreSQL &#x5E93;&#x7684;&#x6D4B;&#x8BD5;&#x65E0;&#x672C;&#x8D28;&#x533A;
+&#x522B;&#xFF0C;&#x4F46;&#x6570;&#x636E;&#x5E93;&#x8BBF;&#x95EE;&#x4EE3;&#x7801;&#x533A;&#x522B;&#x53EF;&#x5C31;&#x5927;&#x4E86;&#x3002;</p>
+<p>&#x9996;&#x5148;&#xFF0C;&#x6211;&#x4EEC;&#x4F7F;&#x7528;&#x4E86; <code>Alpakka</code> &#x91CC;&#x63D0;&#x4F9B;&#x7684; Akka Stream for Cassandra Connector &#x6765;&#x8BBF;&#x95EE;&#xFF0C;&#x5E76;&#x6CA1;&#x6709;&#x76F4;&#x63A5;&#x4F7F;&#x7528;&#x5B98;&#x65B9;&#x63D0;&#x4F9B;&#x7684; <code>cassandra-driver-core</code> &#x3002;</p>
+<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UserRepository</span>(<span class="hljs-params">cassandraSession: <span class="hljs-type">StandaloneCassandraSession</span>
+                    </span>)(<span class="hljs-params">
+                      implicit val materializer: <span class="hljs-type">Materializer</span>, ec: <span class="hljs-type">ExecutionContext</span>
+                    </span>) </span>{
+
+  <span class="hljs-keyword">import</span> cassandraSession.session  <span class="hljs-comment">// (1)</span>
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">deleteById</span></span>(userId: <span class="hljs-type">UUID</span>): <span class="hljs-type">Future</span>[<span class="hljs-type">Done</span>] = {
+    <span class="hljs-keyword">val</span> stmt = cassandraSession.prepare(<span class="hljs-string">&quot;delete from hldev.user where id = ?&quot;</span>).bind(userId)
+    <span class="hljs-type">CassandraSource</span>(stmt).runWith(<span class="hljs-type">Sink</span>.ignore)  <span class="hljs-comment">// (2)</span>
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">insert</span></span>(user: <span class="hljs-type">User</span>, password: <span class="hljs-type">SaltPassword</span>): <span class="hljs-type">Future</span>[<span class="hljs-type">Done</span>] = {
+    <span class="hljs-keyword">val</span> stmt = cassandraSession
+      .prepare(<span class="hljs-string">&quot;insert into hldev.user(id, email, name, created_at, salt, salt_password) values(?, ?, ?, ?, ?, ?)&quot;</span>)
+      .bind(
+        user.id,
+        user.email,
+        user.email.split(&apos;@&apos;)(<span class="hljs-number">0</span>),
+        user.createdAt,
+        <span class="hljs-type">ByteBuffer</span>.wrap(password.salt),
+        <span class="hljs-type">ByteBuffer</span>.wrap(password.saltPwd))
+    <span class="hljs-type">CassandraSource</span>(stmt).runWith(<span class="hljs-type">Sink</span>.ignore)
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">login</span></span>(email: <span class="hljs-type">String</span>, password: <span class="hljs-type">String</span>): <span class="hljs-type">Future</span>[<span class="hljs-type">Option</span>[(<span class="hljs-type">User</span>, <span class="hljs-type">Array</span>[<span class="hljs-type">Byte</span>], <span class="hljs-type">Array</span>[<span class="hljs-type">Byte</span>])]] = {
+    <span class="hljs-keyword">val</span> stmt = cassandraSession
+      .prepare(<span class="hljs-string">&quot;select * from hldev.user where email = ? ALLOW FILTERING&quot;</span>)
+      .bind(email)
+    <span class="hljs-type">CassandraSource</span>(stmt)
+      .runWith(<span class="hljs-type">Sink</span>.headOption) <span class="hljs-comment">// (3)</span>
+      .map(maybeRow =&gt; <span class="hljs-comment">// (4)</span>
+        maybeRow.map(row =&gt;
+          (<span class="hljs-type">UserRepository</span>.mapToUser(row),
+            <span class="hljs-type">Utils</span>.byteBufferToArray(row.getBytes(<span class="hljs-string">&quot;salt&quot;</span>)),
+            <span class="hljs-type">Utils</span>.byteBufferToArray(row.getBytes(<span class="hljs-string">&quot;salt_password&quot;</span>)))
+        ))
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">findById</span></span>(userId: <span class="hljs-type">UUID</span>): <span class="hljs-type">Future</span>[<span class="hljs-type">Option</span>[<span class="hljs-type">User</span>]] = {
+    <span class="hljs-keyword">val</span> stmt = cassandraSession
+      .prepare(<span class="hljs-string">&quot;select * from hldev.user where id = ?&quot;</span>)
+      .bind(userId)
+    <span class="hljs-type">CassandraSource</span>(stmt)
+      .runWith(<span class="hljs-type">Sink</span>.headOption)
+      .map(maybeRow =&gt; maybeRow.map(row =&gt; <span class="hljs-type">UserRepository</span>.mapToUser(row)))
+  }
+
+  <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">existsByEmail</span></span>(email: <span class="hljs-type">String</span>): <span class="hljs-type">Future</span>[<span class="hljs-type">Boolean</span>] = {
+    <span class="hljs-type">CassandraSource</span>(cassandraSession.prepare(<span class="hljs-string">&quot;select count(1) as COUNT from hldev.user where email = ? ALLOW FILTERING&quot;</span>).bind(email))
+      .runWith(<span class="hljs-type">Sink</span>.head)
+      .map(row =&gt; row.getLong(<span class="hljs-string">&quot;COUNT&quot;</span>) == <span class="hljs-number">1</span>)
+  }
+}
+</code></pre>
+<ul>
+<li>(1)&#xFF1A;&#x9996;&#x5148;&#x9700;&#x8981;&#x4ECE; <code>cassandraSession</code> &#x4E2D;&#x5BFC;&#x5165; <code>com.datastax.driver.core.Session</code> &#x5F02;&#x5E38;&#x53D8;&#x91CF;&#xFF0C;&#x8FD9;&#x4E2A;&#x662F; <code>CassandraSource</code> &#x9700;&#x8981;&#x7684;</li>
+<li>(2)&#xFF1A;&#x5BF9;&#x4E8E; <strong>DELETE</strong> &#x8BED;&#x53E5;&#xFF0C;Cassandra &#x9A71;&#x52A8;&#x5E76;&#x6CA1;&#x5411;SQL&#x4E00;&#x6837;&#x8FD4;&#x56DE;&#x8BED;&#x53E5;&#x5F71;&#x54CD;&#x7684;&#x884C;&#x6570;&#x8FD9;&#x6837;&#x7684;&#x8FD4;&#x56DE;&#x503C;&#xFF0C;&#x8FD9;&#x91CC;&#x5728; <code>runWith</code> &#x51FD;&#x6570;&#x91CC;&#x4F7F;&#x7528; <code>Sink.ignore</code> &#x5FFD;&#x7565;&#x8FD4;&#x56DE;&#x503C;</li>
+<li>(3)&#xFF1A;&#x5BF9;&#x4E8E; <code>login</code> &#x8FD9;&#x4E2A;&#x64CD;&#x4F5C;&#xFF0C;&#x6211;&#x4EEC;&#x4F7F;&#x7528; <code>Sink.headOption</code> &#x83B7;&#x53D6;&#x7B2C;&#x4E00;&#x4E2A;&#x503C;&#x3002;&#x82E5;&#x6CA1;&#x6709;&#x627E;&#x5230;&#x4EFB;&#x52A1;&#x5339;&#x914D;&#x503C;&#x5219;&#x8FD4;&#x56DE; <code>None</code></li>
+<li>(4)&#xFF1A;&#x8F6C;&#x6362;&#x83B7;&#x53D6;&#x7684; <code>ResultSet</code> &#x4E3A; <code>User</code> &#x5BF9;&#x8C61;</li>
+</ul>
+<p>Alpakka Cassandra Connector &#x63D0;&#x4F9B;&#x4E86;&#x517C;&#x5BB9; Akka Stream &#x7684;&#x65B9;&#x5F0F;&#x6765;&#x5FEB;&#x901F;&#x8BBF;&#x95EE; Cassandra &#x6570;&#x636E;&#x5E93;&#xFF0C;&#x4F7F;&#x7528;&#x54CD;&#x5E94;&#x5F0F;&#x7684;&#x7F16;&#x7A0B;&#x3002;&#x5BF9;&#x4E8E; Akka Stream&#xFF0C;
+&#x53EF;&#x4EE5;&#x9605;&#x8BFB; <a href="http://doc.akka.io/docs/akka/2.4/scala/stream/stream-quickstart.html" target="_blank">Akka Stream Quicktart</a> &#x5FEB;&#x901F;&#x4E86;&#x89E3;&#x5176;&#x57FA;&#x672C;&#x539F;&#x7406;
+&#x548C;&#x4F7F;&#x7528;&#x65B9;&#x5F0F;&#x3002;&#x672C;&#x4E66;&#x4ECB;&#x7ECD;&#x7684; Akka HTTP &#x662F;&#x6784;&#x5EFA;&#x5728; Akka Stream &#x4E4B;&#x4E0A;&#x7684;&#xFF0C;&#x800C; Alpakka Cassansdra Connector&#x53EF;&#x4EE5;&#x7D27;&#x5BC6;&#x5730;&#x548C;Akka HTTP&#x8FDB;&#x884C;&#x7ED3;&#x5408;&#xFF0C;
+&#x4F7F;&#x6211;&#x4EEC;&#x7684;&#x5E94;&#x7528;&#x540F;&#x54CD;&#x5E94;&#x5F0F;&#x3001;&#x9AD8;&#x6548;&#x3002;</p>
+<blockquote>
+<p>&#x6CE8;&#x610F;&#xFF1A;&#x5728;&#x4F7F;&#x7528; Cassandra &#x63D0;&#x4F9B;&#x7684;&#x6279;&#x91CF;&#x63D2;&#x5165;&#x529F;&#x80FD;&#x65F6;&#xFF0C;&#x4E5F;&#x8BB8;&#x9700;&#x8981;&#x4FEE;&#x6539;&#x4E0B;&#x6570;&#x636E;&#x5E93;&#x9ED8;&#x8BA4;&#x914D;&#x7F6E;&#x3002;&#x5728;&#x4F7F;&#x7528; <code>BatchStatement</code> &#x8FDB;&#x884C;&#x63D2;&#x5165;&#x64CD;&#x4F5C;&#x65F6;&#x4F1A;&#x53D1;&#x73B0;&#xFF0C;
+&#x5F53;&#x6570;&#x636E;&#x91CF;&#x7A0D;&#x5927;&#x4EE5;&#x540E;&#x6570;&#x636E;&#x5E93;&#x4E2D;&#x5E76;&#x6CA1;&#x6709;&#x52A0;&#x5165;&#x65B0;&#x7684;&#x6570;&#x636E;&#x3002;&#x8FD9;&#x662F;&#x56E0;&#x4E3A;Cassandra&#x9ED8;&#x8BA4;&#x5BF9;&#x6279;&#x91CF;&#x64CD;&#x4F5C;&#x7684;&#x6570;&#x636E;&#x5927;&#x5C0F;&#x9650;&#x5236;&#x5F97;&#x6BD4;&#x8F83;&#x4F4E;&#x3002;&#x6211;&#x4EEC;&#x5C06;&#x5176;&#x4FEE;&#x6539;&#x5373;&#x53EF;&#x3002;</p>
+</blockquote>
+<pre><code class="lang-bash"><span class="hljs-comment"># Log WARN on any batch size exceeding this value. 5kb per batch by default.</span>
+<span class="hljs-comment"># Caution should be taken on increasing the size of this threshold as it can lead to node instability.</span>
+batch_size_warn_threshold_<span class="hljs-keyword">in</span>_kb: 1000
+
+<span class="hljs-comment"># Fail any batch exceeding this value. 50kb (10x warn threshold) by default.</span>
+batch_size_fail_threshold_<span class="hljs-keyword">in</span>_kb: 2000
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="storage.1.html" class="navigation navigation-prev " aria-label="Previous page: 使用 JDBC 访问 PostgreSQL">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="storage.3.html" class="navigation navigation-next " aria-label="Next page: 使用 Redis/Elasticsearch">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"访问 Cassandra 数据库","level":"1.6.2","depth":2,"next":{"title":"使用 Redis/Elasticsearch","level":"1.6.3","depth":2,"path":"storage.3.md","ref":"storage.3.md","articles":[]},"previous":{"title":"使用 JDBC 访问 PostgreSQL","level":"1.6.1","depth":2,"path":"storage.1.md","ref":"storage.1.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"storage.2.md","mtime":"2018-05-07T10:15:56.940Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-07T10:32:22.496Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
