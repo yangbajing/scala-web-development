@@ -18,7 +18,7 @@ Scala有一套官方的编译、构建工具 Sbt，全称：The interactive buil
 
 ```
 wget -c http://file.helloscala.com/sbt-1.1.4.tgz
-tar zxf sbt-1.1.1.tgz
+tar zxf sbt-1.1.4.tgz
 echo 'export SBT_HOME="/home/yangjing/sbt-1.1.4"
 export PATH="$SBT_HOME/bin:$PATH"
 ' >> ~/.bash_profile
@@ -30,7 +30,7 @@ export PATH="$SBT_HOME/bin:$PATH"
 
 **Windows**
 
-下载 [sbt-1.1.1.msi](http://file.helloscala.com/sbt-1.1.1.msi) ，双击安装。
+下载 [sbt-1.1.4.msi](http://file.helloscala.com/sbt-1.1.4.msi) ，双击安装。
 
 ## 创建一个 Sbt 项目
 
