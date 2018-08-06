@@ -1,5 +1,5 @@
 {
-  "root": "./src",
+  "root": "./book",
   "output": "./docs",
   "branch": "master",
   "title": "Scala Web 开发 - 使用 Akka",
@@ -52,3 +52,4 @@
     }
   }
 }
+

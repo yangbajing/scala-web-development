@@ -575,6 +575,19 @@
             
         </li>
     
+        <li class="chapter " data-level="1.8.2" data-path="appendix.x.html">
+            
+                <a href="appendix.x.html">
+            
+                    
+                    赞助
+            
+                </a>
+            
+
+            
+        </li>
+    
 
             </ul>
             
@@ -700,7 +713,7 @@
 <p><strong>&#x9884;&#x5B9A;&#x4E49; Marshallers</strong></p>
 <p>Akka HTTP &#x5DF2;&#x7ECF;&#x5305;&#x542B;&#x5927;&#x91CF;&#x9884;&#x5B9A;&#x4E49; marshallers&#xFF1A;</p>
 <ul>
-<li><a href="http://github.com/akka/akka-http/tree/v10.0.5/akka-http/src/main/scala/akka/http/scaladsl/marshalling/PredefinedToEntityMarshallers.scala" target="_blank">PredefinedToEntityMarshallers</a><ul>
+<li><a href="http://github.com/akka/akka-http/tree/v10.1.3/akka-http/src/main/scala/akka/http/scaladsl/marshalling/PredefinedToEntityMarshallers.scala" target="_blank">PredefinedToEntityMarshallers</a><ul>
 <li><code>Array[Byte]</code></li>
 <li><code>ByteString</code></li>
 <li><code>Array[Char]</code></li>
@@ -710,7 +723,7 @@
 <li><code>T &lt;: akka.http.scaladsl.model.Multipart</code></li>
 </ul>
 </li>
-<li><a href="http://github.com/akka/akka-http/tree/v10.0.5/akka-http/src/main/scala/akka/http/scaladsl/marshalling/PredefinedToResponseMarshallers.scala" target="_blank">PredefinedToResponseMarshallers</a><ul>
+<li><a href="http://github.com/akka/akka-http/tree/v10.1.3/akka-http/src/main/scala/akka/http/scaladsl/marshalling/PredefinedToResponseMarshallers.scala" target="_blank">PredefinedToResponseMarshallers</a><ul>
 <li><code>T</code>, &#x5982;&#x679C; <code>ToEntityMarshaller[T]</code> &#x53EF;&#x7528;</li>
 <li><code>HttpResponse</code></li>
 <li><code>StatusCode</code></li>
@@ -720,14 +733,14 @@
 <li><code>(Int, immutable.Seq[HttpHeader], T)</code>&#xFF0C;&#x5982;&#x679C; <code>ToEntityMarshaller[T]</code> &#x53EF;&#x7528;</li>
 </ul>
 </li>
-<li><a href="http://github.com/akka/akka-http/tree/v10.0.5/akka-http/src/main/scala/akka/http/scaladsl/marshalling/PredefinedToRequestMarshallers.scala" target="_blank">PredefinedToRequestMarshallers</a><ul>
+<li><a href="http://github.com/akka/akka-http/tree/v10.1.3/akka-http/src/main/scala/akka/http/scaladsl/marshalling/PredefinedToRequestMarshallers.scala" target="_blank">PredefinedToRequestMarshallers</a><ul>
 <li><code>HttpRequest</code></li>
 <li><code>Uri</code></li>
 <li><code>(HttpMethod, Uri, T)</code>&#xFF0C;&#x5982;&#x679C; <code>ToEntityMarshaller[T]</code> &#x53EF;&#x7528;</li>
 <li><code>(HttpMethod, Uri, immutable.Seq[HttpHeader], T)</code>&#xFF0C;&#x5982;&#x679C; <code>ToEntityMarshaller[T]</code> &#x53EF;&#x7528;</li>
 </ul>
 </li>
-<li><a href="http://github.com/akka/akka-http/tree/v10.0.5/akka-http/src/main/scala/akka/http/scaladsl/marshalling/GenericMarshallers.scala" target="_blank">GenericMarshallers</a><ul>
+<li><a href="http://github.com/akka/akka-http/tree/v10.1.3/akka-http/src/main/scala/akka/http/scaladsl/marshalling/GenericMarshallers.scala" target="_blank">GenericMarshallers</a><ul>
 <li><code>Marshaller[Throwable, T]</code></li>
 <li><code>Marshaller[Option[A], B]</code>&#xFF0C;&#x5982;&#x679C; <code>Marshaller[A, B]</code> &#x548C; <code>EmptyValue[B]</code> &#x53EF;&#x7528;</li>
 <li><code>Marshaller[Either[A1, A2], B]</code>&#xFF0C;&#x5982;&#x679C; <code>Marshaller[A1, B]</code> &#x548C; <code>Marshaller[A2, B]</code> &#x53EF;&#x7528;</li>
@@ -788,7 +801,7 @@ a[<span class="hljs-type">Marshal</span>.<span class="hljs-type">UnacceptableRes
 <p><strong>&#x9884;&#x5B9A;&#x4E49; Unmarshallers</strong></p>
 <p>Akka HTTP &#x5DF2;&#x7ECF;&#x9884;&#x5B9A;&#x4E49;&#x4E86;&#x5927;&#x91CF;&#x7684; marshallers&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5728;&#x4EE3;&#x7801;&#x4E2D;&#x76F4;&#x63A5;&#x4F7F;&#x7528;&#xFF1A;</p>
 <ul>
-<li><a href="http://github.com/akka/akka-http/tree/v10.0.5/akka-http/src/main/scala/akka/http/scaladsl/unmarshalling/PredefinedFromStringUnmarshallers.scala" target="_blank">PredefinedFromStringUnmarshallers</a><ul>
+<li><a href="http://github.com/akka/akka-http/tree/v10.1.3/akka-http/src/main/scala/akka/http/scaladsl/unmarshalling/PredefinedFromStringUnmarshallers.scala" target="_blank">PredefinedFromStringUnmarshallers</a><ul>
 <li><code>Byte</code></li>
 <li><code>Short</code></li>
 <li><code>Int</code></li>
@@ -798,7 +811,7 @@ a[<span class="hljs-type">Marshal</span>.<span class="hljs-type">UnacceptableRes
 <li><code>Boolean</code></li>
 </ul>
 </li>
-<li><a href="http://github.com/akka/akka-http/tree/v10.0.5/akka-http/src/main/scala/akka/http/scaladsl/unmarshalling/PredefinedFromEntityUnmarshallers.scala" target="_blank">PredefinedFromEntityUnmarshallers</a><ul>
+<li><a href="http://github.com/akka/akka-http/tree/v10.1.3/akka-http/src/main/scala/akka/http/scaladsl/unmarshalling/PredefinedFromEntityUnmarshallers.scala" target="_blank">PredefinedFromEntityUnmarshallers</a><ul>
 <li><code>Array[Byte]</code></li>
 <li><code>ByteString</code></li>
 <li><code>Array[Char]</code></li>
@@ -806,7 +819,7 @@ a[<span class="hljs-type">Marshal</span>.<span class="hljs-type">UnacceptableRes
 <li><code>akka.http.scaladsl.model.FormData</code></li>
 </ul>
 </li>
-<li><a href="http://github.com/akka/akka-http/tree/v10.0.5/akka-http/src/main/scala/akka/http/scaladsl/unmarshalling/GenericUnmarshallers.scala" target="_blank">GenericUnmarshallers</a><ul>
+<li><a href="http://github.com/akka/akka-http/tree/v10.1.3/akka-http/src/main/scala/akka/http/scaladsl/unmarshalling/GenericUnmarshallers.scala" target="_blank">GenericUnmarshallers</a><ul>
 <li><code>Unmarshaller[T, T]</code> (identity unmarshaller)</li>
 <li><code>Unmarshaller[Option[A], B]</code>&#xFF0C;&#x5982;&#x679C; <code>Unmarshaller[A, B]</code> &#x53EF;&#x7528;</li>
 <li><code>Unmarshaller[A, Option[B]]</code>, &#x5982;&#x679C; <code>Unmarshaller[A, B]</code> &#x53EF;&#x7528;</li>
@@ -850,7 +863,7 @@ bool shouldBe <span class="hljs-literal">false</span>
 <p>TODO &#x672C;&#x6587;&#x5C06;&#x4E3B;&#x8981;&#x4F7F;&#x7528; Jackson &#x6765;&#x5B9E;&#x73B0; JSON &#x89E3;&#x6790;&#x5904;&#x7406;&#x3002;</p>
 <h2 id="xml-support">XML Support</h2>
 <p><strong>Scala XML&#x652F;&#x6301;</strong></p>
-<p>Scala&#x8BED;&#x8A00;&#x5185;&#x5EFA;&#x4E86; XML &#x652F;&#x6301;&#x3002; <a href="http://github.com/akka/akka-http/tree/v10.0.5/akka-http-marshallers-scala/akka-http-xml/src/main/scala/akka/http/scaladsl/marshallers/xml/ScalaXmlSupport.scala" target="_blank">ScalaXmlSupport</a> trait&#x3000;
+<p>Scala&#x8BED;&#x8A00;&#x5185;&#x5EFA;&#x4E86; XML &#x652F;&#x6301;&#x3002; <a href="http://github.com/akka/akka-http/tree/v10.1.3/akka-http-marshallers-scala/akka-http-xml/src/main/scala/akka/http/scaladsl/marshallers/xml/ScalaXmlSupport.scala" target="_blank">ScalaXmlSupport</a> trait&#x3000;
 &#x63D0;&#x4F9B;&#x4E86; <code>FromEntityUnmarshaller[NodeSeq]</code> &#x548C; <code>ToEntityMarshaller[NodeSeq]</code>&#xFF0C;&#x53EF;&#x4EE5;&#x5728;&#x4EE3;&#x7801;&#x4E2D;&#x76F4;&#x63A5;&#x4F7F;&#x7528;&#x3002;</p>
 <ol>
 <li>&#x6DFB;&#x52A0;&#x5E93;&#x4F9D;&#x8D56;&#xFF1A;<code>&quot;com.typesafe.akka&quot; %% &quot;akka-http-xml&quot; % &quot;1.x&quot;</code></li>
@@ -922,7 +935,7 @@ Akka IO &#x548C; Akka Streams &#x7F51;&#x7EDC;&#x6808;&#x3002;&#x8FD9;&#x662F;&#
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Akka HTTP 的通用抽象","level":"1.4.3","depth":2,"next":{"title":"Akka HTTP 如何使得 Web 工作","level":"1.4.4","depth":2,"path":"basic.4.md","ref":"basic.4.md","articles":[]},"previous":{"title":"使用 Akka HTTP 搭建一个简单的 Web 服务","level":"1.4.2","depth":2,"path":"basic.2.md","ref":"basic.2.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"basic.3.md","mtime":"2018-05-07T10:15:56.939Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-07T10:32:22.496Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Akka HTTP 的通用抽象","level":"1.4.3","depth":2,"next":{"title":"Akka HTTP 如何使得 Web 工作","level":"1.4.4","depth":2,"path":"basic.4.md","ref":"basic.4.md","articles":[]},"previous":{"title":"使用 Akka HTTP 搭建一个简单的 Web 服务","level":"1.4.2","depth":2,"path":"basic.2.md","ref":"basic.2.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"basic.3.md","mtime":"2018-08-06T15:42:14.224Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-08-06T15:54:20.226Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

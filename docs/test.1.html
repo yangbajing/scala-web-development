@@ -575,6 +575,19 @@
             
         </li>
     
+        <li class="chapter " data-level="1.8.2" data-path="appendix.x.html">
+            
+                <a href="appendix.x.html">
+            
+                    
+                    赞助
+            
+                </a>
+            
+
+            
+        </li>
+    
 
             </ul>
             
@@ -626,7 +639,170 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="scalatest">Scalatest</h1>
+<p>ScalaTest&#x901A;&#x8FC7;&#x7B80;&#x5355;&#x3001;&#x6E05;&#x6670;&#x7684;&#x6D4B;&#x8BD5;&#x548C;&#x53EF;&#x6267;&#x884C;&#x7684;&#x89C4;&#x8303;&#x6765;&#x63D0;&#x9AD8;&#x56E2;&#x961F;&#x7684;&#x751F;&#x4EA7;&#x529B;&#xFF0C;&#x540C;&#x65F6;&#x6539;&#x8FDB;&#x4EE3;&#x7801;&#x548C;&#x6C9F;&#x901A;&#x6548;&#x7387;&#x3002;</p>
+<p>ScalaTest&#x662F;Scala&#x751F;&#x6001;&#x7CFB;&#x7EDF;&#x4E2D;&#x6700;&#x7075;&#x6D3B;&#x3001;&#x6700;&#x6D41;&#x884C;&#x7684;&#x6D4B;&#x8BD5;&#x5DE5;&#x5177;&#x3002;&#x652F;&#x6301;&#x6D4B;&#x8BD5;&#xFF1A;Scala&#x3001;Scala.js&#xFF08;Javascript&#xFF09;&#x548C;Java&#x4EE3;&#x7801;&#x3002;&#x53EF;&#x4E0E;JUnit&#x3001;TestNG&#x3001;Ant&#x3001;Maven&#x3001;sbt&#x3001;ScalaCheck&#x3001;JMock&#x3001;EasyMock&#x3001;Mockito&#x3001;ScalaMock&#x3001;Selenium&#x3001;Eclipse&#x3001;Netbeans&#x3001;Intellij&#x3001;VSCode&#x7B49;&#x5DE5;&#x5177;&#x96C6;&#x6210;&#x4F7F;&#x7528;&#x3002;ScalaTest&#x53EF;&#x4F7F;Scala&#x3001;Scala.js&#x6216;&#x8005;Java&#x9879;&#x76EE;&#x7684;&#x6D4B;&#x8BD5;&#x66F4;&#x5BB9;&#x6613;&#xFF0C;&#x62E5;&#x6709;&#x66F4;&#x9AD8;&#x7684;&#x751F;&#x4EA7;&#x529B;&#x6C34;&#x5E73;&#x3002;</p>
+<p>&#x4E3A;&#x4E86;&#x6700;&#x5927;&#x5316;&#x751F;&#x4EA7;&#x529B;&#xFF0C;ScalaTest&#x5185;&#x5EFA;&#x6269;&#x5C55;&#x70B9;&#x5E76;&#x652F;&#x6301;&#x591A;&#x79CD;&#x6D4B;&#x8BD5;&#x65B9;&#x5F0F;&#x3002;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x9009;&#x62E9;&#x6700;&#x9002;&#x5408;&#x6211;&#x4EEC;&#x56E2;&#x961F;&#x7ECF;&#x9A8C;&#x548C;&#x6587;&#x5316;&#x7684;&#x6D4B;&#x8BD5;&#x98CE;&#x683C;&#x3002;&#x6709;&#x4EE5;&#x4E0B;&#x98CE;&#x683C;&#x53EF;&#x4F9B;&#x9009;&#x62E9;&#xFF1A;</p>
+<ul>
+<li>FunSuite&#xFF1A;&#x6765;&#x81EA;xUnit&#x3002;</li>
+<li>FlatSpec&#xFF1A;&#x53E6;&#x4E00;&#x4E2A;&#x6765;&#x81EA;xUnit&#x3002;</li>
+<li>FunSpec&#xFF1A;&#x6765;&#x81EA;Ruby&apos;s RSpec&#x7684;BDD&#x6D4B;&#x8BD5;&#x98CE;&#x683C;&#x3002;</li>
+<li>WordSpec&#xFF1A;&#x6765;&#x81EA;specs&#x3001;specs2&#xFF0C;&#x9002;&#x5408;&#x8BAD;&#x7EC3;&#x6709;&#x7D20;&#x7684;&#x56E2;&#x961F;&#x6765;&#x5B9A;&#x4E49;&#x4E25;&#x683C;&#x7684;&#x6D4B;&#x8BD5;&#x89C4;&#x8303;&#x3002;&#x4E5F;&#x662F;Akka&#x3001;Playframework&#x7B49;&#x63A8;&#x8350;&#x7684;&#x98CE;&#x683C;&#x3002;</li>
+<li>FreeSpec&#xFF1A;&#x9002;&#x5408;&#x6709;&#x7ECF;&#x9A8C;&#x7684;&#x56E2;&#x961F;&#x3002;</li>
+<li>PropSpec&#xFF1A;&#x9002;&#x5408;&#x8FFD;&#x6C42;&#x5B8C;&#x7F8E;&#x7684;&#x56E2;&#x961F;&#xFF0C;&#x9700;&#x8981;&#x524D;&#x7F6E;&#x6D4B;&#x8BD5;&#x6761;&#x4EF6;&#x5B9A;&#x4E49;&#x3002;</li>
+<li>FeatureSpec&#xFF1A;&#x4E3B;&#x8981;&#x7528;&#x4E8E;&#x9A8C;&#x6536;&#x6D4B;&#x8BD5;&#x3002;</li>
+<li>RefSpec&#xFF08;JVM only&#xFF09;&#xFF1A;&#x9700;&#x8981;&#x5B9A;&#x4E49;&#x4E00;&#x4E2A;&#x7279;&#x6B8A;&#x7684;&#x6D4B;&#x8BD5;&#x51FD;&#x6570;&#xFF0C;&#x901A;&#x8FC7;&#x6D4B;&#x8BD5;&#x51FD;&#x6570;&#x5B57;&#x9762;&#x91CF;&#x6765;&#x4EE3;&#x7801;&#x6D4B;&#x8BD5;&#x529F;&#x80FD;&#x3002;</li>
+</ul>
+<h2 id="&#x5B89;&#x88C5;-scalatest">&#x5B89;&#x88C5; ScalaTest</h2>
+<p>ScalaTest&#x7684;&#x5B89;&#x88C5;&#x3001;&#x4F7F;&#x7528;&#x5F88;&#x7B80;&#x5355;&#xFF0C;&#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x5728;&#x547D;&#x4EE4;&#x884C;&#x4F7F;&#x7528;&#xFF0C;&#x5982;&#xFF1A;</p>
+<pre><code>$ scalac -cp scalatest-app_2.12-3.0.5.jar ExampleSpec.scala
+</code></pre><p>&#x4E5F;&#x53EF;&#x4EE5;&#x548C;sbt&#x96C6;&#x6210;&#x4F7F;&#x7528;&#x3002;&#x5BF9;sbt&#x4E0D;&#x4E86;&#x89E3;&#x7684;&#x8BFB;&#x8005;&#x53EF;&#x4EE5;&#x5148;&#x770B;&#xFF1A;<a href="http://www.yangbajing.me/scala-web-development/env.1.html" target="_blank">http://www.yangbajing.me/scala-web-development/env.1.html</a> &#x6765;&#x5FEB;&#x901F;&#x7684;&#x5B66;&#x4E60;sbt&#x7684;&#x4F7F;&#x7528;&#x65B9;&#x6CD5;&#x3002;</p>
+<p>&#x5728;sbt&#x4E2D;&#x6DFB;&#x52A0;ScalaTest&#x652F;&#x6301;&#x975E;&#x5E38;&#x7B80;&#x5355;&#xFF0C;&#x5728;&#x6784;&#x5EFA;&#x914D;&#x7F6E;&#x6587;&#x4EF6;&#xFF08;&#x4E00;&#x822C;&#x662F;build.sbt&#xFF09;&#x4E2D;&#x6DFB;&#x52A0;&#x5E93;&#x4F9D;&#x8D56;&#x5373;&#x53EF;&#x3002;</p>
+<pre><code>libraryDependencies += &quot;org.scalatest&quot; %% &quot;scalatest&quot; % &quot;3.0.5&quot; % &quot;test&quot;
+</code></pre><p>&#x4E4B;&#x540E;&#x91CD;&#x542F;sbt&#x6216;&#x5728;sbt&#x547D;&#x4EE4;&#x884C;&#x63A7;&#x5236;&#x53F0;&#x91CC;&#x8F93;&#x5165;&#xFF1A;<code>reload</code>&#x4EE5;&#x4F7F;&#x5176;&#x751F;&#x6548;&#x3002;</p>
+<h2 id="&#x7B2C;&#x4E00;&#x4E2A;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;">&#x7B2C;&#x4E00;&#x4E2A;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;</h2>
+<pre><code>import scala.collection.mutable
+import org.scalatest._
 
+class FirstTest extends WordSpec with MustMatchers {
+  &quot;A Stack&quot; should {
+    &quot;pop values in last-in-first-out order&quot; in {
+      val stack = mutable.Stack.empty[Int]
+      stack.push(1)
+      stack.push(2)
+      stack.pop() mustBe 2
+      stack.pop() mustBe 1
+    }
+
+    &quot;throw NoSuchElementException if an empty stack is popped&quot; in {
+      val emptyStack = mutable.Stack.empty[Int]
+      assertThrows[NoSuchElementException] {
+        emptyStack.pop()
+      }
+    }
+  }
+}
+</code></pre><p>&#x8FD0;&#x884C;&#x6D4B;&#x8BD5;&#x6709;&#x4E24;&#x79CD;&#x65B9;&#x5F0F;&#xFF1A;</p>
+<ol>
+<li>&#x4F7F;&#x7528;<code>test</code>&#x547D;&#x4EE4;&#x8FD0;&#x884C;&#x6240;&#x6709;&#x6D4B;&#x8BD5;</li>
+<li>&#x4F7F;&#x7528;<code>testOnly</code>&#x547D;&#x4EE4;&#x8FD0;&#x884C;&#x5355;&#x4E2A;&#x6D4B;&#x8BD5;&#x3002;</li>
+</ol>
+<p>&#x5728;sbt&#x4E2D;&#x8F93;&#x5165;<code>testOnly firstFirstTest</code>&#x8FD0;&#x884C;&#x521A;&#x5199;&#x597D;&#x7684;&#x7B2C;&#x4E00;&#x4E2A;&#x6D4B;&#x8BD5;&#xFF0C;&#x7ED3;&#x679C;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code>[IJ]scalatest &gt; testOnly first.FirstTest
+[info] Compiling 1 Scala source to /opt/workspace/scala-applications/scalatest/target/scala-2.12/test-classes ...
+[info] Done compiling.
+[info] FirstTest:
+[info] A Stack
+[info] - should pop values in last-in-first-out order
+[info] - should throw NoSuchElementException if an empty stack is popped
+[info] Run completed in 344 milliseconds.
+[info] Total number of tests run: 2
+[info] Suites: completed 1, aborted 0
+[info] Tests: succeeded 2, failed 0, canceled 0, ignored 0, pending 0
+[info] All tests passed.
+[success] Total time: 2 s, completed 2018-8-2 18:29:14
+</code></pre><h2 id="&#x4F7F;&#x7528;-matchers">&#x4F7F;&#x7528; Matchers</h2>
+<p>&#x9664;&#x4E86;&#x9ED8;&#x8BA4;&#x7684;&#x65AD;&#x8A00;&#x51FD;&#x6570;&#xFF0C;&#x5982;&#xFF1A;<code>assert</code>&#x3001;<code>assertResult</code>&#x3001;<code>assertThrows</code>&#x7B49;&#xFF0C;ScalaTest&#x8FD8;&#x63D0;&#x4F9B;&#x4E86;&#x66F4;&#x597D;&#x7528;&#x7684; <strong>Matchers</strong>&#x3002;<strong>Matchers</strong> &#x5177;&#x6709;&#x4EE5;&#x4E0B;&#x7279;&#x6027;&#xFF1A;</p>
+<ul>
+<li>&#x57FA;&#x4E8E;&#x8868;&#x8FBE;&#x5F0F;&#x65AD;&#x8A00;&#x7684;DSL&#xFF0C;&#x5982;&#xFF1A;<code>stack.pop() mustBe 2</code>&#x3002;&#x66F4;&#x6613;&#x8BFB;&#xFF0C;&#x4EE5;&#x4EBA;&#x7C7B;&#x8BED;&#x8A00;&#x7684;&#x65B9;&#x5F0F;&#x6765;&#x7F16;&#x5199;&#x6D4B;&#x8BD5;&#x65AD;&#x8A00;&#x3002;</li>
+<li>&#x4E30;&#x5BCC;&#x7684;&#x65AD;&#x8A00;&#x7C7B;&#x578B;&#xFF0C;&#x652F;&#x6301;&#x66F4;&#x76F4;&#x89C2;&#x7684;&#x65AD;&#x8A00;&#x8868;&#x8FBE;&#x5F0F;&#xFF0C;&#x5982;&#xFF1A;<code>&quot;abbccxxx&quot; should startWith regex (&quot;a(b*)(c*)&quot; withGroups (&quot;bb&quot;, &quot;cc&quot;))</code>&#x3002;</li>
+</ul>
+<p>&#x53EA;&#x9700;&#x8981;&#x5728;&#x6D4B;&#x8BD5;&#x7C7B;&#x6DF7;&#x5165; <code>MustMatchers</code> &#x7279;&#x8D28;&#xFF0C;&#x5C31;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; ScalaTest &#x63D0;&#x4F9B;&#x7684;&#x5F3A;&#x5927;&#x7684; Matchers &#x7279;&#x6027;&#x3002;</p>
+<h2 id="optionvalues">OptionValues</h2>
+<p>OptionValues&#x7279;&#x8D28;&#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x4E2A;&#x9690;&#x5F0F;&#x8F6C;&#x6362;&#xFF0C;&#x5C06;&#x4E00;&#x4E2A; <code>value</code> &#x65B9;&#x6CD5;&#x6DFB;&#x52A0;&#x5230; <code>Option[T]</code> &#x7C7B;&#x578B;&#x4E0A;&#x3002;&#x82E5; Option &#x662F;&#x6709;&#x5B9A;&#x4E49;&#x7684;&#xFF0C;&#x5219; <code>value</code> &#x65B9;&#x6CD5;&#x5C06;&#x8FD4;&#x56DE;&#x503C;&#xFF0C;&#x5C31;&#x548C;&#x8C03;&#x7528; <code>.get</code> &#x4E00;&#x6837;&#xFF1B;&#x82E5;&#x6CA1;&#x6709;&#xFF0C;&#x5219;&#x629B;&#x51FA; <code>TestFailedException</code> &#x5F02;&#x5E38;&#xFF0C;&#x800C;&#x4E0D;&#x662F;&#x8C03;&#x7528; <code>get</code> &#x65B9;&#x6CD5;&#x65F6;&#x629B;&#x51FA;&#x7684; <code>NoSuchElementException</code> &#x5F02;&#x5E38;&#x3002;&#x540C;&#x65F6;&#xFF0C;ScalaTest&#x4F1A;&#x8F93;&#x51FA;&#x66F4;&#x53CB;&#x597D;&#x7684;&#x9519;&#x8BEF;&#x663E;&#x793A;&#xFF1A;<strong>The Option on which value was invoked was not defined.</strong>&#xFF0C;&#x800C;&#x4E0D;&#x662F;&#x8F93;&#x51FA;&#x4E00;&#x5927;&#x5806;&#x7684;&#x9519;&#x8BEF;&#x5F02;&#x5E38;&#x6808;&#x800C;&#x6253;&#x4E71;&#x6B63;&#x5E38;&#x7684;&#x6D4B;&#x8BD5;&#x8F93;&#x51FA;&#x3002;</p>
+<p><strong>&#x4F7F;&#x7528;<code>.value</code></strong></p>
+<pre><code>[info] FirstTest:
+[info] option
+[info] - should value *** FAILED ***
+[info]   The Option on which value was invoked was not defined. (FirstTest.scala:30)
+[info] Run completed in 418 milliseconds.
+[info] Total number of tests run: 3
+[info] Suites: completed 1, aborted 0
+[info] Tests: succeeded 2, failed 1, canceled 0, ignored 0, pending 0
+[info] *** 1 TEST FAILED ***
+[error] Failed tests:
+[error]     first.FirstTest
+[error] (Test / testOnly) sbt.TestsFailedException: Tests unsuccessful
+</code></pre><p><strong>&#x4F7F;&#x7528;<code>.get</code></strong></p>
+<pre><code>[info] FirstTest:
+[info] option
+[info] - should value *** FAILED ***
+[info]   java.util.NoSuchElementException: None.get
+[info]   at scala.None$.get(Option.scala:349)
+[info]   at scala.None$.get(Option.scala:347)
+[info]   at first.FirstTest.$anonfun$new$6(FirstTest.scala:31)
+[info]   at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:12)
+[info]   at org.scalatest.OutcomeOf.outcomeOf(OutcomeOf.scala:85)
+[info]   at org.scalatest.OutcomeOf.outcomeOf$(OutcomeOf.scala:83)
+[info]   at org.scalatest.OutcomeOf$.outcomeOf(OutcomeOf.scala:104)
+[info]   at org.scalatest.Transformer.apply(Transformer.scala:22)
+[info]   at org.scalatest.Transformer.apply(Transformer.scala:20)
+[info]   at org.scalatest.WordSpecLike$$anon$1.apply(WordSpecLike.scala:1078)
+[info]   ...
+[info] Run completed in 211 milliseconds.
+[info] Total number of tests run: 3
+[info] Suites: completed 1, aborted 0
+[info] Tests: succeeded 2, failed 1, canceled 0, ignored 0, pending 0
+[info] *** 1 TEST FAILED ***
+[error] Failed tests:
+[error]     first.FirstTest
+[error] (Test / testOnly) sbt.TestsFailedException: Tests unsuccessful
+</code></pre><h2 id="scalafutures">ScalaFutures</h2>
+<p>ScalaTest&#x652F;&#x6301;&#x5BF9;&#x5F02;&#x6B65;&#x4EE3;&#x7801;&#x8FDB;&#x884C;&#x963B;&#x585E;&#x6D4B;&#x8BD5;&#x3002;&#x63D0;&#x4F9B;&#x4E86;&#x9690;&#x5F0F;&#x65B9;&#x6CD5; <code>futureValue</code> &#x6765;&#x4ECE; <code>Future[T]</code> &#x4E2D;&#x963B;&#x585E;&#x83B7;&#x53D6;&#x7ED3;&#x679C;&#x3002;</p>
+<pre><code>override implicit def patienceConfig = PatienceConfig(Span(60, Seconds), Span(50, Millis))
+
+  &quot;future&quot; should {
+    &quot;await result === 3&quot; in {
+      import scala.concurrent.ExecutionContext.Implicits.global
+      val f = Future{
+        Thread.sleep(1000)
+        3
+      }
+      val result = f.futureValue
+      result mustBe 3
+    }
+  }
+</code></pre><p>&#x4E0A;&#x9762;&#x4EE3;&#x7801;&#x7684;&#x8FD0;&#x884C;&#x6548;&#x679C;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code>[info] FirstTest:
+[info] future
+[info] - should await result === 3
+[info] Run completed in 1 second, 169 milliseconds.
+[info] Total number of tests run: 1
+[info] Suites: completed 1, aborted 0
+[info] Tests: succeeded 1, failed 0, canceled 0, ignored 0, pending 0
+[info] All tests passed.
+</code></pre><h2 id="mock">Mock</h2>
+<p>ScalaTest&#x4E3A;&#x4EE5;&#x4E0B;4&#x79CD;Mock&#x63D0;&#x4F9B;&#x4E86;&#x539F;&#x751F;&#x7684;&#x652F;&#x6301;&#xFF1A;</p>
+<ol>
+<li><a href="http://www.scalamock.org/" target="_blank">ScalaMock</a></li>
+<li>EasyMock</li>
+<li>JMock</li>
+<li>Mockito</li>
+</ol>
+<p>&#x8FD9;&#x91CC;&#x5148;&#x7B80;&#x5355;&#x4ECB;&#x7ECD;&#x4E0B; <strong>ScalaMock</strong>&#x3002;</p>
+<p>ScalaMock&#x662F;&#x7531; Paul Butcher &#x7F16;&#x5199;&#x7684;&#x4E00;&#x4E2A;&#x539F;&#x751F;&#x7684;&#x5F00;&#x6E90;Scala Mocking&#x6846;&#x67B6;&#xFF0C;&#x5141;&#x8BB8;&#x6A21;&#x62DF;&#x5BF9;&#x8C61;&#x548C;&#x51FD;&#x6570;&#x3002;ScalaMock&#x652F;&#x6301;3&#x79CD;&#x4E0D;&#x540C;&#x7684;&#x6A21;&#x62DF;&#x98CE;&#x683C;&#xFF1A;</p>
+<ul>
+<li>&#x51FD;&#x6570;&#x6A21;&#x62DF;&#xFF08;Function mocks&#xFF09;</li>
+<li>&#x4EE3;&#x7406;&#xFF08;&#x52A8;&#x6001;&#xFF09;&#x6A21;&#x62DF;&#xFF08;Proxy (dynamic) mocks&#xFF09;</li>
+<li>&#x751F;&#x6210;&#x7C7B;&#x578B;&#x5B89;&#x5168;&#x6A21;&#x62DF;&#xFF08;Generated (type-safe) mocks&#xFF09;</li>
+</ul>
+<p><strong>&#x51FD;&#x6570;&#x6A21;&#x62DF;</strong></p>
+<pre><code>  &quot;scalamock&quot; should {
+    &quot;function mock&quot; in {
+      val m = mockFunction[Int, String]
+      m expects 42 returning &quot;Forty two&quot;
+      m(42) mustBe &quot;Forty two&quot;
+    }
+  }
+</code></pre><p>&#x8FD9;&#x91CC;&#x6211;&#x4EEC;&#x6A21;&#x62DF;&#x4E86;&#x4E00;&#x4E2A;&#x51FD;&#x6570; <code>m</code>&#xFF0C;&#x5B83;&#x63A5;&#x53D7;&#x4E00;&#x4E2A;Int&#x53C2;&#x6570;&#x5E76;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x5B57;&#x7B26;&#x4E32;&#x503C;&#x3002;&#x8FD9;&#x91CC;&#x770B;&#x5230;&#xFF0C;&#x6211;&#x4EEC;&#x5E76;&#x6CA1;&#x6709;&#x5B9E;&#x9645;&#x5B9A;&#x4E49;&#x8FD9;&#x6837;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#xFF0C;&#x800C;&#x662F;&#x4F7F;&#x7528; <code>m expects 42 returning &quot;Forty two&quot;</code> &#x58F0;&#x660E;&#x4E86;&#x8FD9;&#x4E2A;&#x6A21;&#x62DF;&#x671F;&#x5F85;&#x4E00;&#x4E2A;&#x8F93;&#x5165;&#x503C;&#xFF1A;42&#xFF0C;&#x5E76;&#x8FD4;&#x56DE;&#x7ED3;&#x679C;&#x5B57;&#x7B26;&#x4E32;&#xFF1A;<code>Forty row</code>&#x3002;&#x6267;&#x884C;&#x8FD9;&#x4E2A;&#x6D4B;&#x8BD5;&#xFF0C;&#x8FD0;&#x884C;&#x6548;&#x679C;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code>[info] FirstTest:
+[info] scalamock
+[info] - should function mock
+[info] Run completed in 211 milliseconds.
+[info] Total number of tests run: 1
+[info] Suites: completed 1, aborted 0
+[info] Tests: succeeded 1, failed 0, canceled 0, ignored 0, pending 0
+[info] All tests passed.
+</code></pre>
                                 
                                 </section>
                             
@@ -669,7 +845,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Scalatest","level":"1.5.1","depth":2,"next":{"title":"测试异步代码","level":"1.5.2","depth":2,"path":"test.2.md","ref":"test.2.md","articles":[]},"previous":{"title":"测试","level":"1.5","depth":1,"path":"test.0.md","ref":"test.0.md","articles":[{"title":"Scalatest","level":"1.5.1","depth":2,"path":"test.1.md","ref":"test.1.md","articles":[]},{"title":"测试异步代码","level":"1.5.2","depth":2,"path":"test.2.md","ref":"test.2.md","articles":[]},{"title":"端到端测试Route","level":"1.5.3","depth":2,"path":"test.3.md","ref":"test.3.md","articles":[]},{"title":"小结","level":"1.5.4","depth":2,"path":"test.z.md","ref":"test.z.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"test.1.md","mtime":"2018-05-07T10:15:56.940Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-07T10:32:22.496Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Scalatest","level":"1.5.1","depth":2,"next":{"title":"测试异步代码","level":"1.5.2","depth":2,"path":"test.2.md","ref":"test.2.md","articles":[]},"previous":{"title":"测试","level":"1.5","depth":1,"path":"test.0.md","ref":"test.0.md","articles":[{"title":"Scalatest","level":"1.5.1","depth":2,"path":"test.1.md","ref":"test.1.md","articles":[]},{"title":"测试异步代码","level":"1.5.2","depth":2,"path":"test.2.md","ref":"test.2.md","articles":[]},{"title":"端到端测试Route","level":"1.5.3","depth":2,"path":"test.3.md","ref":"test.3.md","articles":[]},{"title":"小结","level":"1.5.4","depth":2,"path":"test.z.md","ref":"test.z.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"test.1.md","mtime":"2018-08-06T15:43:54.088Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-08-06T15:54:20.226Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

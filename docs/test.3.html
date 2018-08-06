@@ -575,6 +575,19 @@
             
         </li>
     
+        <li class="chapter " data-level="1.8.2" data-path="appendix.x.html">
+            
+                <a href="appendix.x.html">
+            
+                    
+                    赞助
+            
+                </a>
+            
+
+            
+        </li>
+    
 
             </ul>
             
@@ -626,6 +639,42 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="&#x7AEF;&#x5230;&#x7AEF;&#x6D4B;&#x8BD5;route">&#x7AEF;&#x5230;&#x7AEF;&#x6D4B;&#x8BD5;Route</h1>
+<h2 id="akka-http">Akka HTTP</h2>
+<p>&#x8FD9;&#x91CC;&#x6211;&#x4EEC;&#x5C06;&#x4F7F;&#x7528; Akka HTTP&#x6765;&#x5F00;&#x53D1;&#x4E00;&#x4E2A;&#x5F88;&#x7B80;&#x5355;&#x7684;&#x4E1A;&#x52A1;&#x5E94;&#x7528;&#xFF1A;&#x7EC4;&#x7EC7;&#x7BA1;&#x7406;&#x3002;&#x5B83;&#x53EA;&#x6709;&#x4E00;&#x4E2A;&#x6570;&#x636E;&#x6A21;&#x578B;&#xFF0C;<strong>Org</strong>&#x3002;&#x7EC4;&#x7EC7;&#x652F;&#x6301;&#x6811;&#x578B;&#x7ED3;&#x6784;&#xFF0C;&#x6240;&#x6709;&#x6BCF;&#x4E2A; org &#x91CC;&#x9762;&#x90FD;&#x53EF;&#x4EE5;&#x6709;&#x4E00;&#x4E2A;&#x53EF;&#x9009; <code>parent</code> &#x5C5E;&#x6027;&#x6765;&#x6307;&#x5411;&#x7236;&#x7EC4;&#x7EC7;&#xFF0C;&#x82E5;&#x6CA1;&#x6709;&#x5219;&#x4EE3;&#x8868;&#x6B64; org &#x662F;&#x4E2A;&#x4E00;&#x7EA7;&#x7EC4;&#x7EC7;&#x3002;Org &#x7684;&#x6570;&#x636E;&#x6A21;&#x578B;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-scala"><span class="hljs-keyword">case</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Org</span>(<span class="hljs-params">
+  id <span class="hljs-type">Int</span>,  // <span class="hljs-type">PK</span>
+  code <span class="hljs-type">Option</span>[<span class="hljs-type">String</span>], // &#x7EC4;&#x7EC7;&#x7F16;&#x7801;&#xFF0C;&#x53EF;&#x9009;&#x503C;&#x3002;<span class="hljs-type">Unique</span> index
+  name <span class="hljs-type">String</span>,
+  contact: <span class="hljs-type">String</span>,
+  parent <span class="hljs-type">Option</span>[<span class="hljs-type">String</span>], // &#x7236;&#x7EC4;&#x7EC7;
+  parents <span class="hljs-type">List</span>[<span class="hljs-type">String</span>], // &#x7236;&#x7EC4;&#x7EC7;&#x5168;&#x8DEF;&#x5F84;
+  status: <span class="hljs-type">Int</span>,
+  createdAt <span class="hljs-type">OffsetDateTime</span>,
+  updatedAt <span class="hljs-type">Option</span>[<span class="hljs-type">OffsetDateTime</span>]
+</span>)</span>
+</code></pre>
+<p>&#x4E1A;&#x52A1;&#x6D41;&#x7A0B;&#x4E0A;&#xFF0C;&#x5BF9;&#x4E00;&#x4E2A; Org &#x6A21;&#x578B;&#x7684;&#x64CD;&#x4F5C;&#x6211;&#x4EEC;&#x8BBE;&#x8BA1;&#x5982;&#x4E0B;&#x7684;&#x7B80;&#x5355;&#x6D41;&#x7A0B;&#xFF1A;</p>
+<pre><code>OrgRoute -&gt; OrgService -&gt; OrgRepository
+</code></pre><p><code>OrgRoute</code> &#x662F;&#x4E00;&#x4E2A;&#x4F7F;&#x7528; <strong>Akka HTTP Routing DSL</strong> &#x6765;&#x5B9A;&#x4E49;&#x5B9E;&#x73B0;&#x7684;&#x8DEF;&#x7531;&#xFF08;&#x4ECE;MVC&#x67B6;&#x6784;&#x672F;&#x8BED;&#x6765;&#x8BF4;&#xFF0C;&#x5C31;&#x662F;&#x63A7;&#x5236;&#x5668;&#xFF08;Controller&#xFF09;&#xFF09;&#x3002;&#x4ECE;&#x8FD9;&#x4E2A;&#x7B80;&#x5355;&#x7684;&#x793A;&#x4F8B;&#x6765;&#x8BF4;&#xFF0C;&#x5B83;&#x62E5;&#x6709;&#x5982;&#x4E0B;&#x63A5;&#x53E3;&#xFF1A;</p>
+<ul>
+<li><strong>createRoute</strong>&#xFF1A;&#x521B;&#x5EFA; Org</li>
+<li><strong>getRoute</strong>&#xFF1A;&#x6839;&#x636E;id&#x6216;code&#x83B7;&#x53D6; Org</li>
+<li><strong>pageRoute</strong>&#xFF1A;&#x5206;&#x9875;&#x67E5;&#x8BE2;</li>
+<li><strong>updateRoute</strong>&#xFF1A;&#x66F4;&#x65B0; Org</li>
+<li><strong>removeRoute</strong>&#xFF1A;&#x6839;&#x636E;id&#x5220;&#x9664; Org</li>
+</ul>
+<p>&#x73B0;&#x5728;&#xFF0C;&#x6211;&#x4EEC;&#x5DF2;&#x7ECF;&#x8BBE;&#x8BA1;&#x597D;&#x4E86;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x7684;5&#x4E2A;&#x63A5;&#x53E3;&#xFF08;&#x540D;&#x5B57;&#xFF09;&#xFF0C;&#x63A5;&#x4E0B;&#x6765;&#x9700;&#x8981;&#x5B9A;&#x4E49;&#x5177;&#x4F53;&#x7684;&#x63A5;&#x53E3;&#x548C;&#x5B9E;&#x73B0;&#x3002;&#x8FD9;&#x91CC;&#xFF0C;&#x6211;&#x4EEC;&#x5148;&#x4ECE;&#x6D4B;&#x8BD5;&#x5F00;&#x59CB;&#x3002;</p>
+<h2 id="akka-http-testkit">akka-http-testkit</h2>
+<p>Akka HTTP &#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x4E2A;&#x6D4B;&#x8BD5;&#x5957;&#x4EF6;&#x6765;&#x7B80;&#x5316;&#x5BF9; Akka HTTP &#x548C; Akka HTTP Routing DSL&#x7684;&#x6D4B;&#x8BD5;&#xFF0C;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x5728; sbt &#x914D;&#x7F6E;&#x91CC;&#x52A0;&#x4E0A;&#x5BF9;&#x5E94;&#x7684;&#x5E93;&#x4F9D;&#x8D56;&#xFF1A;</p>
+<pre><code>libraryDependencies += &quot;com.typesafe.akka&quot; %% &quot;akka-http-testkit&quot; % &quot;2.5.14&quot; % Test
+</code></pre><p>&#x5B9A;&#x4E49;&#x4E00;&#x4E2A; Akka HTTP Routing DSL &#x7684;&#x6D4B;&#x8BD5;&#x7C7B;&#xFF0C;&#x9700;&#x8981;&#x6DF7;&#x5165; <code>ScalatestRouteTest</code> &#x7279;&#x8D28;&#xFF0C;&#x5B83;&#x63D0;&#x4F9B;&#x4E86;&#x5BF9; Route DSL &#x7684;&#x4E00;&#x7CFB;&#x5217;&#x6D4B;&#x8BD5;&#x8F85;&#x52A9;&#x51FD;&#x6570;&#x3002;</p>
+<h2 id="orgroutetest">OrgRouteTest</h2>
+<p>&#x73B0;&#x5728;&#xFF0C;&#x6211;&#x4EEC;&#x4ECE; <strong>OrgRouteTest</strong> &#x5F00;&#x59CB;&#xFF0C;&#x901A;&#x8FC7; <strong style="color:red">&#x7EA2;</strong>-<strong style="color:green">&#x7EFF;</strong>-<strong style="color:red">&#x7EA2;</strong>-<strong style="color:green">&#x7EFF;</strong>&#x8FD9;&#x6837;&#x7684;&#x6D4B;&#x8BD5;&#x5FAA;&#x73AF;&#x6765;&#x9A8C;&#x8BC1;&#x5E76;&#x4E00;&#x6B65;&#x4E00;&#x6B65;&#x5B9E;&#x73B0;&#x5BF9; Org &#x7684;&#x5404;&#x9879;&#x63A5;&#x53E3;&#x529F;&#x80FD;&#x3002;</p>
+<p>&#x9996;&#x5148;&#xFF0C;&#x8BA9;&#x6211;&#x4EEC;&#x6765;&#x770B;&#x770B;&#x8FD9;&#x4E2A; OrgRouteTest &#x7C7B;&#xFF1A;</p>
+<pre><code class="lang-scala"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">OrgRouteTest</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">WordSpec</span> <span class="hljs-keyword">with</span> <span class="hljs-title">MustMatchers</span> <span class="hljs-keyword">with</span> <span class="hljs-title">OptionValues</span> <span class="hljs-keyword">with</span> <span class="hljs-title">ScalatestRouteTest</span> </span>{
+
+}
+</code></pre>
 
                                 
                                 </section>
@@ -669,7 +718,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"端到端测试Route","level":"1.5.3","depth":2,"next":{"title":"小结","level":"1.5.4","depth":2,"path":"test.z.md","ref":"test.z.md","articles":[]},"previous":{"title":"测试异步代码","level":"1.5.2","depth":2,"path":"test.2.md","ref":"test.2.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"test.3.md","mtime":"2018-05-07T10:15:56.940Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-05-07T10:32:22.496Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"端到端测试Route","level":"1.5.3","depth":2,"next":{"title":"小结","level":"1.5.4","depth":2,"path":"test.z.md","ref":"test.z.md","articles":[]},"previous":{"title":"测试异步代码","level":"1.5.2","depth":2,"path":"test.2.md","ref":"test.2.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"test.3.md","mtime":"2018-08-06T15:44:58.205Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-08-06T15:54:20.226Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
