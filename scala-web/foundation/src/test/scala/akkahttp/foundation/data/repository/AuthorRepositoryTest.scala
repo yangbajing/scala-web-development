@@ -5,8 +5,8 @@ import me.yangbajing.MeSpec
 import me.yangbajing.jdbc.JDBCSpec
 
 /**
-  * Created by yangbajing(yangbajing@gmail.com) on 2017-04-19.
-  */
+ * Created by yangbajing(yangbajing@gmail.com) on 2017-04-19.
+ */
 class AuthorRepositoryTest extends MeSpec with JDBCSpec {
 
   "AuthorRepositoryTest" should {

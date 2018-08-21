@@ -3,9 +3,9 @@ package me.yangbajing.redis
 import com.redis.{RedisClient, RedisClientPool}
 
 /**
-  * Redis访问组件
-  * Created by yangbajing(yangbajing@gmail.com) on 2017-04-24.
-  */
+ * Redis访问组件
+ * Created by yangbajing(yangbajing@gmail.com) on 2017-04-24.
+ */
 class RedisSession(val pool: RedisClientPool) {
 
   def withClient[T](body: RedisClient => T): T = pool.withClient(body)

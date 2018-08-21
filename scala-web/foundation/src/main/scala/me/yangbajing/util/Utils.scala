@@ -6,8 +6,8 @@ import java.security.SecureRandom
 import scala.util.matching.Regex
 
 /**
-  * Created by yangbajing(yangbajing@gmail.com) on 2017-04-24.
-  */
+ * Created by yangbajing(yangbajing@gmail.com) on 2017-04-24.
+ */
 object Utils {
 
   val REGEX_DIGIT: Regex = """[\d,]+""".r
@@ -17,9 +17,8 @@ object Utils {
 
   def isNoneBlank(content: String): Boolean = !isBlank(content)
 
-  def isBlank(content: String): Boolean = {
+  def isBlank(content: String): Boolean =
     content == null || content.isEmpty || content.forall(Character.isWhitespace)
-  }
 
   def byteBufferToArray(buf: ByteBuffer): Array[Byte] = {
     val dst = new Array[Byte](buf.remaining())

@@ -9,8 +9,8 @@ import me.yangbajing.jdbc.JdbcTemplate
 import scala.collection.mutable
 
 /**
-  * Created by yangbajing(yangbajing@gmail.com) on 2017-04-19.
-  */
+ * Created by yangbajing(yangbajing@gmail.com) on 2017-04-19.
+ */
 class AuthorRepository(dataSource: DataSource) {
   val jdbcTemplate = JdbcTemplate(dataSource)
 
@@ -53,19 +53,20 @@ class AuthorRepository(dataSource: DataSource) {
 
 object AuthorRepository {
 
-  def generateResult(result: Map[String, AnyRef]): Author = {
-    Author(result("id").asInstanceOf[Long],
+  def generateResult(result: Map[String, AnyRef]): Author =
+    Author(
+      result("id").asInstanceOf[Long],
       result("name").asInstanceOf[String],
       result.get("age").map(_.asInstanceOf[Int]),
-      result.get("remark").map(_.asInstanceOf[String]))
-  }
+      result.get("remark").map(_.asInstanceOf[String])
+    )
 
   /**
-    * 获取有效的数据库查询字段名列表和参数值列表
-    *
-    * @param author Author实例
-    * @return
-    */
+   * 获取有效的数据库查询字段名列表和参数值列表
+   *
+   * @param author Author实例
+   * @return
+   */
   def generateArgs(author: Author): (mutable.Buffer[String], mutable.Buffer[Object]) = {
     val names = mutable.Buffer.empty[String]
     val args = mutable.Buffer.empty[Object]

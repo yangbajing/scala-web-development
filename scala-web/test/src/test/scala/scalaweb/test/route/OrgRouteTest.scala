@@ -1,27 +1,35 @@
 package scalaweb.test.route
 
 import akka.http.scaladsl.model.StatusCodes
+import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.{BeforeAndAfterAll, MustMatchers, OptionValues, WordSpec}
 import scalaweb.model.{Org, OrgCreateReq}
-import scalaweb.respository.{OrgRepository, Schema}
+import scalaweb.respository.{OrgRepo, Schema}
 import scalaweb.service.OrgService
 
-class OrgRouteTest extends WordSpec with BeforeAndAfterAll with ScalatestRouteTest with MustMatchers with OptionValues with ScalaFutures {
+import scala.util.control.NonFatal
 
+class OrgRouteTest
+    extends WordSpec
+    with BeforeAndAfterAll
+    with ScalatestRouteTest
+    with MustMatchers
+    with OptionValues
+    with ScalaFutures {
+
+  private val schema = Schema()
   private var orgIds: Set[Int] = Set()
-  private val schema = new Schema()
-  private val orgService = new OrgService(schema)
-  private val route = new OrgRoute(orgService).route
+  private val route: Route = new OrgRoute(new OrgService(schema)).route
 
   "OrgRoute" should {
-    import com.helloscala.jackson.JacksonSupport._
+    import helloscala.http.JacksonSupport._
 
     var org: Org = null
 
     "create" in {
-      val req = OrgCreateReq(Some("000001"), "测试组织", None)
+      val req = OrgCreateReq(Some("000001"), "测试组织", None, None)
       Post("/org/item", req) ~> route ~> check {
         status mustBe StatusCodes.Created
         org = responseAs[Org]
@@ -49,13 +57,16 @@ class OrgRouteTest extends WordSpec with BeforeAndAfterAll with ScalatestRouteTe
     }
   }
 
-  private def cleanup() {
-    val orgRepository = new OrgRepository(schema)
-    orgRepository.removeByIds(orgIds).futureValue
-  }
+  private def cleanup(): Unit =
+    try {
+      schema.runTransaction(OrgRepo.removeByIds(orgIds)).futureValue
+    } catch {
+      case NonFatal(e) => e.printStackTrace()
+    }
 
   override def afterAll() {
     cleanup()
+    schema.db.close()
     super.afterAll()
   }
 

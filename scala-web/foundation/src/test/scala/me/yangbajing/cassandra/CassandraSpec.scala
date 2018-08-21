@@ -3,8 +3,8 @@ package me.yangbajing.cassandra
 import org.scalatest.{BeforeAndAfterAll, Suite}
 
 /**
-  * Created by yangbajing(yangbajing@gmail.com) on 2017-04-24.
-  */
+ * Created by yangbajing(yangbajing@gmail.com) on 2017-04-24.
+ */
 trait CassandraSpec extends BeforeAndAfterAll {
   this: Suite =>
 

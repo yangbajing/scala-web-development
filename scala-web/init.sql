@@ -32,6 +32,18 @@ create table author (
   updated_at  timestamptz
 );
 
+create table t_org (
+  id         serial constraint t_org_pk primary key,
+  code       varchar(48),
+  name       varchar(64) not null,
+  contact    jsonb       not null default '{}',
+  parent     int,
+  parents    int []      not null default '{}',
+  status     int         not null,
+  created_at timestamptz not null,
+  updated_at timestamptz
+);
+
 -- change tables, views, sequences owner to scala
 DO $$DECLARE r record;
 BEGIN

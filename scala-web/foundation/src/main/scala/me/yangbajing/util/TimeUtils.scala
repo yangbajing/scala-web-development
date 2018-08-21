@@ -22,11 +22,11 @@ class TimeUtils extends Serializable {
   def now(): LocalDateTime = LocalDateTime.now()
 
   /**
-    * 解析字符串为 LocalDate
-    *
-    * @param date 字符串形式日期
-    * @return 成功返回 LocalDate
-    */
+   * 解析字符串为 LocalDate
+   *
+   * @param date 字符串形式日期
+   * @return 成功返回 LocalDate
+   */
   def toLocalDate(date: String): LocalDate =
     Try(LocalDate.parse(date, formatterDate)) getOrElse {
       val (year, month, day) = date.split("""[-:]""") match {
@@ -47,11 +47,11 @@ class TimeUtils extends Serializable {
     }
 
   /**
-    * 解析字符串为 LocalTime
-    *
-    * @param time 字符串形式时间
-    * @return 成功返回 LocalTime
-    */
+   * 解析字符串为 LocalTime
+   *
+   * @param time 字符串形式时间
+   * @return 成功返回 LocalTime
+   */
   def toLocalTime(time: String): LocalTime =
     Try(LocalTime.parse(time, formatterTime)) getOrElse {
       val (hour, minute, second, nano) =
@@ -75,12 +75,12 @@ class TimeUtils extends Serializable {
     }
 
   /**
-    * 解析字符串为 LocalDateTime
-    *
-    * @param date 字符串形式日期
-    * @param time 字符串形式时间
-    * @return 成功返回 LocalDateTime
-    */
+   * 解析字符串为 LocalDateTime
+   *
+   * @param date 字符串形式日期
+   * @param time 字符串形式时间
+   * @return 成功返回 LocalDateTime
+   */
   def toLocalDateTime(date: String, time: String): LocalDateTime = {
     val d = toLocalDate(date)
     val t = toLocalTime(time)
@@ -88,14 +88,14 @@ class TimeUtils extends Serializable {
   }
 
   /**
-    * 解析字符串为 LocalDateTime
-    *
-    * @param datetime 字符串形式日期时间
-    * @return 成功返回 LocalDateTime
-    */
+   * 解析字符串为 LocalDateTime
+   *
+   * @param datetime 字符串形式日期时间
+   * @return 成功返回 LocalDateTime
+   */
   def toLocalDateTime(datetime: String): LocalDateTime =
     Try(LocalDateTime.parse(datetime, formatterDateTime)) getOrElse {
-      datetime.split( """[ Tt]+""") match {
+      datetime.split("""[ Tt]+""") match {
         case Array(date, time) =>
           toLocalDateTime(date, time)
         case Array(dOrT) =>
@@ -107,9 +107,8 @@ class TimeUtils extends Serializable {
 
   val DateKeys = List("年", "月")
 
-  private def containsDateKeys(dOrT: String) = {
+  private def containsDateKeys(dOrT: String) =
     DateKeys.exists(v => dOrT.contains(v))
-  }
 
   def toLocalDateTime(instant: Instant): LocalDateTime =
     LocalDateTime.ofInstant(instant, ZONE_CHINA_OFFSET)
@@ -117,10 +116,9 @@ class TimeUtils extends Serializable {
   def toLocalDateTime(epochMilli: Long): LocalDateTime =
     LocalDateTime.ofInstant(Instant.ofEpochMilli(epochMilli), ZONE_CHINA_OFFSET)
 
-  def toLocalDateTime(date: Date): LocalDateTime = {
+  def toLocalDateTime(date: Date): LocalDateTime =
     if (date eq null) null
     else LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime), ZONE_CHINA_OFFSET)
-  }
 
   def toDate(ldt: LocalDateTime): Date = new Date(ldt.toInstant(ZONE_CHINA_OFFSET).toEpochMilli)
 
@@ -135,17 +133,15 @@ class TimeUtils extends Serializable {
   def toSqlDate(date: LocalDate) = new SQLDate(toEpochMilli(date.atStartOfDay()))
 
   /**
-    * @return 一天的开始：
-    */
+   * @return 一天的开始：
+   */
   def nowBegin(): LocalDateTime = LocalDate.now().atTime(0, 0, 0, 0)
 
   /**
-    * @return 一天的结尾：
-    */
+   * @return 一天的结尾：
+   */
   def nowEnd(): LocalDateTime = LocalTime.of(23, 59, 59, 999999999).atDate(LocalDate.now())
 
 }
 
-object TimeUtils extends TimeUtils {
-
-}
+object TimeUtils extends TimeUtils {}

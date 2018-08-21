@@ -1,4 +1,4 @@
-package com.helloscala.jackson;
+package helloscala.common.json;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonParser;

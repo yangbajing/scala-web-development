@@ -1,4 +1,4 @@
-package com.helloscala.jackson;
+package helloscala.common.json;
 
 import akka.Done;
 import akka.http.javadsl.marshalling.Marshaller;

@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package message;
+
+enum CommonStatus {
+    DISABLE = 0;
+    ENABLE = 1;
+}

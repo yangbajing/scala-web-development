@@ -4,11 +4,12 @@ import com.datastax.driver.core.{Cluster, DataType}
 import com.datastax.driver.extras.codecs.jdk8.{InstantCodec, LocalDateCodec, LocalTimeCodec, ZonedDateTimeCodec}
 import me.yangbajing.cassandra.codec.LocalDateTimeCodec
 
-case class CassandraConf(nodes: Seq[String],
-                         clusterName: String,
-                         username: Option[String],
-                         password: Option[String],
-                         keyspace: Option[String])
+case class CassandraConf(
+    nodes: Seq[String],
+    clusterName: String,
+    username: Option[String],
+    password: Option[String],
+    keyspace: Option[String])
 
 object CassandraHelper {
 
@@ -16,8 +17,8 @@ object CassandraHelper {
     getCluster(CassandraConf(nodes, clusterName, None, None, None))
 
   /**
-    * 获得 Cassandra 连接 Cluster
-    */
+   * 获得 Cassandra 连接 Cluster
+   */
   def getCluster(c: CassandraConf): Cluster = {
     val cluster = Cluster.builder.addContactPoints(c.nodes: _*).withClusterName(c.clusterName).build
     val tupleType = cluster.getMetadata.newTupleType(DataType.timestamp, DataType.varchar)

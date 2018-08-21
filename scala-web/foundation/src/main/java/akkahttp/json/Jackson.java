@@ -19,7 +19,6 @@ public class Jackson {
                     .configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true)
                     .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                     .disable(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS)
-                    .disable(SerializationFeature.WRITE_NULL_MAP_VALUES)
                     .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
                     .configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false)
                     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

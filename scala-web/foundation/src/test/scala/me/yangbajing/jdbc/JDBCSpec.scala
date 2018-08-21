@@ -4,8 +4,8 @@ import org.postgresql.ds.PGSimpleDataSource
 import org.scalatest.{BeforeAndAfterAll, Suite}
 
 /**
-  * Created by yangbajing(yangbajing@gmail.com) on 2017-04-19.
-  */
+ * Created by yangbajing(yangbajing@gmail.com) on 2017-04-19.
+ */
 trait JDBCSpec extends BeforeAndAfterAll {
   this: Suite =>
 

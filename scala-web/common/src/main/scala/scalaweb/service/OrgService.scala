@@ -1,16 +1,19 @@
 package scalaweb.service
 
-import scalaweb.model.{Org, OrgCreateReq}
-import scalaweb.respository.{OrgRepository, Schema}
+import scalaweb.model.{Org, OrgCreateReq, OrgPageReq, OrgPageResp}
+import scalaweb.respository.{OrgRepo, Schema}
 
 import scala.concurrent.Future
 
 class OrgService(schema: Schema) {
+  import schema._
 
-  private val orgRepository= new OrgRepository(schema)
+  def page(req: OrgPageReq): Future[OrgPageResp] = run(OrgRepo.page(req))
 
-  def create(req: OrgCreateReq): Future[Org] = {
-    ???
-  }
+  def getById(orgId: Int): Future[Option[Org]] = run(OrgRepo.getById(orgId))
+
+  def create(req: OrgCreateReq): Future[Org] = runTransaction(OrgRepo.create(req))
+
+  def removeByIds(ids: Iterable[Int]): Future[Int] = runTransaction(OrgRepo.removeByIds(ids))
 
 }

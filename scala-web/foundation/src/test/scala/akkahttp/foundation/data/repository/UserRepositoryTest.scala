@@ -8,8 +8,8 @@ import me.yangbajing.cassandra.CassandraSpec
 import me.yangbajing.util.SecurityUtils
 
 /**
-  * Created by yangbajing(yangbajing@gmail.com) on 2017-04-24.
-  */
+ * Created by yangbajing(yangbajing@gmail.com) on 2017-04-24.
+ */
 class UserRepositoryTest extends MeSpec with CassandraSpec {
   private var userRepository: UserRepository = _
 
