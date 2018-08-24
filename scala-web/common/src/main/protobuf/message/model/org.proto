@@ -1,5 +1,5 @@
 syntax = "proto3";
 
-package message;
+package message.model;
 
 

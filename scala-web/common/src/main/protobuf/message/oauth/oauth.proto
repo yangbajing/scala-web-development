@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package message.oauth;
+
+message AuthorizeSigninRequest {
+    string account = 1;
+    string password = 2;
+    string responseType = 3;
+    string clientId = 4;
+    string redirectUri = 5;
+    string scope = 6;
+    string state = 7;
+}
+
+message AuthorizeTokenRequest {
+    string grantType = 1;
+    string clientId = 2;
+    string clientKey = 3;
+    string code = 4;
+    string redirectUri = 5;
+    string echostr = 6;
+}
+
+message AccessToken {
+    string accessToken = 1;
+    int64 expiresIn = 2;
+    string refreshToken = 3;
+};
+
+message AccessSession {
+    int64 userId = 1;
+}

@@ -8,6 +8,7 @@ scalafmtOnCompile in ThisBuild := true
 lazy val root = Project("scala-web-root", file("."))
   .aggregate(
     test,
+    oauth,
     foundation,
     database,
     common
@@ -20,6 +21,14 @@ lazy val test = project
   .settings(
     libraryDependencies ++= Seq(
       )
+  )
+
+lazy val oauth = project.in(file("oauth"))
+  .dependsOn(common % "compile->compile;test->test")
+  .settings(basicSettings: _*)
+  .settings(
+    libraryDependencies ++= Seq(
+    )
   )
 
 lazy val foundation = project
