@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>集合 · Scala Web 开发</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='book'/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/normalize.css/normalize.css"/>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Scala Web 开发
+</a>
+<div class="version-number">
+1.0.0
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../preface.html" class="page">Scala Web 开发 &ndash; 使用 Akka HTTP</a></li>
+  <li><a href="../env/index.html" class="page">Scala 环境配置</a>
+  <ul>
+    <li><a href="../env/env.1.html" class="page">Sbt</a></li>
+    <li><a href="../env/env.2.html" class="page">IDE开发工具</a></li>
+    <li><a href="../env/env.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../scala/index.html" class="page">Scala 语言基础</a>
+  <ul>
+    <li><a href="../scala/scala.0.html" class="page">REPL</a></li>
+    <li><a href="../scala/scala.1.html" class="page">你好，Scala</a></li>
+    <li><a href="../scala/scala.2.html" class="page">Scala基础</a></li>
+    <li><a href="../scala/scala.3.html" class="page">流程和函数</a></li>
+    <li><a href="../scala/scala.4.html" class="active page">集合</a></li>
+    <li><a href="../scala/scala.5.html" class="page">class和object</a></li>
+    <li><a href="../scala/scala.6.html" class="page">函数式</a></li>
+    <li><a href="../scala/scala.7.html" class="page">Trait</a></li>
+    <li><a href="../scala/scala.8.html" class="page">并发</a></li>
+    <li><a href="../scala/scala.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../basic/index.html" class="page">Akka HTTP 基础</a>
+  <ul>
+    <li><a href="../basic/basic.0.html" class="page">Akka HTTP 基础</a></li>
+    <li><a href="../basic/basic.1.html" class="page">Web 工作方式</a></li>
+    <li><a href="../basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
+    <li><a href="../basic/basic.3.html" class="page">Akka HTTP 的通用抽象</a></li>
+    <li><a href="../basic/basic.4.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="../basic/basic.5.html" class="page">高级服务端 API</a></li>
+    <li><a href="../basic/basic.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../data/index.html" class="page">数据</a>
+  <ul>
+    <li><a href="../data/data.0.html" class="page">数据</a></li>
+    <li><a href="../data/data.1.html" class="page">JSON</a></li>
+    <li><a href="../data/data.2.html" class="page">XML</a></li>
+    <li><a href="../data/data.3.html" class="page">Protobuf</a></li>
+    <li><a href="../data/data.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../test/index.html" class="page">测试</a>
+  <ul>
+    <li><a href="../test/test.0.html" class="page">测试</a></li>
+    <li><a href="../test/test.1.html" class="page">Scalatest</a></li>
+    <li><a href="../test/test.2.html" class="page">测试异步代码</a></li>
+    <li><a href="../test/test.3.html" class="page">端到端测试Route</a></li>
+    <li><a href="../test/test.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
+  <ul>
+    <li><a href="../oauth/oauth2.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth2.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth2.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth2.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth2.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../storage/index.html" class="page">访问数据库</a>
+  <ul>
+    <li><a href="../storage/storage.0.html" class="page">访问数据库</a></li>
+    <li><a href="../storage/storage.1.html" class="page">使用 JDBC 访问 PostgreSQL</a></li>
+    <li><a href="../storage/storage.2.html" class="page">使用 Slick 访问数据库</a></li>
+    <li><a href="../storage/storage.3.html" class="page">访问 Cassandra 数据库</a></li>
+    <li><a href="../storage/storage.4.html" class="page">访问 Redis</a></li>
+    <li><a href="../storage/storage.5.html" class="page">访问 Elasticsearch</a></li>
+    <li><a href="../storage/storage.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../appendix/index.html" class="page">附录</a>
+  <ul>
+    <li><a href="../appendix/appendix.0.html" class="page">参考资料</a></li>
+    <li><a href="../appendix/appendix.1.html" class="page">专业术语</a></li>
+    <li><a href="../appendix/appendix.2.html" class="page">词汇表</a></li>
+    <li><a href="../appendix/appendix.x.html" class="page">赞助</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Scala Web 开发</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Scala Web 开发
+</a>
+<div class="version-number">
+1.0.0
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../preface.html" class="page">Scala Web 开发 &ndash; 使用 Akka HTTP</a></li>
+  <li><a href="../env/index.html" class="page">Scala 环境配置</a>
+  <ul>
+    <li><a href="../env/env.1.html" class="page">Sbt</a></li>
+    <li><a href="../env/env.2.html" class="page">IDE开发工具</a></li>
+    <li><a href="../env/env.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../scala/index.html" class="page">Scala 语言基础</a>
+  <ul>
+    <li><a href="../scala/scala.0.html" class="page">REPL</a></li>
+    <li><a href="../scala/scala.1.html" class="page">你好，Scala</a></li>
+    <li><a href="../scala/scala.2.html" class="page">Scala基础</a></li>
+    <li><a href="../scala/scala.3.html" class="page">流程和函数</a></li>
+    <li><a href="../scala/scala.4.html" class="active page">集合</a></li>
+    <li><a href="../scala/scala.5.html" class="page">class和object</a></li>
+    <li><a href="../scala/scala.6.html" class="page">函数式</a></li>
+    <li><a href="../scala/scala.7.html" class="page">Trait</a></li>
+    <li><a href="../scala/scala.8.html" class="page">并发</a></li>
+    <li><a href="../scala/scala.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../basic/index.html" class="page">Akka HTTP 基础</a>
+  <ul>
+    <li><a href="../basic/basic.0.html" class="page">Akka HTTP 基础</a></li>
+    <li><a href="../basic/basic.1.html" class="page">Web 工作方式</a></li>
+    <li><a href="../basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
+    <li><a href="../basic/basic.3.html" class="page">Akka HTTP 的通用抽象</a></li>
+    <li><a href="../basic/basic.4.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="../basic/basic.5.html" class="page">高级服务端 API</a></li>
+    <li><a href="../basic/basic.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../data/index.html" class="page">数据</a>
+  <ul>
+    <li><a href="../data/data.0.html" class="page">数据</a></li>
+    <li><a href="../data/data.1.html" class="page">JSON</a></li>
+    <li><a href="../data/data.2.html" class="page">XML</a></li>
+    <li><a href="../data/data.3.html" class="page">Protobuf</a></li>
+    <li><a href="../data/data.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../test/index.html" class="page">测试</a>
+  <ul>
+    <li><a href="../test/test.0.html" class="page">测试</a></li>
+    <li><a href="../test/test.1.html" class="page">Scalatest</a></li>
+    <li><a href="../test/test.2.html" class="page">测试异步代码</a></li>
+    <li><a href="../test/test.3.html" class="page">端到端测试Route</a></li>
+    <li><a href="../test/test.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
+  <ul>
+    <li><a href="../oauth/oauth2.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth2.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth2.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth2.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth2.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../storage/index.html" class="page">访问数据库</a>
+  <ul>
+    <li><a href="../storage/storage.0.html" class="page">访问数据库</a></li>
+    <li><a href="../storage/storage.1.html" class="page">使用 JDBC 访问 PostgreSQL</a></li>
+    <li><a href="../storage/storage.2.html" class="page">使用 Slick 访问数据库</a></li>
+    <li><a href="../storage/storage.3.html" class="page">访问 Cassandra 数据库</a></li>
+    <li><a href="../storage/storage.4.html" class="page">访问 Redis</a></li>
+    <li><a href="../storage/storage.5.html" class="page">访问 Elasticsearch</a></li>
+    <li><a href="../storage/storage.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../appendix/index.html" class="page">附录</a>
+  <ul>
+    <li><a href="../appendix/appendix.0.html" class="page">参考资料</a></li>
+    <li><a href="../appendix/appendix.1.html" class="page">专业术语</a></li>
+    <li><a href="../appendix/appendix.2.html" class="page">词汇表</a></li>
+    <li><a href="../appendix/appendix.x.html" class="page">赞助</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Scala Web 开发</a></li>
+  <li><a href="../scala/index.html">Scala 语言基础</a></li>
+  <li>集合</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#集合" name="集合" class="anchor"><span class="anchor-link"></span></a>集合</h1>
+<p>在<code>java.util</code>包下有丰富的集合库。Scala除了可以使用Java定义的集合库外，它还自己定义了一套功能强大、特性丰富的<code>scala.collection</code>集合库API。</p>
+<p>在Scala中，常用的集合类型有：<code>List</code>、<code>Set</code>、<code>Map</code>、<code>Tuple</code>、<code>Vector</code>等。</p>
+<p><strong>List</strong></p>
+<p>Scala中<code>List</code>是一个不可变列表集合，它很精妙的使用递归结构定义了一个列表集合。</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; val list = List(1, 2, 3, 4, 5)
+list: List[Int] = List(1, 2, 3, 4, 5)
+</code></pre>
+<p>除了之前使用<code>List</code>object来定义一个列表，还可以使用如下方式：</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; val list = 1 :: 2 :: 3 :: 4 :: 5 :: Nil
+list: List[Int] = List(1, 2, 3, 4, 5)
+</code></pre>
+<p><code>List</code>采用前缀操作的方式（所有操作都在列表顶端（开头））进行，<code>::</code>操作符的作用是将一个元素和列表连接起来，并把元素放在列表的开头。这样<code>List</code>的操作就可以定义成一个递归操作。添加一个元素就是把元素加到列表的开头，List只需要更改下头指针，而删除一个元素就是把List的头指针指向列表中的第2个元素。这样，<code>List</code>的实现就非常的高效，它也不需要对内存做任何的转移操作。<code>List</code>有很多常用的方法：</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; list.indexOf(3)
+res6: Int = 2
+
+scala&gt; 0 :: list
+res8: List[Int] = List(0, 1, 2, 3, 4, 5)
+
+scala&gt; list.reverse
+res9: List[Int] = List(5, 4, 3, 2, 1)
+
+scala&gt; list.filter(item =&gt; item == 3)
+res11: List[Int] = List(3)
+
+scala&gt; list
+res12: List[Int] = List(1, 2, 3, 4, 5)
+
+scala&gt; val list2 = List(4, 5, 6, 7, 8, 9)
+list2: List[Int] = List(4, 5, 6, 7, 8, 9)
+
+scala&gt; list.intersect(list2)
+res13: List[Int] = List(4, 5)
+
+scala&gt; list.union(list2)
+res14: List[Int] = List(1, 2, 3, 4, 5, 4, 5, 6, 7, 8, 9)
+
+scala&gt; list.diff(list2)
+res15: List[Int] = List(1, 2, 3)
+</code></pre>
+<p>Scala中默认都是**Immutable collection**，在集合上定义的操作都不会更改集合本身，而是生成一个新的集合。这与Java集合是一个根本的区别，Java集合默认都是可变的。</p>
+<p><strong>Tuple</strong></p>
+<p>Scala中也支持**Tuple**（元组）这种集合，但最多只支持22个元素（事实上Scala中定义了<code>Tuple0</code>、<code>Tuple1</code>……<code>Tuple22</code>这样22个<code>TupleX</code>类，实现方式与<code>C++ Boost</code>库中的<code>Tuple</code>类似）。和大多数语言的Tuple类似（比如：Python），Scala也采用小括号来定义元组。</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; val tuple3 = (1, 2, 3)
+tuple1: (Int, Int, Int) = (1,2,3)
+
+scala&gt; tuple3._2
+res17: Int = 2
+
+scala&gt; val tuple2 = Tuple2(&quot;杨&quot;, &quot;景&quot;)
+tuple2: (String, String) = (杨,景)
+</code></pre>
+<p>可以使用<code>xxx._[X]</code>的形式来引用<code>Tuple</code>中某一个具体元素，其<code>_[X]</code>下标是从1开始的，一直到22（若有定义这么多）。</p>
+<p><strong>Set</strong></p>
+<p><code>Set</code>是一个不重复且无序的集合，初始化一个<code>Set</code>需要使用<code>Set</code>对象：</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; val set = Set(&quot;Scala&quot;, &quot;Java&quot;, &quot;C++&quot;, &quot;Javascript&quot;, &quot;C#&quot;, &quot;Python&quot;, &quot;PHP&quot;) 
+set: scala.collection.immutable.Set[String] = Set(Scala, C#, Python, Javascript, PHP, C++, Java)
+
+scala&gt; set + &quot;Go&quot;
+res21: scala.collection.immutable.Set[String] = Set(Scala, C#, Go, Python, Javascript, PHP, C++, Java)
+
+scala&gt; set filterNot (item =&gt; item == &quot;PHP&quot;)
+res22: scala.collection.immutable.Set[String] = Set(Scala, C#, Python, Javascript, C++, Java)
+</code></pre>
+<p><strong>Map</strong></p>
+<p>Scala中的<code>Map</code>默认是一个**HashMap**，其特性与Java版的<code>HashMap</code>基本一至，除了它是<code>Immutable</code>的：</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; val map = Map(&quot;a&quot; -&gt; &quot;A&quot;, &quot;b&quot; -&gt; &quot;B&quot;)
+map: scala.collection.immutable.Map[String,String] = Map(a -&gt; A, b -&gt; B)
+
+scala&gt; val map2 = Map((&quot;b&quot;, &quot;B&quot;), (&quot;c&quot;, &quot;C&quot;))
+map2: scala.collection.immutable.Map[String,String] = Map(b -&gt; B, c -&gt; C)
+</code></pre>
+<p>Scala中定义<code>Map</code>时，传入的每个<code>Entry</code>（**K**、**V**对）其实就是一个<code>Tuple2</code>（有两个元素的元组），而<code>-&gt;</code>是定义<code>Tuple2</code>的一种便捷方式。</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; map + (&quot;z&quot; -&gt; &quot;Z&quot;)
+res23: scala.collection.immutable.Map[String,String] = Map(a -&gt; A, b -&gt; B, z -&gt; Z)
+
+scala&gt; map.filterNot(entry =&gt; entry._1 == &quot;a&quot;)
+res24: scala.collection.immutable.Map[String,String] = Map(b -&gt; B)
+
+scala&gt; val map3 = map - &quot;a&quot;
+map3: scala.collection.immutable.Map[String,String] = Map(b -&gt; B)
+
+scala&gt; map
+res25: scala.collection.immutable.Map[String,String] = Map(a -&gt; A, b -&gt; B)
+</code></pre>
+<p>Scala的immutable collection并没有添加和删除元素的操作，其定义<code>+</code>（<code>List</code>使用<code>::</code>在头部添加）操作都是生成一个新的集合，而要删除一个元素一般使用 <code>-</code> 操作直接将**Key**从<code>map</code>中减掉即可。</p>
+<p>（注：Scala中也<code>scala.collection.mutable._</code>集合，它定义了不可变集合的相应可变集合版本。一般情况下，除非一此性能优先的操作（其实Scala集合采用了共享存储的优化，生成一个新集合并不会生成所有元素的复本，它将会和老的集合共享大元素。因为Scala中变量默认都是不可变的），推荐还是采用不可变集合。因为它更直观、线程安全，你可以确定你的变量不会在其它地方被不小心的更改。）</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/scala/scala.4.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../scala/scala.5.html">class和object</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2018</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '1.0.0', '')});</script>
+
+
+</html>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>流程和函数 · Scala Web 开发</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='book'/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/normalize.css/normalize.css"/>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Scala Web 开发
+</a>
+<div class="version-number">
+1.0.0
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../preface.html" class="page">Scala Web 开发 &ndash; 使用 Akka HTTP</a></li>
+  <li><a href="../env/index.html" class="page">Scala 环境配置</a>
+  <ul>
+    <li><a href="../env/env.1.html" class="page">Sbt</a></li>
+    <li><a href="../env/env.2.html" class="page">IDE开发工具</a></li>
+    <li><a href="../env/env.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../scala/index.html" class="page">Scala 语言基础</a>
+  <ul>
+    <li><a href="../scala/scala.0.html" class="page">REPL</a></li>
+    <li><a href="../scala/scala.1.html" class="page">你好，Scala</a></li>
+    <li><a href="../scala/scala.2.html" class="page">Scala基础</a></li>
+    <li><a href="../scala/scala.3.html" class="active page">流程和函数</a></li>
+    <li><a href="../scala/scala.4.html" class="page">集合</a></li>
+    <li><a href="../scala/scala.5.html" class="page">class和object</a></li>
+    <li><a href="../scala/scala.6.html" class="page">函数式</a></li>
+    <li><a href="../scala/scala.7.html" class="page">Trait</a></li>
+    <li><a href="../scala/scala.8.html" class="page">并发</a></li>
+    <li><a href="../scala/scala.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../basic/index.html" class="page">Akka HTTP 基础</a>
+  <ul>
+    <li><a href="../basic/basic.0.html" class="page">Akka HTTP 基础</a></li>
+    <li><a href="../basic/basic.1.html" class="page">Web 工作方式</a></li>
+    <li><a href="../basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
+    <li><a href="../basic/basic.3.html" class="page">Akka HTTP 的通用抽象</a></li>
+    <li><a href="../basic/basic.4.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="../basic/basic.5.html" class="page">高级服务端 API</a></li>
+    <li><a href="../basic/basic.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../data/index.html" class="page">数据</a>
+  <ul>
+    <li><a href="../data/data.0.html" class="page">数据</a></li>
+    <li><a href="../data/data.1.html" class="page">JSON</a></li>
+    <li><a href="../data/data.2.html" class="page">XML</a></li>
+    <li><a href="../data/data.3.html" class="page">Protobuf</a></li>
+    <li><a href="../data/data.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../test/index.html" class="page">测试</a>
+  <ul>
+    <li><a href="../test/test.0.html" class="page">测试</a></li>
+    <li><a href="../test/test.1.html" class="page">Scalatest</a></li>
+    <li><a href="../test/test.2.html" class="page">测试异步代码</a></li>
+    <li><a href="../test/test.3.html" class="page">端到端测试Route</a></li>
+    <li><a href="../test/test.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
+  <ul>
+    <li><a href="../oauth/oauth2.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth2.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth2.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth2.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth2.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../storage/index.html" class="page">访问数据库</a>
+  <ul>
+    <li><a href="../storage/storage.0.html" class="page">访问数据库</a></li>
+    <li><a href="../storage/storage.1.html" class="page">使用 JDBC 访问 PostgreSQL</a></li>
+    <li><a href="../storage/storage.2.html" class="page">使用 Slick 访问数据库</a></li>
+    <li><a href="../storage/storage.3.html" class="page">访问 Cassandra 数据库</a></li>
+    <li><a href="../storage/storage.4.html" class="page">访问 Redis</a></li>
+    <li><a href="../storage/storage.5.html" class="page">访问 Elasticsearch</a></li>
+    <li><a href="../storage/storage.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../appendix/index.html" class="page">附录</a>
+  <ul>
+    <li><a href="../appendix/appendix.0.html" class="page">参考资料</a></li>
+    <li><a href="../appendix/appendix.1.html" class="page">专业术语</a></li>
+    <li><a href="../appendix/appendix.2.html" class="page">词汇表</a></li>
+    <li><a href="../appendix/appendix.x.html" class="page">赞助</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Scala Web 开发</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Scala Web 开发
+</a>
+<div class="version-number">
+1.0.0
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../preface.html" class="page">Scala Web 开发 &ndash; 使用 Akka HTTP</a></li>
+  <li><a href="../env/index.html" class="page">Scala 环境配置</a>
+  <ul>
+    <li><a href="../env/env.1.html" class="page">Sbt</a></li>
+    <li><a href="../env/env.2.html" class="page">IDE开发工具</a></li>
+    <li><a href="../env/env.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../scala/index.html" class="page">Scala 语言基础</a>
+  <ul>
+    <li><a href="../scala/scala.0.html" class="page">REPL</a></li>
+    <li><a href="../scala/scala.1.html" class="page">你好，Scala</a></li>
+    <li><a href="../scala/scala.2.html" class="page">Scala基础</a></li>
+    <li><a href="../scala/scala.3.html" class="active page">流程和函数</a></li>
+    <li><a href="../scala/scala.4.html" class="page">集合</a></li>
+    <li><a href="../scala/scala.5.html" class="page">class和object</a></li>
+    <li><a href="../scala/scala.6.html" class="page">函数式</a></li>
+    <li><a href="../scala/scala.7.html" class="page">Trait</a></li>
+    <li><a href="../scala/scala.8.html" class="page">并发</a></li>
+    <li><a href="../scala/scala.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../basic/index.html" class="page">Akka HTTP 基础</a>
+  <ul>
+    <li><a href="../basic/basic.0.html" class="page">Akka HTTP 基础</a></li>
+    <li><a href="../basic/basic.1.html" class="page">Web 工作方式</a></li>
+    <li><a href="../basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
+    <li><a href="../basic/basic.3.html" class="page">Akka HTTP 的通用抽象</a></li>
+    <li><a href="../basic/basic.4.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="../basic/basic.5.html" class="page">高级服务端 API</a></li>
+    <li><a href="../basic/basic.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../data/index.html" class="page">数据</a>
+  <ul>
+    <li><a href="../data/data.0.html" class="page">数据</a></li>
+    <li><a href="../data/data.1.html" class="page">JSON</a></li>
+    <li><a href="../data/data.2.html" class="page">XML</a></li>
+    <li><a href="../data/data.3.html" class="page">Protobuf</a></li>
+    <li><a href="../data/data.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../test/index.html" class="page">测试</a>
+  <ul>
+    <li><a href="../test/test.0.html" class="page">测试</a></li>
+    <li><a href="../test/test.1.html" class="page">Scalatest</a></li>
+    <li><a href="../test/test.2.html" class="page">测试异步代码</a></li>
+    <li><a href="../test/test.3.html" class="page">端到端测试Route</a></li>
+    <li><a href="../test/test.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
+  <ul>
+    <li><a href="../oauth/oauth2.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth2.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth2.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth2.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth2.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../storage/index.html" class="page">访问数据库</a>
+  <ul>
+    <li><a href="../storage/storage.0.html" class="page">访问数据库</a></li>
+    <li><a href="../storage/storage.1.html" class="page">使用 JDBC 访问 PostgreSQL</a></li>
+    <li><a href="../storage/storage.2.html" class="page">使用 Slick 访问数据库</a></li>
+    <li><a href="../storage/storage.3.html" class="page">访问 Cassandra 数据库</a></li>
+    <li><a href="../storage/storage.4.html" class="page">访问 Redis</a></li>
+    <li><a href="../storage/storage.5.html" class="page">访问 Elasticsearch</a></li>
+    <li><a href="../storage/storage.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../appendix/index.html" class="page">附录</a>
+  <ul>
+    <li><a href="../appendix/appendix.0.html" class="page">参考资料</a></li>
+    <li><a href="../appendix/appendix.1.html" class="page">专业术语</a></li>
+    <li><a href="../appendix/appendix.2.html" class="page">词汇表</a></li>
+    <li><a href="../appendix/appendix.x.html" class="page">赞助</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Scala Web 开发</a></li>
+  <li><a href="../scala/index.html">Scala 语言基础</a></li>
+  <li>流程和函数</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#流程和函数" name="流程和函数" class="anchor"><span class="anchor-link"></span></a>流程和函数</h1>
+<h2><a href="#控制语句-表达式-" name="控制语句-表达式-" class="anchor"><span class="anchor-link"></span></a>控制语句（表达式）</h2>
+<p>Scala中支持<code>if</code>、<code>while</code>、<code>for comprehension</code>（for表达式)、<code>match case</code>（模式匹配）四大主要控制语句。Scala不支持<code>switch</code>和<code>? :</code>两种控制语句，但它的<code>if</code>和<code>match case</code>会有更好的实现。</p>
+<p><strong><code>if</code></strong></p>
+<p>Scala支持<code>if</code>语句，其基本使用和<code>Java</code>、<code>Python</code>中的一样。但不同的时，它是有返回值的。</p>
+<p>（注：Scala是函数式语言，函数式语言还有一大特性就是：表达式。函数式语言中所有语句都是基于“表达式”的，而“表达式”的一个特性就是它会有一个值。所有像<code>Java</code>中的<code>? :</code>3目运算符可以使用<code>if</code>语句来代替）。</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; if (true) &quot;真&quot; else &quot;假&quot;
+res0: String = 真
+
+scala&gt; val f = if (false) &quot;真&quot; else &quot;假&quot;
+f: String = 假
+
+scala&gt; val unit = if (false) &quot;真&quot;
+unit: Any = ()
+
+scala&gt; val unit2 = if (true) &quot;真&quot; 
+unit2: Any = 真
+</code></pre>
+<p><strong><em>可以看到，<code>if</code>语句也是有返回值的，将表达式的结果赋给变量，编译器也能正常推导出变量的类型。</em></strong><code>unit</code>和<code>unit2</code>变量的类型是<code>Any</code>，这是因为<code>else</code>语句的缺失，Scala编译器就按最大化类型来推导，而<code>Any</code>类型是Scala中的根类型。<code>()</code>在Scala中是<code>Unit</code>类型的实例，可以看做是<code>Java</code>中的<code>Void</code>。</p>
+<p><strong><code>while</code></strong></p>
+<p>Scala中的<code>while</code>循环语句：</p>
+<pre class="prettyprint"><code class="language-scala">while (条件) {
+  语句块
+}
+</code></pre>
+<p><strong><code>for comprehension</code></strong></p>
+<p>Scala中也有<code>for</code>表达式，但它和<code>Java</code>中的<code>for</code>不太一样，它具有更强大的特性。通常的<code>for</code>语句如下：</p>
+<pre class="prettyprint"><code class="language-scala">for (变量 &lt;- 集合) {
+  语句块
+}
+</code></pre>
+<p>Scala中<code>for</code>表达式除了上面那样的常规用法，它还可以使用<code>yield</code>关键字将集合映射为另一个集合：</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; val list = List(1, 2, 3, 4, 5)
+list: List[Int] = List(1, 2, 3, 4, 5)
+
+scala&gt; val list2 = for (item &lt;- list) yield item + 1
+list2: List[Int] = List(2, 3, 4, 5, 6)
+</code></pre>
+<p>还可以在表达式中使用<code>if</code>判断：</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; val list3 = for (item &lt;- list if item % 2 == 0) yield item
+list3: List[Int] = List(2, 4)
+</code></pre>
+<p>还可以做<code>flatMap</code>操作，解析2维列表并将结果摊平（将2维列表拉平为一维列表）：</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; val llist = List(List(1, 2, 3), List(4, 5, 6), List(7, 8, 9))
+llist: List[List[Int]] = List(List(1, 2, 3), List(4, 5, 6), List(7, 8, 9))
+
+scala&gt; for {
+     |   l &lt;- llist
+     |   item &lt;- l if item % 2 == 0
+     | } yield item
+res3: List[Int] = List(2, 4, 6, 8)
+</code></pre>
+<p>看到了，Scala中<code>for comprehension</code>的特性是很强大的。Scala的整个集合库都支持这一特性，包括：<code>Seq</code>、<code>Map</code>、<code>Set</code>、<code>Array</code>……</p>
+<p>Scala没有C-Like语言里的<code>for (int i = 0; i &lt; 10; i++)</code>语法，但<code>Range</code>（范围这个概念），可以基于它来实现循环迭代功能。在Scala中的使用方式如下：</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; for (i &lt;- (0 until 10)) {
+     |   println(i)
+     | }
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+</code></pre>
+<p>Scala中还有一个<code>to</code>方法：</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; for (i &lt;- (0 to 10)) print(&quot; &quot; + i)
+ 0 1 2 3 4 5 6 7 8 9 10
+</code></pre>
+<p>你还可以控制每次步进的步长，只需要简单的使用<code>by</code>方法即可：</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; for (i &lt;- 0 to 10 by 2) print(&quot; &quot; + i)
+ 0 2 4 6 8 10
+</code></pre>
+<p><strong>match case</strong></p>
+<p>模式匹配，是函数式语言很强大的一个特性。它比命令式语言里的<code>switch</code>更好用，表达性更强。</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; def level(s: Int) = s match {
+     |   case n if n &gt;= 90 =&gt; &quot;优秀&quot;
+     |   case n if n &gt;= 80 =&gt; &quot;良好&quot;
+     |   case n if n &gt;= 70 =&gt; &quot;良&quot;
+     |   case n if n &gt;= 60 =&gt; &quot;及格&quot;
+     |   case _ =&gt; &quot;差&quot;
+     | }
+level: (s: Int)String
+
+scala&gt; level(51)
+res28: String = 差
+
+scala&gt; level(93)
+res29: String = 优秀
+
+scala&gt; level(80)
+res30: String = 良好
+</code></pre>
+<p>可以看到，模式匹配可以实现<code>switch</code>相似的功能。但与<code>switch</code>需要使用<code>break</code>明确告知终止之后的判断不同，Scala中的<code>match case</code>是默认**break**的。只要其中一个<code>case</code>语句匹配，就终止之后的所以比较。且对应<code>case</code>语句的表达式值将作为整个<code>match case</code>表达式的值返回。</p>
+<p>Scala中的模式匹配还有类型匹配、数据抽取、谓词判断等其它有用的功能。这里只做简单介绍，之后会单独一个章节来做较详细的解读。</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/scala/scala.3.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../scala/scala.4.html">集合</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../scala/scala.3.html#流程和函数" class="header">流程和函数</a>
+  <ul>
+    <li><a href="../scala/scala.3.html#控制语句-表达式-" class="header">控制语句（表达式）</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2018</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '1.0.0', '')});</script>
+
+
+</html>

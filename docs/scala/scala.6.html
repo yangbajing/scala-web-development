@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>函数式 · Scala Web 开发</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='book'/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/normalize.css/normalize.css"/>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Scala Web 开发
+</a>
+<div class="version-number">
+1.0.0
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../preface.html" class="page">Scala Web 开发 &ndash; 使用 Akka HTTP</a></li>
+  <li><a href="../env/index.html" class="page">Scala 环境配置</a>
+  <ul>
+    <li><a href="../env/env.1.html" class="page">Sbt</a></li>
+    <li><a href="../env/env.2.html" class="page">IDE开发工具</a></li>
+    <li><a href="../env/env.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../scala/index.html" class="page">Scala 语言基础</a>
+  <ul>
+    <li><a href="../scala/scala.0.html" class="page">REPL</a></li>
+    <li><a href="../scala/scala.1.html" class="page">你好，Scala</a></li>
+    <li><a href="../scala/scala.2.html" class="page">Scala基础</a></li>
+    <li><a href="../scala/scala.3.html" class="page">流程和函数</a></li>
+    <li><a href="../scala/scala.4.html" class="page">集合</a></li>
+    <li><a href="../scala/scala.5.html" class="page">class和object</a></li>
+    <li><a href="../scala/scala.6.html" class="active page">函数式</a></li>
+    <li><a href="../scala/scala.7.html" class="page">Trait</a></li>
+    <li><a href="../scala/scala.8.html" class="page">并发</a></li>
+    <li><a href="../scala/scala.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../basic/index.html" class="page">Akka HTTP 基础</a>
+  <ul>
+    <li><a href="../basic/basic.0.html" class="page">Akka HTTP 基础</a></li>
+    <li><a href="../basic/basic.1.html" class="page">Web 工作方式</a></li>
+    <li><a href="../basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
+    <li><a href="../basic/basic.3.html" class="page">Akka HTTP 的通用抽象</a></li>
+    <li><a href="../basic/basic.4.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="../basic/basic.5.html" class="page">高级服务端 API</a></li>
+    <li><a href="../basic/basic.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../data/index.html" class="page">数据</a>
+  <ul>
+    <li><a href="../data/data.0.html" class="page">数据</a></li>
+    <li><a href="../data/data.1.html" class="page">JSON</a></li>
+    <li><a href="../data/data.2.html" class="page">XML</a></li>
+    <li><a href="../data/data.3.html" class="page">Protobuf</a></li>
+    <li><a href="../data/data.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../test/index.html" class="page">测试</a>
+  <ul>
+    <li><a href="../test/test.0.html" class="page">测试</a></li>
+    <li><a href="../test/test.1.html" class="page">Scalatest</a></li>
+    <li><a href="../test/test.2.html" class="page">测试异步代码</a></li>
+    <li><a href="../test/test.3.html" class="page">端到端测试Route</a></li>
+    <li><a href="../test/test.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
+  <ul>
+    <li><a href="../oauth/oauth2.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth2.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth2.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth2.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth2.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../storage/index.html" class="page">访问数据库</a>
+  <ul>
+    <li><a href="../storage/storage.0.html" class="page">访问数据库</a></li>
+    <li><a href="../storage/storage.1.html" class="page">使用 JDBC 访问 PostgreSQL</a></li>
+    <li><a href="../storage/storage.2.html" class="page">使用 Slick 访问数据库</a></li>
+    <li><a href="../storage/storage.3.html" class="page">访问 Cassandra 数据库</a></li>
+    <li><a href="../storage/storage.4.html" class="page">访问 Redis</a></li>
+    <li><a href="../storage/storage.5.html" class="page">访问 Elasticsearch</a></li>
+    <li><a href="../storage/storage.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../appendix/index.html" class="page">附录</a>
+  <ul>
+    <li><a href="../appendix/appendix.0.html" class="page">参考资料</a></li>
+    <li><a href="../appendix/appendix.1.html" class="page">专业术语</a></li>
+    <li><a href="../appendix/appendix.2.html" class="page">词汇表</a></li>
+    <li><a href="../appendix/appendix.x.html" class="page">赞助</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Scala Web 开发</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Scala Web 开发
+</a>
+<div class="version-number">
+1.0.0
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../preface.html" class="page">Scala Web 开发 &ndash; 使用 Akka HTTP</a></li>
+  <li><a href="../env/index.html" class="page">Scala 环境配置</a>
+  <ul>
+    <li><a href="../env/env.1.html" class="page">Sbt</a></li>
+    <li><a href="../env/env.2.html" class="page">IDE开发工具</a></li>
+    <li><a href="../env/env.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../scala/index.html" class="page">Scala 语言基础</a>
+  <ul>
+    <li><a href="../scala/scala.0.html" class="page">REPL</a></li>
+    <li><a href="../scala/scala.1.html" class="page">你好，Scala</a></li>
+    <li><a href="../scala/scala.2.html" class="page">Scala基础</a></li>
+    <li><a href="../scala/scala.3.html" class="page">流程和函数</a></li>
+    <li><a href="../scala/scala.4.html" class="page">集合</a></li>
+    <li><a href="../scala/scala.5.html" class="page">class和object</a></li>
+    <li><a href="../scala/scala.6.html" class="active page">函数式</a></li>
+    <li><a href="../scala/scala.7.html" class="page">Trait</a></li>
+    <li><a href="../scala/scala.8.html" class="page">并发</a></li>
+    <li><a href="../scala/scala.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../basic/index.html" class="page">Akka HTTP 基础</a>
+  <ul>
+    <li><a href="../basic/basic.0.html" class="page">Akka HTTP 基础</a></li>
+    <li><a href="../basic/basic.1.html" class="page">Web 工作方式</a></li>
+    <li><a href="../basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
+    <li><a href="../basic/basic.3.html" class="page">Akka HTTP 的通用抽象</a></li>
+    <li><a href="../basic/basic.4.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="../basic/basic.5.html" class="page">高级服务端 API</a></li>
+    <li><a href="../basic/basic.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../data/index.html" class="page">数据</a>
+  <ul>
+    <li><a href="../data/data.0.html" class="page">数据</a></li>
+    <li><a href="../data/data.1.html" class="page">JSON</a></li>
+    <li><a href="../data/data.2.html" class="page">XML</a></li>
+    <li><a href="../data/data.3.html" class="page">Protobuf</a></li>
+    <li><a href="../data/data.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../test/index.html" class="page">测试</a>
+  <ul>
+    <li><a href="../test/test.0.html" class="page">测试</a></li>
+    <li><a href="../test/test.1.html" class="page">Scalatest</a></li>
+    <li><a href="../test/test.2.html" class="page">测试异步代码</a></li>
+    <li><a href="../test/test.3.html" class="page">端到端测试Route</a></li>
+    <li><a href="../test/test.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
+  <ul>
+    <li><a href="../oauth/oauth2.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth2.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth2.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth2.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth2.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../storage/index.html" class="page">访问数据库</a>
+  <ul>
+    <li><a href="../storage/storage.0.html" class="page">访问数据库</a></li>
+    <li><a href="../storage/storage.1.html" class="page">使用 JDBC 访问 PostgreSQL</a></li>
+    <li><a href="../storage/storage.2.html" class="page">使用 Slick 访问数据库</a></li>
+    <li><a href="../storage/storage.3.html" class="page">访问 Cassandra 数据库</a></li>
+    <li><a href="../storage/storage.4.html" class="page">访问 Redis</a></li>
+    <li><a href="../storage/storage.5.html" class="page">访问 Elasticsearch</a></li>
+    <li><a href="../storage/storage.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../appendix/index.html" class="page">附录</a>
+  <ul>
+    <li><a href="../appendix/appendix.0.html" class="page">参考资料</a></li>
+    <li><a href="../appendix/appendix.1.html" class="page">专业术语</a></li>
+    <li><a href="../appendix/appendix.2.html" class="page">词汇表</a></li>
+    <li><a href="../appendix/appendix.x.html" class="page">赞助</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Scala Web 开发</a></li>
+  <li><a href="../scala/index.html">Scala 语言基础</a></li>
+  <li>函数式</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#函数式" name="函数式" class="anchor"><span class="anchor-link"></span></a>函数式</h1>
+<h2><a href="#函数" name="函数" class="anchor"><span class="anchor-link"></span></a>函数</h2>
+<p>在Scala中，函数是一等公民。函数可以像类型一样被赋值给一个变量，也可以做为一个函数的参数被传入，甚至还可以做为函数的返回值返回。</p>
+<p>从Java 8开始，Java也具备了部分函数式编程特性。其Lamdba函数允许将一个函数做值赋给变量、做为方法参数、做为函数返回值。</p>
+<p>在Scala中，使用<code>def</code>关键词来定义一个函数方法：</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; def calc(n1: Int, n2: Int): (Int, Int) = {
+     |   (n1 + n2, n1 * n2)
+     | }
+calc: (n1: Int, n2: Int)(Int, Int)
+
+scala&gt; val (add, sub) = calc(5, 1)
+add: Int = 6
+sub: Int = 5
+</code></pre>
+<p>这里定义了一个函数：<code>calc</code>，它有两个参数：<code>n1</code>和<code>n2</code>，其类型为：<code>Int</code>。<code>cala</code>函数的返回值类型是一个有两个元素的元组，在Scala中可以简写为：<code>(Int, Int)</code>。在Scala中，代码段的最后一句将做为函数返回值，所以这里不需要显示的写<code>return</code>关键字。</p>
+<p>而<code>val (add, sub) = calc(5, 1)</code>一句，是Scala中的抽取功能。它直接把<code>calc</code>函数返回的一个<code>Tuple2</code>值赋给了<code>add</code>他<code>sub</code>两个变量。</p>
+<p>函数可以赋给变量：</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; val calcVar = calc _
+calcVar: (Int, Int) =&gt; (Int, Int) = &lt;function2&gt;
+
+scala&gt; calcVar(2, 3)
+res4: (Int, Int) = (5,6)
+
+scala&gt; val sum: (Int, Int) =&gt; Int = (x, y) =&gt; x + y
+sum: (Int, Int) =&gt; Int = &lt;function2&gt;
+
+scala&gt; sum(5, 7)
+res5: Int = 12
+</code></pre>
+<p>在Scala中，有两种定义函数的方式：</p>
+<ol>
+  <li>将一个现成的函数/方法赋值给一个变量，如：<code>val calcVar = calc _</code>。下划线在此处的含意是将函数赋给了变量，函数本身的参数将在变量被调用时再传入。</li>
+  <li>直接定义函数并同时赋给变量，如：<code>val sum: (Int, Int) =&gt; Int = (x, y) =&gt; x + y</code>，在冒号之后，等号之前部分：<code>(Int, Int) =&gt; Int</code>是函数签名，代表<code>sum</code>这个函数值接收两个Int类型参数并返回一个Int类型参数。等号之后部分是函数体，在函数函数时，<code>x</code>、<code>y</code>参数类型及返回值类型在此可以省略。</li>
+</ol>
+<h3><a href="#一个函数示例-自动资源管理" name="一个函数示例-自动资源管理" class="anchor"><span class="anchor-link"></span></a>一个函数示例：自动资源管理</h3>
+<p>在我们的日常代码中，资源回收是一个很常见的操作。在Java 7之前，我们必需写很多的<code>try { ... } finally { xxx.close() }</code>这样的样版代码来手动回收资源。Java 7开始，提供了**try with close**这样的自动资源回收功能。Scala并不能使用Java 7新加的**try with close**资源自动回收功能，但Scala中有很方便的方式实现类似功能：</p>
+<pre class="prettyprint"><code class="language-scala">def using[T &lt;: AutoCloseable, R](res: T)(func: T =&gt; R): R = {
+  try {
+    func(res)
+  } finally {
+    if (res != null)
+      res.close()
+  }
+}
+
+val allLine = using(Files.newBufferedReader(Paths.get(&quot;/etc/hosts&quot;))) { reader =&gt;
+  @tailrec
+  def readAll(buffer: StringBuilder, line: String): String = {
+    if (line == null) buffer.toString
+    else {
+      buffer.append(line).append(&#39;\n&#39;)
+      readAll(buffer, reader.readLine())
+    }
+  }
+  
+  readAll(new StringBuilder(), reader.readLine())
+}
+
+println(allLine)
+</code></pre>
+<p><code>using</code>是我们定义的一个自动化资源管帮助函数，它接爱两个参数化类型参数，一个是实现了<code>AutoCloseable</code>接口的资源类，一个是形如：<code>T =&gt; R</code>的函数值。<code>func</code>是由用户定义的对<code>res</code>进行操作的函数代码体，它将被传给<code>using</code>函数并由<code>using</code>代执行。而<code>res</code>这个资源将在<code>using</code>执行完成返回前调用<code>finally</code>代码块执行<code>.close</code>方法来清理打开的资源。</p>
+<p>这个：<code>T &lt;: AutoCloseable</code>范型参数限制了 <strong>T</strong> 类型必需为<code>AutoCloseable</code>类型或其子类。<code>R</code>范型指定<code>using</code>函数的返回值类型将在实际调用时被自动参数化推导出来。我们在 <strong>Scala Console</strong> 中参看<code>allLine</code>变量的类型可以看到 <code>allLine</code>将被正确的赋予 <strong>String</strong> 类型，因为我们传给<code>using</code>函数参数<code>func</code>的函数值返回类型就为 <strong>String</strong> ：</p>
+<pre class="prettyprint"><code class="language-scala">scala&gt; :type allLine
+String
+</code></pre>
+<p>在<code>readAll</code>函数的定义处，有两个特别的地方：</p>
+<ol>
+  <li>这个函数定义在了其它函数代码体内部</li>
+  <li>它有一个<code>@tailrec</code>注解</li>
+</ol>
+<p>在Scala中，因为函数是第一类的，它可以被赋值给一个变量。所以Scala中的<code>def</code>定义函数可以等价<code>val func = (x: Int, y: Int) =&gt; x + y</code>这个的函数字面量定义函数形式。所以，既然通过变量定义的函数可以放在其它函数代码体内，通过<code>def</code>定义的函数也一样可以放在其它代码体内，这和**Javascript**很像。</p>
+<p><code>@tailrec</code>注解的含义是这个函数是尾递归函数，编译器在编译时将对其优化成相应的**while**循环。若一个函数不是尾递归的，加上此注解在编译时将报错。</p>
+<h2><a href="#模式匹配-match-case-" name="模式匹配-match-case-" class="anchor"><span class="anchor-link"></span></a>模式匹配（match case）</h2>
+<p>模式匹配是函数式编程里面很强大的一个特性。</p>
+<p>之前已经见识过了模式匹配的简单使用方式，可以用它替代：**if else**、**switch**这样的分支判断。除了这些简单的功能，模式匹配还有一系列强大、易用的特性。</p>
+<h3><a href="#match-中的值-变量和类型" name="match-中的值-变量和类型" class="anchor"><span class="anchor-link"></span></a>match 中的值、变量和类型</h3>
+<pre class="prettyprint"><code class="language-scala">scala&gt; for {
+     |   x &lt;- Seq(1, false, 2.7, &quot;one&quot;, &#39;four, new java.util.Date(), new RuntimeException(&quot;运行时异常&quot;))
+     | } {
+     |   val str = x match {
+     |     case d: Double =&gt; s&quot;double: $d&quot;
+     |     case false =&gt; &quot;boolean false&quot;
+     |     case d: java.util.Date =&gt; s&quot;java.util.Date: $d&quot;
+     |     case 1 =&gt; &quot;int 1&quot;
+     |     case s: String =&gt; s&quot;string: $s&quot;
+     |     case symbol: Symbol =&gt; s&quot;symbol: $symbol&quot;
+     |     case unexpected =&gt; s&quot;unexpected value: $unexpected&quot;
+     |   }
+     |   println(str)
+     | }
+int 1
+boolean false
+double: 2.7
+string: one
+symbol: &#39;four
+java.util.Date: Sun Jul 24 16:51:20 CST 2016
+unexpected value: java.lang.RuntimeException: 运行时异常
+</code></pre>
+<p>上面小试牛刀校验变量类型的同时完成类型转换功能。在Java中，你肯定写过或见过如下的代码：</p>
+<pre class="prettyprint"><code class="language-java">public void receive(message: Object) {
+    if (message isInstanceOf String) {
+        String strMsg = (String) message;
+        ....
+    } else if (message isInstanceOf java.util.Date) {
+        java.util.Date dateMsg = (java.util.Date) message;
+        ....
+    } ....
+}
+</code></pre>
+<p>对于这样的代码，真是辣眼睛啊~~~。</p>
+<h3><a href="#序列的匹配" name="序列的匹配" class="anchor"><span class="anchor-link"></span></a>序列的匹配</h3>
+<pre class="prettyprint"><code class="language-scala">scala&gt; val nonEmptySeq = Seq(1, 2, 3, 4, 5)
+
+scala&gt; val emptySeq = Seq.empty[Int]
+
+scala&gt; val emptyList = Nil
+
+scala&gt; val nonEmptyList = List(1, 2, 3, 4, 5)
+
+scala&gt; val nonEmptyVector = Vector(1, 2, 3, 4, 5)
+
+scala&gt; val emptyVector = Vector.empty[Int]
+
+scala&gt; val nonEmptyMap = Map(&quot;one&quot; -&gt; 1, &quot;two&quot; -&gt; 2, &quot;three&quot; -&gt; 3)
+
+scala&gt; val emptyMap = Map.empty[String, Int]
+
+scala&gt; def seqToString[T](seq: Seq[T]): String = seq match {
+     |   case head +: tail =&gt; s&quot;$head +: &quot; + seqToString(tail)
+     |   case Nil =&gt; &quot;Nil&quot;
+     | }
+
+scala&gt; for (seq &lt;- Seq(
+     |   nonEmptySeq, emptySeq, nonEmptyList, emptyList,
+     |   nonEmptyVector, emptyVector, nonEmptyMap.toSeq, emptyMap.toSeq)) {
+     |   println(seqToString(seq))
+     | }
+1 +: 2 +: 3 +: 4 +: 5 +: Nil
+Nil
+1 +: 2 +: 3 +: 4 +: 5 +: Nil
+Nil
+1 +: 2 +: 3 +: 4 +: 5 +: Nil
+Nil
+(one,1) +: (two,2) +: (three,3) +: Nil
+Nil
+</code></pre>
+<p>模式匹配能很方便的抽取序列的元素，<code>seqToString</code>使用了模式匹配以递归的方式来将序列转换成字符串。<code>case head +: tail</code>将序列抽取成“头部”和“非头部剩下”两部分，<code>head</code>将保存序列第一个元素，<code>tail</code>保存序列剩下部分。而<code>case Nil</code>将匹配一个空序列。</p>
+<h3><a href="#case-class的匹配" name="case-class的匹配" class="anchor"><span class="anchor-link"></span></a>case class的匹配</h3>
+<pre class="prettyprint"><code class="language-scala">scala&gt; trait Person
+
+scala&gt; case class Man(name: String, age: Int) extends Person
+
+scala&gt; case class Woman(name: String, age: Int) extends Person
+
+scala&gt; case class Boy(name: String, age: Int) extends Person
+
+scala&gt; val father = Man(&quot;父亲&quot;, 33)
+
+scala&gt; val mather = Woman(&quot;母亲&quot;, 30)
+
+scala&gt; val son = Man(&quot;儿子&quot;, 7)
+
+scala&gt; val daughter = Woman(&quot;女儿&quot;, 3)
+
+scala&gt; for (person &lt;- Seq[Person](father, mather, son, daughter)) {
+     |   person match {
+     |     case Man(&quot;父亲&quot;, age) =&gt; println(s&quot;父亲今年${age}岁&quot;)
+     |     case man: Man if man.age &lt; 10 =&gt; println(s&quot;man is $man&quot;)
+     |     case Woman(name, 30) =&gt; println(s&quot;${name}今年有30岁&quot;)
+     |     case Woman(name, age) =&gt; println(s&quot;${name}今年有${age}岁&quot;)
+     |   }
+     | }
+父亲今年33岁
+母亲今年有30岁
+man is Man(儿子,7)
+女儿今年有3岁
+</code></pre>
+<p>在模式匹配中对<code>case class</code>进行 <strong>解构</strong> 操作，可以直接提取出感兴趣的字段并赋给变量。同时，模式匹配中还可以使用 <strong>guard</strong> 语句，给匹配判断添加一个<code>if</code>表达式做条件判断。</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/scala/scala.6.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../scala/scala.7.html">Trait</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../scala/scala.6.html#函数式" class="header">函数式</a>
+  <ul>
+    <li><a href="../scala/scala.6.html#函数" class="header">函数</a></li>
+    <li><a href="../scala/scala.6.html#模式匹配-match-case-" class="header">模式匹配（match case）</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2018</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '1.0.0', '')});</script>
+
+
+</html>

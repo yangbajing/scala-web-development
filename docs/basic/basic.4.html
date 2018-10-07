@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Akka HTTP 如何使得 Web 工作 · Scala Web 开发</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='book'/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/normalize.css/normalize.css"/>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Scala Web 开发
+</a>
+<div class="version-number">
+1.0.0
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../preface.html" class="page">Scala Web 开发 &ndash; 使用 Akka HTTP</a></li>
+  <li><a href="../env/index.html" class="page">Scala 环境配置</a>
+  <ul>
+    <li><a href="../env/env.1.html" class="page">Sbt</a></li>
+    <li><a href="../env/env.2.html" class="page">IDE开发工具</a></li>
+    <li><a href="../env/env.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../scala/index.html" class="page">Scala 语言基础</a>
+  <ul>
+    <li><a href="../scala/scala.0.html" class="page">REPL</a></li>
+    <li><a href="../scala/scala.1.html" class="page">你好，Scala</a></li>
+    <li><a href="../scala/scala.2.html" class="page">Scala基础</a></li>
+    <li><a href="../scala/scala.3.html" class="page">流程和函数</a></li>
+    <li><a href="../scala/scala.4.html" class="page">集合</a></li>
+    <li><a href="../scala/scala.5.html" class="page">class和object</a></li>
+    <li><a href="../scala/scala.6.html" class="page">函数式</a></li>
+    <li><a href="../scala/scala.7.html" class="page">Trait</a></li>
+    <li><a href="../scala/scala.8.html" class="page">并发</a></li>
+    <li><a href="../scala/scala.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../basic/index.html" class="page">Akka HTTP 基础</a>
+  <ul>
+    <li><a href="../basic/basic.0.html" class="page">Akka HTTP 基础</a></li>
+    <li><a href="../basic/basic.1.html" class="page">Web 工作方式</a></li>
+    <li><a href="../basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
+    <li><a href="../basic/basic.3.html" class="page">Akka HTTP 的通用抽象</a></li>
+    <li><a href="../basic/basic.4.html" class="active page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="../basic/basic.5.html" class="page">高级服务端 API</a></li>
+    <li><a href="../basic/basic.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../data/index.html" class="page">数据</a>
+  <ul>
+    <li><a href="../data/data.0.html" class="page">数据</a></li>
+    <li><a href="../data/data.1.html" class="page">JSON</a></li>
+    <li><a href="../data/data.2.html" class="page">XML</a></li>
+    <li><a href="../data/data.3.html" class="page">Protobuf</a></li>
+    <li><a href="../data/data.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../test/index.html" class="page">测试</a>
+  <ul>
+    <li><a href="../test/test.0.html" class="page">测试</a></li>
+    <li><a href="../test/test.1.html" class="page">Scalatest</a></li>
+    <li><a href="../test/test.2.html" class="page">测试异步代码</a></li>
+    <li><a href="../test/test.3.html" class="page">端到端测试Route</a></li>
+    <li><a href="../test/test.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
+  <ul>
+    <li><a href="../oauth/oauth2.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth2.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth2.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth2.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth2.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../storage/index.html" class="page">访问数据库</a>
+  <ul>
+    <li><a href="../storage/storage.0.html" class="page">访问数据库</a></li>
+    <li><a href="../storage/storage.1.html" class="page">使用 JDBC 访问 PostgreSQL</a></li>
+    <li><a href="../storage/storage.2.html" class="page">使用 Slick 访问数据库</a></li>
+    <li><a href="../storage/storage.3.html" class="page">访问 Cassandra 数据库</a></li>
+    <li><a href="../storage/storage.4.html" class="page">访问 Redis</a></li>
+    <li><a href="../storage/storage.5.html" class="page">访问 Elasticsearch</a></li>
+    <li><a href="../storage/storage.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../appendix/index.html" class="page">附录</a>
+  <ul>
+    <li><a href="../appendix/appendix.0.html" class="page">参考资料</a></li>
+    <li><a href="../appendix/appendix.1.html" class="page">专业术语</a></li>
+    <li><a href="../appendix/appendix.2.html" class="page">词汇表</a></li>
+    <li><a href="../appendix/appendix.x.html" class="page">赞助</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Scala Web 开发</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Scala Web 开发
+</a>
+<div class="version-number">
+1.0.0
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../preface.html" class="page">Scala Web 开发 &ndash; 使用 Akka HTTP</a></li>
+  <li><a href="../env/index.html" class="page">Scala 环境配置</a>
+  <ul>
+    <li><a href="../env/env.1.html" class="page">Sbt</a></li>
+    <li><a href="../env/env.2.html" class="page">IDE开发工具</a></li>
+    <li><a href="../env/env.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../scala/index.html" class="page">Scala 语言基础</a>
+  <ul>
+    <li><a href="../scala/scala.0.html" class="page">REPL</a></li>
+    <li><a href="../scala/scala.1.html" class="page">你好，Scala</a></li>
+    <li><a href="../scala/scala.2.html" class="page">Scala基础</a></li>
+    <li><a href="../scala/scala.3.html" class="page">流程和函数</a></li>
+    <li><a href="../scala/scala.4.html" class="page">集合</a></li>
+    <li><a href="../scala/scala.5.html" class="page">class和object</a></li>
+    <li><a href="../scala/scala.6.html" class="page">函数式</a></li>
+    <li><a href="../scala/scala.7.html" class="page">Trait</a></li>
+    <li><a href="../scala/scala.8.html" class="page">并发</a></li>
+    <li><a href="../scala/scala.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../basic/index.html" class="page">Akka HTTP 基础</a>
+  <ul>
+    <li><a href="../basic/basic.0.html" class="page">Akka HTTP 基础</a></li>
+    <li><a href="../basic/basic.1.html" class="page">Web 工作方式</a></li>
+    <li><a href="../basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
+    <li><a href="../basic/basic.3.html" class="page">Akka HTTP 的通用抽象</a></li>
+    <li><a href="../basic/basic.4.html" class="active page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="../basic/basic.5.html" class="page">高级服务端 API</a></li>
+    <li><a href="../basic/basic.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../data/index.html" class="page">数据</a>
+  <ul>
+    <li><a href="../data/data.0.html" class="page">数据</a></li>
+    <li><a href="../data/data.1.html" class="page">JSON</a></li>
+    <li><a href="../data/data.2.html" class="page">XML</a></li>
+    <li><a href="../data/data.3.html" class="page">Protobuf</a></li>
+    <li><a href="../data/data.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../test/index.html" class="page">测试</a>
+  <ul>
+    <li><a href="../test/test.0.html" class="page">测试</a></li>
+    <li><a href="../test/test.1.html" class="page">Scalatest</a></li>
+    <li><a href="../test/test.2.html" class="page">测试异步代码</a></li>
+    <li><a href="../test/test.3.html" class="page">端到端测试Route</a></li>
+    <li><a href="../test/test.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
+  <ul>
+    <li><a href="../oauth/oauth2.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth2.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth2.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth2.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth2.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../storage/index.html" class="page">访问数据库</a>
+  <ul>
+    <li><a href="../storage/storage.0.html" class="page">访问数据库</a></li>
+    <li><a href="../storage/storage.1.html" class="page">使用 JDBC 访问 PostgreSQL</a></li>
+    <li><a href="../storage/storage.2.html" class="page">使用 Slick 访问数据库</a></li>
+    <li><a href="../storage/storage.3.html" class="page">访问 Cassandra 数据库</a></li>
+    <li><a href="../storage/storage.4.html" class="page">访问 Redis</a></li>
+    <li><a href="../storage/storage.5.html" class="page">访问 Elasticsearch</a></li>
+    <li><a href="../storage/storage.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../appendix/index.html" class="page">附录</a>
+  <ul>
+    <li><a href="../appendix/appendix.0.html" class="page">参考资料</a></li>
+    <li><a href="../appendix/appendix.1.html" class="page">专业术语</a></li>
+    <li><a href="../appendix/appendix.2.html" class="page">词汇表</a></li>
+    <li><a href="../appendix/appendix.x.html" class="page">赞助</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Scala Web 开发</a></li>
+  <li><a href="../basic/index.html">Akka HTTP 基础</a></li>
+  <li>Akka HTTP 如何使得 Web 工作</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#akka-http-如何使得-web-工作" name="akka-http-如何使得-web-工作" class="anchor"><span class="anchor-link"></span></a>Akka HTTP 如何使得 Web 工作</h1>
+<p>Akka HTTP 有 <strong>Low-Level</strong> 和 <strong>High-Level</strong> 两套服务端 API，这里我们来看看 <strong>Low-Level</strong> API，这会使你对 Akka HTTP 是怎样运行会 有一个深入的认识。</p>
+<p>Akka HTTP 提供了一个基于 Reactive-Streams (反映式流)，全异步的 HTTP/1.1 服务端实现，支持以下特性：</p>
+<ul>
+  <li>完整支持 HTTP 持久化连接</li>
+  <li>完整支持 HTTP 流水线</li>
+  <li>完整支持异步 HTTP 流，包括 &ldquo;chunked&rdquo; （分块的）编码</li>
+  <li>SSL/TLS 加密支持</li>
+  <li>WebSocket 支持</li>
+</ul>
+<p>Akka HTTP 服务端组件有两层：</p>
+<ol>
+  <li><code>akka-http-core</code>：基本的低级API实现，提供了更偏底层的 HTTP 功能</li>
+  <li><code>akka-http</code>：高级API实现，提供了易用的DSL（Directives）</li>
+</ol>
+<p><strong>low-level</strong> 聚焦于提供实现完整 HTTP/1.1 协议的基本功能：</p>
+<ul>
+  <li>连接管理</li>
+  <li>解析和渲染“消息”及 headers</li>
+  <li>超时管理（请求连接和服务端 accept 连接）</li>
+  <li>响应顺序（透明的流水线 (pipeline) 支持）</li>
+</ul>
+<p>所有的非核心功能都放到了 <code>akka-http</code> 模块，如：路由、文件处理、压缩等等）。</p>
+<h2><a href="#启动和停止" name="启动和停止" class="anchor"><span class="anchor-link"></span></a>启动和停止</h2>
+<p>Akka HTTP 提供了 <code>bind</code> 这个方法来启动服务，它通过指定 <code>interface</code> 和 <code>port</code> 来绑定服务，并注册处理进入的 HTTP 连接。</p>
+<pre class="prettyprint"><code class="language-scala">import akka.actor.ActorSystem
+import akka.http.scaladsl.Http
+import akka.stream.ActorMaterializer
+import akka.stream.scaladsl._
+
+implicit val system = ActorSystem()
+implicit val materializer = ActorMaterializer()
+implicit val executionContext = system.dispatcher
+
+val serverSource: Source[Http.IncomingConnection, Future[Http.ServerBinding]] =
+  Http().bind(interface = &quot;localhost&quot;, port = 8080)
+val bindingFuture: Future[Http.ServerBinding] =
+  serverSource.to(Sink.foreach { connection =&gt; // foreach materializes the source
+    println(&quot;Accepted new connection from &quot; + connection.remoteAddress)
+    // ... and then actually handle the connection
+  }).run()
+</code></pre>
+<p><code>Http.ServerBinding</code> 实例有一个 <code>unbind()</code> 方法，通过它可以停止 Akka HTTP 服务。</p>
+<h2><a href="#请求-响应生命周期" name="请求-响应生命周期" class="anchor"><span class="anchor-link"></span></a>请求、响应生命周期</h2>
+<p>低级别的 Akka HTTP 服务端 API 在 <code>akka-http-core</code> 模块提供了 <code>HttpRequest</code> 接受多个或单个连接，并由 <code>HttpResponse</code> 生成响应。处理这 些请求/响应的函数调用类型叫做：<code>Flow[HttpRequest, HttpResponse, _]</code> ，由它来“转换” <strong>请求</strong> 到 <strong>响应</strong> 。</p>
+<p>收到的 HTTP 请求通过调用 <code>handleWithXXX</code> 中的一个来处理，主要的方法有：</p>
+<blockquote>
+  <ul>
+    <li><code>Flow[HttpRequest, HttpResponse, _]</code> 由 <code>handleWith</code> 方法使用</li>
+    <li><code>HttpRequest =&gt; HttpResponse</code> 函数由 <code>handleWithSyncHandler</code> 方法使用</li>
+    <li><code>HttpRequest =&gt; Future[HttpResponse]</code> 函数由 <code>handleWithAsyncHandler</code> 方法使用</li>
+  </ul>
+</blockquote>
+<p>一个 <code>HttpRequest =&gt; HttpResponse</code> 函数的例子如下：</p>
+<pre class="prettyprint"><code class="language-scala">val requestHandler: HttpRequest =&gt; HttpResponse = {
+  case HttpRequest(GET, Uri.Path(&quot;/&quot;), _, _, _) =&gt;
+    HttpResponse(entity = HttpEntity(
+      ContentTypes.`text/html(UTF-8)`,
+      &quot;&lt;html&gt;&lt;body&gt;Hello world!&lt;/body&gt;&lt;/html&gt;&quot;))
+
+  case HttpRequest(GET, Uri.Path(&quot;/ping&quot;), _, _, _) =&gt;
+    HttpResponse(entity = &quot;PONG!&quot;)
+
+  case HttpRequest(GET, Uri.Path(&quot;/crash&quot;), _, _, _) =&gt;
+    sys.error(&quot;BOOM!&quot;)
+
+  case r: HttpRequest =&gt;
+    r.discardEntityBytes() // important to drain incoming HTTP Entity stream
+    HttpResponse(404, entity = &quot;Unknown resource!&quot;)
+}
+
+val bindingFuture: Future[Http.ServerBinding] =
+  serverSource.to(Sink.foreach { connection =&gt;
+    println(&quot;Accepted new connection from &quot; + connection.remoteAddress)
+
+    connection handleWithSyncHandler requestHandler
+    // this is equivalent to
+    // connection handleWith { Flow[HttpRequest] map requestHandler }
+  }).run()
+</code></pre>
+<p>在这个例子里，一个请求被 <code>HttpRequest =&gt; HttpResponse</code> 函数处理，使用 <code>handleWithSyncHandler</code> 来绑定了这一系列转换操作（等价于 Akka Stream 的 <code>map</code> 操作）。</p>
+<h2><a href="#错误处理" name="错误处理" class="anchor"><span class="anchor-link"></span></a>错误处理</h2>
+<p>在 Akka HTTP 服务初始化和运行中可能有各种各样的故障或错误情况发生。Akka 默认记录下了所有这些错误，但有时候需要自行处理这些错误，如：记录错误 发生的情况，关闭 <strong>Actor系统</strong>，或通知一些外部的监控端点……</p>
+<p>有很多情况会造成在创建和实现一个服务时错误，有各种类型的错误，常见的包括：</p>
+<ul>
+  <li><code>bind</code> 到指定 address/port 失败。</li>
+  <li>接受新的 <code>IncommingConnection</code> 时失败，如操作系统可打开文件描述符已用完或内存不足。</li>
+  <li>处理一个连接时错误，如传入的请求数据无效。</li>
+</ul>
+<p>下面介绍下常见的故障情况及怎样处理这些故障。</p>
+<h3><a href="#绑定失败-bind-failures-" name="绑定失败-bind-failures-" class="anchor"><span class="anchor-link"></span></a>绑定失败 (Bind failures)</h3>
+<pre class="prettyprint"><code class="language-scala">val serverSource = Http().bind(&quot;localhost&quot;, 80)
+
+val bindingFuture: Future[ServerBinding] = serverSource
+  .to(handleConnections) // Sink[Http.IncomingConnection, _]
+  .run()
+
+bindingFuture.onFailure {
+  case ex: Exception =&gt;
+    log.error(ex, &quot;Failed to bind to {}:{}!&quot;, &quot;localhost&quot;, 80)
+}
+</code></pre>
+<p>当 <code>bind</code> 到 80 端口时，很有可能程序没有权限（需要 <code>root</code> 权限才能绑定到 80 端口），或者端口已被其它程序占用……这时就会发生**绑定故障**。上 面例子里，<code>bindingFuture</code> 将立即失败，我们可以监听 <code>onFaliure</code> 函数对指定的异常做出处理。</p>
+<h3><a href="#连接源失败-connection-source-failures-" name="连接源失败-connection-source-failures-" class="anchor"><span class="anchor-link"></span></a>连接源失败 (Connection Source failures)</h3>
+<p>下面的例子，我们通过一个 <code>failureMonitor</code> actor来捕获 <code>IncomingConnection</code> 错误，由 Actor 来处理这个错误，也许它会决定重启服务或关闭 整个 <strong>ActorSystem</strong>　。</p>
+<pre class="prettyprint"><code class="language-scala">val failureMonitor: ActorRef = system.actorOf(MyExampleMonitoringActor.props)
+
+val reactToTopLevelFailures = Flow[IncomingConnection]
+  .watchTermination()((_, termination) =&gt; termination.onFailure {
+    case cause =&gt; failureMonitor ! cause
+  })
+
+serverSource
+  .via(reactToTopLevelFailures)
+  .to(handleConnections) // Sink[Http.IncomingConnection, _]
+  .run()
+</code></pre>
+<h3><a href="#连接失败-connection-failures-" name="连接失败-connection-failures-" class="anchor"><span class="anchor-link"></span></a>连接失败 (Connection failures)</h3>
+<p>故障发生的第3种情况是连接已经建立，但在响应前突然终止，如：client中止了底层的TCP连接。这理此类故障可以使用与前一个相似的方式，但是我们将这个应 用这个连接的处理流程中。</p>
+<pre class="prettyprint"><code class="language-scala">val reactToConnectionFailure = Flow[HttpRequest]
+  .recover[HttpRequest] {
+    case ex =&gt;
+      // handle the failure somehow
+      throw ex
+  }
+
+val httpEcho = Flow[HttpRequest]
+  .via(reactToConnectionFailure)
+  .map { request =&gt;
+    // simple streaming (!) &quot;echo&quot; response:
+    HttpResponse(entity = HttpEntity(ContentTypes.`text/plain(UTF-8)`, request.entity.dataBytes))
+  }
+
+serverSource
+  .runForeach { con =&gt;
+    con.handle
+</code></pre>
+<p>大部分时间你都不需要深入理解这个故障处理，Akka 详细的记录了这些故障日志，并有一系列默认的方式来处理这些故障。</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/basic/basic.4.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../basic/basic.5.html">高级服务端 API</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../basic/basic.4.html#akka-http-如何使得-web-工作" class="header">Akka HTTP 如何使得 Web 工作</a>
+  <ul>
+    <li><a href="../basic/basic.4.html#启动和停止" class="header">启动和停止</a></li>
+    <li><a href="../basic/basic.4.html#请求-响应生命周期" class="header">请求、响应生命周期</a></li>
+    <li><a href="../basic/basic.4.html#错误处理" class="header">错误处理</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2018</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '1.0.0', '')});</script>
+
+
+</html>

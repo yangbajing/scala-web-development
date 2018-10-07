@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>访问 Cassandra 数据库 · Scala Web 开发</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='book'/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/normalize.css/normalize.css"/>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Scala Web 开发
+</a>
+<div class="version-number">
+1.0.0
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../preface.html" class="page">Scala Web 开发 &ndash; 使用 Akka HTTP</a></li>
+  <li><a href="../env/index.html" class="page">Scala 环境配置</a>
+  <ul>
+    <li><a href="../env/env.1.html" class="page">Sbt</a></li>
+    <li><a href="../env/env.2.html" class="page">IDE开发工具</a></li>
+    <li><a href="../env/env.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../scala/index.html" class="page">Scala 语言基础</a>
+  <ul>
+    <li><a href="../scala/scala.0.html" class="page">REPL</a></li>
+    <li><a href="../scala/scala.1.html" class="page">你好，Scala</a></li>
+    <li><a href="../scala/scala.2.html" class="page">Scala基础</a></li>
+    <li><a href="../scala/scala.3.html" class="page">流程和函数</a></li>
+    <li><a href="../scala/scala.4.html" class="page">集合</a></li>
+    <li><a href="../scala/scala.5.html" class="page">class和object</a></li>
+    <li><a href="../scala/scala.6.html" class="page">函数式</a></li>
+    <li><a href="../scala/scala.7.html" class="page">Trait</a></li>
+    <li><a href="../scala/scala.8.html" class="page">并发</a></li>
+    <li><a href="../scala/scala.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../basic/index.html" class="page">Akka HTTP 基础</a>
+  <ul>
+    <li><a href="../basic/basic.0.html" class="page">Akka HTTP 基础</a></li>
+    <li><a href="../basic/basic.1.html" class="page">Web 工作方式</a></li>
+    <li><a href="../basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
+    <li><a href="../basic/basic.3.html" class="page">Akka HTTP 的通用抽象</a></li>
+    <li><a href="../basic/basic.4.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="../basic/basic.5.html" class="page">高级服务端 API</a></li>
+    <li><a href="../basic/basic.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../data/index.html" class="page">数据</a>
+  <ul>
+    <li><a href="../data/data.0.html" class="page">数据</a></li>
+    <li><a href="../data/data.1.html" class="page">JSON</a></li>
+    <li><a href="../data/data.2.html" class="page">XML</a></li>
+    <li><a href="../data/data.3.html" class="page">Protobuf</a></li>
+    <li><a href="../data/data.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../test/index.html" class="page">测试</a>
+  <ul>
+    <li><a href="../test/test.0.html" class="page">测试</a></li>
+    <li><a href="../test/test.1.html" class="page">Scalatest</a></li>
+    <li><a href="../test/test.2.html" class="page">测试异步代码</a></li>
+    <li><a href="../test/test.3.html" class="page">端到端测试Route</a></li>
+    <li><a href="../test/test.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
+  <ul>
+    <li><a href="../oauth/oauth2.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth2.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth2.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth2.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth2.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../storage/index.html" class="page">访问数据库</a>
+  <ul>
+    <li><a href="../storage/storage.0.html" class="page">访问数据库</a></li>
+    <li><a href="../storage/storage.1.html" class="page">使用 JDBC 访问 PostgreSQL</a></li>
+    <li><a href="../storage/storage.2.html" class="page">使用 Slick 访问数据库</a></li>
+    <li><a href="../storage/storage.3.html" class="active page">访问 Cassandra 数据库</a></li>
+    <li><a href="../storage/storage.4.html" class="page">访问 Redis</a></li>
+    <li><a href="../storage/storage.5.html" class="page">访问 Elasticsearch</a></li>
+    <li><a href="../storage/storage.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../appendix/index.html" class="page">附录</a>
+  <ul>
+    <li><a href="../appendix/appendix.0.html" class="page">参考资料</a></li>
+    <li><a href="../appendix/appendix.1.html" class="page">专业术语</a></li>
+    <li><a href="../appendix/appendix.2.html" class="page">词汇表</a></li>
+    <li><a href="../appendix/appendix.x.html" class="page">赞助</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Scala Web 开发</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Scala Web 开发
+</a>
+<div class="version-number">
+1.0.0
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../preface.html" class="page">Scala Web 开发 &ndash; 使用 Akka HTTP</a></li>
+  <li><a href="../env/index.html" class="page">Scala 环境配置</a>
+  <ul>
+    <li><a href="../env/env.1.html" class="page">Sbt</a></li>
+    <li><a href="../env/env.2.html" class="page">IDE开发工具</a></li>
+    <li><a href="../env/env.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../scala/index.html" class="page">Scala 语言基础</a>
+  <ul>
+    <li><a href="../scala/scala.0.html" class="page">REPL</a></li>
+    <li><a href="../scala/scala.1.html" class="page">你好，Scala</a></li>
+    <li><a href="../scala/scala.2.html" class="page">Scala基础</a></li>
+    <li><a href="../scala/scala.3.html" class="page">流程和函数</a></li>
+    <li><a href="../scala/scala.4.html" class="page">集合</a></li>
+    <li><a href="../scala/scala.5.html" class="page">class和object</a></li>
+    <li><a href="../scala/scala.6.html" class="page">函数式</a></li>
+    <li><a href="../scala/scala.7.html" class="page">Trait</a></li>
+    <li><a href="../scala/scala.8.html" class="page">并发</a></li>
+    <li><a href="../scala/scala.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../basic/index.html" class="page">Akka HTTP 基础</a>
+  <ul>
+    <li><a href="../basic/basic.0.html" class="page">Akka HTTP 基础</a></li>
+    <li><a href="../basic/basic.1.html" class="page">Web 工作方式</a></li>
+    <li><a href="../basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
+    <li><a href="../basic/basic.3.html" class="page">Akka HTTP 的通用抽象</a></li>
+    <li><a href="../basic/basic.4.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="../basic/basic.5.html" class="page">高级服务端 API</a></li>
+    <li><a href="../basic/basic.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../data/index.html" class="page">数据</a>
+  <ul>
+    <li><a href="../data/data.0.html" class="page">数据</a></li>
+    <li><a href="../data/data.1.html" class="page">JSON</a></li>
+    <li><a href="../data/data.2.html" class="page">XML</a></li>
+    <li><a href="../data/data.3.html" class="page">Protobuf</a></li>
+    <li><a href="../data/data.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../test/index.html" class="page">测试</a>
+  <ul>
+    <li><a href="../test/test.0.html" class="page">测试</a></li>
+    <li><a href="../test/test.1.html" class="page">Scalatest</a></li>
+    <li><a href="../test/test.2.html" class="page">测试异步代码</a></li>
+    <li><a href="../test/test.3.html" class="page">端到端测试Route</a></li>
+    <li><a href="../test/test.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
+  <ul>
+    <li><a href="../oauth/oauth2.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth2.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth2.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth2.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth2.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../storage/index.html" class="page">访问数据库</a>
+  <ul>
+    <li><a href="../storage/storage.0.html" class="page">访问数据库</a></li>
+    <li><a href="../storage/storage.1.html" class="page">使用 JDBC 访问 PostgreSQL</a></li>
+    <li><a href="../storage/storage.2.html" class="page">使用 Slick 访问数据库</a></li>
+    <li><a href="../storage/storage.3.html" class="active page">访问 Cassandra 数据库</a></li>
+    <li><a href="../storage/storage.4.html" class="page">访问 Redis</a></li>
+    <li><a href="../storage/storage.5.html" class="page">访问 Elasticsearch</a></li>
+    <li><a href="../storage/storage.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../appendix/index.html" class="page">附录</a>
+  <ul>
+    <li><a href="../appendix/appendix.0.html" class="page">参考资料</a></li>
+    <li><a href="../appendix/appendix.1.html" class="page">专业术语</a></li>
+    <li><a href="../appendix/appendix.2.html" class="page">词汇表</a></li>
+    <li><a href="../appendix/appendix.x.html" class="page">赞助</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Scala Web 开发</a></li>
+  <li><a href="../storage/index.html">访问数据库</a></li>
+  <li>访问 Cassandra 数据库</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#访问-cassandra-数据库" name="访问-cassandra-数据库" class="anchor"><span class="anchor-link"></span></a>访问 Cassandra 数据库</h1>
+<h2><a href="#cassandra-数据模型" name="cassandra-数据模型" class="anchor"><span class="anchor-link"></span></a>Cassandra 数据模型</h2>
+<h3><a href="#cassandra-与-传统关系性数据库的区别及特性" name="cassandra-与-传统关系性数据库的区别及特性" class="anchor"><span class="anchor-link"></span></a>Cassandra 与 传统关系性数据库的区别及特性</h3>
+<ul>
+  <li>No joins：没有关联操作，对于在 SQL 中这类操作你需要先获得主表数据后再通过 id 去关联，或者反范式化设计将关联表数据做为扩展内  容直接存到主表中。</li>
+  <li>No referential integrity：没有外键约束，没有参照完整性，当然也没有级联操作。需要在应用中小心注意删除或修改关联数据。</li>
+  <li>Denormalization：非范式化，使用 Cassandra 进行数据建模使用范式化设计是不高效的。</li>
+  <li>Query-first design：查询先行的设计，使用 Cassandra 建模需要首先、小心设计好查询方式。因为它只有在根据主键搜索时（3.0开始支  持第二索引，但效率不高）才能高效。</li>
+  <li>Designing for optimal storage：在建模设计时就需要考虑存储优化，使用关系性数据库时一般是不用管数据存储的。但使用 Cassandra  时就需要提前规划，因为 Cassandra 的数据是默认分区的，而分区的形式对性能有着很大的影响。</li>
+  <li>Sorting is a design decision：设计时需要决定排序方式。在建表时就决定了排序方式，并且只有 Cluster Key 支持排序。</li>
+</ul>
+<p>Cassandra 的数据模型可以简单类比为：<code>Map&lt;PartitionKey, SortedMap&lt;ClusterKey, Value&gt;&gt;</code>，也可以简化成：KKV。</p>
+<p><img src="../assets/imgs/CassandraTable.png" alt="Cassandra Table" /></p>
+<p>Cassandra 有如下主要数据结构：</p>
+<ul>
+  <li><strong>column</strong>：列，类似于 name/value 对。</li>
+  <li><strong>row</strong>：包含多个列的容器，并使用主键引用。</li>
+  <li><strong>table</strong>：包含多个行的容器。</li>
+  <li><strong>keyspace</strong>：包含多个表的容器。</li>
+  <li><strong>cluster</strong>：集群，包含多个 keyspace 的容器，使用一个或多个节点。</li>
+</ul>
+<h2><a href="#安装-配置-cassandra" name="安装-配置-cassandra" class="anchor"><span class="anchor-link"></span></a>安装、配置 Cassandra</h2>
+<h3><a href="#下载-安装" name="下载-安装" class="anchor"><span class="anchor-link"></span></a>下载、安装</h3>
+<pre><code>wget -c http://archive.apache.org/dist/cassandra/3.9/apache-cassandra-3.9-bin.tar.gz
+tar zxf apache-cassandra-3.9-bin.tar.gz
+cd apache-cassandra-3.9
+./bin/cassandra
+</code></pre>
+<h3><a href="#初始化数据库-表" name="初始化数据库-表" class="anchor"><span class="anchor-link"></span></a>初始化数据库、表</h3>
+<pre><code>./bin/cqlsh
+cqlsh&gt; CREATE KEYSPACE hldev WITH replication = {&#39;class&#39;: &#39;SimpleStrategy&#39;, &#39;replication_factor&#39;: &#39;1&#39;};
+cqlsh&gt; use hldev;
+cqlsh:hldev&gt; CREATE TABLE user(
+         ...   id TIMEUUID,
+         ...   email TEXT,
+         ...   name TEXT,
+         ...   created_at TIMESTAMP,
+         ...   salt blob,
+         ...   salt_password blob,
+         ...   PRIMARY KEY (id, email, name)
+         ... );
+</code></pre>
+<p>这里创建了一个 keyspace，一张表，对于我们的示例足够了。</p>
+<h2><a href="#alpakka-cassandra-connector" name="alpakka-cassandra-connector" class="anchor"><span class="anchor-link"></span></a>Alpakka Cassandra Connector</h2>
+<p>这里我们介绍怎样使用 <a href="http://developer.lightbend.com/docs/alpakka/0.7/index.html">Alpakka</a> 的 <a href="http://developer.lightbend.com/docs/alpakka/0.7/cassandra.html">Cassandra Connector</a> 来访问 Cassandra。 Alpakka Cassandra是基于 Akka Stream 的一个Connector，它提供了使用 Akka Stream 的编程模型来访问 Cassandra 数据库的功能。</p>
+<h3><a href="#添加库依赖" name="添加库依赖" class="anchor"><span class="anchor-link"></span></a>添加库依赖</h3>
+<pre><code>libraryDependencies += &quot;com.lightbend.akka&quot; %% &quot;akka-stream-alpakka-cassandra&quot; % &quot;0.7&quot;
+</code></pre>
+<h3><a href="#访问cassandra" name="访问cassandra" class="anchor"><span class="anchor-link"></span></a>访问Cassandra</h3>
+<p>继续能过单元测试来看看怎样使用 Alpakka Cassandra Connector 访问 Cassandra 数据库的。</p>
+<pre class="prettyprint"><code class="language-scala">sbt
+&gt; testOnly akkahttp.foundation.data.repository.UserRepositoryTest
+</code></pre>
+<p>测试结果如下：</p>
+<p><img src="../assets/imgs/testOnly-UserRepositoryTest.png" alt="testOnly akkahttp.foundation.data.repository.UserRepositoryTest" /></p>
+<p>这里，我们把注意力关注在 <code>UserRepository.scala</code> 上，<code>UserRepositoryTest</code> 单元测试和上一节访问 PostgreSQL 库的测试无本质区 别，但数据库访问代码区别可就大了。</p>
+<p>首先，我们使用了 <code>Alpakka</code> 里提供的 Akka Stream for Cassandra Connector 来访问，并没有直接使用官方提供的 <code>cassandra-driver-core</code> 。</p>
+<pre class="prettyprint"><code class="language-scala">class UserRepository(cassandraSession: StandaloneCassandraSession
+                    )(
+                      implicit val materializer: Materializer, ec: ExecutionContext
+                    ) {
+
+  import cassandraSession.session  // (1)
+
+  def deleteById(userId: UUID): Future[Done] = {
+    val stmt = cassandraSession.prepare(&quot;delete from hldev.user where id = ?&quot;).bind(userId)
+    CassandraSource(stmt).runWith(Sink.ignore)  // (2)
+  }
+
+  def insert(user: User, password: SaltPassword): Future[Done] = {
+    val stmt = cassandraSession
+      .prepare(&quot;insert into hldev.user(id, email, name, created_at, salt, salt_password) values(?, ?, ?, ?, ?, ?)&quot;)
+      .bind(
+        user.id,
+        user.email,
+        user.email.split(&#39;@&#39;)(0),
+        user.createdAt,
+        ByteBuffer.wrap(password.salt),
+        ByteBuffer.wrap(password.saltPwd))
+    CassandraSource(stmt).runWith(Sink.ignore)
+  }
+
+  def login(email: String, password: String): Future[Option[(User, Array[Byte], Array[Byte])]] = {
+    val stmt = cassandraSession
+      .prepare(&quot;select * from hldev.user where email = ? ALLOW FILTERING&quot;)
+      .bind(email)
+    CassandraSource(stmt)
+      .runWith(Sink.headOption) // (3)
+      .map(maybeRow =&gt; // (4)
+        maybeRow.map(row =&gt;
+          (UserRepository.mapToUser(row),
+            Utils.byteBufferToArray(row.getBytes(&quot;salt&quot;)),
+            Utils.byteBufferToArray(row.getBytes(&quot;salt_password&quot;)))
+        ))
+  }
+
+  def findById(userId: UUID): Future[Option[User]] = {
+    val stmt = cassandraSession
+      .prepare(&quot;select * from hldev.user where id = ?&quot;)
+      .bind(userId)
+    CassandraSource(stmt)
+      .runWith(Sink.headOption)
+      .map(maybeRow =&gt; maybeRow.map(row =&gt; UserRepository.mapToUser(row)))
+  }
+
+  def existsByEmail(email: String): Future[Boolean] = {
+    CassandraSource(cassandraSession.prepare(&quot;select count(1) as COUNT from hldev.user where email = ? ALLOW FILTERING&quot;).bind(email))
+      .runWith(Sink.head)
+      .map(row =&gt; row.getLong(&quot;COUNT&quot;) == 1)
+  }
+}
+</code></pre>
+<ul>
+  <li>(1)：首先需要从 <code>cassandraSession</code> 中导入 <code>com.datastax.driver.core.Session</code> 异常变量，这个是 <code>CassandraSource</code> 需要的</li>
+  <li>(2)：对于 <strong>DELETE</strong> 语句，Cassandra 驱动并没向SQL一样返回语句影响的行数这样的返回值，这里在 <code>runWith</code> 函数里使用 <code>Sink.ignore</code> 忽略返回值</li>
+  <li>(3)：对于 <code>login</code> 这个操作，我们使用 <code>Sink.headOption</code> 获取第一个值。若没有找到任务匹配值则返回 <code>None</code></li>
+  <li>(4)：转换获取的 <code>ResultSet</code> 为 <code>User</code> 对象</li>
+</ul>
+<p>Alpakka Cassandra Connector 提供了兼容 Akka Stream 的方式来快速访问 Cassandra 数据库，使用响应式的编程。对于 Akka Stream， 可以阅读 <a href="http://doc.akka.io/docs/akka/2.4/scala/stream/stream-quickstart.html">Akka Stream Quicktart</a> 快速了解其基本原理 和使用方式。本书介绍的 Akka HTTP 是构建在 Akka Stream 之上的，而 Alpakka Cassansdra Connector可以紧密地和Akka HTTP进行结合， 使我们的应用吏响应式、高效。</p><div class="callout warning "><div class="callout-title">警告</div>
+<p>在使用 Cassandra 提供的批量插入功能时，也许需要修改下数据库默认配置。在使用 <code>BatchStatement</code> 进行插入操作时会发现，当数据量稍大以后数据库中并没有加入新的数据。这是因为Cassandra默认对批量操作的数据大小限制得比较低。我们将其修改即可。</p></div>
+<pre class="prettyprint"><code class="language-bash"># Log WARN on any batch size exceeding this value. 5kb per batch by default.
+# Caution should be taken on increasing the size of this threshold as it can lead to node instability.
+batch_size_warn_threshold_in_kb: 1000
+
+# Fail any batch exceeding this value. 50kb (10x warn threshold) by default.
+batch_size_fail_threshold_in_kb: 2000
+</code></pre>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/storage/storage.3.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../storage/storage.4.html">访问 Redis</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../storage/storage.3.html#访问-cassandra-数据库" class="header">访问 Cassandra 数据库</a>
+  <ul>
+    <li><a href="../storage/storage.3.html#cassandra-数据模型" class="header">Cassandra 数据模型</a></li>
+    <li><a href="../storage/storage.3.html#安装-配置-cassandra" class="header">安装、配置 Cassandra</a></li>
+    <li><a href="../storage/storage.3.html#alpakka-cassandra-connector" class="header">Alpakka Cassandra Connector</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2018</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '1.0.0', '')});</script>
+
+
+</html>

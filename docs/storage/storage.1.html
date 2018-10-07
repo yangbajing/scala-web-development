@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>使用 JDBC 访问 PostgreSQL · Scala Web 开发</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='book'/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/normalize.css/normalize.css"/>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Scala Web 开发
+</a>
+<div class="version-number">
+1.0.0
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../preface.html" class="page">Scala Web 开发 &ndash; 使用 Akka HTTP</a></li>
+  <li><a href="../env/index.html" class="page">Scala 环境配置</a>
+  <ul>
+    <li><a href="../env/env.1.html" class="page">Sbt</a></li>
+    <li><a href="../env/env.2.html" class="page">IDE开发工具</a></li>
+    <li><a href="../env/env.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../scala/index.html" class="page">Scala 语言基础</a>
+  <ul>
+    <li><a href="../scala/scala.0.html" class="page">REPL</a></li>
+    <li><a href="../scala/scala.1.html" class="page">你好，Scala</a></li>
+    <li><a href="../scala/scala.2.html" class="page">Scala基础</a></li>
+    <li><a href="../scala/scala.3.html" class="page">流程和函数</a></li>
+    <li><a href="../scala/scala.4.html" class="page">集合</a></li>
+    <li><a href="../scala/scala.5.html" class="page">class和object</a></li>
+    <li><a href="../scala/scala.6.html" class="page">函数式</a></li>
+    <li><a href="../scala/scala.7.html" class="page">Trait</a></li>
+    <li><a href="../scala/scala.8.html" class="page">并发</a></li>
+    <li><a href="../scala/scala.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../basic/index.html" class="page">Akka HTTP 基础</a>
+  <ul>
+    <li><a href="../basic/basic.0.html" class="page">Akka HTTP 基础</a></li>
+    <li><a href="../basic/basic.1.html" class="page">Web 工作方式</a></li>
+    <li><a href="../basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
+    <li><a href="../basic/basic.3.html" class="page">Akka HTTP 的通用抽象</a></li>
+    <li><a href="../basic/basic.4.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="../basic/basic.5.html" class="page">高级服务端 API</a></li>
+    <li><a href="../basic/basic.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../data/index.html" class="page">数据</a>
+  <ul>
+    <li><a href="../data/data.0.html" class="page">数据</a></li>
+    <li><a href="../data/data.1.html" class="page">JSON</a></li>
+    <li><a href="../data/data.2.html" class="page">XML</a></li>
+    <li><a href="../data/data.3.html" class="page">Protobuf</a></li>
+    <li><a href="../data/data.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../test/index.html" class="page">测试</a>
+  <ul>
+    <li><a href="../test/test.0.html" class="page">测试</a></li>
+    <li><a href="../test/test.1.html" class="page">Scalatest</a></li>
+    <li><a href="../test/test.2.html" class="page">测试异步代码</a></li>
+    <li><a href="../test/test.3.html" class="page">端到端测试Route</a></li>
+    <li><a href="../test/test.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
+  <ul>
+    <li><a href="../oauth/oauth2.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth2.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth2.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth2.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth2.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../storage/index.html" class="page">访问数据库</a>
+  <ul>
+    <li><a href="../storage/storage.0.html" class="page">访问数据库</a></li>
+    <li><a href="../storage/storage.1.html" class="active page">使用 JDBC 访问 PostgreSQL</a></li>
+    <li><a href="../storage/storage.2.html" class="page">使用 Slick 访问数据库</a></li>
+    <li><a href="../storage/storage.3.html" class="page">访问 Cassandra 数据库</a></li>
+    <li><a href="../storage/storage.4.html" class="page">访问 Redis</a></li>
+    <li><a href="../storage/storage.5.html" class="page">访问 Elasticsearch</a></li>
+    <li><a href="../storage/storage.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../appendix/index.html" class="page">附录</a>
+  <ul>
+    <li><a href="../appendix/appendix.0.html" class="page">参考资料</a></li>
+    <li><a href="../appendix/appendix.1.html" class="page">专业术语</a></li>
+    <li><a href="../appendix/appendix.2.html" class="page">词汇表</a></li>
+    <li><a href="../appendix/appendix.x.html" class="page">赞助</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Scala Web 开发</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Scala Web 开发
+</a>
+<div class="version-number">
+1.0.0
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../preface.html" class="page">Scala Web 开发 &ndash; 使用 Akka HTTP</a></li>
+  <li><a href="../env/index.html" class="page">Scala 环境配置</a>
+  <ul>
+    <li><a href="../env/env.1.html" class="page">Sbt</a></li>
+    <li><a href="../env/env.2.html" class="page">IDE开发工具</a></li>
+    <li><a href="../env/env.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../scala/index.html" class="page">Scala 语言基础</a>
+  <ul>
+    <li><a href="../scala/scala.0.html" class="page">REPL</a></li>
+    <li><a href="../scala/scala.1.html" class="page">你好，Scala</a></li>
+    <li><a href="../scala/scala.2.html" class="page">Scala基础</a></li>
+    <li><a href="../scala/scala.3.html" class="page">流程和函数</a></li>
+    <li><a href="../scala/scala.4.html" class="page">集合</a></li>
+    <li><a href="../scala/scala.5.html" class="page">class和object</a></li>
+    <li><a href="../scala/scala.6.html" class="page">函数式</a></li>
+    <li><a href="../scala/scala.7.html" class="page">Trait</a></li>
+    <li><a href="../scala/scala.8.html" class="page">并发</a></li>
+    <li><a href="../scala/scala.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../basic/index.html" class="page">Akka HTTP 基础</a>
+  <ul>
+    <li><a href="../basic/basic.0.html" class="page">Akka HTTP 基础</a></li>
+    <li><a href="../basic/basic.1.html" class="page">Web 工作方式</a></li>
+    <li><a href="../basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
+    <li><a href="../basic/basic.3.html" class="page">Akka HTTP 的通用抽象</a></li>
+    <li><a href="../basic/basic.4.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="../basic/basic.5.html" class="page">高级服务端 API</a></li>
+    <li><a href="../basic/basic.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../data/index.html" class="page">数据</a>
+  <ul>
+    <li><a href="../data/data.0.html" class="page">数据</a></li>
+    <li><a href="../data/data.1.html" class="page">JSON</a></li>
+    <li><a href="../data/data.2.html" class="page">XML</a></li>
+    <li><a href="../data/data.3.html" class="page">Protobuf</a></li>
+    <li><a href="../data/data.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../test/index.html" class="page">测试</a>
+  <ul>
+    <li><a href="../test/test.0.html" class="page">测试</a></li>
+    <li><a href="../test/test.1.html" class="page">Scalatest</a></li>
+    <li><a href="../test/test.2.html" class="page">测试异步代码</a></li>
+    <li><a href="../test/test.3.html" class="page">端到端测试Route</a></li>
+    <li><a href="../test/test.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
+  <ul>
+    <li><a href="../oauth/oauth2.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth2.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth2.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth2.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth2.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../storage/index.html" class="page">访问数据库</a>
+  <ul>
+    <li><a href="../storage/storage.0.html" class="page">访问数据库</a></li>
+    <li><a href="../storage/storage.1.html" class="active page">使用 JDBC 访问 PostgreSQL</a></li>
+    <li><a href="../storage/storage.2.html" class="page">使用 Slick 访问数据库</a></li>
+    <li><a href="../storage/storage.3.html" class="page">访问 Cassandra 数据库</a></li>
+    <li><a href="../storage/storage.4.html" class="page">访问 Redis</a></li>
+    <li><a href="../storage/storage.5.html" class="page">访问 Elasticsearch</a></li>
+    <li><a href="../storage/storage.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../appendix/index.html" class="page">附录</a>
+  <ul>
+    <li><a href="../appendix/appendix.0.html" class="page">参考资料</a></li>
+    <li><a href="../appendix/appendix.1.html" class="page">专业术语</a></li>
+    <li><a href="../appendix/appendix.2.html" class="page">词汇表</a></li>
+    <li><a href="../appendix/appendix.x.html" class="page">赞助</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Scala Web 开发</a></li>
+  <li><a href="../storage/index.html">访问数据库</a></li>
+  <li>使用 JDBC 访问 PostgreSQL</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#使用-jdbc-访问-postgresql" name="使用-jdbc-访问-postgresql" class="anchor"><span class="anchor-link"></span></a>使用 JDBC 访问 PostgreSQL</h1>
+<p>在 Scala 中，Java 的数据库访问方式都可以使用，比如：JDBC、JPA、MyBatis、Hibernate等。除此之外，也有些专为 Scala 制作的数据库访问库，如： Slick、ScalikeJDBC、Quill等。但这里，我们介绍在 Scala 中怎样使用 JDBC。</p>
+<h2><a href="#postgresql" name="postgresql" class="anchor"><span class="anchor-link"></span></a>PostgreSQL</h2>
+<p>首先，安装 <strong>PostgreSQL</strong> 数据库。</p>
+<h3><a href="#linux" name="linux" class="anchor"><span class="anchor-link"></span></a>Linux</h3>
+<pre class="prettyprint"><code class="language-bash">apt-get install postgresql // Debian/Ubuntu
+yum install postgresql // Fedora/CentOS/RHEL
+</code></pre>
+<h3><a href="#mac" name="mac" class="anchor"><span class="anchor-link"></span></a>Mac</h3>
+<pre class="prettyprint"><code class="language-bash">brew install postgresql
+</code></pre>
+<h3><a href="#windows" name="windows" class="anchor"><span class="anchor-link"></span></a>Windows</h3>
+<p>到 EnterpriseDB 官网下载二进制安装包：<code>[https://www.enterprisedb.com/downloads/postgres-postgresql-downloads#windows](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads#windows)</code></p>
+<h3><a href="#配置网络" name="配置网络" class="anchor"><span class="anchor-link"></span></a>配置网络</h3>
+<p>Linux下，PostgreSQL默认是不允许通过远程网络访问的。我们需要修改下它的默认配置。</p>
+<ul>
+  <li><em>Ubunux</em>：<code>/etc/postgresql/9.6/main</code> 目录</li>
+  <li><em>CentOS</em>：<code>/var/lib/pgsql/data</code> 目录</li>
+</ul>
+<ol>
+  <li>编辑 <code>postgresql.conf</code> 文件，去掉 <code>listen_address</code> 的注释，并修改为：</li>
+</ol>
+<pre><code>listen_address = &#39;*&#39;
+</code></pre>
+<p>同时也去掉 <code>password_encryption</code> 的注释。</p>
+<ol>
+  <li>编辑 <code>pg_hba.conf</code> 文件，添加：<code>host    all      all    0.0.0.0/0    md</code> ，设置允许所有网络访问并使用 <code>md5</code> 形式的密码登录机制。</li>
+</ol>
+<blockquote>
+  <p>（注意：修改PostgreSQL的配置文件后需要重启数据库以使其生效）</p>
+</blockquote>
+<h3><a href="#创建账号及初使化库-表" name="创建账号及初使化库-表" class="anchor"><span class="anchor-link"></span></a>创建账号及初使化库、表</h3>
+<h4><a href="#创建账号-数据库" name="创建账号-数据库" class="anchor"><span class="anchor-link"></span></a>创建账号、数据库</h4>
+<pre><code>sudo su - postgres
+psql
+postgres=# create user yangbajing nosuperuser encrypted password &#39;yangbajing&#39;;
+postgres=# create database akkahttp owner=yangbajing template=template0 encoding=&#39;UTF-8&#39; lc_collate=&#39;zh_CN.UTF-8&#39; lc_ctype=&#39;zh_CN.UTF-8&#39;;
+</code></pre>
+<h4><a href="#初始化表-数据" name="初始化表-数据" class="anchor"><span class="anchor-link"></span></a>初始化表、数据</h4>
+<pre class="prettyprint"><code class="language-sql">CREATE TABLE author(
+  id bigserial,
+  name VARCHAR(255) NOT NULL,
+  age int,
+  remark TEXT,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE book(
+  isbn VARCHAR(64),
+  author bigint NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  description VARCHAR(1024),
+  amount DECIMAL NOT NULL,
+  PRIMARY KEY (isbn)
+);
+</code></pre>
+<h2><a href="#访问数据库" name="访问数据库" class="anchor"><span class="anchor-link"></span></a>访问数据库</h2>
+<h3><a href="#命令行" name="命令行" class="anchor"><span class="anchor-link"></span></a>命令行</h3>
+<pre><code>psql -h localhost -d hldev -U hldev
+</code></pre>
+<h3><a href="#代码访问" name="代码访问" class="anchor"><span class="anchor-link"></span></a>代码访问</h3>
+<p>首先，我们定义两个数据库实体对象：<code>Author</code> 和 <code>Book</code>：</p>
+<pre class="prettyprint"><code class="language-scala">case class Author(id: Long,
+                  name: String,
+                  age: Option[Int],
+                  remark: Option[String])
+case class Book(isbn: String,
+                author: Long,
+                title: String,
+                amount: BigDecimal,
+                description: Option[String])
+</code></pre>
+<p>接下来在 <code>AuthorRepository</code> 中进行数据库操作，现在先把什么 <code>Service</code>，<code>Controller</code>等放一边，我们使用 <strong>scalatest</strong> 来测试下我们的数 据库访问代码。</p>
+<pre class="prettyprint"><code class="language-scala">class AuthorRepositoryTest extends MeSpec with JDBCSpec {
+
+  &quot;AccountRepositoryTest&quot; should {
+    val accountRepository = new AuthorRepository(dataSource)
+
+    &quot;create&quot; in {
+      val account = Author(0, &quot;羊八井&quot;, Some(31), None)
+      val result = accountRepository.create(account)
+      result.id must be &gt; 0L
+    }
+
+    &quot;update&quot; in {
+      val author = Author(3, &quot;yangbajing&quot;, Some(32), Some(&quot;中国重庆江津&quot;))
+      val result = accountRepository.update(author)
+      result.id mustBe author.id
+      result.name mustBe author.name
+      result.age mustBe author.age
+    }
+
+    &quot;list&quot; in {
+      val results = accountRepository.list()
+      results must not be empty
+      println(s&quot;results size: ${results.size}&quot;)
+    }
+
+  }
+  
+}
+</code></pre>
+<p>先不管 <code>MeSpec</code> 和 <code>JDBCSpec</code> 两个 trait，你可以先试试这个测试（前题是你已经设置好数据库环境）。</p>
+<pre class="prettyprint"><code class="language-scala">&gt; testOnly akkahttp.foundation.data.repository.AuthorRepositoryTest
+</code></pre>
+<p><img src="../assets/imgs/testOnly-AuthorRepositoryTest.png" alt="testOnly akkahttp.foundation.data.repository.AuthorRepositoryTest" /></p>
+<p>若一切正常，你会看到测试正确通过。<code>AuthorRepositoryTert</code> 脚本中一共执行了3个测试，其中 <code>should list</code> 测试中打印了一个测试输出，从数据库中 获取到8条记录。下面，让我们来看看 <code>AuthorRepository</code> ，我们怎么在 Scala 中使用 JDBC 来访问数据库的。</p>
+<pre class="prettyprint"><code class="language-scala">class AuthorRepository(dataSource: DataSource) {
+  val jdbcTemplate = JdbcTemplate(dataSource) // ①
+
+  def update(author: Author): Author = {
+    require(author.id &gt; 0L, &quot;id 必有大于 0&quot;) // ②
+
+    val (names, args) = AuthorRepository.generateArgs(author)
+    val updateSet = JdbcTemplate.sqlUpdateSets(names)
+    val sql = s&quot;UPDATE author SET $updateSet WHERE id = ? RETURNING *&quot; // ③
+    args.append(author.id.asInstanceOf[Object])
+
+    val (results, _) = jdbcTemplate.queryMany(sql, args)
+    if (results.isEmpty) {
+      throw new SQLException(s&quot;账号：${author.id} 不存在&quot;)
+    } else {
+      AuthorRepository.generateResult(results.head) // ④
+    }
+  }
+
+  def create(author: Author): Author = {
+    require(author.id &lt;= 1L, &quot;id 不能存在&quot;)
+      
+    val (names, args) = AuthorRepository.generateArgs(author)
+    val sql =
+      s&quot;&quot;&quot;INSERT INTO author(${JdbcTemplate.sqlNames(names)})
+         |  VALUES(${JdbcTemplate.sqlArgs(args)}) RETURNING id&quot;&quot;&quot;.stripMargin // ⑤
+
+    val (results, labels) = jdbcTemplate.queryMany(sql, args)
+
+    val id = results.head.apply(labels.head.label).asInstanceOf[Long]
+    author.copy(id = id)
+  }
+
+  def list(): Vector[Author] = {
+    val (results, _) = jdbcTemplate.queryMany(&quot;SELECT id, name, age, remark FROM author ORDER BY id DESC&quot;)
+    results.map(AuthorRepository.generateResult)
+  }
+
+}
+</code></pre>
+<ol>
+  <li>这里我们没有使用 Ioc 等方式来管理组件件的依赖，我们在类的构造代码区里实例华一个 <code>jdbcTemplate</code>。</li>
+  <li>在 <code>update</code> 方法的开头，我们效验 Author <code>id</code> 是否有效。</li>
+  <li>主意这里的 SQL 语句，在普通的 <code>update</code> 语句之上添加了 <code>RETURNING *</code> 语句。这里 <strong>PostgreSQL</strong> 数据库的一个扩展特性，它将返回语句影 响记录的所有字段。可以通过这个特性很方便的在更新语句之后获取到最新的数据。</li>
+  <li><code>generateResult</code> 函数，把返回的键值对形式的数据转换映射成一个 <code>Author</code> 对象</li>
+  <li>这里使用 <code>RETURNING id</code> 返回数据库序列自动生成的 Author <code>id</code></li>
+</ol>
+<p>在 <code>AuthorRepository</code> 的伴生对象里，有两个简单的帮助函数，<code>generateResult</code> 和 <code>generateArgs</code> ，分别将通过JDBC的ResultSet获取的记录映射 成一个 <code>Author</code> 对象和将 <code>author</code> 对象转换成可用于 <code>INSERT</code>、<code>UPDATE</code>语句字段序列部分及获取有效参数的一个序列。这段话说起来有点拗口，直接来 看看 <code>generateArgs</code> 的代码：</p>
+<pre class="prettyprint"><code class="language-scala">  def generateArgs(author: Author) = {
+    val names = mutable.Buffer.empty[String]
+    val args = mutable.Buffer.empty[Object]
+
+    names.append(&quot;name&quot;)
+    args.append(author.name)
+
+    author.age.foreach { value =&gt;
+      names.append(&quot;age&quot;)
+      args.append(Integer.valueOf(value))
+    }
+
+    author.remark.foreach { remark =&gt;
+      names.append(&quot;remark&quot;)
+      args.append(remark)
+    }
+    (names, args)
+  }
+</code></pre>
+<p>我们有一个 Author 对象的实例：Author(0, &ldquo;羊八井&rdquo;, Some(31), None)。在调用 <code>generateArgs</code> 函数后，将获得以下转出结果：</p>
+<pre class="prettyprint"><code class="language-js">([&quot;name&quot;, &quot;age&quot;], [&quot;羊八井&quot;, 32])
+</code></pre>
+<p>我们获得了一个 Tuple（元组），第一个值是字段名的序列，第二个值是数据（参数）序列。有了这两个序列后，再使用 <code>JdbcTemplate.sqlNames</code> 和  <code>JdbcTemplate.sqlArgs</code> 来简化我们 SQL 语句的拼装。</p>
+<pre class="prettyprint"><code class="language-scala">  // [name, age] =&gt; &quot;name&quot; = ?, &quot;age&quot; = ?
+  def sqlUpdateSets(names: Seq[String]): String = names.map(name =&gt; s&quot;&quot;&quot;&quot;$name&quot; = ?&quot;&quot;&quot;).mkString(&quot;, &quot;)
+
+  // [name, age] =&gt; &quot;name&quot;, &quot;age&quot;
+  def sqlNames(names: Seq[String]): String = names.mkString(&quot;\&quot;&quot;, &quot;\&quot;, \&quot;&quot;, &quot;\&quot;&quot;)
+
+  // [value1, value2] =&gt; ?, ?
+  def sqlArgs(args: Seq[_]): String = args.map(_ =&gt; &quot;?&quot;).mkString(&quot;, &quot;)
+</code></pre>
+<p>经过这些简单的函数步骤，我们就可以很方便的拼接出想要的SQL语句了。</p>
+<pre class="prettyprint"><code class="language-scala">// INSERT INTO author(name, age) VALUES(?, ?) RETURNING id
+val sql = &quot;&quot;&quot;INSERT INTO author(${JdbcTemplate.sqlNames(names)}) VALUES(${JdbcTemplate.sqlArgs(args)}) RETURNING id&quot;&quot;&quot;
+</code></pre>
+<p>JDBC是Java里标准的SQL访问方式，Scala 作为一门 JVM 语言是天然支持的。而 PostgreSQL 是开源界里优秀的关系型数据库，也是功能做为丰富的。这里我们 知道了在 Scala 里面怎样使用 SQL 来访问关系型数据库，下一节将介绍怎样访问 Cassandra 这一强大的 NoSQL 数据库。</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/storage/storage.1.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../storage/storage.2.html">使用 Slick 访问数据库</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../storage/storage.1.html#使用-jdbc-访问-postgresql" class="header">使用 JDBC 访问 PostgreSQL</a>
+  <ul>
+    <li><a href="../storage/storage.1.html#postgresql" class="header">PostgreSQL</a></li>
+    <li><a href="../storage/storage.1.html#访问数据库" class="header">访问数据库</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2018</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '1.0.0', '')});</script>
+
+
+</html>

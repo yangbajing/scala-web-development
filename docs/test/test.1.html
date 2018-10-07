@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Scalatest · Scala Web 开发</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='book'/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/normalize.css/normalize.css"/>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Scala Web 开发
+</a>
+<div class="version-number">
+1.0.0
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../preface.html" class="page">Scala Web 开发 &ndash; 使用 Akka HTTP</a></li>
+  <li><a href="../env/index.html" class="page">Scala 环境配置</a>
+  <ul>
+    <li><a href="../env/env.1.html" class="page">Sbt</a></li>
+    <li><a href="../env/env.2.html" class="page">IDE开发工具</a></li>
+    <li><a href="../env/env.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../scala/index.html" class="page">Scala 语言基础</a>
+  <ul>
+    <li><a href="../scala/scala.0.html" class="page">REPL</a></li>
+    <li><a href="../scala/scala.1.html" class="page">你好，Scala</a></li>
+    <li><a href="../scala/scala.2.html" class="page">Scala基础</a></li>
+    <li><a href="../scala/scala.3.html" class="page">流程和函数</a></li>
+    <li><a href="../scala/scala.4.html" class="page">集合</a></li>
+    <li><a href="../scala/scala.5.html" class="page">class和object</a></li>
+    <li><a href="../scala/scala.6.html" class="page">函数式</a></li>
+    <li><a href="../scala/scala.7.html" class="page">Trait</a></li>
+    <li><a href="../scala/scala.8.html" class="page">并发</a></li>
+    <li><a href="../scala/scala.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../basic/index.html" class="page">Akka HTTP 基础</a>
+  <ul>
+    <li><a href="../basic/basic.0.html" class="page">Akka HTTP 基础</a></li>
+    <li><a href="../basic/basic.1.html" class="page">Web 工作方式</a></li>
+    <li><a href="../basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
+    <li><a href="../basic/basic.3.html" class="page">Akka HTTP 的通用抽象</a></li>
+    <li><a href="../basic/basic.4.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="../basic/basic.5.html" class="page">高级服务端 API</a></li>
+    <li><a href="../basic/basic.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../data/index.html" class="page">数据</a>
+  <ul>
+    <li><a href="../data/data.0.html" class="page">数据</a></li>
+    <li><a href="../data/data.1.html" class="page">JSON</a></li>
+    <li><a href="../data/data.2.html" class="page">XML</a></li>
+    <li><a href="../data/data.3.html" class="page">Protobuf</a></li>
+    <li><a href="../data/data.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../test/index.html" class="page">测试</a>
+  <ul>
+    <li><a href="../test/test.0.html" class="page">测试</a></li>
+    <li><a href="../test/test.1.html" class="active page">Scalatest</a></li>
+    <li><a href="../test/test.2.html" class="page">测试异步代码</a></li>
+    <li><a href="../test/test.3.html" class="page">端到端测试Route</a></li>
+    <li><a href="../test/test.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
+  <ul>
+    <li><a href="../oauth/oauth2.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth2.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth2.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth2.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth2.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../storage/index.html" class="page">访问数据库</a>
+  <ul>
+    <li><a href="../storage/storage.0.html" class="page">访问数据库</a></li>
+    <li><a href="../storage/storage.1.html" class="page">使用 JDBC 访问 PostgreSQL</a></li>
+    <li><a href="../storage/storage.2.html" class="page">使用 Slick 访问数据库</a></li>
+    <li><a href="../storage/storage.3.html" class="page">访问 Cassandra 数据库</a></li>
+    <li><a href="../storage/storage.4.html" class="page">访问 Redis</a></li>
+    <li><a href="../storage/storage.5.html" class="page">访问 Elasticsearch</a></li>
+    <li><a href="../storage/storage.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../appendix/index.html" class="page">附录</a>
+  <ul>
+    <li><a href="../appendix/appendix.0.html" class="page">参考资料</a></li>
+    <li><a href="../appendix/appendix.1.html" class="page">专业术语</a></li>
+    <li><a href="../appendix/appendix.2.html" class="page">词汇表</a></li>
+    <li><a href="../appendix/appendix.x.html" class="page">赞助</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Scala Web 开发</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Scala Web 开发
+</a>
+<div class="version-number">
+1.0.0
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../preface.html" class="page">Scala Web 开发 &ndash; 使用 Akka HTTP</a></li>
+  <li><a href="../env/index.html" class="page">Scala 环境配置</a>
+  <ul>
+    <li><a href="../env/env.1.html" class="page">Sbt</a></li>
+    <li><a href="../env/env.2.html" class="page">IDE开发工具</a></li>
+    <li><a href="../env/env.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../scala/index.html" class="page">Scala 语言基础</a>
+  <ul>
+    <li><a href="../scala/scala.0.html" class="page">REPL</a></li>
+    <li><a href="../scala/scala.1.html" class="page">你好，Scala</a></li>
+    <li><a href="../scala/scala.2.html" class="page">Scala基础</a></li>
+    <li><a href="../scala/scala.3.html" class="page">流程和函数</a></li>
+    <li><a href="../scala/scala.4.html" class="page">集合</a></li>
+    <li><a href="../scala/scala.5.html" class="page">class和object</a></li>
+    <li><a href="../scala/scala.6.html" class="page">函数式</a></li>
+    <li><a href="../scala/scala.7.html" class="page">Trait</a></li>
+    <li><a href="../scala/scala.8.html" class="page">并发</a></li>
+    <li><a href="../scala/scala.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../basic/index.html" class="page">Akka HTTP 基础</a>
+  <ul>
+    <li><a href="../basic/basic.0.html" class="page">Akka HTTP 基础</a></li>
+    <li><a href="../basic/basic.1.html" class="page">Web 工作方式</a></li>
+    <li><a href="../basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
+    <li><a href="../basic/basic.3.html" class="page">Akka HTTP 的通用抽象</a></li>
+    <li><a href="../basic/basic.4.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="../basic/basic.5.html" class="page">高级服务端 API</a></li>
+    <li><a href="../basic/basic.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../data/index.html" class="page">数据</a>
+  <ul>
+    <li><a href="../data/data.0.html" class="page">数据</a></li>
+    <li><a href="../data/data.1.html" class="page">JSON</a></li>
+    <li><a href="../data/data.2.html" class="page">XML</a></li>
+    <li><a href="../data/data.3.html" class="page">Protobuf</a></li>
+    <li><a href="../data/data.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../test/index.html" class="page">测试</a>
+  <ul>
+    <li><a href="../test/test.0.html" class="page">测试</a></li>
+    <li><a href="../test/test.1.html" class="active page">Scalatest</a></li>
+    <li><a href="../test/test.2.html" class="page">测试异步代码</a></li>
+    <li><a href="../test/test.3.html" class="page">端到端测试Route</a></li>
+    <li><a href="../test/test.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
+  <ul>
+    <li><a href="../oauth/oauth2.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth2.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth2.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth2.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth2.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../storage/index.html" class="page">访问数据库</a>
+  <ul>
+    <li><a href="../storage/storage.0.html" class="page">访问数据库</a></li>
+    <li><a href="../storage/storage.1.html" class="page">使用 JDBC 访问 PostgreSQL</a></li>
+    <li><a href="../storage/storage.2.html" class="page">使用 Slick 访问数据库</a></li>
+    <li><a href="../storage/storage.3.html" class="page">访问 Cassandra 数据库</a></li>
+    <li><a href="../storage/storage.4.html" class="page">访问 Redis</a></li>
+    <li><a href="../storage/storage.5.html" class="page">访问 Elasticsearch</a></li>
+    <li><a href="../storage/storage.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../appendix/index.html" class="page">附录</a>
+  <ul>
+    <li><a href="../appendix/appendix.0.html" class="page">参考资料</a></li>
+    <li><a href="../appendix/appendix.1.html" class="page">专业术语</a></li>
+    <li><a href="../appendix/appendix.2.html" class="page">词汇表</a></li>
+    <li><a href="../appendix/appendix.x.html" class="page">赞助</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Scala Web 开发</a></li>
+  <li><a href="../test/index.html">测试</a></li>
+  <li>Scalatest</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#scalatest" name="scalatest" class="anchor"><span class="anchor-link"></span></a>Scalatest</h1>
+<p>ScalaTest通过简单、清晰的测试和可执行的规范来提高团队的生产力，同时改进代码和沟通效率。</p>
+<p>ScalaTest是Scala生态系统中最灵活、最流行的测试工具。支持测试：Scala、Scala.js（Javascript）和Java代码。可与JUnit、TestNG、Ant、Maven、sbt、ScalaCheck、JMock、EasyMock、Mockito、ScalaMock、Selenium、Eclipse、Netbeans、Intellij、VSCode等工具集成使用。ScalaTest可使Scala、Scala.js或者Java项目的测试更容易，拥有更高的生产力水平。</p>
+<p>为了最大化生产力，ScalaTest内建扩展点并支持多种测试方式。我们可以选择最适合我们团队经验和文化的测试风格。有以下风格可供选择：</p>
+<ul>
+  <li>FunSuite：来自xUnit。</li>
+  <li>FlatSpec：另一个来自xUnit。</li>
+  <li>FunSpec：来自Ruby&rsquo;s RSpec的BDD测试风格。</li>
+  <li>WordSpec：来自specs、specs2，适合训练有素的团队来定义严格的测试规范。也是Akka、Playframework等推荐的风格。</li>
+  <li>FreeSpec：适合有经验的团队。</li>
+  <li>PropSpec：适合追求完美的团队，需要前置测试条件定义。</li>
+  <li>FeatureSpec：主要用于验收测试。</li>
+  <li>RefSpec（JVM only）：需要定义一个特殊的测试函数，通过测试函数字面量来代码测试功能。</li>
+</ul>
+<h2><a href="#安装-scalatest" name="安装-scalatest" class="anchor"><span class="anchor-link"></span></a>安装 ScalaTest</h2>
+<p>ScalaTest的安装、使用很简单，可以直接在命令行使用，如：</p>
+<pre><code>$ scalac -cp scalatest-app_2.12-3.0.5.jar ExampleSpec.scala
+</code></pre>
+<p>也可以和sbt集成使用。对sbt不了解的读者可以先看：<a href="http://www.yangbajing.me/scala-web-development/env.1.html">http://www.yangbajing.me/scala-web-development/env.1.html</a> 来快速的学习sbt的使用方法。</p>
+<p>在sbt中添加ScalaTest支持非常简单，在构建配置文件（一般是build.sbt）中添加库依赖即可。</p>
+<pre><code>libraryDependencies += &quot;org.scalatest&quot; %% &quot;scalatest&quot; % &quot;3.0.5&quot; % &quot;test&quot;
+</code></pre>
+<p>之后重启sbt或在sbt命令行控制台里输入：<code>reload</code>以使其生效。</p>
+<h2><a href="#第一个测试用例" name="第一个测试用例" class="anchor"><span class="anchor-link"></span></a>第一个测试用例</h2>
+<pre><code>import scala.collection.mutable
+import org.scalatest._
+
+class FirstTest extends WordSpec with MustMatchers {
+  &quot;A Stack&quot; should {
+    &quot;pop values in last-in-first-out order&quot; in {
+      val stack = mutable.Stack.empty[Int]
+      stack.push(1)
+      stack.push(2)
+      stack.pop() mustBe 2
+      stack.pop() mustBe 1
+    }
+    
+    &quot;throw NoSuchElementException if an empty stack is popped&quot; in {
+      val emptyStack = mutable.Stack.empty[Int]
+      assertThrows[NoSuchElementException] {
+        emptyStack.pop()
+      }
+    }
+  }
+}
+</code></pre>
+<p>运行测试有两种方式：</p>
+<ol>
+  <li>使用<code>test</code>命令运行所有测试</li>
+  <li>使用<code>testOnly</code>命令运行单个测试。</li>
+</ol>
+<p>在sbt中输入<code>testOnly firstFirstTest</code>运行刚写好的第一个测试，结果如下：</p>
+<pre><code>[IJ]scalatest &gt; testOnly first.FirstTest
+[info] Compiling 1 Scala source to /opt/workspace/scala-applications/scalatest/target/scala-2.12/test-classes ...
+[info] Done compiling.
+[info] FirstTest:
+[info] A Stack
+[info] - should pop values in last-in-first-out order
+[info] - should throw NoSuchElementException if an empty stack is popped
+[info] Run completed in 344 milliseconds.
+[info] Total number of tests run: 2
+[info] Suites: completed 1, aborted 0
+[info] Tests: succeeded 2, failed 0, canceled 0, ignored 0, pending 0
+[info] All tests passed.
+[success] Total time: 2 s, completed 2018-8-2 18:29:14
+</code></pre>
+<h2><a href="#使用-matchers" name="使用-matchers" class="anchor"><span class="anchor-link"></span></a>使用 Matchers</h2>
+<p>除了默认的断言函数，如：<code>assert</code>、<code>assertResult</code>、<code>assertThrows</code>等，ScalaTest还提供了更好用的 <strong>Matchers</strong>。**Matchers** 具有以下特性：</p>
+<ul>
+  <li>基于表达式断言的DSL，如：<code>stack.pop() mustBe 2</code>。更易读，以人类语言的方式来编写测试断言。</li>
+  <li>丰富的断言类型，支持更直观的断言表达式，如：<code>&quot;abbccxxx&quot; should startWith regex (&quot;a(b*)(c*)&quot; withGroups (&quot;bb&quot;, &quot;cc&quot;))</code>。</li>
+</ul>
+<p>只需要在测试类混入 <code>MustMatchers</code> 特质，就可以使用 ScalaTest 提供的强大的 Matchers 特性。</p>
+<h2><a href="#optionvalues" name="optionvalues" class="anchor"><span class="anchor-link"></span></a>OptionValues</h2>
+<p>OptionValues特质提供了一个隐式转换，将一个 <code>value</code> 方法添加到 <code>Option[T]</code> 类型上。若 Option 是有定义的，则 <code>value</code> 方法将返回值，就和调用 <code>.get</code> 一样；若没有，则抛出 <code>TestFailedException</code> 异常，而不是调用 <code>get</code> 方法时抛出的 <code>NoSuchElementException</code> 异常。同时，ScalaTest会输出更友好的错误显示：**The Option on which value was invoked was not defined.**，而不是输出一大堆的错误异常栈而打乱正常的测试输出。</p>
+<p><strong>使用<code>.value</code></strong></p>
+<pre><code>[info] FirstTest:
+[info] option
+[info] - should value *** FAILED ***
+[info]   The Option on which value was invoked was not defined. (FirstTest.scala:30)
+[info] Run completed in 418 milliseconds.
+[info] Total number of tests run: 3
+[info] Suites: completed 1, aborted 0
+[info] Tests: succeeded 2, failed 1, canceled 0, ignored 0, pending 0
+[info] *** 1 TEST FAILED ***
+[error] Failed tests:
+[error] 	first.FirstTest
+[error] (Test / testOnly) sbt.TestsFailedException: Tests unsuccessful
+</code></pre>
+<p><strong>使用<code>.get</code></strong></p>
+<pre><code>[info] FirstTest:
+[info] option
+[info] - should value *** FAILED ***
+[info]   java.util.NoSuchElementException: None.get
+[info]   at scala.None$.get(Option.scala:349)
+[info]   at scala.None$.get(Option.scala:347)
+[info]   at first.FirstTest.$anonfun$new$6(FirstTest.scala:31)
+[info]   at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:12)
+[info]   at org.scalatest.OutcomeOf.outcomeOf(OutcomeOf.scala:85)
+[info]   at org.scalatest.OutcomeOf.outcomeOf$(OutcomeOf.scala:83)
+[info]   at org.scalatest.OutcomeOf$.outcomeOf(OutcomeOf.scala:104)
+[info]   at org.scalatest.Transformer.apply(Transformer.scala:22)
+[info]   at org.scalatest.Transformer.apply(Transformer.scala:20)
+[info]   at org.scalatest.WordSpecLike$$anon$1.apply(WordSpecLike.scala:1078)
+[info]   ...
+[info] Run completed in 211 milliseconds.
+[info] Total number of tests run: 3
+[info] Suites: completed 1, aborted 0
+[info] Tests: succeeded 2, failed 1, canceled 0, ignored 0, pending 0
+[info] *** 1 TEST FAILED ***
+[error] Failed tests:
+[error] 	first.FirstTest
+[error] (Test / testOnly) sbt.TestsFailedException: Tests unsuccessful
+</code></pre>
+<h2><a href="#scalafutures" name="scalafutures" class="anchor"><span class="anchor-link"></span></a>ScalaFutures</h2>
+<p>ScalaTest支持对异步代码进行阻塞测试。提供了隐式方法 <code>futureValue</code> 来从 <code>Future[T]</code> 中阻塞获取结果。</p>
+<pre><code>override implicit def patienceConfig = PatienceConfig(Span(60, Seconds), Span(50, Millis))
+
+  &quot;future&quot; should {
+    &quot;await result === 3&quot; in {
+      import scala.concurrent.ExecutionContext.Implicits.global
+      val f = Future{
+        Thread.sleep(1000)
+        3
+      }
+      val result = f.futureValue
+      result mustBe 3
+    }
+  }
+</code></pre>
+<p>上面代码的运行效果如下：</p>
+<pre><code>[info] FirstTest:
+[info] future
+[info] - should await result === 3
+[info] Run completed in 1 second, 169 milliseconds.
+[info] Total number of tests run: 1
+[info] Suites: completed 1, aborted 0
+[info] Tests: succeeded 1, failed 0, canceled 0, ignored 0, pending 0
+[info] All tests passed.
+</code></pre>
+<h2><a href="#mock" name="mock" class="anchor"><span class="anchor-link"></span></a>Mock</h2>
+<p>ScalaTest为以下4种Mock提供了原生的支持：</p>
+<ol>
+  <li><a href="http://www.scalamock.org/">ScalaMock</a></li>
+  <li>EasyMock</li>
+  <li>JMock</li>
+  <li>Mockito</li>
+</ol>
+<p>这里先简单介绍下 <strong>ScalaMock</strong>。</p>
+<p>ScalaMock是由 Paul Butcher 编写的一个原生的开源Scala Mocking框架，允许模拟对象和函数。ScalaMock支持3种不同的模拟风格：</p>
+<ul>
+  <li>函数模拟（Function mocks）</li>
+  <li>代理（动态）模拟（Proxy (dynamic) mocks）</li>
+  <li>生成类型安全模拟（Generated (type-safe) mocks）</li>
+</ul>
+<p><strong>函数模拟</strong></p>
+<pre><code>  &quot;scalamock&quot; should {
+    &quot;function mock&quot; in {
+      val m = mockFunction[Int, String]
+      m expects 42 returning &quot;Forty two&quot;
+      m(42) mustBe &quot;Forty two&quot;
+    }
+  }
+</code></pre>
+<p>这里我们模拟了一个函数 <code>m</code>，它接受一个Int参数并返回一个字符串值。这里看到，我们并没有实际定义这样一个函数，而是使用 <code>m expects 42 returning &quot;Forty two&quot;</code> 声明了这个模拟期待一个输入值：42，并返回结果字符串：<code>Forty row</code>。执行这个测试，运行效果如下：</p>
+<pre><code>[info] FirstTest:
+[info] scalamock
+[info] - should function mock
+[info] Run completed in 211 milliseconds.
+[info] Total number of tests run: 1
+[info] Suites: completed 1, aborted 0
+[info] Tests: succeeded 1, failed 0, canceled 0, ignored 0, pending 0
+[info] All tests passed.
+</code></pre>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/test/test.1.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../test/test.2.html">测试异步代码</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../test/test.1.html#scalatest" class="header">Scalatest</a>
+  <ul>
+    <li><a href="../test/test.1.html#安装-scalatest" class="header">安装 ScalaTest</a></li>
+    <li><a href="../test/test.1.html#第一个测试用例" class="header">第一个测试用例</a></li>
+    <li><a href="../test/test.1.html#使用-matchers" class="header">使用 Matchers</a></li>
+    <li><a href="../test/test.1.html#optionvalues" class="header">OptionValues</a></li>
+    <li><a href="../test/test.1.html#scalafutures" class="header">ScalaFutures</a></li>
+    <li><a href="../test/test.1.html#mock" class="header">Mock</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2018</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '1.0.0', '')});</script>
+
+
+</html>

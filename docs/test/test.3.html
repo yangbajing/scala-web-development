@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>端到端测试Route · Scala Web 开发</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='book'/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/normalize.css/normalize.css"/>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Scala Web 开发
+</a>
+<div class="version-number">
+1.0.0
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../preface.html" class="page">Scala Web 开发 &ndash; 使用 Akka HTTP</a></li>
+  <li><a href="../env/index.html" class="page">Scala 环境配置</a>
+  <ul>
+    <li><a href="../env/env.1.html" class="page">Sbt</a></li>
+    <li><a href="../env/env.2.html" class="page">IDE开发工具</a></li>
+    <li><a href="../env/env.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../scala/index.html" class="page">Scala 语言基础</a>
+  <ul>
+    <li><a href="../scala/scala.0.html" class="page">REPL</a></li>
+    <li><a href="../scala/scala.1.html" class="page">你好，Scala</a></li>
+    <li><a href="../scala/scala.2.html" class="page">Scala基础</a></li>
+    <li><a href="../scala/scala.3.html" class="page">流程和函数</a></li>
+    <li><a href="../scala/scala.4.html" class="page">集合</a></li>
+    <li><a href="../scala/scala.5.html" class="page">class和object</a></li>
+    <li><a href="../scala/scala.6.html" class="page">函数式</a></li>
+    <li><a href="../scala/scala.7.html" class="page">Trait</a></li>
+    <li><a href="../scala/scala.8.html" class="page">并发</a></li>
+    <li><a href="../scala/scala.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../basic/index.html" class="page">Akka HTTP 基础</a>
+  <ul>
+    <li><a href="../basic/basic.0.html" class="page">Akka HTTP 基础</a></li>
+    <li><a href="../basic/basic.1.html" class="page">Web 工作方式</a></li>
+    <li><a href="../basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
+    <li><a href="../basic/basic.3.html" class="page">Akka HTTP 的通用抽象</a></li>
+    <li><a href="../basic/basic.4.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="../basic/basic.5.html" class="page">高级服务端 API</a></li>
+    <li><a href="../basic/basic.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../data/index.html" class="page">数据</a>
+  <ul>
+    <li><a href="../data/data.0.html" class="page">数据</a></li>
+    <li><a href="../data/data.1.html" class="page">JSON</a></li>
+    <li><a href="../data/data.2.html" class="page">XML</a></li>
+    <li><a href="../data/data.3.html" class="page">Protobuf</a></li>
+    <li><a href="../data/data.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../test/index.html" class="page">测试</a>
+  <ul>
+    <li><a href="../test/test.0.html" class="page">测试</a></li>
+    <li><a href="../test/test.1.html" class="page">Scalatest</a></li>
+    <li><a href="../test/test.2.html" class="page">测试异步代码</a></li>
+    <li><a href="../test/test.3.html" class="active page">端到端测试Route</a></li>
+    <li><a href="../test/test.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
+  <ul>
+    <li><a href="../oauth/oauth2.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth2.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth2.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth2.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth2.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../storage/index.html" class="page">访问数据库</a>
+  <ul>
+    <li><a href="../storage/storage.0.html" class="page">访问数据库</a></li>
+    <li><a href="../storage/storage.1.html" class="page">使用 JDBC 访问 PostgreSQL</a></li>
+    <li><a href="../storage/storage.2.html" class="page">使用 Slick 访问数据库</a></li>
+    <li><a href="../storage/storage.3.html" class="page">访问 Cassandra 数据库</a></li>
+    <li><a href="../storage/storage.4.html" class="page">访问 Redis</a></li>
+    <li><a href="../storage/storage.5.html" class="page">访问 Elasticsearch</a></li>
+    <li><a href="../storage/storage.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../appendix/index.html" class="page">附录</a>
+  <ul>
+    <li><a href="../appendix/appendix.0.html" class="page">参考资料</a></li>
+    <li><a href="../appendix/appendix.1.html" class="page">专业术语</a></li>
+    <li><a href="../appendix/appendix.2.html" class="page">词汇表</a></li>
+    <li><a href="../appendix/appendix.x.html" class="page">赞助</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Scala Web 开发</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Scala Web 开发
+</a>
+<div class="version-number">
+1.0.0
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../preface.html" class="page">Scala Web 开发 &ndash; 使用 Akka HTTP</a></li>
+  <li><a href="../env/index.html" class="page">Scala 环境配置</a>
+  <ul>
+    <li><a href="../env/env.1.html" class="page">Sbt</a></li>
+    <li><a href="../env/env.2.html" class="page">IDE开发工具</a></li>
+    <li><a href="../env/env.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../scala/index.html" class="page">Scala 语言基础</a>
+  <ul>
+    <li><a href="../scala/scala.0.html" class="page">REPL</a></li>
+    <li><a href="../scala/scala.1.html" class="page">你好，Scala</a></li>
+    <li><a href="../scala/scala.2.html" class="page">Scala基础</a></li>
+    <li><a href="../scala/scala.3.html" class="page">流程和函数</a></li>
+    <li><a href="../scala/scala.4.html" class="page">集合</a></li>
+    <li><a href="../scala/scala.5.html" class="page">class和object</a></li>
+    <li><a href="../scala/scala.6.html" class="page">函数式</a></li>
+    <li><a href="../scala/scala.7.html" class="page">Trait</a></li>
+    <li><a href="../scala/scala.8.html" class="page">并发</a></li>
+    <li><a href="../scala/scala.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../basic/index.html" class="page">Akka HTTP 基础</a>
+  <ul>
+    <li><a href="../basic/basic.0.html" class="page">Akka HTTP 基础</a></li>
+    <li><a href="../basic/basic.1.html" class="page">Web 工作方式</a></li>
+    <li><a href="../basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
+    <li><a href="../basic/basic.3.html" class="page">Akka HTTP 的通用抽象</a></li>
+    <li><a href="../basic/basic.4.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="../basic/basic.5.html" class="page">高级服务端 API</a></li>
+    <li><a href="../basic/basic.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../data/index.html" class="page">数据</a>
+  <ul>
+    <li><a href="../data/data.0.html" class="page">数据</a></li>
+    <li><a href="../data/data.1.html" class="page">JSON</a></li>
+    <li><a href="../data/data.2.html" class="page">XML</a></li>
+    <li><a href="../data/data.3.html" class="page">Protobuf</a></li>
+    <li><a href="../data/data.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../test/index.html" class="page">测试</a>
+  <ul>
+    <li><a href="../test/test.0.html" class="page">测试</a></li>
+    <li><a href="../test/test.1.html" class="page">Scalatest</a></li>
+    <li><a href="../test/test.2.html" class="page">测试异步代码</a></li>
+    <li><a href="../test/test.3.html" class="active page">端到端测试Route</a></li>
+    <li><a href="../test/test.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
+  <ul>
+    <li><a href="../oauth/oauth2.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth2.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth2.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth2.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth2.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../storage/index.html" class="page">访问数据库</a>
+  <ul>
+    <li><a href="../storage/storage.0.html" class="page">访问数据库</a></li>
+    <li><a href="../storage/storage.1.html" class="page">使用 JDBC 访问 PostgreSQL</a></li>
+    <li><a href="../storage/storage.2.html" class="page">使用 Slick 访问数据库</a></li>
+    <li><a href="../storage/storage.3.html" class="page">访问 Cassandra 数据库</a></li>
+    <li><a href="../storage/storage.4.html" class="page">访问 Redis</a></li>
+    <li><a href="../storage/storage.5.html" class="page">访问 Elasticsearch</a></li>
+    <li><a href="../storage/storage.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../appendix/index.html" class="page">附录</a>
+  <ul>
+    <li><a href="../appendix/appendix.0.html" class="page">参考资料</a></li>
+    <li><a href="../appendix/appendix.1.html" class="page">专业术语</a></li>
+    <li><a href="../appendix/appendix.2.html" class="page">词汇表</a></li>
+    <li><a href="../appendix/appendix.x.html" class="page">赞助</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Scala Web 开发</a></li>
+  <li><a href="../test/index.html">测试</a></li>
+  <li>端到端测试Route</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#端到端测试route" name="端到端测试route" class="anchor"><span class="anchor-link"></span></a>端到端测试Route</h1>
+<h2><a href="#akka-http" name="akka-http" class="anchor"><span class="anchor-link"></span></a>Akka HTTP</h2>
+<p>这里我们将使用 Akka HTTP来开发一个很简单的业务应用：组织管理。它只有一个数据模型，**Org**。组织支持树型结构，所有每个 org 里面都可以有一个可选 <code>parent</code> 属性来指向父组织，若没有则代表此 org 是个一级组织。<a href="https://github.com/yangbajing/scala-web-development/blob/master/scala-web/common/src/main/scala/scalaweb/model/Org.scala">Org</a> 的数据模型如下：</p>
+<pre class="prettyprint"><code class="language-scala">case class Org(
+  id Int,  // PK
+  code Option[String], // 组织编码，可选值。Unique index
+  name String,
+  contact: ObjectNode, // Json类型，使用Jackson
+  parent Option[String], // 父组织
+  parents List[String], // 父组织全路径
+  status: Int,
+  createdAt OffsetDateTime,
+  updatedAt Option[OffsetDateTime]
+)
+</code></pre>
+<p>业务流程上，对一个 Org 模型的操作我们设计如下的简单流程：</p>
+<pre><code>OrgRoute -&gt; OrgService -&gt; OrgRepo
+</code></pre>
+<p><code>OrgRoute</code> 是一个使用 <strong>Akka HTTP Routing DSL</strong> 来定义实现的路由（从MVC架构术语来说，就是控制器（Controller））。从这个简单的示例来说，它拥有如下接口：</p>
+<ul>
+  <li><strong>createRoute</strong>：创建 Org</li>
+  <li><strong>getRoute</strong>：根据id或code获取 Org</li>
+  <li><strong>pageRoute</strong>：分页查询</li>
+  <li><strong>updateRoute</strong>：更新 Org</li>
+  <li><strong>removeRoute</strong>：根据id删除 Org</li>
+</ul>
+<p>现在，我们已经设计好了我们需要的5个接口（名字），接下来需要定义具体的接口和实现。这里，我们先从测试开始。</p>
+<h2><a href="#akka-http-testkit" name="akka-http-testkit" class="anchor"><span class="anchor-link"></span></a>akka-http-testkit</h2>
+<p>Akka HTTP 提供了一个测试套件来简化对 Akka HTTP 和 Akka HTTP Routing DSL的测试，我们需要在 sbt 配置里加上对应的库依赖：</p>
+<pre><code>libraryDependencies += &quot;com.typesafe.akka&quot; %% &quot;akka-http-testkit&quot; % &quot;2.5.14&quot; % Test
+</code></pre>
+<p>定义一个 Akka HTTP Routing DSL 的测试类，需要混入 <code>ScalatestRouteTest</code> 特质，它提供了对 Route DSL 的一系列测试辅助函数来支持Scalatest。</p>
+<h2><a href="#orgroutetest" name="orgroutetest" class="anchor"><span class="anchor-link"></span></a>OrgRouteTest</h2>
+<p>现在，我们从 <strong>OrgRouteTest</strong> 开始，通过 <strong style="color:red">红</strong>-<strong style="color:green">绿</strong>-<strong style="color:red">红</strong>-<strong style="color:green">绿</strong>这样的测试循环来验证并一步一步实现对 Org 的各项接口功能。</p>
+<p>首先，让我们来看看这个 <a href="https://github.com/yangbajing/scala-web-development/blob/master/scala-web/test/src/test/scala/scalaweb/test/route/OrgRouteTest.scala">OrgRouteTest</a> 类：</p>
+<pre class="prettyprint"><code class="language-scala">class OrgRouteTest
+    extends WordSpec
+    with BeforeAndAfterAll
+    with ScalatestRouteTest
+    with MustMatchers
+    with OptionValues
+    with ScalaFutures {
+
+  private val schema = new Schema()
+  private var orgIds: Set[Int] = Set()
+  private val orgService = new OrgService(schema)
+  private val route: Route = new OrgRoute(orgService).route
+
+  &quot;OrgRoute&quot; should {
+    import helloscala.http.JacksonSupport._
+
+    var org: Org = null
+
+    &quot;create&quot; in {
+      val req = OrgCreateReq(Some(&quot;000001&quot;), &quot;测试组织&quot;, None, None)
+      Post(&quot;/org/item&quot;, req) ~&gt; route ~&gt; check {
+        status mustBe StatusCodes.Created
+        org = responseAs[Org]
+        orgIds += org.id
+        org.id must be &gt; 0
+        org.parent mustBe None
+        org.updatedAt mustBe None
+      }
+    }
+
+    &quot;get&quot; in {
+      pending
+    }
+
+    &quot;pageRoute&quot; in {
+      pending
+    }
+
+    &quot;updateRoute&quot; in {
+      pending
+    }
+
+    &quot;remoteRoute&quot; in {
+      pending
+    }
+  }
+
+  private def cleanup(): Unit = try {
+    orgService.removeByIds(orgIds).futureValue
+  } catch {
+    case NonFatal(e) =&gt; e.printStackTrace()
+  }
+
+  override def afterAll() {
+    cleanup()
+    schema.db.close()
+    super.afterAll()
+  }
+
+}
+</code></pre>
+<p>完整代码请见：<a href="https://github.com/yangbajing/scala-web-development/blob/master/scala-web/test/src/test/scala/scalaweb/test/route/OrgRouteTest.scala">https://github.com/yangbajing/scala-web-development/blob/master/scala-web/test/src/test/scala/scalaweb/test/route/OrgRouteTest.scala</a>。</p>
+<p>这里的**OrgRouteTest**测试类继续了多个接口：</p>
+<ul>
+  <li><strong>WordSpec</strong>：使用了**Word**风格的测试，必需要混入这样的一个测试规范接口。类似的有：**FutureSpec**、**FlatSpec**等</li>
+  <li><strong>BeforeAndAfterAll</strong>：提供了所有测试用例执行前或完成后的钩子函数</li>
+  <li><strong>ScalatestRouteTest</strong>：Akka HTTP Routing 测试的辅助函数</li>
+  <li><strong>MustMatchers</strong>：用户友好的断言DSL</li>
+  <li><strong>OptionValues</strong>：Option类型的辅助函数</li>
+  <li><strong>ScalaFutures</strong>：Future类型的辅助函数</li>
+</ul>
+<p>这里可以看到定义了5个测试样例，其中 <strong>create</strong> 测试样例已经实现，其它4个暂未实现，使用 <code>pending</code> 函数占位。</p>
+<p>在测试开始，定义了3个变量：</p>
+<ol>
+  <li><code>schema</code>：数据库连接管理</li>
+  <li><code>orgIds</code>：测试生成的组织ID列表，待测试完成后可用来进行数据清除</li>
+  <li><code>route</code>：要测试的路由</li>
+</ol>
+<h4><a href="#routing-test-dsl" name="routing-test-dsl" class="anchor"><span class="anchor-link"></span></a>routing test dsl</h4>
+<p>在 <strong>create</strong> 测试用例中，使用 <code>~&gt;</code> 函数连接了 <code>Post</code>（请求）、<code>route</code>（路由）、<code>check</code>（检测函数）三个部分。<code>Post</code>定义了我们要发起的测试请求，通过 <code>~&gt;</code> 符号（函数）连接（发送）到<code>route</code>（路由），然后再用 <code>~&gt;</code> 将响应连接到 <code>check</code> 函数来做检测（断言）。<code>Post</code>实际是调用了 <a href="https://github.com/akka/akka-http/blob/master/akka-http/src/main/scala/akka/http/scaladsl/client/RequestBuilding.scala">RequestBuilder</a>，<code>RequestBuilder</code>有多个重载函数，这里使用了需要一个<code>ToEntityMarshaller[T]</code>隐式转换的函数，它可以将我们提交的<code>OrgCreateReq</code>请求（case class）转换成合适的HTTP数据并设置匹配的<code>Content-Type</code>请求头：</p>
+<pre class="prettyprint"><code class="language-scala">    def apply[T](uri: String, content: T)(implicit m: ToEntityMarshaller[T], ec: ExecutionContext): HttpRequest =
+      apply(uri, Some(content))
+</code></pre>
+<p>我们使用<code>import helloscala.http.JacksonSupport._</code>来导入Akka HTTP的JSON支持来将请求转换成<code>application/json</code>类型的HTTP请求数据发送到<code>route</code>。*Akka HTTP JSON支持见：<a href="data.1.md">JSON</a>*</p>
+<p><strong>check</strong></p>
+<p><code>route</code>响应的结果将通过 check 函数来进行测试断言，通过<code>ScalatestRouteTest</code>提供了多个辅助函数来完成测试，而对Akka HTTP routing的各类处理细节被隐藏在了<code>check</code>函数的调用内部。常用的辅助函数有：</p>
+<ul>
+  <li><code>status</code>：获取响应的HTTP状态码</li>
+  <li><code>response</code>：获取响应数据</li>
+  <li><code>responseAs[T: FromResponseUnmarshaller]</code>：将响应数据（body）转换成T类型</li>
+  <li><code>entityAs[T: FromEntityUnmarshaller]</code>：类似responseAs，但是将<code>HttpEntity</code>转换成T类型</li>
+  <li><code>contentType</code>：获取响应的Conent-Type</li>
+  <li>`mediaType：获取响应的MediaType</li>
+  <li><code>headers</code>：获取响应的所有header头</li>
+  <li><code>header[T &gt;: Null &lt;: HttpHeader: ClassTag]</code>：查找指定类型的响应header头，返回结果为<code>Option[T]</code></li>
+</ul>
+<h4><a href="#run-test" name="run-test" class="anchor"><span class="anchor-link"></span></a>run test</h4>
+<p>在sbt console中执行命令运行测试：<code>test/testOnly scalaweb.test.route.OrgRouteTest</code>，结果如下：</p>
+<pre><code>01:04:39.075 INFO com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+01:04:39.238 INFO com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+01:04:40.439 DEBUG slick.jdbc.JdbcBackend.statement - Preparing insert statement (returning: id,code,name,contact,parent,parents,status,created_at,updated_at): insert into &quot;t_org&quot; (&quot;code&quot;,&quot;name&quot;,&quot;contact&quot;,&quot;parent&quot;,&quot;parents&quot;,&quot;status&quot;,&quot;created_at&quot;,&quot;updated_at&quot;)  values (?,?,?,?,?,?,?,?)
+01:04:40.468 DEBUG slick.jdbc.JdbcBackend.benchmark - Execution of prepared update took 4ms
+01:04:41.410 DEBUG slick.jdbc.JdbcBackend.statement - Preparing statement: delete from &quot;t_org&quot; where &quot;t_org&quot;.&quot;id&quot; in (5)
+01:04:41.411 DEBUG slick.jdbc.JdbcBackend.benchmark - Execution of prepared update took 499µs
+01:04:41.443 INFO com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+01:04:41.448 INFO com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+[info] OrgRouteTest:
+[info] OrgRoute
+[info] - should create
+[info] - should get (pending)
+[info] - should pageRoute (pending)
+[info] - should updateRoute (pending)
+[info] - should remoteRoute (pending)
+[info] ScalaTest
+[info] Run completed in 3 seconds, 382 milliseconds.
+[info] Total number of tests run: 1
+[info] Suites: completed 1, aborted 0
+[info] Tests: succeeded 1, failed 0, canceled 0, ignored 0, pending 4
+[info] All tests passed.
+[info] Passed: Total 1, Failed 0, Errors 0, Passed 1, Pending 4
+[success] Total time: 5 s, completed 2018-8-22 1:04:41
+</code></pre>
+<p>可以看到，这里执行通过了一个测试用例<code>should create</code>，有4个测试用例为**pending**（代表还未实现）。</p>
+<h2><a href="#总结" name="总结" class="anchor"><span class="anchor-link"></span></a>总结</h2>
+<p>使用 akka-http-testkit 可以在不启动Server的情况下对定义的route进行测试，可以显著的提高测试效率。</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/test/test.3.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../test/test.z.html">小结</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../test/test.3.html#端到端测试route" class="header">端到端测试Route</a>
+  <ul>
+    <li><a href="../test/test.3.html#akka-http" class="header">Akka HTTP</a></li>
+    <li><a href="../test/test.3.html#akka-http-testkit" class="header">akka-http-testkit</a></li>
+    <li><a href="../test/test.3.html#orgroutetest" class="header">OrgRouteTest</a></li>
+    <li><a href="../test/test.3.html#总结" class="header">总结</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2018</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '1.0.0', '')});</script>
+
+
+</html>

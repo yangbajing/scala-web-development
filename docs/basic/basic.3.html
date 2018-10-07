@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Akka HTTP 的通用抽象 · Scala Web 开发</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='book'/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/normalize.css/normalize.css"/>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Scala Web 开发
+</a>
+<div class="version-number">
+1.0.0
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../preface.html" class="page">Scala Web 开发 &ndash; 使用 Akka HTTP</a></li>
+  <li><a href="../env/index.html" class="page">Scala 环境配置</a>
+  <ul>
+    <li><a href="../env/env.1.html" class="page">Sbt</a></li>
+    <li><a href="../env/env.2.html" class="page">IDE开发工具</a></li>
+    <li><a href="../env/env.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../scala/index.html" class="page">Scala 语言基础</a>
+  <ul>
+    <li><a href="../scala/scala.0.html" class="page">REPL</a></li>
+    <li><a href="../scala/scala.1.html" class="page">你好，Scala</a></li>
+    <li><a href="../scala/scala.2.html" class="page">Scala基础</a></li>
+    <li><a href="../scala/scala.3.html" class="page">流程和函数</a></li>
+    <li><a href="../scala/scala.4.html" class="page">集合</a></li>
+    <li><a href="../scala/scala.5.html" class="page">class和object</a></li>
+    <li><a href="../scala/scala.6.html" class="page">函数式</a></li>
+    <li><a href="../scala/scala.7.html" class="page">Trait</a></li>
+    <li><a href="../scala/scala.8.html" class="page">并发</a></li>
+    <li><a href="../scala/scala.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../basic/index.html" class="page">Akka HTTP 基础</a>
+  <ul>
+    <li><a href="../basic/basic.0.html" class="page">Akka HTTP 基础</a></li>
+    <li><a href="../basic/basic.1.html" class="page">Web 工作方式</a></li>
+    <li><a href="../basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
+    <li><a href="../basic/basic.3.html" class="active page">Akka HTTP 的通用抽象</a></li>
+    <li><a href="../basic/basic.4.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="../basic/basic.5.html" class="page">高级服务端 API</a></li>
+    <li><a href="../basic/basic.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../data/index.html" class="page">数据</a>
+  <ul>
+    <li><a href="../data/data.0.html" class="page">数据</a></li>
+    <li><a href="../data/data.1.html" class="page">JSON</a></li>
+    <li><a href="../data/data.2.html" class="page">XML</a></li>
+    <li><a href="../data/data.3.html" class="page">Protobuf</a></li>
+    <li><a href="../data/data.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../test/index.html" class="page">测试</a>
+  <ul>
+    <li><a href="../test/test.0.html" class="page">测试</a></li>
+    <li><a href="../test/test.1.html" class="page">Scalatest</a></li>
+    <li><a href="../test/test.2.html" class="page">测试异步代码</a></li>
+    <li><a href="../test/test.3.html" class="page">端到端测试Route</a></li>
+    <li><a href="../test/test.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
+  <ul>
+    <li><a href="../oauth/oauth2.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth2.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth2.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth2.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth2.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../storage/index.html" class="page">访问数据库</a>
+  <ul>
+    <li><a href="../storage/storage.0.html" class="page">访问数据库</a></li>
+    <li><a href="../storage/storage.1.html" class="page">使用 JDBC 访问 PostgreSQL</a></li>
+    <li><a href="../storage/storage.2.html" class="page">使用 Slick 访问数据库</a></li>
+    <li><a href="../storage/storage.3.html" class="page">访问 Cassandra 数据库</a></li>
+    <li><a href="../storage/storage.4.html" class="page">访问 Redis</a></li>
+    <li><a href="../storage/storage.5.html" class="page">访问 Elasticsearch</a></li>
+    <li><a href="../storage/storage.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../appendix/index.html" class="page">附录</a>
+  <ul>
+    <li><a href="../appendix/appendix.0.html" class="page">参考资料</a></li>
+    <li><a href="../appendix/appendix.1.html" class="page">专业术语</a></li>
+    <li><a href="../appendix/appendix.2.html" class="page">词汇表</a></li>
+    <li><a href="../appendix/appendix.x.html" class="page">赞助</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Scala Web 开发</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Scala Web 开发
+</a>
+<div class="version-number">
+1.0.0
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../preface.html" class="page">Scala Web 开发 &ndash; 使用 Akka HTTP</a></li>
+  <li><a href="../env/index.html" class="page">Scala 环境配置</a>
+  <ul>
+    <li><a href="../env/env.1.html" class="page">Sbt</a></li>
+    <li><a href="../env/env.2.html" class="page">IDE开发工具</a></li>
+    <li><a href="../env/env.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../scala/index.html" class="page">Scala 语言基础</a>
+  <ul>
+    <li><a href="../scala/scala.0.html" class="page">REPL</a></li>
+    <li><a href="../scala/scala.1.html" class="page">你好，Scala</a></li>
+    <li><a href="../scala/scala.2.html" class="page">Scala基础</a></li>
+    <li><a href="../scala/scala.3.html" class="page">流程和函数</a></li>
+    <li><a href="../scala/scala.4.html" class="page">集合</a></li>
+    <li><a href="../scala/scala.5.html" class="page">class和object</a></li>
+    <li><a href="../scala/scala.6.html" class="page">函数式</a></li>
+    <li><a href="../scala/scala.7.html" class="page">Trait</a></li>
+    <li><a href="../scala/scala.8.html" class="page">并发</a></li>
+    <li><a href="../scala/scala.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../basic/index.html" class="page">Akka HTTP 基础</a>
+  <ul>
+    <li><a href="../basic/basic.0.html" class="page">Akka HTTP 基础</a></li>
+    <li><a href="../basic/basic.1.html" class="page">Web 工作方式</a></li>
+    <li><a href="../basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
+    <li><a href="../basic/basic.3.html" class="active page">Akka HTTP 的通用抽象</a></li>
+    <li><a href="../basic/basic.4.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="../basic/basic.5.html" class="page">高级服务端 API</a></li>
+    <li><a href="../basic/basic.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../data/index.html" class="page">数据</a>
+  <ul>
+    <li><a href="../data/data.0.html" class="page">数据</a></li>
+    <li><a href="../data/data.1.html" class="page">JSON</a></li>
+    <li><a href="../data/data.2.html" class="page">XML</a></li>
+    <li><a href="../data/data.3.html" class="page">Protobuf</a></li>
+    <li><a href="../data/data.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../test/index.html" class="page">测试</a>
+  <ul>
+    <li><a href="../test/test.0.html" class="page">测试</a></li>
+    <li><a href="../test/test.1.html" class="page">Scalatest</a></li>
+    <li><a href="../test/test.2.html" class="page">测试异步代码</a></li>
+    <li><a href="../test/test.3.html" class="page">端到端测试Route</a></li>
+    <li><a href="../test/test.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
+  <ul>
+    <li><a href="../oauth/oauth2.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth2.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth2.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth2.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth2.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../storage/index.html" class="page">访问数据库</a>
+  <ul>
+    <li><a href="../storage/storage.0.html" class="page">访问数据库</a></li>
+    <li><a href="../storage/storage.1.html" class="page">使用 JDBC 访问 PostgreSQL</a></li>
+    <li><a href="../storage/storage.2.html" class="page">使用 Slick 访问数据库</a></li>
+    <li><a href="../storage/storage.3.html" class="page">访问 Cassandra 数据库</a></li>
+    <li><a href="../storage/storage.4.html" class="page">访问 Redis</a></li>
+    <li><a href="../storage/storage.5.html" class="page">访问 Elasticsearch</a></li>
+    <li><a href="../storage/storage.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../appendix/index.html" class="page">附录</a>
+  <ul>
+    <li><a href="../appendix/appendix.0.html" class="page">参考资料</a></li>
+    <li><a href="../appendix/appendix.1.html" class="page">专业术语</a></li>
+    <li><a href="../appendix/appendix.2.html" class="page">词汇表</a></li>
+    <li><a href="../appendix/appendix.x.html" class="page">赞助</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Scala Web 开发</a></li>
+  <li><a href="../basic/index.html">Akka HTTP 基础</a></li>
+  <li>Akka HTTP 的通用抽象</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#akka-http-的通用抽象" name="akka-http-的通用抽象" class="anchor"><span class="anchor-link"></span></a>Akka HTTP 的通用抽象</h1>
+<p>HTTP 规范定义了大量概念和功能，它们是不特定于具体实现的。本节将介绍通用于 client/server　的 API。</p>
+<ul>
+  <li><strong>HTTP Model</strong>：包括常见的请求、响应、headers等结构，代码都在 <code>akka-http-core</code> 模块，它们是构建大多次 Akka HTTP API的基础。</li>
+  <li><strong>URI Model</strong>：根据 <a href="https://tools.ietf.org/html/rfc3986#section-1.1.2">RFC 3986</a> 实现了 URI 解析规则。</li>
+  <li><strong>Marshalling</strong>：将高级（对象）结构转换成某种低级表示形式的过程，其它流行的名称有：**Serialization** 和 <strong>Pickling</strong> 。</li>
+  <li><strong>Unmarshalling</strong>：将低级表示形式转换成某种高级（对象）结构的过程，其它流行的名称有：**Deserialization** 和 <strong>Unpickling</strong> 。</li>
+  <li><strong>Encoding / Decoding</strong>：<a href="http://tools.ietf.org/html/rfc7231#section-3.1.2.1">HTTP spec</a>定义了 <code>Content-Encoding</code>头，实现了 HTTP 消息的压缩、解压缩。如：<code>gzip</code>、<code>deflate</code>……</li>
+  <li><strong>JSON Support</strong>：根据 <strong>marshalling</strong> 和 <strong>unmarshalling</strong> 实现的 JSON 解析，默认提供了 <code>akka-http-spray-json</code> 模块。也可很容易的定义自己的 JSON 解析。</li>
+  <li><strong>XML Support</strong>：根据 <strong>marshalling</strong> 和 <strong>unmarshalling</strong> 实现的 <a href="https://github.com/scala/scala-xml">Scala XML</a> 解析，默认提供了 <code>akka-http-xml</code> 模块。也可很容易的定义自己的 XML 解析。</li>
+  <li><strong>Akka HTTP Timeouts</strong>：内建多种超时机制来保护服务器免受恶意攻击和编程错误。用户代码中可使用配置选项或API来定制。</li>
+</ul>
+<h2><a href="#http-model" name="http-model" class="anchor"><span class="anchor-link"></span></a>HTTP Model</h2>
+<p><code>akka-http-core</code> 提供了 HTTP 数据结构的核心，很多的地方（包括你自己的代码）都导入了这些数据结构。主要的类型有：</p>
+<ul>
+  <li><code>HttpRequest</code> 和 <code>HttpResponse</code>：主要的消息模型</li>
+  <li><code>headers</code>：这个 package 包含了所有的预定义 HTTP header 和支持和类型</li>
+  <li>支持的类型，比如：<code>Uri</code>、<code>HttpMethods</code>、<code>MediaTypes</code>、<code>StatusCodes</code>等</li>
+</ul>
+<p>通常，一个实体模型表现为一个不可变类型（class 或 trait）。由 HTTP 规范定义的实体类型的预定义实例都放在同名类型名加个一个 <code>s</code> 的复数形式 object 里。</p>
+<p>比如：</p>
+<ul>
+  <li>定义的 <code>HttpMethod</code> 在 <code>HttpMethods</code> object。</li>
+  <li>定义的 <code>HttpCharset</code> 在 <code>HttpCharsets</code> object。</li>
+  <li>定义的 <code>HttpEncoding</code> 在 <code>HttpEncodings</code> object。</li>
+  <li>定义的 <code>HttpProtocol</code> 在 <code>HttpProtocols</code> object。</li>
+  <li>定义的 <code>MediaType</code> 在 <code>MediaTypes</code> object。</li>
+  <li>定义的 <code>StatusCode</code> 在 <code>StatusCodes</code> object。</li>
+</ul>
+<h2><a href="#uri-model" name="uri-model" class="anchor"><span class="anchor-link"></span></a>URI Model</h2>
+<p>当尝试解析 <code>URI</code> 字符串时，Akka HTTP 将在内部创建 <code>URI</code> 的实例。下面是常见的一些有效的 URI 实例：</p>
+<pre class="prettyprint"><code class="language-scala">Uri(&quot;ftp://ftp.is.co.za/rfc/rfc1808.txt&quot;) shouldEqual
+  Uri.from(scheme = &quot;ftp&quot;, host = &quot;ftp.is.co.za&quot;, path = &quot;/rfc/rfc1808.txt&quot;)
+
+Uri(&quot;http://www.ietf.org/rfc/rfc2396.txt&quot;) shouldEqual
+  Uri.from(scheme = &quot;http&quot;, host = &quot;www.ietf.org&quot;, path = &quot;/rfc/rfc2396.txt&quot;)
+
+Uri(&quot;ldap://[2001:db8::7]/c=GB?objectClass?one&quot;) shouldEqual
+  Uri.from(scheme = &quot;ldap&quot;, host = &quot;[2001:db8::7]&quot;, path = &quot;/c=GB&quot;, queryString = Some(&quot;objectClass?one&quot;))
+
+Uri(&quot;mailto:John.Doe@example.com&quot;) shouldEqual
+  Uri.from(scheme = &quot;mailto&quot;, path = &quot;John.Doe@example.com&quot;)
+
+Uri(&quot;news:comp.infosystems.www.servers.unix&quot;) shouldEqual
+  Uri.from(scheme = &quot;news&quot;, path = &quot;comp.infosystems.www.servers.unix&quot;)
+
+Uri(&quot;tel:+1-816-555-1212&quot;) shouldEqual
+  Uri.from(scheme = &quot;tel&quot;, path = &quot;+1-816-555-1212&quot;)
+
+Uri(&quot;telnet://192.0.2.16:80/&quot;) shouldEqual
+  Uri.from(scheme = &quot;telnet&quot;, host = &quot;192.0.2.16&quot;, port = 80, path = &quot;/&quot;)
+
+Uri(&quot;urn:oasis:names:specification:docbook:dtd:xml:4.1.2&quot;) shouldEqual
+  Uri.from(scheme = &quot;urn&quot;, path = &quot;oasis:names:specification:docbook:dtd:xml:4.1.2&quot;)
+</code></pre>
+<h2><a href="#marshalling" name="marshalling" class="anchor"><span class="anchor-link"></span></a>Marshalling</h2>
+<p>Marshalling 是将类型 A 的实例转换成类型 B 的实例，提供于 <code>Marshaller[A, B]</code>。Akka HTTP 预定义了很多转换的别名，可以简化日常开发：</p>
+<pre class="prettyprint"><code class="language-scala">type ToEntityMarshaller[T] = Marshaller[T, MessageEntity]
+type ToByteStringMarshaller[T] = Marshaller[T, ByteString]
+type ToHeadersAndEntityMarshaller[T] = Marshaller[T, (immutable.Seq[HttpHeader], MessageEntity)]
+type ToResponseMarshaller[T] = Marshaller[T, HttpResponse]
+type ToRequestMarshaller[T] = Marshaller[T, HttpRequest]
+</code></pre>
+<p><code>Marshaller[A, B]</code> 本质上类似于 <code>A =&gt; Future[List[Marshalling[B]]]</code> 这样一个函数，这个签名比较复杂，下面我们来解析下它。</p>
+<ol>
+  <li><strong><code>Future</code></strong>：这个很明显，Marshaller 不需要同步的产生一个结果，我们可以异步的进行这个编码过程。</li>
+  <li><strong><code>List</code></strong>：列表，说明对于给定类型 A ，不到一个 Marshaller 被作用于它。比如对于：<code>ToEntityMarshaller[OrderConfirmation]</code>，请求可 能使用 JSON 或 XML 格式，客户端可以添加 <code>Accept</code> 请求头来决定使用哪个 Marshaller。若客户端未指定，则在序列化时将使用第一个。</li>
+  <li><strong><code>Marshalling[B]</code></strong>：这里没有直接返回类型 B 的实例，而是返回一个 <code>Marshalling[B]</code>。这使得在编码过程中查询 <code>MediaType</code> 和检查可 能的 <code>HttpCharset</code> 成为了可能，这样的条件都匹配后才会触发编码工作。在启用了这样的类型协商的方式之外，这种设计还允许将 marshalling 对目标实 例的构造延迟到真正需要的时刻。</li>
+</ol>
+<h3><a href="#预定义-marshallers" name="预定义-marshallers" class="anchor"><span class="anchor-link"></span></a>预定义 Marshallers</h3>
+<p>Akka HTTP 已经包含大量预定义 marshallers：</p>
+<ul>
+  <li><a href="http://github.com/akka/akka-http/tree/v10.1.3/akka-http/src/main/scala/akka/http/scaladsl/marshalling/PredefinedToEntityMarshallers.scala">PredefinedToEntityMarshallers</a>
+    <ul>
+      <li><code>Array[Byte]</code></li>
+      <li><code>ByteString</code></li>
+      <li><code>Array[Char]</code></li>
+      <li><code>String</code></li>
+      <li><code>akka.http.scaladsl.model.FormData</code></li>
+      <li><code>akka.http.scaladsl.model.MessageEntity</code></li>
+      <li><code>T &lt;: akka.http.scaladsl.model.Multipart</code></li>
+    </ul>
+  </li>
+  <li><a href="http://github.com/akka/akka-http/tree/v10.1.3/akka-http/src/main/scala/akka/http/scaladsl/marshalling/PredefinedToResponseMarshallers.scala">PredefinedToResponseMarshallers</a>
+    <ul>
+      <li><code>T</code>, 如果 <code>ToEntityMarshaller[T]</code> 可用</li>
+      <li><code>HttpResponse</code></li>
+      <li><code>StatusCode</code></li>
+      <li><code>(StatusCode, T)</code>，如果 <code>ToEntityMarshaller[T]</code> 可用</li>
+      <li><code>(Int, T)</code>，如果 <code>ToEntityMarshaller[T]</code> 可用</li>
+      <li><code>(StatusCode, immutable.Seq[HttpHeader], T)</code>，如果 <code>ToEntityMarshaller[T]</code> 可用</li>
+      <li><code>(Int, immutable.Seq[HttpHeader], T)</code>，如果 <code>ToEntityMarshaller[T]</code> 可用</li>
+    </ul>
+  </li>
+  <li><a href="http://github.com/akka/akka-http/tree/v10.1.3/akka-http/src/main/scala/akka/http/scaladsl/marshalling/PredefinedToRequestMarshallers.scala">PredefinedToRequestMarshallers</a>
+    <ul>
+      <li><code>HttpRequest</code></li>
+      <li><code>Uri</code></li>
+      <li><code>(HttpMethod, Uri, T)</code>，如果 <code>ToEntityMarshaller[T]</code> 可用</li>
+      <li><code>(HttpMethod, Uri, immutable.Seq[HttpHeader], T)</code>，如果 <code>ToEntityMarshaller[T]</code> 可用</li>
+    </ul>
+  </li>
+  <li><a href="http://github.com/akka/akka-http/tree/v10.1.3/akka-http/src/main/scala/akka/http/scaladsl/marshalling/GenericMarshallers.scala">GenericMarshallers</a>
+    <ul>
+      <li><code>Marshaller[Throwable, T]</code></li>
+      <li><code>Marshaller[Option[A], B]</code>，如果 <code>Marshaller[A, B]</code> 和 <code>EmptyValue[B]</code> 可用</li>
+      <li><code>Marshaller[Either[A1, A2], B]</code>，如果 <code>Marshaller[A1, B]</code> 和 <code>Marshaller[A2, B]</code> 可用</li>
+      <li><code>Marshaller[Future[A], B]</code>，如果 <code>Marshaller[A, B]</code> 可用</li>
+      <li><code>Marshaller[Try[A], B]</code>，如果 <code>Marshaller[A, B]</code> 可用</li>
+    </ul>
+  </li>
+</ul>
+<h3><a href="#隐式解析" name="隐式解析" class="anchor"><span class="anchor-link"></span></a>隐式解析</h3>
+<p>Akka HTTP 的 marshalling 基础设施使用基于 <strong>class</strong> 的方式，这意味着 Marshaller 从一个特定 A 类型转换到 B 类型实例是隐式可用的。</p>
+<p>Akka HTTP 预定义 <code>Marshaller</code> trait，它们的定义都在同名伴生对象中，这意味着代码中不需要显示导入即可用。同时，你也可以定义自己的版本来覆盖它。</p>
+<pre class="prettyprint"><code class="language-scala">object Marshaller
+  extends GenericMarshallers
+  with PredefinedToEntityMarshallers
+  with PredefinedToResponseMarshallers
+  with PredefinedToRequestMarshallers {
+  ...
+}
+</code></pre>
+<h3><a href="#使用-marshallers" name="使用-marshallers" class="anchor"><span class="anchor-link"></span></a>使用 Marshallers</h3>
+<p>可以在代码中直接使用 Marshallers，<code>akka.http.scaladsl.marshalling.Marshal</code> object 是一个很好的入口：</p>
+<pre class="prettyprint"><code class="language-scala">import scala.concurrent.Await
+import scala.concurrent.duration._
+import akka.http.scaladsl.marshalling.Marshal
+import akka.http.scaladsl.model._
+
+import system.dispatcher // ExecutionContext
+
+val string = &quot;Yeah&quot;
+val entityFuture = Marshal(string).to[MessageEntity]
+val entity = Await.result(entityFuture, 1.second) // 非测试代码中不要这么使用！
+entity.contentType shouldEqual ContentTypes.`text/plain(UTF-8)`
+
+val errorMsg = &quot;Easy, pal!&quot;
+val responseFuture = Marshal(420 -&gt; errorMsg).to[HttpResponse]
+val response = Await.result(responseFuture, 1.second) // 非测试代码中不要这么使用！
+response.status shouldEqual StatusCodes.EnhanceYourCalm
+response.entity.contentType shouldEqual ContentTypes.`text/plain(UTF-8)`
+
+val request = HttpRequest(headers = List(headers.Accept(MediaTypes.`application/json`)))
+val responseText = &quot;Plaintext&quot;
+val respFuture = Marshal(responseText).toResponseFor(request) // 根据请求来决定使用哪个 Marshaller
+a[Marshal.UnacceptableResponseContentTypeException] should be thrownBy {
+  Await.result(respFuture, 1.second) // 客户端请求 JSON 格式，但这里只提供了 `text/plain` 的编码方式
+}
+</code></pre>
+<h2><a href="#unmarshalling" name="unmarshalling" class="anchor"><span class="anchor-link"></span></a>Unmarshalling</h2>
+<p>Unmarshalling 将类型 A 的实例转换成类型 B，<code>Unmarshaller[A, B]</code>。Akka HTTP 预定义了很多转换的别名，可以简化日常开发：</p>
+<pre class="prettyprint"><code class="language-scala">type FromEntityUnmarshaller[T] = Unmarshaller[HttpEntity, T]
+type FromMessageUnmarshaller[T] = Unmarshaller[HttpMessage, T]
+type FromResponseUnmarshaller[T] = Unmarshaller[HttpResponse, T]
+type FromRequestUnmarshaller[T] = Unmarshaller[HttpRequest, T]
+type FromByteStringUnmarshaller[T] = Unmarshaller[ByteString, T]
+type FromStringUnmarshaller[T] = Unmarshaller[String, T]
+type FromStrictFormFieldUnmarshaller[T] = Unmarshaller[StrictForm.Field, T]
+</code></pre>
+<p>核心的 <code>Unmarshaller[A, B]</code> 类型非常类似 <code>A =&gt; Future[B]</code> 函数，它提供了一个解码的转换流程。</p>
+<h3><a href="#预定义-unmarshallers" name="预定义-unmarshallers" class="anchor"><span class="anchor-link"></span></a>预定义 Unmarshallers</h3>
+<p>Akka HTTP 已经预定义了大量的 marshallers，我们可以在代码中直接使用：</p>
+<ul>
+  <li><a href="http://github.com/akka/akka-http/tree/v10.1.3/akka-http/src/main/scala/akka/http/scaladsl/unmarshalling/PredefinedFromStringUnmarshallers.scala">PredefinedFromStringUnmarshallers</a>
+    <ul>
+      <li><code>Byte</code></li>
+      <li><code>Short</code></li>
+      <li><code>Int</code></li>
+      <li><code>Long</code></li>
+      <li><code>Float</code></li>
+      <li><code>Double</code></li>
+      <li><code>Boolean</code></li>
+    </ul>
+  </li>
+  <li><a href="http://github.com/akka/akka-http/tree/v10.1.3/akka-http/src/main/scala/akka/http/scaladsl/unmarshalling/PredefinedFromEntityUnmarshallers.scala">PredefinedFromEntityUnmarshallers</a>
+    <ul>
+      <li><code>Array[Byte]</code></li>
+      <li><code>ByteString</code></li>
+      <li><code>Array[Char]</code></li>
+      <li><code>String</code></li>
+      <li><code>akka.http.scaladsl.model.FormData</code></li>
+    </ul>
+  </li>
+  <li><a href="http://github.com/akka/akka-http/tree/v10.1.3/akka-http/src/main/scala/akka/http/scaladsl/unmarshalling/GenericUnmarshallers.scala">GenericUnmarshallers</a>
+    <ul>
+      <li><code>Unmarshaller[T, T]</code> (identity unmarshaller)</li>
+      <li><code>Unmarshaller[Option[A], B]</code>，如果 <code>Unmarshaller[A, B]</code> 可用</li>
+      <li><code>Unmarshaller[A, Option[B]]</code>, 如果 <code>Unmarshaller[A, B]</code> 可用</li>
+    </ul>
+  </li>
+</ul>
+<h3><a href="#隐式解析" name="隐式解析" class="anchor"><span class="anchor-link"></span></a>隐式解析</h3>
+<p>Akka HTTP 的 unmarshalling 基础设施使用基于 <strong>class</strong> 的方式，这意味着 Unmarshaller 从一个特定 A 类型转换到 B 类型实例是隐式可用的。</p>
+<p>Akka HTTP 预定义 <code>Unmarshaller</code> trait，它们的定义都在同名伴生对象中，这意味着代码中不需要显示导入即可用。同时，你也可以定义自己的版本来覆 盖它。</p>
+<pre class="prettyprint"><code class="language-scala">object Unmarshaller
+  extends GenericUnmarshallers
+  with PredefinedFromEntityUnmarshallers
+  with PredefinedFromStringUnmarshallers {
+  ....
+}
+</code></pre>
+<h3><a href="#使用-unmarshallers" name="使用-unmarshallers" class="anchor"><span class="anchor-link"></span></a>使用 Unmarshallers</h3>
+<p>在 Akka HTTP 中有许多地方隐式的使用了 Unmarshallers ，比对 Routing DSL 里面的 <code>entity(as[T])</code>。但是，也可以显示的使用它，一个很好的切 入点是：<code>akka.http.scaladsl.unmarshalling.Unmarshal</code> object，可以如下使用：</p>
+<pre class="prettyprint"><code class="language-scala">import akka.http.scaladsl.unmarshalling.Unmarshal
+import system.dispatcher // Optional ExecutionContext (default from Materializer)
+implicit val materializer: Materializer = ActorMaterializer()
+
+import scala.concurrent.Await
+import scala.concurrent.duration._
+
+val intFuture = Unmarshal(&quot;42&quot;).to[Int]
+val int = Await.result(intFuture, 1.second) // don&#39;t block in non-test code!
+int shouldEqual 42
+
+val boolFuture = Unmarshal(&quot;off&quot;).to[Boolean]
+val bool = Await.result(boolFuture, 1.second) // don&#39;t block in non-test code!
+bool shouldBe false
+</code></pre>
+<h2><a href="#encoding-decoding" name="encoding-decoding" class="anchor"><span class="anchor-link"></span></a>Encoding / Decoding</h2>
+<p>当前 Akka HTTP 支持 <code>gzip</code> 和 <code>deflate</code> 格式的压缩、解压缩，它们的代码逻辑都在 <code>akka.http.scaladsl.coding</code> 包中。</p>
+<h2><a href="#json-support" name="json-support" class="anchor"><span class="anchor-link"></span></a>JSON Support</h2>
+<p>Akka HTTP 包含了一个 <code>akka-http-spary-json</code> 模块，它实现了完整的 JSON 支持。</p>
+<h3><a href="#jacksonsupport" name="jacksonsupport" class="anchor"><span class="anchor-link"></span></a>JacksonSupport</h3>
+<p>TODO 本文将主要使用 Jackson 来实现 JSON 解析处理。</p>
+<h2><a href="#xml-support" name="xml-support" class="anchor"><span class="anchor-link"></span></a>XML Support</h2>
+<h3><a href="#scala-xml支持" name="scala-xml支持" class="anchor"><span class="anchor-link"></span></a>Scala XML支持</h3>
+<p>Scala语言内建了 XML 支持。 <a href="http://github.com/akka/akka-http/tree/v10.1.3/akka-http-marshallers-scala/akka-http-xml/src/main/scala/akka/http/scaladsl/marshallers/xml/ScalaXmlSupport.scala">ScalaXmlSupport</a> trait　 提供了 <code>FromEntityUnmarshaller[NodeSeq]</code> 和 <code>ToEntityMarshaller[NodeSeq]</code>，可以在代码中直接使用。</p>
+<ol>
+  <li>添加库依赖：<code>&quot;com.typesafe.akka&quot; %% &quot;akka-http-xml&quot; % &quot;1.x&quot;</code></li>
+  <li>引入隐式转换 <code>import akka.http.scaladsl.marshallers.xml.ScalaXmlSupport._</code>，或混入 <code>akka.http.scaladsl.marshallers.xml.ScalaXmlSupport</code> trait。</li>
+</ol>
+<h2><a href="#akka-http-timeouts" name="akka-http-timeouts" class="anchor"><span class="anchor-link"></span></a>Akka HTTP Timeouts</h2>
+<h3><a href="#通用超时" name="通用超时" class="anchor"><span class="anchor-link"></span></a>通用超时</h3>
+<p><code>idle-timeout</code> （空闲超时）是一个全局配置项，设置给定连接的最大非活动时间。若一个连接是打开的，但在给定时间内没有请求/响应数据写入，则连接将 被自动关闭。它们有如下配置项：</p>
+<ul>
+  <li><code>akka.http.server.idle-timeout</code></li>
+  <li><code>akka.http.client.idle-timeout</code></li>
+  <li><code>akka.http.host-connection-pool.idle-timeout</code></li>
+  <li><code>akka.http.host-connection-pool.client.idle-timeout</code></li>
+</ul>
+<h3><a href="#服务端超时" name="服务端超时" class="anchor"><span class="anchor-link"></span></a>服务端超时</h3>
+<h4><a href="#请求超时" name="请求超时" class="anchor"><span class="anchor-link"></span></a>请求超时</h4>
+<p>请求超时设置服务端产生一个 <code>HttpResponse</code> 响应的最大超时时间，若超时到，则服务端将自动注入一个 <strong>Unavailable HTTP</strong> 响应并关闭连接。默认 的超时时间是 20秒，可通过 <code>akka.http.server.request-timeout</code> 进行配置。</p>
+<h4><a href="#bind-timeout-绑定超时-" name="bind-timeout-绑定超时-" class="anchor"><span class="anchor-link"></span></a>Bind timeout（绑定超时）</h4>
+<p>在给定时间内，使用 TCP 协议绑定 address/port 的进程必需完成（任何 <code>Http().bind*</code> 方法），可以使用 <code>akka.http.server.bind-timeout</code> 设置。</p>
+<h4><a href="#linger超时" name="linger超时" class="anchor"><span class="anchor-link"></span></a>Linger超时</h4>
+<p>Linger（逗留）超时是指服务端的所有数据被传递到网络层后还保持连接打开的时间。这个设置类似 <strong>SO_LINGER</strong> 套接字（Socket）选项，但这里还包括了 Akka IO 和 Akka Streams 网络栈。这是一个额外的预防措施，防止客户端长时间保持打开服务端已被认为完成了的连接。</p>
+<h3><a href="#客户端超时" name="客户端超时" class="anchor"><span class="anchor-link"></span></a>客户端超时</h3>
+<h4><a href="#连接超时" name="连接超时" class="anchor"><span class="anchor-link"></span></a>连接超时</h4>
+<p>连接超时是客户端通过 TCP 协议连接上服务端必须完成的时间，通常不需要修改它。但可以使用 <code>akka.http.client.connecting-timeout</code> 进行自定义。</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/basic/basic.3.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../basic/basic.4.html">Akka HTTP 如何使得 Web 工作</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../basic/basic.3.html#akka-http-的通用抽象" class="header">Akka HTTP 的通用抽象</a>
+  <ul>
+    <li><a href="../basic/basic.3.html#http-model" class="header">HTTP Model</a></li>
+    <li><a href="../basic/basic.3.html#uri-model" class="header">URI Model</a></li>
+    <li><a href="../basic/basic.3.html#marshalling" class="header">Marshalling</a></li>
+    <li><a href="../basic/basic.3.html#unmarshalling" class="header">Unmarshalling</a></li>
+    <li><a href="../basic/basic.3.html#encoding-decoding" class="header">Encoding / Decoding</a></li>
+    <li><a href="../basic/basic.3.html#json-support" class="header">JSON Support</a></li>
+    <li><a href="../basic/basic.3.html#xml-support" class="header">XML Support</a></li>
+    <li><a href="../basic/basic.3.html#akka-http-timeouts" class="header">Akka HTTP Timeouts</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2018</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '1.0.0', '')});</script>
+
+
+</html>
