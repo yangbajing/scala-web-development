@@ -160,12 +160,3 @@ fabric.properties
 ## https://docs.npmjs.com/misc/faq#should-i-check-my-node_modules-folder-into-git
 node_modules
 
-# Book build output
-_book
-
-# eBook build output
-*.epub
-*.mobi
-*.pdf
-/.idea/
-/_book/

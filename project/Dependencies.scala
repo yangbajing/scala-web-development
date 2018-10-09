@@ -249,6 +249,8 @@ object Dependencies {
   val _logs = Seq("io.kamon" %% "kamon-logback" % "1.0.2",
                   "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
                   "ch.qos.logback" % "logback-classic" % "1.2.3")
+  
+  val _rhino = "org.mozilla" % "rhino" % "1.7.10"
 
   val _h2 = "com.h2database" % "h2" % "1.4.197"
 

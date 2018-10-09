@@ -7,7 +7,7 @@ addSbtPlugin("de.heikoseeberger" % "sbt-header" % "5.0.0")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-multi-jvm" % "0.4.0")
 
-addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.7")
+addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.8")
 
 addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.9.0")
 

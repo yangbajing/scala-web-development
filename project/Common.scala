@@ -21,6 +21,9 @@ object Common {
       "-feature",
       "-deprecation"
     ),
+    javaOptions ++= Seq(
+      "-Dnashorn.args=--language=es6"
+    ),
     libraryDependencies ++= Seq(
       Dependencies._scalatest
     )

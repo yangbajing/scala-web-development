@@ -73,18 +73,6 @@ trait AbstractRoute extends Directives {
     req
   }
 
-  def notPathPrefixTest[L](pm: PathMatcher[L]): Directive0 = rawNotPathPrefixTest(Slash ~ pm)
-
-  def rawNotPathPrefixTest[L](pm: PathMatcher[L]): Directive0 = {
-    implicit val LIsTuple: Tuple[L] = pm.ev
-    extract(ctx => pm(ctx.unmatchedPath)).flatMap {
-      case Matched(v, values) ⇒
-        println(s"notPathPrefixTest v: $v, values: $values")
-        reject
-      case Unmatched ⇒ pass
-    }
-  }
-
   def setNoCache: Directive0 =
     mapResponseHeaders(
       h => h ++ List(headers.`Cache-Control`(`no-store`, `no-cache`), headers.RawHeader("Pragma", "no-cache")))
@@ -225,5 +213,18 @@ trait AbstractRoute extends Directives {
         complete(response)
       }
     }
+
+  def notPathPrefixTest[L](pm: PathMatcher[L]): Directive0 =
+    rawNotPathPrefixTest(Slash ~ pm)
+
+  def rawNotPathPrefixTest[L](pm: PathMatcher[L]): Directive0 = {
+    implicit val LIsTuple: Tuple[L] = pm.ev
+    extract(ctx => pm(ctx.unmatchedPath)).flatMap {
+      case Matched(v, values) =>
+        reject
+      case Unmatched =>
+        pass
+    }
+  }
 
 }

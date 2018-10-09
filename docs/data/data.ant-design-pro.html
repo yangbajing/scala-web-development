@@ -71,8 +71,7 @@
     <li><a href="../data/data.0.html" class="page">数据</a></li>
     <li><a href="../data/data.1.html" class="page">JSON</a></li>
     <li><a href="../data/data.ant-design-pro.html" class="active page">实战：为Ant Design Pro提供后端接口</a></li>
-    <li><a href="../data/data.2.html" class="page">XML</a></li>
-    <li><a href="../data/data.3.html" class="page">Protobuf</a></li>
+    <li><a href="../data/data.2.html" class="page">Protobuf</a></li>
     <li><a href="../data/data.z.html" class="page">小结</a></li>
   </ul></li>
   <li><a href="../test/index.html" class="page">测试</a>
@@ -184,8 +183,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
     <li><a href="../data/data.0.html" class="page">数据</a></li>
     <li><a href="../data/data.1.html" class="page">JSON</a></li>
     <li><a href="../data/data.ant-design-pro.html" class="active page">实战：为Ant Design Pro提供后端接口</a></li>
-    <li><a href="../data/data.2.html" class="page">XML</a></li>
-    <li><a href="../data/data.3.html" class="page">Protobuf</a></li>
+    <li><a href="../data/data.2.html" class="page">Protobuf</a></li>
     <li><a href="../data/data.z.html" class="page">小结</a></li>
   </ul></li>
   <li><a href="../test/index.html" class="page">测试</a>
@@ -252,9 +250,68 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <div class="page-content row">
 <div class="small-12 large-9 column" id="docs">
 <h1><a href="#实战-为ant-design-pro提供后端接口" name="实战-为ant-design-pro提供后端接口" class="anchor"><span class="anchor-link"></span></a>实战：为Ant Design Pro提供后端接口</h1>
-<p><strong>Ant Design Pro</strong> 是一个开箱即用的中台前端/设计解决方案，官方地址：<a href="https://pro.ant.design/index-cn">https://pro.ant.design/index-cn</a>。</p>
+<p>之前章节已经了解了Akka HTTP的路由定制、数据序列化等内容，是时候开始一个比较完整的Web应用示例了。这里我们将使用 Akka HTTP 来集成 <strong>Ant Design Pro</strong> ，Ant Design Pro是一个开箱即用的中台前端/设计解决方案，它由蚂蚁金服开发，官方地址：<a href="https://pro.ant.design/index-cn">https://pro.ant.design/index-cn</a>。</p>
+<p>本文假定用户已经熟悉并会使用 Ant Design Pro，若还未接触过可以从官方文档开始：<a href="https://pro.ant.design/docs/getting-started-cn">https://pro.ant.design/docs/getting-started-cn</a>。</p>
+<p><em>本文使用 Ant Design Pro 2.0版本</em></p>
 <h2><a href="#设置-ant-design-pro" name="设置-ant-design-pro" class="anchor"><span class="anchor-link"></span></a>设置 Ant Design Pro</h2>
-<p>修改 <code>ant-design-pro/web/config/config.js</code> 文件，在末尾右大括号（<code>}</code>）上方添加 <code>proxy</code> 设置API代理访问路径路径：</p>
+<p>Ant Design Pro 已经是一个完整的后台前端应用，我们只需要使用 Akka HTTP 为其提供后端API接口服务支持和静态资源文件的HTTP获取功能。</p>
+<h3><a href="#创建api" name="创建api" class="anchor"><span class="anchor-link"></span></a>创建API</h3>
+<p>Akka HTTP 的 Routing DSL 是从上到下一级一级的匹配路由的，当前一个路由不匹配时才判断下一个路由，这样一直到最后一个。利用这个特性，我们可以在整个路由定义的最后来设置返回React SPA需要的静态资源文件。</p>
+<pre class="prettyprint"><code class="language-scala">def route: Route =
+  pathPrefix(&quot;api&quot;) {
+    pathGet(&quot;currentUser&quot;) {
+      complete(Mocks.apiCurrentUser)
+    } ~
+      pathGet(&quot;fake_chart_data&quot;) {
+        complete(Mocks.apiFakeChartData)
+      } ~
+      pathGet(&quot;tags&quot;) {
+        complete(Mocks.apiTags)
+      } ~
+      pathGet(&quot;activities&quot;) {
+        complete(Mocks.apiActivities)
+      } ~
+      pathGet(&quot;fake_list&quot;) {
+        parameter(&#39;count.as[Int]) { count =&gt;
+          complete(Mocks.apiFakeList(count))
+        }
+      } ~
+      pathPrefix(&quot;project&quot;) {
+        pathGet(&quot;notice&quot;) {
+          complete(Mocks.project.notice)
+        }
+      }
+  } ~
+    notPathPrefixTest(&quot;api&quot;) {
+      getFromResourceDirectory(&quot;dist&quot;) ~
+        getFromResource(&quot;dist/index.html&quot;)
+    }</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/ant-design-pro/src/main/scala/scalaweb/ant/design/pro/route/Routes.scala#L10-L38" class="snippet-full-source github">Full source at GitHub</a>
+<p>这里的重点在 <code>notPathPrefixTest(api) { .... }</code> 部分，这一块代码是用来返回 Ant Design Pro 静态资源的。首先它将判断请求URI不是以 <code>/api</code> 开头，若请求URI以<code>/api</code>开关则不进入里面的获取静态资源代码逻辑，而是直接返回一个预定义的指令：<code>reject</code>。通常，我们都会将API接口统一到 <code>/api</code> 这样的路径下，这样非 <code>/api</code> 开头的URI请求就可以交到下面的两句代码执行，来实现SPA应用在资源未找到时服务端默认返回 <code>/index.html</code> 的需求。</p>
+<pre><code>getFromResourceDirectory(&quot;dist&quot;) ~
+  getFromResource(&quot;dist/index.html&quot;)
+</code></pre>
+<ul>
+  <li><code>getFromResourceDirectory</code>：根据URI请求路径从资源目录dist查找文件并返回</li>
+  <li><code>getFromResource</code>：直接返回 dist/index.html 资源文件</li>
+</ul>
+<p>总体上，以上两个指令组合使用就可以实现类似 Nginx 的 <code>try_files $uri /index.html;</code> 效果</p>
+<p><strong>Mocks.scala</strong>，定义了API接口数据并组装成 <code>HttpEntity</code> 对象。</p>
+<pre class="prettyprint"><code class="language-scala">object project {
+  def notice = toJsonEntity(Project.notice)
+}
+def apiCurrentUser = toJsonEntity(Api.currentUser)
+def apiFakeChartData = toJsonEntity(Api.fake_chart_data)
+def apiTags = toJsonEntity(Api.tags)
+def apiActivities = toJsonEntity(Api.activities)
+
+def toJsonEntity(str: String): HttpEntity.Strict = HttpEntity(ContentTypes.`application/json`, str)</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/ant-design-pro/src/main/scala/scalaweb/ant/design/pro/mock/Mocks.scala#L9-L17" class="snippet-full-source github">Full source at GitHub</a>
+<p>这里为了演示Akka HTTP与Ant Design Pro的集成，我并未直接去实现后端接口数据模型的生成逻辑，比如：model定义、数据存储操作等。而是通过直接返回字符串形式的JSON数据来模拟：</p>
+<pre class="prettyprint"><code class="language-scala">val currentUser =
+  &quot;&quot;&quot;{&quot;name&quot;:&quot;羊八井&quot;,&quot;avatar&quot;:&quot;https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png&quot;,&quot;userid&quot;:&quot;00000001&quot;,&quot;email&quot;:&quot;yangbajing@gmail.com&quot;,&quot;signature&quot;:&quot;海纳百川，有容乃大&quot;,&quot;title&quot;:&quot;一个好爸爸&quot;,&quot;group&quot;:&quot;华龙海数－某某某事业群－某某平台部－某某技术部－Developer&quot;,&quot;tags&quot;:[{&quot;key&quot;:&quot;0&quot;,&quot;label&quot;:&quot;很有想法的&quot;},{&quot;key&quot;:&quot;1&quot;,&quot;label&quot;:&quot;专注后端&quot;},{&quot;key&quot;:&quot;2&quot;,&quot;label&quot;:&quot;强~&quot;},{&quot;key&quot;:&quot;3&quot;,&quot;label&quot;:&quot;彪悍&quot;},{&quot;key&quot;:&quot;4&quot;,&quot;label&quot;:&quot;重庆崽儿&quot;},{&quot;key&quot;:&quot;5&quot;,&quot;label&quot;:&quot;海纳百川&quot;}],&quot;notifyCount&quot;:12,&quot;country&quot;:&quot;China&quot;,&quot;geographic&quot;:{&quot;province&quot;:{&quot;label&quot;:&quot;重庆市&quot;,&quot;key&quot;:&quot;330000&quot;},&quot;city&quot;:{&quot;label&quot;:&quot;渝北区&quot;,&quot;key&quot;:&quot;402260&quot;}},&quot;address&quot;:&quot;渝北区金开大道西段106号10栋移动新媒体产业大厦11楼&quot;,&quot;phone&quot;:&quot;023-88888888&quot;}&quot;&quot;&quot;</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/ant-design-pro/src/main/scala/scalaweb/ant/design/pro/mock/Api.scala#L67-L68" class="snippet-full-source github">Full source at GitHub</a>
+<p>通过<code>def toJsonEntity(str: String): HttpEntity.Strict = HttpEntity(ContentTypes.</code>application/json<code>, str)</code>函数，将JSON字符串实例化为一个<code>HttpEntity</code>对象并设置<code>Content-Type</code>为<code>application/json</code>类型。</p><div class="callout note "><div class="callout-title">注意</div>
+<p>这里只定义了Ant Design Pro的 <strong>dashboard</strong> 栏目下3个页面需要的接口，其它接口并未实现，因为对于这个示例它们并不是重点。</p></div>
+<h3><a href="#添加webpack-proxy支持" name="添加webpack-proxy支持" class="anchor"><span class="anchor-link"></span></a>添加webpack proxy支持</h3>
+<p>修改 <code>ant-design-pro/web/config/config.js</code> 文件，在末尾右大括号（<code>}</code>）上方添加 <code>proxy</code> 设置API代理访问路径路径。这样所有的前端Ajax请求（请求<code>/api</code>开始的路径）都会被路由到Akka HTTP提供的API服务上。</p>
 <pre class="prettyprint"><code class="language-javascript">  proxy: {
     &#39;/api&#39;: {
       target: &#39;http://localhost:22222&#39;,
@@ -262,19 +319,64 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
     },
   },
 </code></pre>
-<p>使用 <code>start:nomock</code> 启动Ant Design Pro</p>
+<p>使用 <code>start:no-mock</code> 启动Ant Design Pro</p>
 <pre><code>npm run start:no-mock
 </code></pre>
+<p>打开浏览器，访问 <a href="http://localhost:8000">http://localhost:8000</a> 地址：</p>
+<p><img src="../assets/imgs/ant-design-pro-500.png" /></p>
+<p>这时还未启动Akka HTTP后端服务，看到在请求后端API <code>/api/currentUser</code>时报504网关超时错误。这代表我们设置的 webpack.proxy 已经生效，接下来让我们启动Akka HTTP后端服务。</p>
+<h3><a href="#启动akka-http-server" name="启动akka-http-server" class="anchor"><span class="anchor-link"></span></a>启动Akka HTTP Server</h3>
+<p><strong>Main.scala</strong></p>
+<pre class="prettyprint"><code class="language-scala">object Main extends App with StrictLogging {
+  implicit val system = ActorSystem()
+  implicit val materializer = ActorMaterializer()
+  import system.dispatcher
+
+  val bindingFuture = Http().bindAndHandle(handler = new Routes().route, interface = &quot;0.0.0.0&quot;, port = 22222)
+
+  bindingFuture.onComplete {
+    case Success(binding) ⇒
+      sys.addShutdownHook(system.terminate())
+      logger.info(s&quot;启动Akka HTTP Server成功，绑定地址: $binding&quot;)
+    case Failure(e) ⇒
+      logger.error(s&quot;启动Akka HTTP Server失败：${e.getMessage}&quot;, e)
+      system.terminate()
+  }
+
+}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/ant-design-pro/src/main/scala/scalaweb/ant/design/pro/Main.scala#L12-L28" class="snippet-full-source github">Full source at GitHub</a>
+<p>可以看到，编程启动Akka HTTP服务非常简单。我们执行<code>Main.scala</code>即可启动Akka HTTP服务。看到类似输出就代表服务已经启动成功：</p>
+<pre><code>10:59:13.659 [default-akka.actor.default-dispatcher-4] INFO scalaweb.ant.design.pro.Main$ - 启动Akka HTTP Server成功，绑定地址: ServerBinding(/0:0:0:0:0:0:0:0:22222)
+</code></pre>
 <h2><a href="#打包-部署" name="打包-部署" class="anchor"><span class="anchor-link"></span></a>打包、部署</h2>
-<p>TODO</p>
+<p>Ant Design Pro 的 Akka HTTP集成已经完成，我们也在开发模式下分别启动了Webpack Dev Server和Akka HTTP Server来看到我们集成的效果。要把集成的成果部署到服务器上怎么办？非常的简单，执行如下的几行命令就可以生成一个同时提供后端API接口和HTTP静态资源渲染的独立可执行jar包。不需要使用Nginx/Apache的代理静态资源，这样部署更加简洁。当然，你也可以继续使用用Nginx/Apache来代理静态资源，如果需要的话。</p>
+<pre><code>pushd ant-design-pro/web
+yarn install
+yarn run build
+popd
+rm -rf ant-design-pro/src/main/resources/dist/*
+cp ant-design-pro/web/dist/* ant-design-pro/src/main/resources/dist/
+sbt &quot;project ant-design-pro&quot; assembly
+</code></pre>
+<ol>
+  <li>首先编译 Ant Design Pro，在 <code>dist</code> 目录生成静态资源。</li>
+  <li>copy所有静态资源到 <code>resources/dist</code> 目录，这样Akka HTTP可以在生成的jar里通过Java资源文件机制访问到它们。</li>
+  <li>使用 <code>sbt assembly</code> 命令打包。</li>
+  <li>使用 <code>java -jar</code> 命令执行可执行jar包文件。</li>
+</ol>
+<p><strong>运行程序</strong></p>
+<pre><code>java -jar ant-design-pro/target/scala-2.12/ant-design-pro-assembly-1.0.0.jar
+</code></pre>
+<p>打开浏览器访问 <a href="http://localhost:22222/">http://localhost:22222/</a> 即可看到 Ant Design Pro 的界面。</p>
+<p><em>示例效果</em> <img src="../assets/imgs/account-center-01.png" /></p>
 <h2><a href="#总结" name="总结" class="anchor"><span class="anchor-link"></span></a>总结</h2>
-<p>TODO</p>
+<p>我们通过一个简单的实战示例：ant-desigin-pro，将之前几章所讲知识串起来通过Akka HTTP技术实现了一个较为完整的Web应用。</p>
+<p><em>本章源码在：<a href="https://github.com/yangbajing/scala-web-development/tree/master/ant-design-pro">https://github.com/yangbajing/scala-web-development/tree/master/ant-design-pro</a></em></p>
 <div class="source-github">
 The source code for this page can be found <a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/data/data.ant-design-pro.md">here</a>.
 </div>
 
 <div class="nav-next">
-<p><strong>Next:</strong> <a href="../data/data.2.html">XML</a></p>
+<p><strong>Next:</strong> <a href="../data/data.2.html">Protobuf</a></p>
 </div>
 </div>
 <div class="large-3 show-for-large column" data-sticky-container>

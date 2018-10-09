@@ -248,7 +248,7 @@ Akka HTTP 包含了一个 `akka-http-spary-json` 模块，它实现了完整的 
 
 ### JacksonSupport
 
-TODO 本文将主要使用 Jackson 来实现 JSON 解析处理。
+详细见： @ref:[JSON](../data/data.1.md)
 
 ## XML Support
 

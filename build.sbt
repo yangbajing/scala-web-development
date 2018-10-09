@@ -38,15 +38,18 @@ lazy val test = project
   .in(file("test"))
   .dependsOn(common % "compile->compile;test->test")
   .settings(basicSettings: _*)
-  .settings(
-    libraryDependencies ++= Seq(
-      )
-  )
 
 lazy val `ant-design-pro` = project
   .in(file("ant-design-pro"))
   .dependsOn(common % "compile->compile;test->test")
   .settings(basicSettings: _*)
+  .settings(
+    mainClass in assembly := Some("scalaweb.ant.design.pro.Main"),
+//    test in assembly := {},
+    libraryDependencies ++= Seq(
+      _rhino
+    )
+  )
 
 lazy val data = project
   .in(file("data"))
