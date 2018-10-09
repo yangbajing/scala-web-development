@@ -43,6 +43,15 @@ lazy val test = project
       )
   )
 
+lazy val data = project.in(file("data"))
+  .dependsOn(common % "compile->compile;test->test")
+  .settings(basicSettings: _*)
+  .settings(
+    libraryDependencies ++= Seq(
+      _akkaHttpJackson
+    )
+  )
+
 lazy val oauth = project
   .in(file("oauth"))
   .dependsOn(common % "compile->compile;test->test")

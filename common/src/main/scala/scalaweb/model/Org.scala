@@ -24,7 +24,7 @@ case class OrgCreateReq(
     contact: Option[ObjectNode],
     parent: Option[Int]
 ) {
-  def toOrg(parents: List[Int]) = Org(-1, code, name, contact.getOrElse(Jackson.createObjectNode()), parent, parents)
+  def toOrg(parents: List[Int]) = Org(-1, code, name, contact.getOrElse(Jackson.createObjectNode), parent, parents)
 }
 
 case class OrgUpdateReq(

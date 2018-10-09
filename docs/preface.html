@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
 
 <head>
-<title>Scala Web 开发  使用 Akka HTTP · Scala Web 开发</title>
+<title>前言 · Scala Web 开发</title>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="description" content='book'/>
@@ -36,7 +36,7 @@
 </div>
 <div class="nav-toc">
 <ul>
-  <li><a href="preface.html" class="active page">Scala Web 开发 &ndash; 使用 Akka HTTP</a></li>
+  <li><a href="preface.html" class="active page">前言</a></li>
   <li><a href="env/index.html" class="page">Scala 环境配置</a>
   <ul>
     <li><a href="env/env.1.html" class="page">Sbt</a></li>
@@ -70,6 +70,7 @@
   <ul>
     <li><a href="data/data.0.html" class="page">数据</a></li>
     <li><a href="data/data.1.html" class="page">JSON</a></li>
+    <li><a href="data/data.ant-design-pro.html" class="page">实战：为Ant Design Pro提供后端接口</a></li>
     <li><a href="data/data.2.html" class="page">XML</a></li>
     <li><a href="data/data.3.html" class="page">Protobuf</a></li>
     <li><a href="data/data.z.html" class="page">小结</a></li>
@@ -99,6 +100,11 @@
     <li><a href="storage/storage.4.html" class="page">访问 Redis</a></li>
     <li><a href="storage/storage.5.html" class="page">访问 Elasticsearch</a></li>
     <li><a href="storage/storage.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="engineering/index.html" class="page">工程化</a>
+  <ul>
+    <li><a href="engineering/swagger.html" class="page">使用Swagger编写API文档</a></li>
+    <li><a href="engineering/guice.html" class="page">使用Guice管理类依赖</a></li>
   </ul></li>
   <li><a href="appendix/index.html" class="page">附录</a>
   <ul>
@@ -143,7 +149,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 </div>
 <div class="nav-toc">
 <ul>
-  <li><a href="preface.html" class="active page">Scala Web 开发 &ndash; 使用 Akka HTTP</a></li>
+  <li><a href="preface.html" class="active page">前言</a></li>
   <li><a href="env/index.html" class="page">Scala 环境配置</a>
   <ul>
     <li><a href="env/env.1.html" class="page">Sbt</a></li>
@@ -177,6 +183,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
   <ul>
     <li><a href="data/data.0.html" class="page">数据</a></li>
     <li><a href="data/data.1.html" class="page">JSON</a></li>
+    <li><a href="data/data.ant-design-pro.html" class="page">实战：为Ant Design Pro提供后端接口</a></li>
     <li><a href="data/data.2.html" class="page">XML</a></li>
     <li><a href="data/data.3.html" class="page">Protobuf</a></li>
     <li><a href="data/data.z.html" class="page">小结</a></li>
@@ -207,6 +214,11 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
     <li><a href="storage/storage.5.html" class="page">访问 Elasticsearch</a></li>
     <li><a href="storage/storage.z.html" class="page">小结</a></li>
   </ul></li>
+  <li><a href="engineering/index.html" class="page">工程化</a>
+  <ul>
+    <li><a href="engineering/swagger.html" class="page">使用Swagger编写API文档</a></li>
+    <li><a href="engineering/guice.html" class="page">使用Guice管理类依赖</a></li>
+  </ul></li>
   <li><a href="appendix/index.html" class="page">附录</a>
   <ul>
     <li><a href="appendix/appendix.0.html" class="page">参考资料</a></li>
@@ -230,7 +242,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <div class="nav-breadcrumbs">
 <ul>
   <li><a href="index.html">Scala Web 开发</a></li>
-  <li>Scala Web 开发 &ndash; 使用 Akka HTTP</li>
+  <li>前言</li>
 </ul>
 </div>
 </div>
@@ -238,7 +250,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 
 <div class="page-content row">
 <div class="small-12 large-9 column" id="docs">
-<h1><a href="#scala-web-开发-使用-akka-http" name="scala-web-开发-使用-akka-http" class="anchor"><span class="anchor-link"></span></a>Scala Web 开发 &ndash; 使用 Akka HTTP</h1>
+<h1><a href="#前言" name="前言" class="anchor"><span class="anchor-link"></span></a>前言</h1>
 <p>本书将主要基于 <a href="http://doc.akka.io/docs/akka-http/current/index.html"><strong>Akka HTTP</strong></a> 介绍怎样使用 Scala 进行 Web 开发。</p>
 <p><strong>Scala</strong></p>
 <p>Scala是一个面向对象的函数式特性编程语言，它继承了Java的面向对特性，同时又从<a href="https://www.haskell.org/"><code>Haskell</code></a>等其它语言那里吸收了很多函数式特性并做了增强。</p>
@@ -248,7 +260,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
   <li>
   <p>Simple Concurrency &amp; Distribution（易使用的并发与分布式）： 异步和分布式设计，具有 Actors、Streams 和 Futures 等高级抽象。</p></li>
   <li>
-  <p>Resilient By Design（弹性设计）： 编写具有自我修复特性的程序，完整的本地和远程监控层次。</p></li>
+  <p>Resilient By Design（弹性设计）： 编写具有自我修复特性的程序，完整的本地和远程监控层次。li</p></li>
   <li>
   <p>High Performance（高性能）： 单机每秒 5000万 吞吐。较优的内存使用：每 1GB 堆内在可生成约 250万 个 actor。 </p></li>
   <li>
@@ -269,7 +281,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
   <li>作者：杨景（羊八井）</li>
   <li>邮箱：yangbajing at gmail com</li>
   <li>Weibo: @yangbajing</li>
-  <li>主页：http://yangbajing.me</li>
+  <li>主页：<a href="https://www.yangbajing.me">https://www.yangbajing.me</a></li>
   <li>微信公众号：yangbajing-garden
     <ul>
       <li><img src="assets/imgs/qrcode_for_gh_70b815e4a7cd_344.jpg" alt="yangbajing-garden" /></li>
@@ -290,7 +302,7 @@ The source code for this page can be found <a href="https://github.com/yangbajin
 <div class="nav-title">On this page:</div>
 <div class="nav-toc">
 <ul>
-  <li><a href="preface.html#scala-web-开发-使用-akka-http" class="header">Scala Web 开发 &ndash; 使用 Akka HTTP</a>
+  <li><a href="preface.html#前言" class="header">前言</a>
   <ul>
     <li><a href="preface.html#作者" class="header">作者</a></li>
   </ul></li>

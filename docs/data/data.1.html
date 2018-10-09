@@ -36,7 +36,7 @@
 </div>
 <div class="nav-toc">
 <ul>
-  <li><a href="../preface.html" class="page">Scala Web 开发 &ndash; 使用 Akka HTTP</a></li>
+  <li><a href="../preface.html" class="page">前言</a></li>
   <li><a href="../env/index.html" class="page">Scala 环境配置</a>
   <ul>
     <li><a href="../env/env.1.html" class="page">Sbt</a></li>
@@ -70,6 +70,7 @@
   <ul>
     <li><a href="../data/data.0.html" class="page">数据</a></li>
     <li><a href="../data/data.1.html" class="active page">JSON</a></li>
+    <li><a href="../data/data.ant-design-pro.html" class="page">实战：为Ant Design Pro提供后端接口</a></li>
     <li><a href="../data/data.2.html" class="page">XML</a></li>
     <li><a href="../data/data.3.html" class="page">Protobuf</a></li>
     <li><a href="../data/data.z.html" class="page">小结</a></li>
@@ -99,6 +100,11 @@
     <li><a href="../storage/storage.4.html" class="page">访问 Redis</a></li>
     <li><a href="../storage/storage.5.html" class="page">访问 Elasticsearch</a></li>
     <li><a href="../storage/storage.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../engineering/index.html" class="page">工程化</a>
+  <ul>
+    <li><a href="../engineering/swagger.html" class="page">使用Swagger编写API文档</a></li>
+    <li><a href="../engineering/guice.html" class="page">使用Guice管理类依赖</a></li>
   </ul></li>
   <li><a href="../appendix/index.html" class="page">附录</a>
   <ul>
@@ -143,7 +149,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 </div>
 <div class="nav-toc">
 <ul>
-  <li><a href="../preface.html" class="page">Scala Web 开发 &ndash; 使用 Akka HTTP</a></li>
+  <li><a href="../preface.html" class="page">前言</a></li>
   <li><a href="../env/index.html" class="page">Scala 环境配置</a>
   <ul>
     <li><a href="../env/env.1.html" class="page">Sbt</a></li>
@@ -177,6 +183,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
   <ul>
     <li><a href="../data/data.0.html" class="page">数据</a></li>
     <li><a href="../data/data.1.html" class="active page">JSON</a></li>
+    <li><a href="../data/data.ant-design-pro.html" class="page">实战：为Ant Design Pro提供后端接口</a></li>
     <li><a href="../data/data.2.html" class="page">XML</a></li>
     <li><a href="../data/data.3.html" class="page">Protobuf</a></li>
     <li><a href="../data/data.z.html" class="page">小结</a></li>
@@ -206,6 +213,11 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
     <li><a href="../storage/storage.4.html" class="page">访问 Redis</a></li>
     <li><a href="../storage/storage.5.html" class="page">访问 Elasticsearch</a></li>
     <li><a href="../storage/storage.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../engineering/index.html" class="page">工程化</a>
+  <ul>
+    <li><a href="../engineering/swagger.html" class="page">使用Swagger编写API文档</a></li>
+    <li><a href="../engineering/guice.html" class="page">使用Guice管理类依赖</a></li>
   </ul></li>
   <li><a href="../appendix/index.html" class="page">附录</a>
   <ul>
@@ -241,15 +253,168 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <div class="small-12 large-9 column" id="docs">
 <h1><a href="#json" name="json" class="anchor"><span class="anchor-link"></span></a>JSON</h1>
 <h2><a href="#jackson" name="jackson" class="anchor"><span class="anchor-link"></span></a>Jackson</h2>
-<p>TODO Jakcons 介绍</p>
+<p><strong>Jackson</strong> 是Java生态圈里最流行的JSON序列化库，它的官方网站是：<a href="https://github.com/FasterXML/jackson">https://github.com/FasterXML/jackson</a>。</p><div class="callout note "><div class="callout-title">为什么选择 Jackson</div>
+<p>为什么选择 Jackson 而不是更Scala范的 <strong>play-json</strong>、 <strong>circe</strong>、 <strong>json4s</strong> 等JSON序列化库呢？这里主要考虑是 Jackson 在Java生态圈里更流行，相对熟悉的人更多，可以一定程度上减轻Javaer们使用Scala时上手的难度。 同时，Jackson支持对大部分Java和Scala下的集合库、数据类型的JSON序列化，而大部分Scala范的JSON库只支持Scala的集合库、case class和数据类型。当你的应用里同时使用Java和Scala两种不同的集合类型和Java style class与Scala case class时，Jackson都可以对齐完美支持。</p></div>
 <h2><a href="#jacksonsupport" name="jacksonsupport" class="anchor"><span class="anchor-link"></span></a>JacksonSupport</h2>
-<p>TODO 在 Akka HTTP 中使用 Jackson</p>
+<p>基于 Akka HTTP 的 marshal/unmarshal 机制，可以很容易的集成各种序列化/反序列化工具。<a href="https://github.com/hseeberger/akka-http-json">akka-http-json</a> 这套库就提供了9种不同的JSON序列化/反序列化方安供用户选择。</p>
+<p>我们需要在 sbt 里添加依赖：</p>
+<pre class="prettyprint"><code class="language-scala">libraryDependencies += &quot;de.heikoseeberger&quot; %% &quot;akka-http-jackson&quot; % &quot;1.22.0&quot;
+</code></pre>
+<h3><a href="#使用默认的-akka-http-jackson" name="使用默认的-akka-http-jackson" class="anchor"><span class="anchor-link"></span></a>使用默认的 akka-http-jackson</h3>
+<pre class="prettyprint"><code class="language-scala">&quot;Default ObjectMapper&quot; should {
+  import de.heikoseeberger.akkahttpjackson.JacksonSupport._
+
+  &quot;从case class序列化和反序列化&quot; in {
+    val foo = Foo(&quot;bar&quot;, 2018)
+    val result = Marshal(foo).to[RequestEntity].flatMap(Unmarshal(_).to[Foo]).futureValue
+    foo mustBe result
+  }
+
+  &quot;从数组case class序列化和反序列化&quot; in {
+    val foos = Seq(Foo(&quot;bar&quot;, 2018))
+    val result = Marshal(foos).to[RequestEntity].flatMap(Unmarshal(_).to[Seq[Foo]]).futureValue
+    foos mustBe result
+  }
+
+  &quot;不支持OffsetDateTime&quot; in {
+    val foo = FooTime(&quot;羊八井&quot;, OffsetDateTime.now())
+    val requestEntity = Marshal(foo).to[RequestEntity].futureValue
+    intercept[MismatchedInputException] {
+      throw Unmarshal(requestEntity).to[Foo].failed.futureValue
+    }
+  }
+}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala#L25-L47" class="snippet-full-source github">Full source at GitHub</a>
+<p>可以看到，默认的 akka-http-jackson 不支持 Java 8 新提供的时间/日期类型序列化，这是因为它默认使用的 Jackson ObjectMapper 没有加载 <strong>JavaTimeModule</strong> 这个模块在 <a href="https://github.com/FasterXML/jackson-modules-java8/tree/master/datetime">https://github.com/FasterXML/jackson-modules-java8/tree/master/datetime</a> 可以找到JavaTimeModule这个模块的更多详细说明。</p>
+<pre class="prettyprint"><code class="language-scala">/**
+  * Automatic to and from JSON marshalling/unmarshalling usung an in-scope Jackon&#39;s ObjectMapper
+  */
+object JacksonSupport extends JacksonSupport {
+
+  val defaultObjectMapper: ObjectMapper =
+    new ObjectMapper().registerModule(DefaultScalaModule)
+}
+</code></pre>
+<h3><a href="#通过隐式值使用自定义的-objectmapper" name="通过隐式值使用自定义的-objectmapper" class="anchor"><span class="anchor-link"></span></a>通过隐式值使用自定义的 ObjectMapper</h3>
+<p>首先来看看 akka-http-jackson 定义的 <a href="https://github.com/hseeberger/akka-http-json/blob/master/akka-http-jackson/src/main/scala/de/heikoseeberger/akkahttpjackson/JacksonSupport.scala">JacksonSupport.scala</a>，它通过两个隐式函数实现了 Akka HTTP 的 Marshal/Unmarshal 功能。</p>
+<pre class="prettyprint"><code class="language-scala">  /**
+    * HTTP entity =&gt; `A`
+    */
+  implicit def unmarshaller[A](
+      implicit ct: TypeTag[A],
+      objectMapper: ObjectMapper = defaultObjectMapper
+  ): FromEntityUnmarshaller[A] =
+    jsonStringUnmarshaller.map(
+      data =&gt; objectMapper.readValue(data, typeReference[A]).asInstanceOf[A]
+    )
+
+  /**
+    * `A` =&gt; HTTP entity
+    */
+  implicit def marshaller[Object](
+      implicit objectMapper: ObjectMapper = defaultObjectMapper
+  ): ToEntityMarshaller[Object] =
+    Jackson.marshaller[Object](objectMapper)
+</code></pre>
+<p>可以看到隐式函数又分别定义了两个和一个隐式参数，而 <code>objectMapper: ObjectMapper = defaultObjectMaper</code>这个隐式参数定义了默认值，这样在使用时我们就可以提供自定义的 ObjectMapper 来替代默认的 <code>defaultObjectMapper</code>。先来看看怎样使用自定义的 ObjectMapper：</p>
+<pre class="prettyprint"><code class="language-scala">&quot;Custom ObjectMapper&quot; should {
+  import de.heikoseeberger.akkahttpjackson.JacksonSupport._
+  implicit val objectMapper: ObjectMapper = helloscala.common.json.Jackson.defaultObjectMapper
+
+  &quot;支持OffsetDateTime&quot; in {
+    val foo = FooTime(&quot;羊八井&quot;, OffsetDateTime.now())
+    val requestEntity = Marshal(foo).to[RequestEntity].futureValue
+    val result = Unmarshal(requestEntity).to[FooTime].futureValue
+    foo mustBe result
+  }
+
+  &quot;从数组case class序列化和反序列化&quot; in {
+    val foos = Seq(FooTime(&quot;羊八井&quot;, OffsetDateTime.now()))
+    val results = Marshal(foos).to[RequestEntity].flatMap(Unmarshal(_).to[Seq[FooTime]]).futureValue
+    foos mustBe results
+  }
+}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala#L51-L67" class="snippet-full-source github">Full source at GitHub</a>
+<p>通过在代码上下文中定义一个隐式值：<code>implicit val objectMapper: ObjectMapper = ....</code> <em>（变量名可以取任何名字，不需要是<code>objectMapper</code>。但是需要保证在代码上下文中只有一个ObjectMapper隐式类型。）</em>，Scala 编译器在编译代码时将使用定义的隐式值传入函数 <code>unmarshaller</code> 或 <code>marshaller</code> 中以替代函数定义时设置的默认值。</p>
+<p>自定义 ObjectMapper 定义在object <a href="https://github.com/yangbajing/scala-web-development/tree/master/common/src/main/scala/helloscala/common/json/Jackson.scala">Jackson.scala</a>：</p>
+<pre class="prettyprint"><code class="language-scala">implicit val defaultObjectMapper: ObjectMapper = getObjectMapper
+
+private def getObjectMapper: ObjectMapper =
+  new ObjectMapper().findAndRegisterModules
+  //.setDateFormat(new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;))
+  //.enable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
+    .enable(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES)
+    .enable(JsonParser.Feature.ALLOW_SINGLE_QUOTES)
+    .enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+    .enable(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS)
+    .disable(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES)
+    .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+    .disable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE) // 禁止反序列化时将时区转换为 Z
+    .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS) // 允许序列化空的对象
+    .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS) // 日期时间类型不序列化成时间戳
+    .disable(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS) // 日期时间类型不序列化成时间戳
+    .setSerializationInclusion(JsonInclude.Include.NON_NULL) // 序列化时不包含null的键</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/common/src/main/scala/helloscala/common/json/Jackson.scala#L21-L37" class="snippet-full-source github">Full source at GitHub</a>
+<h3><a href="#自定义反序列化时允许的mediatype类型" name="自定义反序列化时允许的mediatype类型" class="anchor"><span class="anchor-link"></span></a>自定义反序列化时允许的MediaType类型</h3>
+<p>默认情况下，JacksonSupport要求客户端提交的HTTP请求必需设置Content-Type的mime-type类型为：<code>application/json</code>，但很多时候会遇到不那么规范的客户端，它们并未正确的设置HTTP请求头。这时我们可以自定义JacksonSupport让它在反序列化时支持其它Content-Type：这里定义除了<code>application/json</code>外还支持<code>text/plain</code>类型的请求。</p>
+<pre class="prettyprint"><code class="language-scala">&quot;Custom unmarshallerContentTypes&quot; should {
+  final object CustomJacksonSupport extends JacksonSupport {
+    override def unmarshallerContentTypes: immutable.Seq[ContentTypeRange] =
+      List(MediaTypes.`text/plain`, MediaTypes.`application/json`)
+  }
+
+  &quot;text/plain unmarshal failed&quot; in {
+    import de.heikoseeberger.akkahttpjackson.JacksonSupport._
+    val entity = HttpEntity(&quot;&quot;&quot;{&quot;name&quot;: &quot;羊八井&quot;, &quot;since&quot;: 2018}&quot;&quot;&quot;)
+    entity.contentType.mediaType mustBe MediaTypes.`text/plain`
+    intercept[UnsupportedContentTypeException] {
+      throw Unmarshal(entity).to[Foo].failed.futureValue
+    }
+  }
+
+  &quot;text/plain unmarshal&quot; in {
+    import CustomJacksonSupport._
+    val entity = HttpEntity(&quot;&quot;&quot;{&quot;name&quot;: &quot;羊八井&quot;, &quot;since&quot;: 2018}&quot;&quot;&quot;)
+    entity.contentType.mediaType mustBe MediaTypes.`text/plain`
+    val foo = Unmarshal(entity).to[Foo].futureValue
+    foo mustBe Foo(&quot;羊八井&quot;, 2018)
+  }
+}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala#L71-L93" class="snippet-full-source github">Full source at GitHub</a>
+<h2><a href="#在-routing-dsl-里使用" name="在-routing-dsl-里使用" class="anchor"><span class="anchor-link"></span></a>在 routing DSL 里使用</h2>
+<p>在 Akka HTTP Routing DSL 里使用Jackson来反序列化/序列化JSON就非常简单了。通过<code>entity(as[FooTime])</code>指令来将提交的JSON数据解析成 <code>FooTime</code> 样本类（将调用 <code>unmarshaller[A]</code> 隐式函数），在<code>complete</code>函数响应结果时将 <code>FooTime</code> 对象序列化成JSON字符串并设置对应的Content-Type（调用 <code>marshaller[A]</code> 隐式函数）。</p>
+<pre class="prettyprint"><code class="language-scala">&quot;routing-dsl&quot; should {
+  import akka.http.scaladsl.server.Directives._
+  import de.heikoseeberger.akkahttpjackson.JacksonSupport._
+  implicit val objectMapper: ObjectMapper = helloscala.common.json.Jackson.defaultObjectMapper
+
+  val route: Route = path(&quot;api&quot;) {
+    post {
+      entity(as[FooTime]) { foo =&gt;
+        complete(foo.copy(since = foo.since.plusYears(1)))
+      }
+    }
+  }
+
+  &quot;post json&quot; in {
+    val foo = FooTime(&quot;羊八井&quot;, OffsetDateTime.now())
+    Post(&quot;/api&quot;, foo) ~&gt; route ~&gt; check {
+      status mustBe StatusCodes.OK
+      contentType.mediaType mustBe MediaTypes.`application/json`
+      val payload = responseAs[FooTime]
+      foo.name mustBe payload.name
+      foo.since.isBefore(payload.since) mustBe true
+    }
+  }
+}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala#L97-L120" class="snippet-full-source github">Full source at GitHub</a>
+<h2><a href="#总结" name="总结" class="anchor"><span class="anchor-link"></span></a>总结</h2>
+<p>Akka HTTP通过强大的 Marshal/Unmarshal 机制来实现数据的序列/反序列化，作为一款工具库 Akka HTTP 提供了足够的灵活性，用户可以选择自己喜欢的序列/反序列化工具和使用方式。对于JSON，推荐从 <strong><a href="https://github.com/hseeberger/akka-http-json">https://github.com/hseeberger/akka-http-json</a></strong> 开始，上面很有可能找到你想要的。同时，akka-http-json也是一个不错的学习 Akka HTTP Marshal/Unmarshal 机制的样例。</p>
+<p>完整的测试代码在：<a href="https://github.com/yangbajing/scala-web-development/tree/master/data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala">data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala</a>，可以通过以下命令来运行它：</p>
+<pre class="prettyprint"><code class="language-scala">sbt &quot;data/testOnly scalaweb.data.json.jackson.JacksonSupportTest&quot;
+</code></pre>
+<p><em>测试结果示例：</em> <img src="../assets/imgs/json/JacksonSupportTest.png" /></p>
 <div class="source-github">
 The source code for this page can be found <a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/data/data.1.md">here</a>.
 </div>
 
 <div class="nav-next">
-<p><strong>Next:</strong> <a href="../data/data.2.html">XML</a></p>
+<p><strong>Next:</strong> <a href="../data/data.ant-design-pro.html">实战：为Ant Design Pro提供后端接口</a></p>
 </div>
 </div>
 <div class="large-3 show-for-large column" data-sticky-container>
@@ -262,6 +427,8 @@ The source code for this page can be found <a href="https://github.com/yangbajin
   <ul>
     <li><a href="../data/data.1.html#jackson" class="header">Jackson</a></li>
     <li><a href="../data/data.1.html#jacksonsupport" class="header">JacksonSupport</a></li>
+    <li><a href="../data/data.1.html#在-routing-dsl-里使用" class="header">在 routing DSL 里使用</a></li>
+    <li><a href="../data/data.1.html#总结" class="header">总结</a></li>
   </ul></li>
 </ul>
 </div>

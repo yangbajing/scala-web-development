@@ -19,8 +19,8 @@ addSbtPlugin("com.dwijnand" % "sbt-dynver" % "3.0.0")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.9.3")
 
-addSbtPlugin("com.thesamet" % "sbt-protoc" % "0.99.18")
-
 addSbtPlugin("com.lightbend.paradox" % "sbt-paradox" % "0.4.3")
 
-libraryDependencies += "com.thesamet.scalapb" %% "compilerplugin" % "0.7.4"
+addSbtPlugin("com.thesamet" % "sbt-protoc" % "0.99.18")
+
+libraryDependencies += "com.thesamet.scalapb" %% "compilerplugin" % "0.8.1"

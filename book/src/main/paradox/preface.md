@@ -1,4 +1,4 @@
-# Scala Web 开发 -- 使用 Akka HTTP
+# 前言
 
 本书将主要基于 [**Akka HTTP**](http://doc.akka.io/docs/akka-http/current/index.html) 介绍怎样使用 Scala 进行 Web 开发。
 
@@ -14,7 +14,7 @@ Akka 是一个在 JVM 上构建高并发、分布式、弹性的消息驱动应�
     异步和分布式设计，具有 Actors、Streams 和 Futures 等高级抽象。
 
 - Resilient By Design（弹性设计）：
-    编写具有自我修复特性的程序，完整的本地和远程监控层次。
+    编写具有自我修复特性的程序，完整的本地和远程监控层次。li
 
 - High Performance（高性能）：
     单机每秒 5000万 吞吐。较优的内存使用：每 1GB 堆内在可生成约 250万 个 actor。 
@@ -41,7 +41,6 @@ Akka HTTP 基于 `akka-actor` 和 `akka-stream` 完整实现了 HTTP 服务器�
 - 作者：杨景（羊八井）
 - 邮箱：yangbajing at gmail com
 - Weibo: @yangbajing
-- 主页：http://yangbajing.me
+- 主页：[https://www.yangbajing.me](https://www.yangbajing.me)
 - 微信公众号：yangbajing-garden
     - ![yangbajing-garden](.../qrcode_for_gh_70b815e4a7cd_344.jpg)
-

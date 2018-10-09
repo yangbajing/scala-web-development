@@ -1,6 +1,6 @@
 # Scala Web 开发
 
-*Scala Web Development*
+*Akka HTTP*
 
 @@toc { depth=3 }
 
@@ -14,6 +14,7 @@
 * [测试](test/index.md)
 * [实战：实现OAuth 2服务](oauth/index.md)
 * [访问数据库](storage/index.md)
+* [工程化](engineering/index.md)
 * [附录](appendix/index.md)
 
 @@@
