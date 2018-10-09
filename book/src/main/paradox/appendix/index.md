@@ -7,6 +7,5 @@
 * [参考资料](appendix.0.md)
 * [专业术语](appendix.1.md)
 * [词汇表](appendix.2.md)
-* [赞助](appendix.x.md)
 
 @@@

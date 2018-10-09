@@ -140,7 +140,7 @@ object Dependencies {
   val _akkaStreamKafka = ("com.typesafe.akka" %% "akka-stream-kafka" % "0.22")
     .exclude("com.typesafe.akka", "akka-slf4j")
     .cross(CrossVersion.binary)
-  
+
   val _akkaHttpJackson = "de.heikoseeberger" %% "akka-http-jackson" % "1.22.0"
 
   val _config = "com.typesafe" % "config" % "1.3.3"
@@ -155,7 +155,7 @@ object Dependencies {
     "com.fasterxml.jackson.module" % "jackson-module-parameter-names" % versionJackson,
 //    ("org.json4s" %% "json4s-jackson" % "3.6.0")
 //  .exclude("com.fasterxml.jackson.core", "jackson-databind"),
-  "com.fasterxml.jackson.module" %% "jackson-module-scala" % versionJackson
+    "com.fasterxml.jackson.module" %% "jackson-module-scala" % versionJackson
   )
 
   val _redisclient = "net.debasishg" %% "redisclient" % "3.7"

@@ -5,11 +5,9 @@
 ```
 git clone https://github.com/yangbajing/scala-web-development.git
 cd scala-web-development
-gitbook install
-gitbook serve
+sbt "project book" paradox
+google-chrome google-chrome book/target/paradox/site/main/index.html  # Mac 下使用 open 命令打开
 ```
-
-打开浏览器，访问：[http://localhost:4000](http://localhost:4000) 本地阅读。
 
 本书源码在：
 
@@ -71,4 +69,3 @@ gitbook serve
   * [应用部署](12.3.md)
   * [备份和恢复](12.4.md)
   * [小结](12.5.md)
-

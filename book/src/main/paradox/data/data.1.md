@@ -6,7 +6,7 @@
 
 @@@ note { title='为什么选择 Jackson' }
 为什么选择 Jackson 而不是更Scala范的 **play-json**、 **circe**、 **json4s** 等JSON序列化库呢？这里主要考虑是 Jackson 在Java生态圈里更流行，相对熟悉的人更多，可以一定程度上减轻Javaer们使用Scala时上手的难度。
-同时，Jackson支持对大部分Java和Scala下的集合库、数据类型的JSON序列化，而大部分Scala范的JSON库只支持Scala的集合库、case class和数据类型。当你的应用里同时使用Java和Scala两种不同的集合类型和Java style class与Scala case class时，Jackson都可以对齐完美支持。
+同时，Jackson支持对大部分Java和Scala下的集合库、数据类型的JSON序列化，而大部分Scala范的JSON库只支持Scala的集合库、case class和数据类型。当你的应用里同时使用Java和Scala两种不同的集合类型和Java style class与Scala case class时，Jackson都可以对其完美支持。
 @@@
 
 ## JacksonSupport

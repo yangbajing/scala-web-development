@@ -43,7 +43,13 @@ lazy val test = project
       )
   )
 
-lazy val data = project.in(file("data"))
+lazy val `ant-design-pro` = project
+  .in(file("ant-design-pro"))
+  .dependsOn(common % "compile->compile;test->test")
+  .settings(basicSettings: _*)
+
+lazy val data = project
+  .in(file("data"))
   .dependsOn(common % "compile->compile;test->test")
   .settings(basicSettings: _*)
   .settings(
