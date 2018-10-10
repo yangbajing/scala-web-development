@@ -19,10 +19,14 @@ lazy val root = Project("scala-web-root", file("."))
 lazy val book = project
   .in(file("book"))
   .enablePlugins(ParadoxPlugin)
+  .enablePlugins(ParadoxMaterialThemePlugin)
   .dependsOn(test, oauth, foundation, database, common)
   .settings(
     name in (Compile, paradox) := "Scala Web Development",
-    paradoxTheme := Some(builtinParadoxTheme("generic")),
+//    paradoxTheme := Some(builtinParadoxTheme("generic")),
+    Compile / paradoxMaterialTheme ~= {
+      _.withLanguage(java.util.Locale.SIMPLIFIED_CHINESE)
+    },
     paradoxProperties ++= Map(
       "github.base_url" -> s"https://github.com/yangbajing/scala-web-development/tree/${version.value}",
       "extref.rfc.base_url" -> "http://tools.ietf.org/html/rfc%s",

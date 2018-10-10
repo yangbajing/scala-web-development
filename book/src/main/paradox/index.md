@@ -10,6 +10,7 @@
 * [env](env/index.md)
 * [scala](scala/index.md)
 * [basic](basic/index.md)
+* [server-api](server-api/index.md)
 * [data](data/index.md)
 * [test](test/index.md)
 * [oauth](oauth/index.md)

@@ -21,6 +21,8 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-git" % "0.9.3")
 
 addSbtPlugin("com.lightbend.paradox" % "sbt-paradox" % "0.4.3")
 
+addSbtPlugin("io.github.jonas" % "sbt-paradox-material-theme" % "0.5.1")
+
 addSbtPlugin("com.thesamet" % "sbt-protoc" % "0.99.18")
 
 libraryDependencies += "com.thesamet.scalapb" %% "compilerplugin" % "0.8.1"
