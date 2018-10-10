@@ -4,6 +4,6 @@
 
 @@@ index
 
-- [routing-dsl](routing-dsl.md)
+- [routing-dsl](routing-dsl/index.md)
 
 @@@

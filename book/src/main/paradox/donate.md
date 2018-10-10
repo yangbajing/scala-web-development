@@ -5,10 +5,10 @@
 <div style="font-weight:bold">
 <div style="width:50%;float:left;">
 <p>支付宝</p>
-<img src="../assets/imgs/alipay-qrcode.jpg" style="width:auto;height:200px;"/>
+<img src="assets/imgs/alipay-qrcode.jpg" style="width:auto;height:200px;"/>
 </div>
 <div style="width:50%;float:left;">
 <p>微信</p>
-<img src="../assets/imgs/wepay-qrcode.jpg" style="width:auto;height:200px;"/>
+<img src="assets/imgs/wepay-qrcode.jpg" style="width:auto;height:200px;"/>
 </div>
 </div>

@@ -26,6 +26,11 @@ lazy val book = project
 //    paradoxTheme := Some(builtinParadoxTheme("generic")),
     Compile / paradoxMaterialTheme ~= {
       _.withLanguage(java.util.Locale.SIMPLIFIED_CHINESE)
+        .withRepository(uri("https://github.com/yangbajing/scala-web-development"))
+        .withSocial(
+          uri("https://github.com/yangbajing"),
+          uri("https://weibo.com/yangbajing")
+        )
     },
     paradoxProperties ++= Map(
       "github.base_url" -> s"https://github.com/yangbajing/scala-web-development/tree/${version.value}",
