@@ -46,7 +46,7 @@ object StandardRoute {
     ```scala
     path("api" / "user" / "page")
     ```
-3. 从`RequestContext`中抽取值，并使它在内部路径内的路由可用。
+3. 从`RequestContext`中提取值，并使它在内部路径内的路由可用。
     ```scala
     extract(ctx => ctx.request.uri)
     ```

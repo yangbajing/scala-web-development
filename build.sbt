@@ -10,7 +10,10 @@ scalafmtOnCompile in ThisBuild := true
 lazy val root = Project("scala-web-root", file("."))
   .aggregate(
     test,
+    `engineering-guice`,
     oauth,
+    monitor,
+    data,
     foundation,
     database,
     common
@@ -20,7 +23,7 @@ lazy val book = project
   .in(file("book"))
   .enablePlugins(ParadoxPlugin)
   .enablePlugins(ParadoxMaterialThemePlugin)
-  .dependsOn(test, oauth, foundation, database, common)
+  .dependsOn(`engineering-guice`, monitor, test, oauth, foundation, database, common)
   .settings(
     name in (Compile, paradox) := "Scala Web Development",
 //    paradoxTheme := Some(builtinParadoxTheme("generic")),
@@ -60,12 +63,38 @@ lazy val `ant-design-pro` = project
     )
   )
 
+lazy val `engineering-guice` = project
+  .in(file("engineering-guice"))
+  .dependsOn(common % "compile->compile;test->test")
+  .settings(basicSettings: _*)
+  .settings(
+    mainClass in assembly := Some("scalaweb.enginnering.guice.boot.Main"),
+    //    test in assembly := {},
+    libraryDependencies ++= Seq(
+      _guice,
+      _guiceAssistedinject
+    )
+  )
+
+lazy val monitor = project
+  .in(file("monitor"))
+  .dependsOn(common % "compile->compile;test->test")
+  .settings(basicSettings: _*)
+  .settings(
+    mainClass in assembly := Some("scalaweb.monitor.boot.Main"),
+    //    test in assembly := {},
+    libraryDependencies ++= Seq(
+      _sjsonnet
+    ) ++ _kamons
+  )
+
 lazy val data = project
   .in(file("data"))
   .dependsOn(common % "compile->compile;test->test")
   .settings(basicSettings: _*)
   .settings(
     libraryDependencies ++= Seq(
+      _chillAkka,
       _akkaHttpJackson
     )
   )

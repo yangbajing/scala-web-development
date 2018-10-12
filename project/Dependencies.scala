@@ -17,7 +17,7 @@ object Dependencies {
 
   val _scalatest = "org.scalatest" %% "scalatest" % "3.0.5"
 
-  val versionAkka = "2.5.17"
+  val versionAkka = "2.5.18"
   lazy val _akkaRemote = "com.typesafe.akka" %% "akka-remote" % versionAkka
 
   lazy val _akkas = Seq(
@@ -44,7 +44,7 @@ object Dependencies {
   )
 
   lazy val _akkaManagements = Seq(
-    ("com.lightbend.akka.management" %% "akka-management" % "0.18.0")
+    ("com.lightbend.akka.management" %% "akka-management" % "0.19.0")
       .excludeAll(ExclusionRule("com.typesafe.akka"))
       .exclude("org.scala-lang", "scala-library")
   )
@@ -157,21 +157,23 @@ object Dependencies {
 //  .exclude("com.fasterxml.jackson.core", "jackson-databind"),
     "com.fasterxml.jackson.module" %% "jackson-module-scala" % versionJackson
   )
+  
+  val _sjsonnet = "com.lihaoyi" %% "sjsonnet" % "0.1.2"
 
   val _redisclient = "net.debasishg" %% "redisclient" % "3.7"
 
   val _aspectjweaver = "org.aspectj" % "aspectjweaver" % "1.9.1"
 
   val _sigarLoader = "io.kamon" % "sigar-loader" % "1.6.6" //-rev002"
+  
+  val _kamonCore = "io.kamon" %% "kamon-core" % "1.1.3"
 
-  private val versionKamon = "1.1.2"
-
-  val _kamonAkka = ("io.kamon" %% "kamon-akka-2.5" % versionKamon)
+  val _kamonAkka = ("io.kamon" %% "kamon-akka-2.5" % "1.1.2")
     .exclude("com.typesafe.akka", "akka-actor")
     .cross(CrossVersion.binary)
     .exclude("org.scala-lang", "scala-library")
 
-  val _kamonAkkaHttp = ("io.kamon" %% "kamon-akka-http-2.5" % "1.1.0")
+  val _kamonAkkaHttp = ("io.kamon" %% "kamon-akka-http-2.5" % "1.1.1")
     .exclude("io.kamon", "kamon-akka-2.5")
     .cross(CrossVersion.binary)
     .exclude("com.typesafe.akka", "akka-http")
@@ -181,7 +183,7 @@ object Dependencies {
     .exclude("org.scala-lang", "scala-library")
 
   // need aspectjweaver
-  val _kamonAkkaRemote = ("io.kamon" %% "kamon-akka-remote-2.5" % versionKamon)
+  val _kamonAkkaRemote = ("io.kamon" %% "kamon-akka-remote-2.5" % "1.1.0")
     .excludeAll(ExclusionRule("com.typesafe.akka"))
     .cross(CrossVersion.binary)
     .exclude("org.scala-lang", "scala-library")
@@ -192,6 +194,7 @@ object Dependencies {
     .exclude("org.scala-lang", "scala-library")
 
   val _kamons = Seq(
+    _kamonCore,
     _kamonAkka,
     _kamonAkkaRemote,
     _kamonAkkaHttp,
@@ -217,6 +220,8 @@ object Dependencies {
   //  ).map(_ % versionCirce)
 
   val _shapeless = "com.chuusai" %% "shapeless" % "2.3.3"
+  
+  val _chillAkka = "com.twitter" %% "chill-akka" % "0.9.3"
 
   private val versionMacwire = "2.3.1"
 
@@ -249,8 +254,12 @@ object Dependencies {
   val _logs = Seq("io.kamon" %% "kamon-logback" % "1.0.2",
                   "com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
                   "ch.qos.logback" % "logback-classic" % "1.2.3")
-  
+
   val _rhino = "org.mozilla" % "rhino" % "1.7.10"
+
+  private val versionGuice = "4.1.0"
+  val _guice = "com.google.inject" % "guice" % versionGuice
+  val _guiceAssistedinject = "com.google.inject.extensions" % "guice-assistedinject" % versionGuice
 
   val _h2 = "com.h2database" % "h2" % "1.4.197"
 

@@ -81,7 +81,7 @@ Akka HTTP 提供了一个灵活的 **DSL** ，它有很多可组合的元素（D
 GET  /book controller.Page.book(name: Option[String], isbn: Option[String], author: Option[String)
 ```
 
-我们可以看到，对一个API路由的定义拆成了几个函数嵌套的形式。`path`指定访问路径，`get`决定这个API提供HTTP GET服务，`parameters`可以抽取请求参数，而`complete`将一个字符串返回给前端。
+我们可以看到，对一个API路由的定义拆成了几个函数嵌套的形式。`path`指定访问路径，`get`决定这个API提供HTTP GET服务，`parameters`可以提取请求参数，而`complete`将一个字符串返回给前端。
 
 ## JSON
 

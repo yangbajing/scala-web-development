@@ -56,7 +56,7 @@ Get("/?a=2&b=5") ~> myDirective(x => complete(x)) ~> check {
 
 ### flatMap、tflatMap
 
-通过`map、tmap`可以将指令抽取的值转换成其它值，但不能改变其“抽取”的性质。当需要抽取一个对它做一些转换操作，并将结果交给一个嵌套的指令使用时，`map、tmap`就无能为力了。同`map、tmap`类似，`flatMap`也是用于单值指令，而`tflatMap`用于其它元组值。`tflatMap`的函数签名如下：
+通过`map、tmap`可以将指令提取的值转换成其它值，但不能改变其“提取”的性质。当需要提取一个对它做一些转换操作，并将结果交给一个嵌套的指令使用时，`map、tmap`就无能为力了。同`map、tmap`类似，`flatMap`也是用于单值指令，而`tflatMap`用于其它元组值。`tflatMap`的函数签名如下：
 
 ```scala
 def tflatMap[R: Tuple](f: L => Directive[R]): Directive[R]
@@ -80,18 +80,18 @@ val post: Directive0 = method(HttpMethods.POST)
 
 ### require、trequire
 
-require方法将单个指令转换为没有抽取值的指令，该指令根据谓词函数过滤请求，所有谓词函数调用后为false的请求都被拒绝，其它请求保持不变。它的定义如下：
+require方法将单个指令转换为没有提取值的指令，该指令根据谓词函数过滤请求，所有谓词函数调用后为false的请求都被拒绝，其它请求保持不变。它的定义如下：
 
 ```scala
 def require(predicate: T => Boolean, rejections: Rejection*): Directive0 =
   underlying.filter(predicate, rejections: _*).tflatMap(_ => Empty)
 ```
 
-从定义可以看出，它实际上是先通过谓词函数调用`filter`方法对请求进行过滤，然后再调用`tflatMap`函数将指令抽取的值去掉。
+从定义可以看出，它实际上是先通过谓词函数调用`filter`方法对请求进行过滤，然后再调用`tflatMap`函数将指令提取的值去掉。
 
 ### recover、recoverPF
 
-recover方法允许“捕获”由底层指令向上冒泡产生的rejections，并生成且有相同抽取类型的替代指令。这样就可以恢复指令来通过而不是拒绝它。它们的定义分别如下：
+recover方法允许“捕获”由底层指令向上冒泡产生的rejections，并生成且有相同提取类型的替代指令。这样就可以恢复指令来通过而不是拒绝它。它们的定义分别如下：
 
 ```scala
 def recover[R >: L: Tuple](recovery: immutable.Seq[Rejection] => Directive[R]): Directive[R] =
@@ -130,14 +130,14 @@ object Directive {
 
 `Directive`类型有一个抽象方法`tapply`，参数`f`是一个函数类型，将类型`L`传入并返回`Route`。`Directive`的伴身对象提供了`apply`来实现自定义指令。它的参数是一个高阶函数`(T => Route) => Route`，就像小括号那样，我们应把`（T => Route)`看成一个整体，它是函数参数，返回类型为`Route`。
 
-`f`为我们自定义指令用于从`RequestContext`里抽取值（值的类型为`Tuple[L]`），而`inner`就是`f`抽取值后调用的嵌套路由，在调用`inner`时将抽取出的值作为参数传入。
+`f`为我们自定义指令用于从`RequestContext`里提取值（值的类型为`Tuple[L]`），而`inner`就是`f`提取值后调用的嵌套路由，在调用`inner`时将提取出的值作为参数传入。
 
-对于一个抽取访问host和port的指令，可以这样实现：
+对于一个提取访问host和port的指令，可以这样实现：
 
 @@snip [RouteExample.scala](../../../scala/book/example/route/RouteExample.scala) { #hostnameAndPort }
 
 让我们来分析下这个例子：
 
-1. 首先是`hostnameAndPort`指令的类型`Directive[(String, Int)]`，它从请求上下文（`RequestContext`）中抽取出的值是`Tuple2[String, Int]`。
+1. 首先是`hostnameAndPort`指令的类型`Directive[(String, Int)]`，它从请求上下文（`RequestContext`）中提取出的值是`Tuple2[String, Int]`。
 2. `apply`方法执行的代码参数是：`inner => ctx => ....`其实可以看成：`inner => ((ctx: RequestContext) => Future[RouteResult])`，`inner`就是`f`函数参数`(T => Route）`部分。
 3. `inner(tupleValue)`执行后结果`route`的类型是`Route`，这时这段代码为的类型就为`inner => ctx => Route`，而实际上`Directive.apply`需要的参数类型为`inner => Route`。之前我们知道，`Route`是一个类型别名`RequestContext => Future[RouteResult]`，所以我们需要将`ctx => Route`转换为`Route`。而将`tupleValue`作为参数调用`route`后将获取结果类型`Future[RouteResult]`，这段代码的类型就是`inner => ctx => Future[RouteResult]` -> `inner => Route`。
