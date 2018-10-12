@@ -1,5 +1,6 @@
 package book.example.route
 
+import akka.http.scaladsl.model.Uri
 import akka.http.scaladsl.server.{Directive, Directive0, Directive1, Route}
 import helloscala.http.route.AbstractRoute
 
@@ -93,5 +94,15 @@ class RouteExample extends AbstractRoute {
   }
   // #deleteUser2
 
+  // #hostnameAndPort
+  def hostnameAndPort: Directive[(String, Int)] = Directive[(String, Int)] { inner => ctx =>
+    // inner: (String, Int) => Route
+    // ctx: RequestContext
 
+    val authority: Uri.Authority = ctx.request.uri.authority
+    val tupleValue: (String, Int) = (authority.host.address(), authority.port)
+    val route: Route = inner(tupleValue)
+    route(ctx) // Future[RouteResult]
+  }
+  // #hostnameAndPort
 }

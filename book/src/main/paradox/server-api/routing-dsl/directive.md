@@ -167,7 +167,3 @@ val route =
 ```
 
 对于`Unit`，它比较特殊。`onSuccess(futureOfUnit)`返回`Directive[Tuple1[Unit]]`。DSL将会自动转换为`Directive[Unit]`，等价于`Directive0`。
-
-## 一些常用指令
-
-TODO

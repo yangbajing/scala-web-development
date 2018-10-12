@@ -20,7 +20,7 @@
 
 <meta name="description" content="book">
 <link rel="shortcut icon" href="../../assets/images/favicon.png">
-<title>路由DSL · Scala Web 开发</title>
+<title>常用指令 · Scala Web 开发</title>
 <link rel="stylesheet" href="../../assets/stylesheets/application.451f80e5.css">
 <link rel="stylesheet" href="../../lib/material__tabs/dist/mdc.tabs.min.css">
 <link rel="stylesheet" href="../../lib/prettify/prettify.css">
@@ -56,7 +56,7 @@ code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
 Scala Web 开发
 </span>
 <span class="md-header-nav__topic">
-路由DSL
+常用指令
 </span>
 </div>
 </div>
@@ -167,7 +167,7 @@ yangbajing/scala-web-development
   </ul></li>
   <li><a href="../../server-api/index.html" class="page">服务端API</a>
   <ul>
-    <li><a href="../../server-api/routing-dsl/index.html" class="active page">路由DSL</a></li>
+    <li><a href="../../server-api/routing-dsl/index.html" class="page">路由DSL</a></li>
   </ul></li>
   <li><a href="../../data/index.html" class="page">数据</a>
   <ul>
@@ -233,42 +233,11 @@ yangbajing/scala-web-development
 <div class="md-content">
 <article class="md-content__inner md-typeset">
 <div class="md-content__searchable">
-<h1><a href="#路由dsl" name="路由dsl" class="anchor"><span class="anchor-link"></span></a>路由DSL</h1>
-<p>Akka HTTP提供了高级的抽象来定义服务端路由：Route，以简洁和可读的方式将服务行为表示为可组合的元素（称为 Directive (指令)）。指令被组装成起来形成所谓的路由结构，该路由结构的最顶层可用于创建提供给<code>Http.handleFlow</code>处理的流（<code>Flow[HttpRequest, HttpResponse, NotUsed]</code>，由<code>Route.handleFlow</code>显示调用生成，也可由<code>RouteResult.route2HandlerFlow</code>来隐式转换）。</p>
-<p>之前在 <a href="../../basic/basic.2.html">[使用 Akka Http 搭建一个简单的 Web 服务]</a> 已经见过了一个例子。本章将深入的讲解 Routing DSL，看完本章后你当可在业务代码中灵活的运用 Routing DSL 。</p>
-<p><em><strong>Route</strong> 是Akka HTTP提供的 Routing DSL 的核心概念。使用 DSL 构建的所有路由结构（无论单个还是多个），最终都会将类型<code>RequestContext</code>转换为<code>Future[RouteResult]</code>。</em></p>
-<div class="toc ">
-<ul>
-  <li><a href="../../server-api/routing-dsl/route.html" class="page">Route 路由</a>
-  <ul>
-    <li><a href="../../server-api/routing-dsl/route.html#requestcontext" class="header">RequestContext</a></li>
-    <li><a href="../../server-api/routing-dsl/route.html#routeresult" class="header">RouteResult</a></li>
-    <li><a href="../../server-api/routing-dsl/route.html#组合路由" class="header">组合路由</a></li>
-    <li><a href="../../server-api/routing-dsl/route.html#路由树" class="header">路由树</a></li>
-  </ul></li>
-  <li><a href="../../server-api/routing-dsl/directive.html" class="page">Directive 指令</a>
-  <ul>
-    <li><a href="../../server-api/routing-dsl/directive.html#指令基础" class="header">指令基础</a></li>
-    <li><a href="../../server-api/routing-dsl/directive.html#指令可以做什么-" class="header">指令可以做什么？</a></li>
-    <li><a href="../../server-api/routing-dsl/directive.html#组合指令" class="header">组合指令</a></li>
-    <li><a href="../../server-api/routing-dsl/directive.html#使用concat来连接多个指令" class="header">使用<code>concat</code>来连接多个指令</a></li>
-    <li><a href="../../server-api/routing-dsl/directive.html#类型安全的指令" class="header">类型安全的指令</a></li>
-    <li><a href="../../server-api/routing-dsl/directive.html#指令类型参数里的-tuple-自动拉平-flattening-" class="header">指令类型参数里的 Tuple （自动拉平 flattening）</a></li>
-  </ul></li>
-  <li><a href="../../server-api/routing-dsl/common-directive.html" class="page">常用指令</a></li>
-  <li><a href="../../server-api/routing-dsl/custom-directive.html" class="page">自定义指令</a>
-  <ul>
-    <li><a href="../../server-api/routing-dsl/custom-directive.html#命名配置" class="header">命名配置</a></li>
-    <li><a href="../../server-api/routing-dsl/custom-directive.html#转换已存在的指令" class="header">转换已存在的指令</a></li>
-    <li><a href="../../server-api/routing-dsl/custom-directive.html#从头开始实现一个指令" class="header">从头开始实现一个指令</a></li>
-  </ul></li>
-  <li><a href="../../server-api/routing-dsl/rejections.html" class="page">拒绝 rejections</a></li>
-  <li><a href="../../server-api/routing-dsl/exception.html" class="page">异常处理</a></li>
-</ul>
-</div>
+<h1><a href="#常用指令" name="常用指令" class="anchor"><span class="anchor-link"></span></a>常用指令</h1>
+<p>Akka HTTP已经预定义了大量的指令，应用开发时可以直接使用。若现存的指令不能满足我们的需求，Akka HTTP也提供了自定义指令的方法。</p>
 </div>
 <div>
-<a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/server-api/routing-dsl/index.md" title="Edit this page" class="md-source-file md-edit">
+<a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/server-api/routing-dsl/common-directive.md" title="Edit this page" class="md-source-file md-edit">
 Edit this page
 </a>
 </div>
@@ -284,7 +253,7 @@ Edit this page
 <footer class="md-footer">
 <div class="md-footer-nav">
 <nav class="md-footer-nav__inner md-grid">
-<a href="../../server-api/index.html" title="服务端API" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<a href="../../server-api/routing-dsl/directive.html" title="Directive 指令" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
 <div class="md-flex__cell md-flex__cell--shrink">
 <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
 </div>
@@ -293,17 +262,17 @@ Edit this page
 <span class="md-footer-nav__direction">
 Previous
 </span>
-服务端API
+Directive 指令
 </span>
 </div>
 </a>
-<a href="../../server-api/routing-dsl/route.html" title="Route 路由" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<a href="../../server-api/routing-dsl/custom-directive.html" title="自定义指令" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
 <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
 <span class="md-flex__ellipsis">
 <span class="md-footer-nav__direction">
 Next
 </span>
-Route 路由
+自定义指令
 </span>
 </div>
 <div class="md-flex__cell md-flex__cell--shrink">

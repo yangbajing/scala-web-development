@@ -342,7 +342,6 @@ val post: Directive0 = method(HttpMethods.POST)
 def recoverPF[R &gt;: L: Tuple](recovery: PartialFunction[immutable.Seq[Rejection], Directive[R]]): Directive[R] =
   recover { rejections =&gt; recovery.applyOrElse(rejections, (rejs: Seq[Rejection]) =&gt; RouteDirectives.reject(rejs: _*)) }
 </code></pre>
-<p>we</p>
 <h2><a href="#从头开始实现一个指令" name="从头开始实现一个指令" class="anchor"><span class="anchor-link"></span></a>从头开始实现一个指令</h2>
 <p>可以通过调用<code>Directive.apply</code>或它的子类型来从头开始定义一个指令，<code>Directive</code>的简化定义看起来像下面这样：</p>
 <pre class="prettyprint"><code class="language-scala">abstract class Directive[L](implicit val ev: Tuple[L]) {
@@ -359,13 +358,24 @@ object Directive {
 
 }
 </code></pre>
-<p><code>Directive</code>类型有一个抽象方法<code>tapply</code>，参数<code>f</code>是一个函数类型，将类型<code>L</code>传入并返回<code>Route</code>。</p>
-<p>对于一个抽取访问host的port的指令，可以这样实现：</p>
+<p><code>Directive</code>类型有一个抽象方法<code>tapply</code>，参数<code>f</code>是一个函数类型，将类型<code>L</code>传入并返回<code>Route</code>。<code>Directive</code>的伴身对象提供了<code>apply</code>来实现自定义指令。它的参数是一个高阶函数<code>(T =&gt; Route) =&gt; Route</code>，就像小括号那样，我们应把<code>（T =&gt; Route)</code>看成一个整体，它是函数参数，返回类型为<code>Route</code>。</p>
+<p><code>f</code>为我们自定义指令用于从<code>RequestContext</code>里抽取值（值的类型为<code>Tuple[L]</code>），而<code>inner</code>就是<code>f</code>抽取值后调用的嵌套路由，在调用<code>inner</code>时将抽取出的值作为参数传入。</p>
+<p>对于一个抽取访问host和port的指令，可以这样实现：</p>
 <pre class="prettyprint"><code class="language-scala">def hostnameAndPort: Directive[(String, Int)] = Directive[(String, Int)] { inner =&gt; ctx =&gt;
-  val authority = ctx.request.uri.authority
-  inner((authority.host.address(), authority.port))(ctx)
-}
-</code></pre>
+  // inner: (String, Int) =&gt; Route
+  // ctx: RequestContext
+
+  val authority: Uri.Authority = ctx.request.uri.authority
+  val tupleValue: (String, Int) = (authority.host.address(), authority.port)
+  val route: Route = inner(tupleValue)
+  route(ctx) // Future[RouteResult]
+}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/scala/book/example/route/RouteExample.scala#L98-L106" class="snippet-full-source github">Full source at GitHub</a>
+<p>让我们来分析下这个例子：</p>
+<ol>
+  <li>首先是<code>hostnameAndPort</code>指令的类型<code>Directive[(String, Int)]</code>，它从请求上下文（<code>RequestContext</code>）中抽取出的值是<code>Tuple2[String, Int]</code>。</li>
+  <li><code>apply</code>方法执行的代码参数是：<code>inner =&gt; ctx =&gt; ....</code>其实可以看成：<code>inner =&gt; ((ctx: RequestContext) =&gt; Future[RouteResult])</code>，<code>inner</code>就是<code>f</code>函数参数<code>(T =&gt; Route）</code>部分。</li>
+  <li><code>inner(tupleValue)</code>执行后结果<code>route</code>的类型是<code>Route</code>，这时这段代码为的类型就为<code>inner =&gt; ctx =&gt; Route</code>，而实际上<code>Directive.apply</code>需要的参数类型为<code>inner =&gt; Route</code>。之前我们知道，<code>Route</code>是一个类型别名<code>RequestContext =&gt; Future[RouteResult]</code>，所以我们需要将<code>ctx =&gt; Route</code>转换为<code>Route</code>。而将<code>tupleValue</code>作为参数调用<code>route</code>后将获取结果类型<code>Future[RouteResult]</code>，这段代码的类型就是<code>inner =&gt; ctx =&gt; Future[RouteResult]</code> -&gt; <code>inner =&gt; Route</code>。</li>
+</ol>
 </div>
 <div>
 <a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/server-api/routing-dsl/custom-directive.md" title="Edit this page" class="md-source-file md-edit">
@@ -384,7 +394,7 @@ Edit this page
 <footer class="md-footer">
 <div class="md-footer-nav">
 <nav class="md-footer-nav__inner md-grid">
-<a href="../../server-api/routing-dsl/directive.html" title="Directive 指令" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<a href="../../server-api/routing-dsl/common-directive.html" title="常用指令" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
 <div class="md-flex__cell md-flex__cell--shrink">
 <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
 </div>
@@ -393,17 +403,17 @@ Edit this page
 <span class="md-footer-nav__direction">
 Previous
 </span>
-Directive 指令
+常用指令
 </span>
 </div>
 </a>
-<a href="../../data/index.html" title="数据" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<a href="../../server-api/routing-dsl/rejections.html" title="拒绝 rejections" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
 <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
 <span class="md-flex__ellipsis">
 <span class="md-footer-nav__direction">
 Next
 </span>
-数据
+拒绝 rejections
 </span>
 </div>
 <div class="md-flex__cell md-flex__cell--shrink">

@@ -227,7 +227,6 @@ yangbajing/scala-web-development
     <li><a href="../../server-api/routing-dsl/directive.html#使用concat来连接多个指令" class="header">使用<code>concat</code>来连接多个指令</a></li>
     <li><a href="../../server-api/routing-dsl/directive.html#类型安全的指令" class="header">类型安全的指令</a></li>
     <li><a href="../../server-api/routing-dsl/directive.html#指令类型参数里的-tuple-自动拉平-flattening-" class="header">指令类型参数里的 Tuple （自动拉平 flattening）</a></li>
-    <li><a href="../../server-api/routing-dsl/directive.html#一些常用指令" class="header">一些常用指令</a></li>
   </ul></li>
 </ul>
 </nav>
@@ -257,7 +256,6 @@ yangbajing/scala-web-development
     <li><a href="../../server-api/routing-dsl/directive.html#使用concat来连接多个指令" class="header">使用<code>concat</code>来连接多个指令</a></li>
     <li><a href="../../server-api/routing-dsl/directive.html#类型安全的指令" class="header">类型安全的指令</a></li>
     <li><a href="../../server-api/routing-dsl/directive.html#指令类型参数里的-tuple-自动拉平-flattening-" class="header">指令类型参数里的 Tuple （自动拉平 flattening）</a></li>
-    <li><a href="../../server-api/routing-dsl/directive.html#一些常用指令" class="header">一些常用指令</a></li>
   </ul></li>
 </ul>
 </nav>
@@ -344,7 +342,7 @@ object StandardRoute {
             complete(&quot;Deleted&quot;)
           }
       }
-  }</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/scala/book/example/route/RouteExample.scala#L13-L35" class="snippet-full-source github">Full source at GitHub</a>
+  }</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/scala/book/example/route/RouteExample.scala#L14-L36" class="snippet-full-source github">Full source at GitHub</a>
 <p>Akka HTTP提供的Routing DSL以树型结构的方式来构造路由结构，它与 <strong>Playframework</strong> 和 <strong>Spring</strong> 定义路由的方式不太一样，很难说哪一种更好。也许刚开始时你会不大习惯这种路由组织方式，一但熟悉以后你会认为它非常的有趣和高效，且很灵活。</p>
 <p>可以看到，若我们的路由非常复杂，它由很多个指令组成，这时假若还把所有路由定义都放到一个代码块里实现就显得非常的臃肿。因为每一个指令都是一个独立的代码块，它通过函数调用的形式组装到一起，我们可以这样对上面定义的路由进行拆分。</p>
 <pre class="prettyprint"><code class="language-scala">val route1: Route =
@@ -372,7 +370,7 @@ def innerUser(userId: Int): Route =
     } ~
     delete {
       complete(&quot;Deleted&quot;)
-    }</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/scala/book/example/route/RouteExample.scala#L39-L64" class="snippet-full-source github">Full source at GitHub</a>
+    }</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/scala/book/example/route/RouteExample.scala#L40-L65" class="snippet-full-source github">Full source at GitHub</a>
 <p>通过<code>&amp;</code>操作符将多个指令组合成一个，所有指令都符合时通过。</p>
 <pre class="prettyprint"><code class="language-scala">val pathEndPost: Directive[Unit] = pathEndOrSingleSlash &amp; post
 
@@ -380,14 +378,14 @@ val createUser: Route = pathEndPost {
   entity(as[User]) { payload =&gt;
     complete(payload)
   }
-}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/scala/book/example/route/RouteExample.scala#L68-L74" class="snippet-full-source github">Full source at GitHub</a>
+}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/scala/book/example/route/RouteExample.scala#L69-L75" class="snippet-full-source github">Full source at GitHub</a>
 <p>通过<code>|</code>操作符将多个指令组合成一个，只要其中一个指令符合则通过。</p>
 <pre class="prettyprint"><code class="language-scala">val deleteEnhance: Directive1[Int] =
   (pathPrefix(IntNumber) &amp; delete) | (path(IntNumber / &quot;_delete&quot;) &amp; put)
 
 val deleteUser: Route = deleteEnhance { userId =&gt;
   complete(s&quot;Deleted User, userId: $userId&quot;)
-}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/scala/book/example/route/RouteExample.scala#L78-L83" class="snippet-full-source github">Full source at GitHub</a><div class="callout note "><div class="callout-title">Note</div>
+}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/scala/book/example/route/RouteExample.scala#L79-L84" class="snippet-full-source github">Full source at GitHub</a><div class="callout note "><div class="callout-title">Note</div>
 <p>上面这段代码来自真实的业务，因为某些落后于时代的安全原因，网管将HTTP的PUT、DELETE、HEAD等方法都禁用了，只保留了GET、POST两个方法。使用如上的技巧可以同时支持两种方式来访问路由。</p>
 <p><strong>还有一种方案来解决这个问题</strong></p>
 <pre class="prettyprint"><code class="language-scala">val deleteUser2 = pathPrefix(IntNumber) { userId =&gt;
@@ -396,7 +394,7 @@ val deleteUser: Route = deleteEnhance { userId =&gt;
       complete(s&quot;Deleted User, userId: $userId&quot;)
     }
   }
-}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/scala/book/example/route/RouteExample.scala#L87-L93" class="snippet-full-source github">Full source at GitHub</a>
+}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/scala/book/example/route/RouteExample.scala#L88-L94" class="snippet-full-source github">Full source at GitHub</a>
 <p>客户端不需要修改访问地址为 <code>/user/{userId}/_delete</code>，它只需要这样访问路由 <code>POST /user/{userId}?httpMethod=DELETE</code>。<code>overrideMethodWithParameter(&quot;httpMethod&quot;)</code>会根据<code>httpMethod</code>参数的值来将请求上下文里的<code>HttpRequest.method</code>转换成 <strong>DELETE</strong> 方法请求。</p></div><div class="callout warning "><div class="callout-title">Warning</div>
 <p>可以看到，将多个指令组合成一个指令可以简化我们的代码。但是，若过多地将几个指令压缩组合成一个指令，可能并不会得到易读、可维护的代码。</p></div>
 <h2><a href="#使用concat来连接多个指令" name="使用concat来连接多个指令" class="anchor"><span class="anchor-link"></span></a>使用<code>concat</code>来连接多个指令</h2>
@@ -449,8 +447,6 @@ val route =
   }
 </code></pre>
 <p>对于<code>Unit</code>，它比较特殊。<code>onSuccess(futureOfUnit)</code>返回<code>Directive[Tuple1[Unit]]</code>。DSL将会自动转换为<code>Directive[Unit]</code>，等价于<code>Directive0</code>。</p>
-<h2><a href="#一些常用指令" name="一些常用指令" class="anchor"><span class="anchor-link"></span></a>一些常用指令</h2>
-<p>TODO</p>
 </div>
 <div>
 <a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/server-api/routing-dsl/directive.md" title="Edit this page" class="md-source-file md-edit">
@@ -482,13 +478,13 @@ Route 路由
 </span>
 </div>
 </a>
-<a href="../../server-api/routing-dsl/custom-directive.html" title="自定义指令" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<a href="../../server-api/routing-dsl/common-directive.html" title="常用指令" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
 <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
 <span class="md-flex__ellipsis">
 <span class="md-footer-nav__direction">
 Next
 </span>
-自定义指令
+常用指令
 </span>
 </div>
 <div class="md-flex__cell md-flex__cell--shrink">

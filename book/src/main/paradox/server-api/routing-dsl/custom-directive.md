@@ -108,8 +108,6 @@ def recoverPF[R >: L: Tuple](recovery: PartialFunction[immutable.Seq[Rejection],
   recover { rejections => recovery.applyOrElse(rejections, (rejs: Seq[Rejection]) => RouteDirectives.reject(rejs: _*)) }
 ```
 
-we
-
 ## 从头开始实现一个指令
 
 可以通过调用`Directive.apply`或它的子类型来从头开始定义一个指令，`Directive`的简化定义看起来像下面这样：
@@ -130,13 +128,16 @@ object Directive {
 }
 ```
 
-`Directive`类型有一个抽象方法`tapply`，参数`f`是一个函数类型，将类型`L`传入并返回`Route`。
+`Directive`类型有一个抽象方法`tapply`，参数`f`是一个函数类型，将类型`L`传入并返回`Route`。`Directive`的伴身对象提供了`apply`来实现自定义指令。它的参数是一个高阶函数`(T => Route) => Route`，就像小括号那样，我们应把`（T => Route)`看成一个整体，它是函数参数，返回类型为`Route`。
 
-对于一个抽取访问host的port的指令，可以这样实现：
+`f`为我们自定义指令用于从`RequestContext`里抽取值（值的类型为`Tuple[L]`），而`inner`就是`f`抽取值后调用的嵌套路由，在调用`inner`时将抽取出的值作为参数传入。
 
-```scala
-def hostnameAndPort: Directive[(String, Int)] = Directive[(String, Int)] { inner => ctx =>
-  val authority = ctx.request.uri.authority
-  inner((authority.host.address(), authority.port))(ctx)
-}
-```
+对于一个抽取访问host和port的指令，可以这样实现：
+
+@@snip [RouteExample.scala](../../../scala/book/example/route/RouteExample.scala) { #hostnameAndPort }
+
+让我们来分析下这个例子：
+
+1. 首先是`hostnameAndPort`指令的类型`Directive[(String, Int)]`，它从请求上下文（`RequestContext`）中抽取出的值是`Tuple2[String, Int]`。
+2. `apply`方法执行的代码参数是：`inner => ctx => ....`其实可以看成：`inner => ((ctx: RequestContext) => Future[RouteResult])`，`inner`就是`f`函数参数`(T => Route）`部分。
+3. `inner(tupleValue)`执行后结果`route`的类型是`Route`，这时这段代码为的类型就为`inner => ctx => Route`，而实际上`Directive.apply`需要的参数类型为`inner => Route`。之前我们知道，`Route`是一个类型别名`RequestContext => Future[RouteResult]`，所以我们需要将`ctx => Route`转换为`Route`。而将`tupleValue`作为参数调用`route`后将获取结果类型`Future[RouteResult]`，这段代码的类型就是`inner => ctx => Future[RouteResult]` -> `inner => Route`。

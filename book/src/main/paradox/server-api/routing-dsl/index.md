@@ -12,6 +12,9 @@ _**Route** 是Akka HTTP提供的 Routing DSL 的核心概念。使用 DSL 构建
 
 - [route](route.md)
 - [directive](directive.md)
+- [common-directive](common-directive.md)
 - [custom-directive](custom-directive.md)
+- [rejections](rejections.md)
+- [exception](exception.md)
 
 @@@
