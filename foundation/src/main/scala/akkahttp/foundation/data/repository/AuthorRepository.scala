@@ -11,6 +11,7 @@ import scala.collection.mutable
 /**
  * Created by yangbajing(yangbajing@gmail.com) on 2017-04-19.
  */
+// #AuthorRepository
 class AuthorRepository(dataSource: DataSource) {
   val jdbcTemplate = JdbcTemplate(dataSource)
 
@@ -50,9 +51,11 @@ class AuthorRepository(dataSource: DataSource) {
   }
 
 }
+// #AuthorRepository
 
 object AuthorRepository {
 
+  // #help-function
   def generateResult(result: Map[String, AnyRef]): Author =
     Author(
       result("id").asInstanceOf[Long],
@@ -85,5 +88,6 @@ object AuthorRepository {
     }
     (names, args)
   }
+  // #help-function
 
 }

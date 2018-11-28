@@ -174,6 +174,7 @@ yangbajing/scala-web-development
     <li><a href="../../data/data.0.html" class="page">数据</a></li>
     <li><a href="../../data/data.1.html" class="page">JSON</a></li>
     <li><a href="../../data/data.ant-design-pro.html" class="page">实战：为Ant Design Pro提供后端接口</a></li>
+    <li><a href="../../data/data.kryo.html" class="page">Kryo</a></li>
     <li><a href="../../data/data.2.html" class="page">Protobuf</a></li>
     <li><a href="../../data/data.z.html" class="page">小结</a></li>
   </ul></li>
@@ -304,7 +305,7 @@ Get(&quot;/?a=2&amp;b=5&quot;) ~&gt; myDirective(x =&gt; complete(x)) ~&gt; chec
 }
 </code></pre>
 <h3><a href="#flatmap-tflatmap" name="flatmap-tflatmap" class="anchor"><span class="anchor-link"></span></a>flatMap、tflatMap</h3>
-<p>通过<code>map、tmap</code>可以将指令抽取的值转换成其它值，但不能改变其“抽取”的性质。当需要抽取一个对它做一些转换操作，并将结果交给一个嵌套的指令使用时，<code>map、tmap</code>就无能为力了。同<code>map、tmap</code>类似，<code>flatMap</code>也是用于单值指令，而<code>tflatMap</code>用于其它元组值。<code>tflatMap</code>的函数签名如下：</p>
+<p>通过<code>map、tmap</code>可以将指令提取的值转换成其它值，但不能改变其“提取”的性质。当需要提取一个对它做一些转换操作，并将结果交给一个嵌套的指令使用时，<code>map、tmap</code>就无能为力了。同<code>map、tmap</code>类似，<code>flatMap</code>也是用于单值指令，而<code>tflatMap</code>用于其它元组值。<code>tflatMap</code>的函数签名如下：</p>
 <pre class="prettyprint"><code class="language-scala">def tflatMap[R: Tuple](f: L =&gt; Directive[R]): Directive[R]
 </code></pre>
 <p>可以看一个例子，预定义的<code>method</code>指令，它的定义如下：</p>
@@ -322,13 +323,13 @@ val post: Directive0 = method(HttpMethods.POST)
   <li>当请求的实际HTTP方法与传入参数<code>httpMethod</code>匹配时，调用<code>pass</code>指令使其通过，否则调用<code>reject(MethodRejection(httpMethod))</code>拒绝。</li>
 </ol>
 <h3><a href="#require-trequire" name="require-trequire" class="anchor"><span class="anchor-link"></span></a>require、trequire</h3>
-<p>require方法将单个指令转换为没有抽取值的指令，该指令根据谓词函数过滤请求，所有谓词函数调用后为false的请求都被拒绝，其它请求保持不变。它的定义如下：</p>
+<p>require方法将单个指令转换为没有提取值的指令，该指令根据谓词函数过滤请求，所有谓词函数调用后为false的请求都被拒绝，其它请求保持不变。它的定义如下：</p>
 <pre class="prettyprint"><code class="language-scala">def require(predicate: T =&gt; Boolean, rejections: Rejection*): Directive0 =
   underlying.filter(predicate, rejections: _*).tflatMap(_ =&gt; Empty)
 </code></pre>
-<p>从定义可以看出，它实际上是先通过谓词函数调用<code>filter</code>方法对请求进行过滤，然后再调用<code>tflatMap</code>函数将指令抽取的值去掉。</p>
+<p>从定义可以看出，它实际上是先通过谓词函数调用<code>filter</code>方法对请求进行过滤，然后再调用<code>tflatMap</code>函数将指令提取的值去掉。</p>
 <h3><a href="#recover-recoverpf" name="recover-recoverpf" class="anchor"><span class="anchor-link"></span></a>recover、recoverPF</h3>
-<p>recover方法允许“捕获”由底层指令向上冒泡产生的rejections，并生成且有相同抽取类型的替代指令。这样就可以恢复指令来通过而不是拒绝它。它们的定义分别如下：</p>
+<p>recover方法允许“捕获”由底层指令向上冒泡产生的rejections，并生成且有相同提取类型的替代指令。这样就可以恢复指令来通过而不是拒绝它。它们的定义分别如下：</p>
 <pre class="prettyprint"><code class="language-scala">def recover[R &gt;: L: Tuple](recovery: immutable.Seq[Rejection] =&gt; Directive[R]): Directive[R] =
   Directive[R] { inner =&gt; ctx =&gt;
     import ctx.executionContext
@@ -359,8 +360,8 @@ object Directive {
 }
 </code></pre>
 <p><code>Directive</code>类型有一个抽象方法<code>tapply</code>，参数<code>f</code>是一个函数类型，将类型<code>L</code>传入并返回<code>Route</code>。<code>Directive</code>的伴身对象提供了<code>apply</code>来实现自定义指令。它的参数是一个高阶函数<code>(T =&gt; Route) =&gt; Route</code>，就像小括号那样，我们应把<code>（T =&gt; Route)</code>看成一个整体，它是函数参数，返回类型为<code>Route</code>。</p>
-<p><code>f</code>为我们自定义指令用于从<code>RequestContext</code>里抽取值（值的类型为<code>Tuple[L]</code>），而<code>inner</code>就是<code>f</code>抽取值后调用的嵌套路由，在调用<code>inner</code>时将抽取出的值作为参数传入。</p>
-<p>对于一个抽取访问host和port的指令，可以这样实现：</p>
+<p><code>f</code>为我们自定义指令用于从<code>RequestContext</code>里提取值（值的类型为<code>Tuple[L]</code>），而<code>inner</code>就是<code>f</code>提取值后调用的嵌套路由，在调用<code>inner</code>时将提取出的值作为参数传入。</p>
+<p>对于一个提取访问host和port的指令，可以这样实现：</p>
 <pre class="prettyprint"><code class="language-scala">def hostnameAndPort: Directive[(String, Int)] = Directive[(String, Int)] { inner =&gt; ctx =&gt;
   // inner: (String, Int) =&gt; Route
   // ctx: RequestContext
@@ -372,7 +373,7 @@ object Directive {
 }</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/scala/book/example/route/RouteExample.scala#L98-L106" class="snippet-full-source github">Full source at GitHub</a>
 <p>让我们来分析下这个例子：</p>
 <ol>
-  <li>首先是<code>hostnameAndPort</code>指令的类型<code>Directive[(String, Int)]</code>，它从请求上下文（<code>RequestContext</code>）中抽取出的值是<code>Tuple2[String, Int]</code>。</li>
+  <li>首先是<code>hostnameAndPort</code>指令的类型<code>Directive[(String, Int)]</code>，它从请求上下文（<code>RequestContext</code>）中提取出的值是<code>Tuple2[String, Int]</code>。</li>
   <li><code>apply</code>方法执行的代码参数是：<code>inner =&gt; ctx =&gt; ....</code>其实可以看成：<code>inner =&gt; ((ctx: RequestContext) =&gt; Future[RouteResult])</code>，<code>inner</code>就是<code>f</code>函数参数<code>(T =&gt; Route）</code>部分。</li>
   <li><code>inner(tupleValue)</code>执行后结果<code>route</code>的类型是<code>Route</code>，这时这段代码为的类型就为<code>inner =&gt; ctx =&gt; Route</code>，而实际上<code>Directive.apply</code>需要的参数类型为<code>inner =&gt; Route</code>。之前我们知道，<code>Route</code>是一个类型别名<code>RequestContext =&gt; Future[RouteResult]</code>，所以我们需要将<code>ctx =&gt; Route</code>转换为<code>Route</code>。而将<code>tupleValue</code>作为参数调用<code>route</code>后将获取结果类型<code>Future[RouteResult]</code>，这段代码的类型就是<code>inner =&gt; ctx =&gt; Future[RouteResult]</code> -&gt; <code>inner =&gt; Route</code>。</li>
 </ol>
@@ -394,7 +395,7 @@ Edit this page
 <footer class="md-footer">
 <div class="md-footer-nav">
 <nav class="md-footer-nav__inner md-grid">
-<a href="../../server-api/routing-dsl/common-directive.html" title="常用指令" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<a href="../../server-api/routing-dsl/common-directive.html" title="常用指令（Directives）" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
 <div class="md-flex__cell md-flex__cell--shrink">
 <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
 </div>
@@ -403,7 +404,7 @@ Edit this page
 <span class="md-footer-nav__direction">
 Previous
 </span>
-常用指令
+常用指令（Directives）
 </span>
 </div>
 </a>

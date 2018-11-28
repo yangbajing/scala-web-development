@@ -72,7 +72,7 @@
 - `client_id`：应用客户端ID。
 - `client_key`：应用客户端密钥。
 - `code`：获取到的code
-- `redirect_uri``：重定向页面，与之前通过OAuth 2登录页面成功后重定向的地址相同。
+- `redirect_uri`：重定向页面，与之前通过OAuth 2登录页面成功后重定向的地址相同。
 - `echostr`：随机字符串
 
 ### 校验 `access_token` 是否有效

@@ -7,9 +7,11 @@ import me.yangbajing.jdbc.JDBCSpec
 /**
  * Created by yangbajing(yangbajing@gmail.com) on 2017-04-19.
  */
+// #AuthorRepositoryTest
 class AuthorRepositoryTest extends MeSpec with JDBCSpec {
 
   "AuthorRepositoryTest" should {
+
     val accountRepository = new AuthorRepository(dataSource)
 
     "create" in {
@@ -35,3 +37,4 @@ class AuthorRepositoryTest extends MeSpec with JDBCSpec {
   }
 
 }
+// #AuthorRepositoryTest

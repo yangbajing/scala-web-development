@@ -174,6 +174,7 @@ yangbajing/scala-web-development
     <li><a href="../data/data.0.html" class="page">数据</a></li>
     <li><a href="../data/data.1.html" class="page">JSON</a></li>
     <li><a href="../data/data.ant-design-pro.html" class="page">实战：为Ant Design Pro提供后端接口</a></li>
+    <li><a href="../data/data.kryo.html" class="page">Kryo</a></li>
     <li><a href="../data/data.2.html" class="page">Protobuf</a></li>
     <li><a href="../data/data.z.html" class="page">小结</a></li>
   </ul></li>
@@ -217,6 +218,13 @@ yangbajing/scala-web-development
   <li><a href="../donate.html" class="page">赞助</a></li>
 </ul>
 <nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../engineering/guice.html#使用guice管理类依赖" class="header">使用Guice管理类依赖</a>
+  <ul>
+    <li><a href="../engineering/guice.html#jsr-330" class="header">JSR-330</a></li>
+  </ul></li>
+</ul>
 </nav>
 
 </nav>
@@ -230,11 +238,88 @@ yangbajing/scala-web-development
 </div>
 </div>
 </div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../engineering/guice.html#使用guice管理类依赖" class="header">使用Guice管理类依赖</a>
+  <ul>
+    <li><a href="../engineering/guice.html#jsr-330" class="header">JSR-330</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
 <div class="md-content">
 <article class="md-content__inner md-typeset">
 <div class="md-content__searchable">
 <h1><a href="#使用guice管理类依赖" name="使用guice管理类依赖" class="anchor"><span class="anchor-link"></span></a>使用Guice管理类依赖</h1>
-<p>TODO</p>
+<p>当项目规模大了以后，依赖管理是一个很头疼的问题。手工管理众多类的实例化和构造顺序是一个枯燥且容易出错的事情。在Java世界，JSR-330规范（Java依赖注入规范）定义了一套标准的接口来实现此功能。 该规范主要是面向依赖注入使用者，而对注入器实现、配置并未作详细要求。目前 Spring、Guice实现了该规范，JSR-299（Contexts and Dependency Injection for Java EE platform，参考实现 Weld）在依赖注入上也使用该规范。</p>
+<h2><a href="#jsr-330" name="jsr-330" class="anchor"><span class="anchor-link"></span></a>JSR-330</h2>
+<h3><a href="#javax-inject" name="javax-inject" class="anchor"><span class="anchor-link"></span></a>javax.inject</h3>
+<p><code>javax.inject</code>包指定了获取、实例化对象的方法，该方法与构造器、工厂以及命名服务查找（例如JNDI）这些传统方法相比可以获得更好的可重用性、可测试性以及可维护性。</p>
+<p>通常在程序中，很多类型需要依赖于其它类型。例如，一个<code>Stopwatch</code>类可能依赖地一个<code>TimeSource</code>。一些类型补另一个类型依赖，我们就把这些类型叫做这个类型的 <strong>依赖（物）</strong>。在运行时查找一个依赖实例的过程叫做 <strong>依赖解析</strong>。如何找不到依赖的实例，那我们称该依赖为 <strong>不能满足</strong>，并导致应用运行失败。</p>
+<p>在不使用依赖注入时，对象的依赖解析有多种方式。最常见的就是通过在构造器内直接硬编码实现：</p>
+<pre class="prettyprint"><code class="language-java">class Stopwatch {
+    final TimeSource timeSource;
+
+    Stopwatch() {
+        timeSource = new AtomicClocl();
+    }
+
+    void start() { .... }
+
+
+    long stop() { .... }
+}
+</code></pre>
+<p>若需要更有弹性一点，那么可能通过工厂或服务查询的方式实现。</p>
+<pre class="prettyprint"><code class="language-java">class Stopwatch {
+    final TimeSource timeSource;
+
+    Stopwatch() {
+        timeSource = TimeSourceFactory.getInstance();
+    }
+
+    // ....
+}
+</code></pre>
+<p>这种方式是不可重用的，且可测试性非常低，也不利于代码的维护。而 <strong>依赖注入</strong> 就是为了解决这类问题。代替程序员调用构造器或工厂，一个称作 <strong>依赖注入器</strong> 的工具将把依赖传递给对象：</p>
+<pre class="prettyprint"><code class="language-scala">class Stopwatch @Inject()(timeSource: TimeSource) {
+  def start(): Unit = { .... }
+
+  def stop(): Long = { .... }
+}
+</code></pre>
+<p>注入器将更进一步地传递依赖给其他的依赖，直到它构造出整个对象图。如：</p>
+<pre class="prettyprint"><code class="language-scala">class StopwatchWidget @Inject()(sw: Stopwatch) {
+  // ....
+}
+</code></pre>
+<p>注入器可能的操作为：</p>
+<ol>
+  <li>查找一个<code>TimeSource</code>实例</li>
+  <li>使用找到的<code>TimeSource</code>实例构造一个<code>Stopwatch</code></li>
+  <li>使用构造的<code>Stopwatch</code>实例构造一个<code>StopwatchWidget</code></li>
+</ol>
+<p>这可以使用我们的代码保持干净。同时，在单元测试时，可以直接将模拟对象传入构造器（不使用依赖注入框架）。</p>
+<pre class="prettyprint"><code class="language-scala">def testStopwatch() {
+  val sw = new Stopwatch(new MockTimeSource())
+}
+</code></pre>
+<p>在<code>javax.inject</code>中提供了一些注解来简化我们使用依赖注入。</p>
+<h3><a href="#inject" name="inject" class="anchor"><span class="anchor-link"></span></a>@Inject</h3>
+<p>注解<code>@Inject</code>标识了可注入的构造器、方法或属性字段。可以用于静态或实例成员，一个可注入的成员可以被任何访问修饰符进行修饰（private、package-private、protected、public）。注入的顺序为构造器、属性字段、方法。超类的属性、方法将优先于子类的属性、方法被注入。对于同一个类的属性是不区分注入顺序的，同一个类的方法亦一样。</p>
+<p>对于每一个类，<code>@Inject</code>最多只允许对一个构造器进行标注（Scala一般是在主构造器上标注）。</p>
+<p>当一个方法标注了<code>@Inject</code>并覆写了基类标注了<code>@Inject</code>的方法时，对于每一个实例可注入一次。当一个方法没有标注<code>@Inject</code>并覆写了基类标注了<code>@Inject</code>的方法时，依赖注入框架不会对此方法进行注入。</p><div class="callout note "><div class="callout-title">注意</div>
+<ol>
+  <li>在Scala中，若使用构造器注入。需要使用<code>@Inject()</code>，它和Java里面直接写<code>@Inject</code>不一样。</li>
+  <li>当使用属性字段注入时，属性通常使用<code>var</code>定义。</li>
+</ol></div>
 </div>
 <div>
 <a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/engineering/guice.md" title="Edit this page" class="md-source-file md-edit">

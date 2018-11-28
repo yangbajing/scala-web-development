@@ -174,6 +174,7 @@ yangbajing/scala-web-development
     <li><a href="../../data/data.0.html" class="page">数据</a></li>
     <li><a href="../../data/data.1.html" class="page">JSON</a></li>
     <li><a href="../../data/data.ant-design-pro.html" class="page">实战：为Ant Design Pro提供后端接口</a></li>
+    <li><a href="../../data/data.kryo.html" class="page">Kryo</a></li>
     <li><a href="../../data/data.2.html" class="page">Protobuf</a></li>
     <li><a href="../../data/data.z.html" class="page">小结</a></li>
   </ul></li>
@@ -302,7 +303,7 @@ object StandardRoute {
   <pre class="prettyprint"><code class="language-scala">path(&quot;api&quot; / &quot;user&quot; / &quot;page&quot;)
 </code></pre></li>
   <li>
-  <p>从<code>RequestContext</code>中抽取值，并使它在内部路径内的路由可用。</p>
+  <p>从<code>RequestContext</code>中提取值，并使它在内部路径内的路由可用。</p>
   <pre class="prettyprint"><code class="language-scala">extract(ctx =&gt; ctx.request.uri)
 </code></pre></li>
   <li>
@@ -478,13 +479,13 @@ Route 路由
 </span>
 </div>
 </a>
-<a href="../../server-api/routing-dsl/common-directive.html" title="常用指令" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<a href="../../server-api/routing-dsl/common-directive.html" title="常用指令（Directives）" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
 <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
 <span class="md-flex__ellipsis">
 <span class="md-footer-nav__direction">
 Next
 </span>
-常用指令
+常用指令（Directives）
 </span>
 </div>
 <div class="md-flex__cell md-flex__cell--shrink">

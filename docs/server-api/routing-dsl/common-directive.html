@@ -20,7 +20,7 @@
 
 <meta name="description" content="book">
 <link rel="shortcut icon" href="../../assets/images/favicon.png">
-<title>常用指令 · Scala Web 开发</title>
+<title>常用指令（Directives） · Scala Web 开发</title>
 <link rel="stylesheet" href="../../assets/stylesheets/application.451f80e5.css">
 <link rel="stylesheet" href="../../lib/material__tabs/dist/mdc.tabs.min.css">
 <link rel="stylesheet" href="../../lib/prettify/prettify.css">
@@ -56,7 +56,7 @@ code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
 Scala Web 开发
 </span>
 <span class="md-header-nav__topic">
-常用指令
+常用指令（Directives）
 </span>
 </div>
 </div>
@@ -174,6 +174,7 @@ yangbajing/scala-web-development
     <li><a href="../../data/data.0.html" class="page">数据</a></li>
     <li><a href="../../data/data.1.html" class="page">JSON</a></li>
     <li><a href="../../data/data.ant-design-pro.html" class="page">实战：为Ant Design Pro提供后端接口</a></li>
+    <li><a href="../../data/data.kryo.html" class="page">Kryo</a></li>
     <li><a href="../../data/data.2.html" class="page">Protobuf</a></li>
     <li><a href="../../data/data.z.html" class="page">小结</a></li>
   </ul></li>
@@ -217,6 +218,18 @@ yangbajing/scala-web-development
   <li><a href="../../donate.html" class="page">赞助</a></li>
 </ul>
 <nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../../server-api/routing-dsl/common-directive.html#常用指令-directives-" class="header">常用指令（Directives）</a>
+  <ul>
+    <li><a href="../../server-api/routing-dsl/common-directive.html#pathdirectives-路径指令-" class="header">PathDirectives（路径指令）</a></li>
+    <li><a href="../../server-api/routing-dsl/common-directive.html#methoddirectives" class="header">MethodDirectives</a></li>
+    <li><a href="../../server-api/routing-dsl/common-directive.html#parameterdirectives-formfielddirectives" class="header">ParameterDirectives，FormFieldDirectives</a></li>
+    <li><a href="../../server-api/routing-dsl/common-directive.html#marshallingdirectives" class="header">MarshallingDirectives</a></li>
+    <li><a href="../../server-api/routing-dsl/common-directive.html#fileuploaddirectives" class="header">FileUploadDirectives</a></li>
+    <li><a href="../../server-api/routing-dsl/common-directive.html#cookiedirectives" class="header">CookieDirectives</a></li>
+  </ul></li>
+</ul>
 </nav>
 
 </nav>
@@ -230,11 +243,299 @@ yangbajing/scala-web-development
 </div>
 </div>
 </div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../../server-api/routing-dsl/common-directive.html#常用指令-directives-" class="header">常用指令（Directives）</a>
+  <ul>
+    <li><a href="../../server-api/routing-dsl/common-directive.html#pathdirectives-路径指令-" class="header">PathDirectives（路径指令）</a></li>
+    <li><a href="../../server-api/routing-dsl/common-directive.html#methoddirectives" class="header">MethodDirectives</a></li>
+    <li><a href="../../server-api/routing-dsl/common-directive.html#parameterdirectives-formfielddirectives" class="header">ParameterDirectives，FormFieldDirectives</a></li>
+    <li><a href="../../server-api/routing-dsl/common-directive.html#marshallingdirectives" class="header">MarshallingDirectives</a></li>
+    <li><a href="../../server-api/routing-dsl/common-directive.html#fileuploaddirectives" class="header">FileUploadDirectives</a></li>
+    <li><a href="../../server-api/routing-dsl/common-directive.html#cookiedirectives" class="header">CookieDirectives</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
 <div class="md-content">
 <article class="md-content__inner md-typeset">
 <div class="md-content__searchable">
-<h1><a href="#常用指令" name="常用指令" class="anchor"><span class="anchor-link"></span></a>常用指令</h1>
+<h1><a href="#常用指令-directives-" name="常用指令-directives-" class="anchor"><span class="anchor-link"></span></a>常用指令（Directives）</h1>
 <p>Akka HTTP已经预定义了大量的指令，应用开发时可以直接使用。若现存的指令不能满足我们的需求，Akka HTTP也提供了自定义指令的方法。</p>
+<p>Akka HTTP的所有预定义指令都可以通过混入<code>Directives</code> trait或导入<code>Directives._</code>来访问。</p>
+<pre class="prettyprint"><code class="language-scala">class MyRoute extends Directives {
+  ....
+}
+
+class MyRoute {
+  import Directives._
+  ....
+}
+</code></pre>
+<p><code>Directives</code>按功能分成了很多经类，完成的指令分类和说明见官方文档：<a href="https://doc.akka.io/docs/akka-http/current/routing-dsl/directives/by-trait.html">https://doc.akka.io/docs/akka-http/current/routing-dsl/directives/by-trait.html</a>。这里我们着重介绍下日常开发工作中经常使用到的指令。</p>
+<h2><a href="#pathdirectives-路径指令-" name="pathdirectives-路径指令-" class="anchor"><span class="anchor-link"></span></a>PathDirectives（路径指令）</h2>
+<p>以指定的路径与<code>RequestContext.unmatchedPath</code>进行匹配，当匹配成功时可选提取一个或多个值（提取值的类型由指定的路径参数决定）。若匹配失败，将调用<code>reject</code>拒绝此次请求。它处理的类型为：<code>Uri.Path</code>（之后简称<code>Path</code>）。</p>
+<p><em>官方文档：<a href="https://doc.akka.io/docs/akka-http/current/routing-dsl/directives/path-directives/index.html">https://doc.akka.io/docs/akka-http/current/routing-dsl/directives/path-directives/index.html</a></em></p>
+<p>最常会用到的路径指令有：<code>pathPrefix</code>、<code>path</code>、<code>pathEnd</code>和<code>pathEndOrSingleSlash</code>。</p>
+<p><code>pathPrefix</code>：对于路径：<code>/user/page</code>，指令<code>pathPrefix(&quot;user&quot;)</code>将先与第一个&rsquo;/&rsquo;匹配，再匹配<code>user</code>，然后将剩余部分<code>/page</code>设置到<code>RequestContext.unmatchedPath</code>。<code>pathPrefix(X)</code>只与路径的前缀部分匹配<code>X</code>。</p>
+<p><code>path</code>：对于路径：<code>/page</code>，指令<code>path(&quot;page&quot;)</code>将先与&rsquo;/&rsquo;匹配，再匹配<code>page</code>，同时剩余部分应为空，它将<code>RequestContext.unmatchedPath</code>设置为<code>Path.Empty</code>。<code>path(X)</code>会与路径进行完整匹配。</p>
+<p><code>pathEnd</code>：<code>pathEnd</code>是一个没有参数的指令，将在剩余路径为<code>Path.Empty</code>时匹配成功。它常用于在嵌套路由下匹配父路由已经完全匹配的路径（<code>unmatchedPath</code>为<code>Path.Empty</code>）。</p>
+<p><code>pathEndOrSingleSlash</code>：类似<code>pathEnd</code>，但它还会在剩余路径为<code>Slash</code>（路径为&rsquo;/&rsquo;）时也匹配成功。</p><div class="callout note "><div class="callout-title">注意</div>
+<p>对于希望只匹配URI的一部分，而将剩余部分委托给嵌套路由（子路由）时必需使用<code>pathPrefix</code>指令。只有当确定嵌套部分不再对URI进行匹配操作时才使用<code>path</code>指令。因此，将一个<code>path</code>或<code>path</code>指令嵌套在一个<code>path</code>指令下，它是永远不会被匹配上的。因为这时候<code>RequestContext.unmatchedPath</code>为空。</p></div>
+<h3><a href="#path示例" name="path示例" class="anchor"><span class="anchor-link"></span></a>Path示例</h3>
+<pre class="prettyprint"><code class="language-scala">// 路由：
+val route =
+  path(&quot;foo&quot;) {
+    complete(&quot;/foo&quot;)
+  } ~
+    path(&quot;foo&quot; / &quot;bar&quot;) {
+      complete(&quot;/foo/bar&quot;)
+    } ~
+    pathPrefix(&quot;ball&quot;) {
+      pathEnd {
+        complete(&quot;/ball&quot;)
+      } ~
+        path(IntNumber) { int =&gt;
+          complete(if (int % 2 == 0) &quot;even ball&quot; else &quot;odd ball&quot;)
+        }
+    }
+
+// 测试：
+Get(&quot;/&quot;) ~&gt; route ~&gt; check {
+  handled shouldEqual false
+}
+
+Get(&quot;/foo&quot;) ~&gt; route ~&gt; check {
+  responseAs[String] shouldEqual &quot;/foo&quot;
+}
+
+Get(&quot;/foo/bar&quot;) ~&gt; route ~&gt; check {
+  responseAs[String] shouldEqual &quot;/foo/bar&quot;
+}
+
+Get(&quot;/ball/1337&quot;) ~&gt; route ~&gt; check {
+  responseAs[String] shouldEqual &quot;odd ball&quot;
+}
+</code></pre>
+<h3><a href="#深入uri-path" name="深入uri-path" class="anchor"><span class="anchor-link"></span></a>深入<code>Uri.Path</code></h3>
+<p><code>Uri.Path</code>是一个递归数据结构，类似Scala集合类型<code>List</code>，它的简化版定义如下：</p>
+<pre class="prettyprint"><code class="language-scala">  sealed abstract class Path {
+    type Head // head的类型由实现类定义，可能是`Char`，也可能是`String`
+    def isEmpty: Boolean
+    def startsWithSlash: Boolean
+    def startsWithSegment: Boolean
+    def endsWithSlash: Boolean
+    def head: Head // 路径链表头
+    def tail: Path // 路径链表剩余部分
+    def length: Int // 整个路径链表长度，包括解码字符和路径段
+    def charCount: Int // 整个路径链里解码字符的数量
+    def ::(c: Char): Path = { require(c == &#39;/&#39;); Path.Slash(this) }
+    def ::(segment: String): Path
+    def +(pathString: String): Path = this ++ Path(pathString)
+    def ++(suffix: Path): Path
+    def /(segment: String): Path = this ++ Path.Slash(segment :: Path.Empty)
+    def ?/(segment: String): Path = if (this.endsWithSlash) this + segment else this / segment
+    def dropChars(count: Int): Path // 从链表头部开始，去看count个解码字符，同时解码字符间的路径段也一起被去掉
+  }
+</code></pre><div class="callout note "><div class="callout-title">名词解释</div>
+<ul>
+  <li><strong>解码字符</strong>：URI通过&rsquo;/&lsquo;符合分隔，路径需要使用&rsquo;/&rsquo;都需要对其进行encode。在Akka HTTP里抽象为<code>Slash</code>类型。</li>
+  <li><strong>路径段</strong>：URI字符串是被解码字符分隔出来的字符串。在Akka HTTP里抽象为<code>Segment</code>类型。</li>
+</ul></div>
+<p><code>Path</code>定义为抽象类，它的具体实现类有三个：<code>Empty</code>、<code>Slash</code>、<code>Segment</code>，而<code>Empty</code>继承于<code>SlashOrEmpty</code>。</p>
+<ul>
+  <li>
+  <p><strong>SlashOrEmpty</strong>：路径为解码字符&rsquo;/&rsquo;或空</p>
+  <pre class="prettyprint"><code class="language-scala">sealed abstract class SlashOrEmpty extends Path {
+  def startsWithSegment = false
+}
+</code></pre></li>
+  <li>
+  <p><strong>Empty</strong>：路径为空</p>
+  <pre class="prettyprint"><code class="language-scala">case object Empty extends SlashOrEmpty {
+  type Head = Nothing
+  def isEmpty = true
+  def startsWithSlash = false
+  def head: Head = throw new NoSuchElementException(&quot;head of empty path&quot;)
+  def tail: Path = throw new UnsupportedOperationException(&quot;tail of empty path&quot;)
+}
+</code></pre></li>
+  <li>
+  <p><strong>Slash</strong>：路径为解码字符&rsquo;/&rsquo;</p>
+  <pre class="prettyprint"><code class="language-scala">final case class Slash(tail: Path) extends SlashOrEmpty {
+  type Head = Char
+  def head = &#39;/&#39;
+}
+</code></pre></li>
+  <li>
+  <p><strong>Segment</strong>：路径为字符串，URI里面实际的路径段。</p>
+  <pre class="prettyprint"><code class="language-scala">final case class Segment(head: String, tail: SlashOrEmpty) extends Path {
+  if (head.isEmpty) throw new IllegalArgumentException(&quot;Path segment must not be empty&quot;)
+  type Head = String
+}
+</code></pre></li>
+</ul>
+<h3><a href="#深入pathmatcher" name="深入pathmatcher" class="anchor"><span class="anchor-link"></span></a>深入<code>PathMatcher</code></h3>
+<p>当一个HTTP请求（若确切地说一个<code>RequestContext</code>实例）进行路由结构时，它有一个与<code>request.uri.path</code>相同类型的<code>unmatchedPath</code>。当<code>RequestContext</code>通过路由树向下传播，通过一个或多个<code>pathPrefix</code>或者<code>path</code>路径时，<code>unmatchedPath</code>的左边被逐渐“吃掉”。</p>
+<p>在每个指令中，都由路径匹配DSL来精确地进行匹配并从中提取需要的内容。路径匹配DSL围绕着以下类型构建：</p>
+<pre class="prettyprint"><code class="language-scala">trait PathMatcher[L: Tuple]
+type PathMatcher0 = PathMatcher[Unit]
+type PathMatcher1[T] = PathMatcher[Tuple1[T]]
+type PathMatcher2[T,U] = PathMatcher[Tuple2[T,U]]
+// .. 等等
+</code></pre>
+<p><code>PathMatcher</code>的实例对<code>unmatchedPath</code>进行精确的匹配和提取值，提取值的数量和类型由泛型参数<code>L</code>表示，<code>L</code>需要是Scala的<code>Tuple</code>或<code>Unit</code>类型之五（由<code>Tuple</code>上下文绑定限定）。</p>
+<p>看一个较复杂的例子：</p>
+<pre class="prettyprint"><code class="language-Scala">val matcher: PathMatcher1[Option[Int]] =
+  &quot;foo&quot; / &quot;bar&quot; / &quot;X&quot; ~ IntNumber.? / (&quot;edit&quot; | &quot;create&quot;)
+</code></pre>
+<p><code>matcher</code>将匹配<code>/foo/bar/X32/edit</code>或者<code>/foo/bar/X/create</code>。<code>&quot;X&quot; ~ IntNumber.?</code>的意思是匹配一个<code>X</code>字符加0个或多个十进制整数字符，同时所有整数字符全在一起数值取值范围为**int32**。</p><div class="callout note "><div class="callout-title">注意</div>
+<p>路径匹配DSL在匹配URI路径以后才对已匹配部分进行解码。这意味着路径分隔符不能写到字符串中，必需使用<code>/</code>函数来定义，不然字符串<code>&quot;foo/bar&quot;</code>将匹配原始的字符串<code>&quot;foo%2fbar&quot;</code>，这应该不是你想要的。</p></div>
+<h4><a href="#常用基本的pathmatcher" name="常用基本的pathmatcher" class="anchor"><span class="anchor-link"></span></a>常用基本的<code>PathMatcher</code></h4>
+<p>一个路径匹配器可以通过组合或修改多个基本的<code>PathMatcher</code>来构造，以下是常用的基本<code>PathMatcher</code>。</p>
+<p><strong>字符串</strong></p>
+<p><code>String</code>的实例可以作为<code>PathMatcher0</code>。字符串只匹配自身，不提取任何值。需要注意的是字符串被解释为路径的解码表示（decode），当它包含一个&rsquo;/&lsquo;字符时，这个字符将与编码的原始URI中的&rsquo;%2f&rsquo;进行匹配。</p>
+<p><strong>正则表达式</strong></p>
+<p><code>Regex</code>的实例可以作为<code>PathMatcher1[String]</code>。正则表达式不包含捕获组时将提取完整匹配或者只包含一个捕获组时提取捕获的内容，若正则表达式包含多个捕获组，则将引发<code>IllegalArgumentException</code>异常。</p>
+<p><strong><code>Segment: PathMatcher1[String]</code></strong></p>
+<p>从路径段不以&rsquo;/&rsquo;斜线开始匹配，将匹配的部分提取为字符串。</p>
+<p><strong><code>IntNumber: PathMatcher1[Int]</code></strong></p>
+<p>匹配一个或多个十进制字符为非负的<code>Int</code>数值。</p>
+<p><strong><code>LongNumber: PathMatcher1[Long]</code></strong></p>
+<p>匹配一个或多个十进制字符为非负的<code>Long</code>数值。</p>
+<h4><a href="#组合子-combinators-" name="组合子-combinators-" class="anchor"><span class="anchor-link"></span></a>组合子（Combinators）</h4>
+<p>Path的路径匹配器（Matcher）可以组合起来形成更高级的结构。</p>
+<p><strong><code>~</code> 操作符</strong></p>
+<p><code>~</code>操作符可以将两个Matcher指令连接起来。它将两个Matcher连接成一个，同时还保持Matcher的类型安全。如：<code>&quot;foo&quot; ~ &quot;bar&quot;</code> 等价于 <code>&quot;foobar&quot;</code>。</p>
+<p><strong><code>/</code> 操作符</strong></p>
+<p><code>/</code>操作符连接两个Matcher，并在中间插入 <strong>Slash（<code>/</code>）</strong> 匹配器。如：<code>&quot;foo&quot; / &quot;bar&quot;</code> 等价于 <code>&quot;foo&quot; ~ Slash ~ &quot;bar&quot;</code>。</p>
+<p><strong><code>|</code> 操作符</strong></p>
+<p><code>|</code>操作符组合了两个Matcher的方案，当且第一个不匹配时才尝试第二个，且两个Matcher必须具有兼容的类型。如：<code>(&quot;foo&quot; | &quot;bar&quot;) / &quot;bom&quot;</code>将先匹配<code>/foo/bom</code>路由，再匹配<code>/bar/bom</code>路由（&lsquo;/&rsquo;的优先级比&rsquo;|&rsquo;高，所以这里需要使用小括号括起来）。</p>
+<h4><a href="#修饰符" name="修饰符" class="anchor"><span class="anchor-link"></span></a>修饰符</h4>
+<p>&lsquo;/&rsquo;和&rsquo;?&rsquo;可作为修饰符作用于Matcher上，如下所示：</p>
+<pre class="prettyprint"><code class="language-scala">// 匹配 /foo/
+path(&quot;foo&quot;./)
+
+// 匹配 /foo/bar
+path(&quot;foo&quot; / &quot;bar&quot;)
+
+// 注意: 匹配 /foo%2Fbar 而不是 /foo/bar
+path(&quot;foo/bar&quot;)
+
+// 匹配 /foo/bar
+path(separateOnSlashes(&quot;foo/bar&quot;))
+
+// 匹配 /foo/123 等 并抽取 &quot;123&quot; 作为字符串类型的抽取值
+path(&quot;foo&quot; / &quot;&quot;&quot;\d+&quot;&quot;&quot;.r)
+
+// 匹配 /foo/bar123 并抽取 &quot;123&quot; 作为字符串类型的抽取值
+path(&quot;foo&quot; / &quot;&quot;&quot;bar(\d+)&quot;&quot;&quot;.r)
+
+// 类似 `path(Segments)`
+path(Segment.repeat(10, separator = Slash))
+
+// 匹配 /i42 等 或者 /hCAFE 等，并抽取值为Int类型
+path(&quot;i&quot; ~ IntNumber | &quot;h&quot; ~ HexIntNumber)
+
+// 等价于 path(&quot;foo&quot; ~ (PathEnd | Slash))
+path(&quot;foo&quot; ~ Slash.?)
+
+// 匹配 /red 或 /green 或 /blue 并分别抽取 1, 2 或 3
+path(Map(&quot;red&quot; -&gt; 1, &quot;green&quot; -&gt; 2, &quot;blue&quot; -&gt; 3))
+
+// 匹配任何以 /foo 开头且不以 /foobar 开头的路径
+pathPrefix(&quot;foo&quot; ~ !&quot;bar&quot;)
+</code></pre>
+<h2><a href="#methoddirectives" name="methoddirectives" class="anchor"><span class="anchor-link"></span></a>MethodDirectives</h2>
+<p>HTTP方法指令用于匹配HTTP method，当请求不符合时将被拒绝，并返回 <strong>405 Method Not Allowed</strong>。常用预定义指令有：</p>
+<ul>
+  <li><code>get</code>：匹配HTTP的GET方法</li>
+  <li><code>post</code>：匹配HTTP的POST方法</li>
+  <li><code>put</code>：匹配HTTP的PUT方法</li>
+  <li><code>delete</code>：匹配HTTP的DELETE方法</li>
+</ul>
+<h3><a href="#抽取httpmethod" name="抽取httpmethod" class="anchor"><span class="anchor-link"></span></a>抽取HttpMethod</h3>
+<p>除了在路由上匹配某个HTTP方法外，我们还可以抽取方法（HttpMethod），这个使用 <code>def extractMethod: Directive1[HttpMethod]</code>指令。示例如下：</p>
+<pre class="prettyprint"><code class="language-scala">val route =
+  get {
+    complete(&quot;This is a GET request.&quot;)
+  } ~
+    extractMethod { method =&gt;
+      complete(s&quot;This ${method.name} request, clearly is not a GET!&quot;)
+    }
+
+// tests:
+Get(&quot;/&quot;) ~&gt; route ~&gt; check {
+  responseAs[String] shouldEqual &quot;This is a GET request.&quot;
+}
+
+Put(&quot;/&quot;) ~&gt; route ~&gt; check {
+  responseAs[String] shouldEqual &quot;This PUT request, clearly is not a GET!&quot;
+}
+Head(&quot;/&quot;) ~&gt; route ~&gt; check {
+  responseAs[String] shouldEqual &quot;This HEAD request, clearly is not a GET!&quot;
+}
+</code></pre>
+<h3><a href="#自定义httpmethod" name="自定义httpmethod" class="anchor"><span class="anchor-link"></span></a>自定义HttpMethod</h3>
+<p>当你需要使用非标准的Http方法时，可以通过<code>HttpMethod.custom</code>来自定义。</p>
+<pre class="prettyprint"><code class="language-scala">import akka.http.scaladsl.settings.{ ParserSettings, ServerSettings }
+
+// 自定义HTTP方法:
+val BOLT = HttpMethod.custom(&quot;BOLT&quot;, safe = false,
+  idempotent = true, requestEntityAcceptance = Expected)
+
+// 添加自定义方法到设置里
+val parserSettings = ParserSettings(system).withCustomMethods(BOLT)
+val serverSettings = ServerSettings(system).withParserSettings(parserSettings)
+
+val routes = extractMethod { method ⇒
+  complete(s&quot;This is a ${method.name} method request.&quot;)
+}
+val binding = Http().bindAndHandle(routes, host, port, settings = serverSettings)
+
+val request = HttpRequest(BOLT, s&quot;http://$host:$port/&quot;, protocol = `HTTP/1.1`)
+</code></pre>
+<h3><a href="#overridemethodwithparameter" name="overridemethodwithparameter" class="anchor"><span class="anchor-link"></span></a>overrideMethodWithParameter</h3>
+<pre class="prettyprint"><code class="language-scala">def overrideMethodWithParameter(paramName: String): Directive0
+</code></pre>
+<p><code>overrideMethodWithParameter</code>指令可以通过指定的请求参数来改变<code>HttpRequest</code>保存的请求HTTP方法。这在一些遗留项目或特殊环境下有用。比如：某些网络环境不支持<code>DELETE</code>、<code>PUT</code>方法，就可以通过如下的方式将一个带特定参数的请求转换成对应的<code>DELETE</code>或<code>PUT</code>请求。</p>
+<pre class="prettyprint"><code class="language-scala">val route =
+  overrideMethodWithParameter(&quot;method&quot;) {
+    get {
+      complete(&quot;This looks like a GET request.&quot;)
+    } ~
+      post {
+        complete(&quot;This looks like a POST request.&quot;)
+      }
+  }
+
+// tests:
+Get(&quot;/?method=POST&quot;) ~&gt; route ~&gt; check {
+  responseAs[String] shouldEqual &quot;This looks like a POST request.&quot;
+}
+Post(&quot;/?method=get&quot;) ~&gt; route ~&gt; check {
+  responseAs[String] shouldEqual &quot;This looks like a GET request.&quot;
+}
+
+Get(&quot;/?method=hallo&quot;) ~&gt; route ~&gt; check {
+  status shouldEqual StatusCodes.NotImplemented
+}
+</code></pre>
+<h2><a href="#parameterdirectives-formfielddirectives" name="parameterdirectives-formfielddirectives" class="anchor"><span class="anchor-link"></span></a>ParameterDirectives，FormFieldDirectives</h2>
+<p>TODO</p>
+<h2><a href="#marshallingdirectives" name="marshallingdirectives" class="anchor"><span class="anchor-link"></span></a>MarshallingDirectives</h2>
+<p>TODO</p>
+<h2><a href="#fileuploaddirectives" name="fileuploaddirectives" class="anchor"><span class="anchor-link"></span></a>FileUploadDirectives</h2>
+<p>TODO</p>
+<h2><a href="#cookiedirectives" name="cookiedirectives" class="anchor"><span class="anchor-link"></span></a>CookieDirectives</h2>
+<p>TODO</p>
 </div>
 <div>
 <a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/server-api/routing-dsl/common-directive.md" title="Edit this page" class="md-source-file md-edit">

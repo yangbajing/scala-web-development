@@ -20,7 +20,7 @@
 
 <meta name="description" content="book">
 <link rel="shortcut icon" href="../assets/images/favicon.png">
-<title>Scala基础 · Scala Web 开发</title>
+<title>Kryo · Scala Web 开发</title>
 <link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
 <link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
 <link rel="stylesheet" href="../lib/prettify/prettify.css">
@@ -56,7 +56,7 @@ code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
 Scala Web 开发
 </span>
 <span class="md-header-nav__topic">
-Scala基础
+Kryo
 </span>
 </div>
 </div>
@@ -146,7 +146,7 @@ yangbajing/scala-web-development
   <ul>
     <li><a href="../scala/scala.0.html" class="page">REPL</a></li>
     <li><a href="../scala/scala.1.html" class="page">你好，Scala</a></li>
-    <li><a href="../scala/scala.2.html" class="active page">Scala基础</a></li>
+    <li><a href="../scala/scala.2.html" class="page">Scala基础</a></li>
     <li><a href="../scala/scala.3.html" class="page">流程和函数</a></li>
     <li><a href="../scala/scala.4.html" class="page">集合</a></li>
     <li><a href="../scala/scala.5.html" class="page">class和object</a></li>
@@ -174,7 +174,7 @@ yangbajing/scala-web-development
     <li><a href="../data/data.0.html" class="page">数据</a></li>
     <li><a href="../data/data.1.html" class="page">JSON</a></li>
     <li><a href="../data/data.ant-design-pro.html" class="page">实战：为Ant Design Pro提供后端接口</a></li>
-    <li><a href="../data/data.kryo.html" class="page">Kryo</a></li>
+    <li><a href="../data/data.kryo.html" class="active page">Kryo</a></li>
     <li><a href="../data/data.2.html" class="page">Protobuf</a></li>
     <li><a href="../data/data.z.html" class="page">小结</a></li>
   </ul></li>
@@ -218,14 +218,6 @@ yangbajing/scala-web-development
   <li><a href="../donate.html" class="page">赞助</a></li>
 </ul>
 <nav class="md-nav md-nav--secondary">
-<label class="md-nav__title" for="__toc">Table of contents</label>
-<ul>
-  <li><a href="../scala/scala.2.html#scala基础" class="header">Scala基础</a>
-  <ul>
-    <li><a href="../scala/scala.2.html#变量-基础数据类型" class="header">变量、基础数据类型</a></li>
-    <li><a href="../scala/scala.2.html#运算符和命名" class="header">运算符和命名</a></li>
-  </ul></li>
-</ul>
 </nav>
 
 </nav>
@@ -239,81 +231,36 @@ yangbajing/scala-web-development
 </div>
 </div>
 </div>
-<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
-<div class="md-sidebar__scrollwrap">
-<div class="md-sidebar__inner">
-<nav class="md-nav md-nav--secondary">
-<label class="md-nav__title" for="__toc">Table of contents</label>
-<ul>
-  <li><a href="../scala/scala.2.html#scala基础" class="header">Scala基础</a>
-  <ul>
-    <li><a href="../scala/scala.2.html#变量-基础数据类型" class="header">变量、基础数据类型</a></li>
-    <li><a href="../scala/scala.2.html#运算符和命名" class="header">运算符和命名</a></li>
-  </ul></li>
-</ul>
-</nav>
-
-</div>
-</div>
-</div>
 <div class="md-content">
 <article class="md-content__inner md-typeset">
 <div class="md-content__searchable">
-<h1><a href="#scala基础" name="scala基础" class="anchor"><span class="anchor-link"></span></a>Scala基础</h1>
-<h2><a href="#变量-基础数据类型" name="变量-基础数据类型" class="anchor"><span class="anchor-link"></span></a>变量、基础数据类型</h2>
-<p>Scala中变量不需要显示指定类型，但需要提前声明。这可以避免很多命名空间污染问题。Scala有一个很强大的类型自动推导功能，它可以根据右值及上下文自动推导出变量的类型。你可以通过如下方式来直接声明并赋值。</p>
-<pre class="prettyprint"><code class="language-scala">scala&gt; val a = 1
-a: Int = 1
-
-scala&gt; val b = true
-b: Boolean = true
-
-scala&gt; val c = 1.0
-c: Double = 1.0
-
-scala&gt; val a = 30 + &quot;岁&quot;
-a: String = 30岁
+<h1><a href="#kryo" name="kryo" class="anchor"><span class="anchor-link"></span></a>Kryo</h1>
+<p>Kryo是一种快速高效的用于Java的二进制对象图序列化框架。具有调整、压缩率高和易于使用的特性。</p>
+<p>在Akka中使用Kryo可以采用Twitter开源的 <a href="https://github.com/twitter/chill">chill</a> 库，它可以简化对Kryo的使用并对Scala有着更友好的API。</p>
+<p>在Akka里使用<code>chill</code>非常的简单，首先需要引入相关库依赖：</p>
+<pre class="prettyprint"><code class="language-scala">libraryDependencies += &quot;com.twitter&quot; %% &quot;chill-akka&quot; % &quot;0.9.3&quot;
 </code></pre>
-<p><strong>Immutable</strong></p>
-<p>（注：函数式编程有一个很重要的特性：不可变性。Scala中除了变量的不可变性，它还定义了一套不可变集合<code>scala.collection.immutable._</code>。）</p>
-<p><code>val</code>代表这是一个final variable，它是一个常量。定义后就不可以改变，相应的，使用<code>var</code>定义的就是平常所见的变量了，是可以改变的。从终端的打印可以看出，Scala从右值自动推导出了变量的类型。Scala可以如动态语言似的编写代码，但又有静态语言的编译时检查。这对于Java中冗长、重复的类型声明来说是一种很好的进步。</p>
-<p>（注：在<code>REPL</code>中，<code>val</code>变量是可以重新赋值的，这是｀REPL`的特性。在平常的代码中是不可以的。）</p>
-<p><strong>基础数据类型</strong></p>
-<p>Scala中基础数据类型有：Byte、Short、Int、Long、Float、Double，Boolean，Char、String。和Java不同的是，Scala中没在区分原生类型和装箱类型，如：<code>int</code>和<code>Integer</code>。它统一抽象成<code>Int</code>类型，这样在Scala中所有类型都是对象了。编译器在编译时将自动决定使用原生类型还是装箱类型。</p>
-<p><strong>字符串</strong></p>
-<p>Scala中的字符串有3种。</p>
-<ul>
-  <li>分别是普通字符串，它的特性和Java字符串一至。</li>
-  <li>连线3个双引号在Scala中也有特殊含义，它代表被包裹的内容是原始字符串，可以不需要字符转码。这一特性在定义正则表达式时很有优势。</li>
-  <li>还有一种被称为“字符串插值”的字符串，他可以直接引用上下文中的变量，并把结果插入字符串中。</li>
-</ul>
-<pre class="prettyprint"><code class="language-scala">scala&gt; val c2 = &#39;杨&#39;
-c2: Char = 杨
+<p>在修改Akka配置：</p>
+<pre><code>akka.actor {
+  # 启用附加的自定义序列化绑定功能
+  enable-additional-serialization-bindings = on
 
-scala&gt; val s1 = &quot;羊八井花园&quot;
-s1: String = 羊八井花园
+  # 禁用Java默认序列化功能
+  allow-java-serialization = off
 
-scala&gt; val s2 = s&quot;羊八井花园${c2}景&quot;
-s2: String = 羊八井花园
+  serializers {
+    kryo = &quot;com.twitter.chill.akka.AkkaSerializer&quot;
+  }
 
-scala&gt; val s3 = s&quot;&quot;&quot;羊八井花园&quot;工程师&quot;\n${c2}景是江津人&quot;&quot;&quot;
-s3: String =
-羊八井花园&quot;工程师&quot;
-杨景是江津人
+  serialization-bindings {
+    # 指定所有实现了`java.io.Serializable`接口的类都使用 kryo 序列化
+    &quot;java.io.Serializable&quot; = kryo
+  }
+}
 </code></pre>
-<h2><a href="#运算符和命名" name="运算符和命名" class="anchor"><span class="anchor-link"></span></a>运算符和命名</h2>
-<p>Scala中的运算符其实是定义在对象上的方法（函数），你看到的诸如：<code>3 + 2</code>其实是这样子的：<code>3.+(2)</code>。<code>+</code>符号是定义在<code>Int</code>对象上的一个方法。支持和Java一至的运算符（方法）：</p>
-<p>（注：在Scala中，方法前的<code>.</code>号和方法两边的小括号在不引起歧义的情况下是可以省略的。这样我们就可以定义出很优美的<a href="https://en.wikipedia.org/wiki/Domain-specific_language"><code>DSL</code></a>）</p>
-<ul>
-  <li><code>==</code>、<code>!=</code>：比较运算</li>
-  <li><code>!</code>、<code>|</code>、<code>&amp;</code>、<code>^</code>：逻辑运算</li>
-  <li><code>&gt;&gt;</code>、<code>&lt;&lt;</code>：位运算</li>
-</ul>
-<p><strong><em>注意</em></strong></p>
-<p>在Scala中，修正了（算更符合一般人的常规理解吧）<code>==</code>和<code>!=</code>运算符的含义。在Scala中，<code>==</code>和<code>!=</code>是执行对象的值比较，相当于Java中的<code>equals</code>方法（实际上编译器在编译时也是这么做的）。而对象的引用比较需要使用<code>eq</code>和<code>ne</code>两个方法来实现。</p>
 </div>
 <div>
-<a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/scala/scala.2.md" title="Edit this page" class="md-source-file md-edit">
+<a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/data/data.kryo.md" title="Edit this page" class="md-source-file md-edit">
 Edit this page
 </a>
 </div>
@@ -329,7 +276,7 @@ Edit this page
 <footer class="md-footer">
 <div class="md-footer-nav">
 <nav class="md-footer-nav__inner md-grid">
-<a href="../scala/scala.1.html" title="你好，Scala" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<a href="../data/data.ant-design-pro.html" title="实战：为Ant Design Pro提供后端接口" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
 <div class="md-flex__cell md-flex__cell--shrink">
 <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
 </div>
@@ -338,17 +285,17 @@ Edit this page
 <span class="md-footer-nav__direction">
 Previous
 </span>
-你好，Scala
+实战：为Ant Design Pro提供后端接口
 </span>
 </div>
 </a>
-<a href="../scala/scala.3.html" title="流程和函数" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<a href="../data/data.2.html" title="Protobuf" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
 <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
 <span class="md-flex__ellipsis">
 <span class="md-footer-nav__direction">
 Next
 </span>
-流程和函数
+Protobuf
 </span>
 </div>
 <div class="md-flex__cell md-flex__cell--shrink">

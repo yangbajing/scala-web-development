@@ -174,6 +174,7 @@ yangbajing/scala-web-development
     <li><a href="../data/data.0.html" class="page">数据</a></li>
     <li><a href="../data/data.1.html" class="page">JSON</a></li>
     <li><a href="../data/data.ant-design-pro.html" class="page">实战：为Ant Design Pro提供后端接口</a></li>
+    <li><a href="../data/data.kryo.html" class="page">Kryo</a></li>
     <li><a href="../data/data.2.html" class="page">Protobuf</a></li>
     <li><a href="../data/data.z.html" class="page">小结</a></li>
   </ul></li>
@@ -273,7 +274,7 @@ add: Int = 6
 sub: Int = 5
 </code></pre>
 <p>这里定义了一个函数：<code>calc</code>，它有两个参数：<code>n1</code>和<code>n2</code>，其类型为：<code>Int</code>。<code>cala</code>函数的返回值类型是一个有两个元素的元组，在Scala中可以简写为：<code>(Int, Int)</code>。在Scala中，代码段的最后一句将做为函数返回值，所以这里不需要显示的写<code>return</code>关键字。</p>
-<p>而<code>val (add, sub) = calc(5, 1)</code>一句，是Scala中的抽取功能。它直接把<code>calc</code>函数返回的一个<code>Tuple2</code>值赋给了<code>add</code>他<code>sub</code>两个变量。</p>
+<p>而<code>val (add, sub) = calc(5, 1)</code>一句，是Scala中的提取功能。它直接把<code>calc</code>函数返回的一个<code>Tuple2</code>值赋给了<code>add</code>他<code>sub</code>两个变量。</p>
 <p>函数可以赋给变量：</p>
 <pre class="prettyprint"><code class="language-scala">scala&gt; val calcVar = calc _
 calcVar: (Int, Int) =&gt; (Int, Int) = &lt;function2&gt;
@@ -404,7 +405,7 @@ Nil
 (one,1) +: (two,2) +: (three,3) +: Nil
 Nil
 </code></pre>
-<p>模式匹配能很方便的抽取序列的元素，<code>seqToString</code>使用了模式匹配以递归的方式来将序列转换成字符串。<code>case head +: tail</code>将序列抽取成“头部”和“非头部剩下”两部分，<code>head</code>将保存序列第一个元素，<code>tail</code>保存序列剩下部分。而<code>case Nil</code>将匹配一个空序列。</p>
+<p>模式匹配能很方便的提取序列的元素，<code>seqToString</code>使用了模式匹配以递归的方式来将序列转换成字符串。<code>case head +: tail</code>将序列提取成“头部”和“非头部剩下”两部分，<code>head</code>将保存序列第一个元素，<code>tail</code>保存序列剩下部分。而<code>case Nil</code>将匹配一个空序列。</p>
 <h3><a href="#case-class的匹配" name="case-class的匹配" class="anchor"><span class="anchor-link"></span></a>case class的匹配</h3>
 <pre class="prettyprint"><code class="language-scala">scala&gt; trait Person
 

@@ -87,51 +87,13 @@ psql -h localhost -d hldev -U hldev
 
 首先，我们定义两个数据库实体对象：`Author` 和 `Book`：
 
-```scala
-case class Author(id: Long,
-                  name: String,
-                  age: Option[Int],
-                  remark: Option[String])
-case class Book(isbn: String,
-                author: Long,
-                title: String,
-                amount: BigDecimal,
-                description: Option[String])
-```
+@@snip [Author](../../../../../foundation/src/main/scala/akkahttp/foundation/data/entity/Author.scala) { #Author }
+@@snip [Book](../../../../../foundation/src/main/scala/akkahttp/foundation/data/entity/Book.scala) { #Book }
 
 接下来在 `AuthorRepository` 中进行数据库操作，现在先把什么 `Service`，`Controller`等放一边，我们使用 **scalatest** 来测试下我们的数
 据库访问代码。
 
-```scala
-class AuthorRepositoryTest extends MeSpec with JDBCSpec {
-
-  "AccountRepositoryTest" should {
-    val accountRepository = new AuthorRepository(dataSource)
-
-    "create" in {
-      val account = Author(0, "羊八井", Some(31), None)
-      val result = accountRepository.create(account)
-      result.id must be > 0L
-    }
-
-    "update" in {
-      val author = Author(3, "yangbajing", Some(32), Some("中国重庆江津"))
-      val result = accountRepository.update(author)
-      result.id mustBe author.id
-      result.name mustBe author.name
-      result.age mustBe author.age
-    }
-
-    "list" in {
-      val results = accountRepository.list()
-      results must not be empty
-      println(s"results size: ${results.size}")
-    }
-
-  }
-  
-}
-```
+@@snip [AuthorRepositoryTest](../../../../../foundation/src/test/scala/akkahttp/foundation/data/repository/AuthorRepositoryTest.scala) { #AuthorRepositoryTest }
 
 先不管 `MeSpec` 和 `JDBCSpec` 两个 trait，你可以先试试这个测试（前题是你已经设置好数据库环境）。
 
@@ -144,47 +106,7 @@ class AuthorRepositoryTest extends MeSpec with JDBCSpec {
 若一切正常，你会看到测试正确通过。`AuthorRepositoryTert` 脚本中一共执行了3个测试，其中 `should list` 测试中打印了一个测试输出，从数据库中
 获取到8条记录。下面，让我们来看看 `AuthorRepository` ，我们怎么在 Scala 中使用 JDBC 来访问数据库的。
 
-```scala
-class AuthorRepository(dataSource: DataSource) {
-  val jdbcTemplate = JdbcTemplate(dataSource) // ①
-
-  def update(author: Author): Author = {
-    require(author.id > 0L, "id 必有大于 0") // ②
-
-    val (names, args) = AuthorRepository.generateArgs(author)
-    val updateSet = JdbcTemplate.sqlUpdateSets(names)
-    val sql = s"UPDATE author SET $updateSet WHERE id = ? RETURNING *" // ③
-    args.append(author.id.asInstanceOf[Object])
-
-    val (results, _) = jdbcTemplate.queryMany(sql, args)
-    if (results.isEmpty) {
-      throw new SQLException(s"账号：${author.id} 不存在")
-    } else {
-      AuthorRepository.generateResult(results.head) // ④
-    }
-  }
-
-  def create(author: Author): Author = {
-    require(author.id <= 1L, "id 不能存在")
-      
-    val (names, args) = AuthorRepository.generateArgs(author)
-    val sql =
-      s"""INSERT INTO author(${JdbcTemplate.sqlNames(names)})
-         |  VALUES(${JdbcTemplate.sqlArgs(args)}) RETURNING id""".stripMargin // ⑤
-
-    val (results, labels) = jdbcTemplate.queryMany(sql, args)
-
-    val id = results.head.apply(labels.head.label).asInstanceOf[Long]
-    author.copy(id = id)
-  }
-
-  def list(): Vector[Author] = {
-    val (results, _) = jdbcTemplate.queryMany("SELECT id, name, age, remark FROM author ORDER BY id DESC")
-    results.map(AuthorRepository.generateResult)
-  }
-
-}
-```
+@@snip [AuthorRepository](../../../../../foundation/src/main/scala/akkahttp/foundation/data/repository/AuthorRepository.scala) { #AuthorRepository }
 
 1. 这里我们没有使用 Ioc 等方式来管理组件件的依赖，我们在类的构造代码区里实例华一个 `jdbcTemplate`。
 2. 在 `update` 方法的开头，我们效验 Author `id` 是否有效。
@@ -197,26 +119,7 @@ class AuthorRepository(dataSource: DataSource) {
 成一个 `Author` 对象和将 `author` 对象转换成可用于 `INSERT`、`UPDATE`语句字段序列部分及获取有效参数的一个序列。这段话说起来有点拗口，直接来
 看看 `generateArgs` 的代码：
 
-```scala
-  def generateArgs(author: Author) = {
-    val names = mutable.Buffer.empty[String]
-    val args = mutable.Buffer.empty[Object]
-
-    names.append("name")
-    args.append(author.name)
-
-    author.age.foreach { value =>
-      names.append("age")
-      args.append(Integer.valueOf(value))
-    }
-
-    author.remark.foreach { remark =>
-      names.append("remark")
-      args.append(remark)
-    }
-    (names, args)
-  }
-```
+@@snip [AuthorRepository](../../../../../foundation/src/main/scala/akkahttp/foundation/data/repository/AuthorRepository.scala) { #help-function }
 
 我们有一个 Author 对象的实例：Author(0, "羊八井", Some(31), None)。在调用 `generateArgs` 函数后，将获得以下转出结果：
 

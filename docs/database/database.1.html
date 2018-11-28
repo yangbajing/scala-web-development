@@ -174,6 +174,7 @@ yangbajing/scala-web-development
     <li><a href="../data/data.0.html" class="page">数据</a></li>
     <li><a href="../data/data.1.html" class="page">JSON</a></li>
     <li><a href="../data/data.ant-design-pro.html" class="page">实战：为Ant Design Pro提供后端接口</a></li>
+    <li><a href="../data/data.kryo.html" class="page">Kryo</a></li>
     <li><a href="../data/data.2.html" class="page">Protobuf</a></li>
     <li><a href="../data/data.z.html" class="page">小结</a></li>
   </ul></li>
@@ -320,20 +321,24 @@ CREATE TABLE book(
 </code></pre>
 <h3><a href="#代码访问" name="代码访问" class="anchor"><span class="anchor-link"></span></a>代码访问</h3>
 <p>首先，我们定义两个数据库实体对象：<code>Author</code> 和 <code>Book</code>：</p>
-<pre class="prettyprint"><code class="language-scala">case class Author(id: Long,
-                  name: String,
-                  age: Option[Int],
-                  remark: Option[String])
-case class Book(isbn: String,
-                author: Long,
-                title: String,
-                amount: BigDecimal,
-                description: Option[String])
-</code></pre>
+<pre class="prettyprint"><code class="language-scala">case class Author(
+    id: Long,
+    name: String,
+    age: Option[Int],
+    remark: Option[String]
+)</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/akkahttp/foundation/data/entity/Author.scala#L4-L9" class="snippet-full-source github">Full source at GitHub</a>
+<pre class="prettyprint"><code class="language-scala">case class Book(
+    isbn: String,
+    author: Long,
+    title: String,
+    amount: BigDecimal,
+    description: Option[String]
+)</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/akkahttp/foundation/data/entity/Book.scala#L4-L10" class="snippet-full-source github">Full source at GitHub</a>
 <p>接下来在 <code>AuthorRepository</code> 中进行数据库操作，现在先把什么 <code>Service</code>，<code>Controller</code>等放一边，我们使用 <strong>scalatest</strong> 来测试下我们的数 据库访问代码。</p>
 <pre class="prettyprint"><code class="language-scala">class AuthorRepositoryTest extends MeSpec with JDBCSpec {
 
-  &quot;AccountRepositoryTest&quot; should {
+  &quot;AuthorRepositoryTest&quot; should {
+
     val accountRepository = new AuthorRepository(dataSource)
 
     &quot;create&quot; in {
@@ -343,7 +348,7 @@ case class Book(isbn: String,
     }
 
     &quot;update&quot; in {
-      val author = Author(3, &quot;yangbajing&quot;, Some(32), Some(&quot;中国重庆江津&quot;))
+      val author = Author(1, &quot;羊八井&quot;, Some(32), None)
       val result = accountRepository.update(author)
       result.id mustBe author.id
       result.name mustBe author.name
@@ -357,40 +362,39 @@ case class Book(isbn: String,
     }
 
   }
-  
-}
-</code></pre>
+
+}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/test/scala/akkahttp/foundation/data/repository/AuthorRepositoryTest.scala#L11-L39" class="snippet-full-source github">Full source at GitHub</a>
 <p>先不管 <code>MeSpec</code> 和 <code>JDBCSpec</code> 两个 trait，你可以先试试这个测试（前题是你已经设置好数据库环境）。</p>
 <pre class="prettyprint"><code class="language-scala">&gt; testOnly akkahttp.foundation.data.repository.AuthorRepositoryTest
 </code></pre>
 <p><img src="../assets/imgs/testOnly-AuthorRepositoryTest.png" alt="testOnly akkahttp.foundation.data.repository.AuthorRepositoryTest" /></p>
 <p>若一切正常，你会看到测试正确通过。<code>AuthorRepositoryTert</code> 脚本中一共执行了3个测试，其中 <code>should list</code> 测试中打印了一个测试输出，从数据库中 获取到8条记录。下面，让我们来看看 <code>AuthorRepository</code> ，我们怎么在 Scala 中使用 JDBC 来访问数据库的。</p>
 <pre class="prettyprint"><code class="language-scala">class AuthorRepository(dataSource: DataSource) {
-  val jdbcTemplate = JdbcTemplate(dataSource) // ①
+  val jdbcTemplate = JdbcTemplate(dataSource)
 
   def update(author: Author): Author = {
-    require(author.id &gt; 0L, &quot;id 必有大于 0&quot;) // ②
+    require(author.id &gt; 0L, &quot;id 必有大于 0&quot;)
 
     val (names, args) = AuthorRepository.generateArgs(author)
     val updateSet = JdbcTemplate.sqlUpdateSets(names)
-    val sql = s&quot;UPDATE author SET $updateSet WHERE id = ? RETURNING *&quot; // ③
+    val sql = s&quot;UPDATE author SET $updateSet WHERE id = ? RETURNING *&quot;
     args.append(author.id.asInstanceOf[Object])
 
     val (results, _) = jdbcTemplate.queryMany(sql, args)
     if (results.isEmpty) {
       throw new SQLException(s&quot;账号：${author.id} 不存在&quot;)
     } else {
-      AuthorRepository.generateResult(results.head) // ④
+      AuthorRepository.generateResult(results.head)
     }
   }
 
   def create(author: Author): Author = {
     require(author.id &lt;= 1L, &quot;id 不能存在&quot;)
-      
+
     val (names, args) = AuthorRepository.generateArgs(author)
     val sql =
       s&quot;&quot;&quot;INSERT INTO author(${JdbcTemplate.sqlNames(names)})
-         |  VALUES(${JdbcTemplate.sqlArgs(args)}) RETURNING id&quot;&quot;&quot;.stripMargin // ⑤
+         |  VALUES(${JdbcTemplate.sqlArgs(args)}) RETURNING id&quot;&quot;&quot;.stripMargin
 
     val (results, labels) = jdbcTemplate.queryMany(sql, args)
 
@@ -403,8 +407,7 @@ case class Book(isbn: String,
     results.map(AuthorRepository.generateResult)
   }
 
-}
-</code></pre>
+}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/akkahttp/foundation/data/repository/AuthorRepository.scala#L15-L53" class="snippet-full-source github">Full source at GitHub</a>
 <ol>
   <li>这里我们没有使用 Ioc 等方式来管理组件件的依赖，我们在类的构造代码区里实例华一个 <code>jdbcTemplate</code>。</li>
   <li>在 <code>update</code> 方法的开头，我们效验 Author <code>id</code> 是否有效。</li>
@@ -413,25 +416,38 @@ case class Book(isbn: String,
   <li>这里使用 <code>RETURNING id</code> 返回数据库序列自动生成的 Author <code>id</code></li>
 </ol>
 <p>在 <code>AuthorRepository</code> 的伴生对象里，有两个简单的帮助函数，<code>generateResult</code> 和 <code>generateArgs</code> ，分别将通过JDBC的ResultSet获取的记录映射 成一个 <code>Author</code> 对象和将 <code>author</code> 对象转换成可用于 <code>INSERT</code>、<code>UPDATE</code>语句字段序列部分及获取有效参数的一个序列。这段话说起来有点拗口，直接来 看看 <code>generateArgs</code> 的代码：</p>
-<pre class="prettyprint"><code class="language-scala">  def generateArgs(author: Author) = {
-    val names = mutable.Buffer.empty[String]
-    val args = mutable.Buffer.empty[Object]
+<pre class="prettyprint"><code class="language-scala">def generateResult(result: Map[String, AnyRef]): Author =
+  Author(
+    result(&quot;id&quot;).asInstanceOf[Long],
+    result(&quot;name&quot;).asInstanceOf[String],
+    result.get(&quot;age&quot;).map(_.asInstanceOf[Int]),
+    result.get(&quot;remark&quot;).map(_.asInstanceOf[String])
+  )
 
-    names.append(&quot;name&quot;)
-    args.append(author.name)
+/**
+ * 获取有效的数据库查询字段名列表和参数值列表
+ *
+ * @param author Author实例
+ * @return
+ */
+def generateArgs(author: Author): (mutable.Buffer[String], mutable.Buffer[Object]) = {
+  val names = mutable.Buffer.empty[String]
+  val args = mutable.Buffer.empty[Object]
 
-    author.age.foreach { value =&gt;
-      names.append(&quot;age&quot;)
-      args.append(Integer.valueOf(value))
-    }
+  names.append(&quot;name&quot;)
+  args.append(author.name)
 
-    author.remark.foreach { remark =&gt;
-      names.append(&quot;remark&quot;)
-      args.append(remark)
-    }
-    (names, args)
+  author.age.foreach { value =&gt;
+    names.append(&quot;age&quot;)
+    args.append(Integer.valueOf(value))
   }
-</code></pre>
+
+  author.remark.foreach { remark =&gt;
+    names.append(&quot;remark&quot;)
+    args.append(remark)
+  }
+  (names, args)
+}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/akkahttp/foundation/data/repository/AuthorRepository.scala#L59-L90" class="snippet-full-source github">Full source at GitHub</a>
 <p>我们有一个 Author 对象的实例：Author(0, &ldquo;羊八井&rdquo;, Some(31), None)。在调用 <code>generateArgs</code> 函数后，将获得以下转出结果：</p>
 <pre class="prettyprint"><code class="language-js">([&quot;name&quot;, &quot;age&quot;], [&quot;羊八井&quot;, 32])
 </code></pre>
