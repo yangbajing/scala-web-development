@@ -1,7 +1,7 @@
 import sbt._
 
 object Dependencies {
-  val versionScala = "2.12.7"
+  val versionScala = "2.12.8"
   val versionScalaLib = "2.12"
 
   val _scalaXml = ("org.scala-lang.modules" %% "scala-xml" % "1.1.0")
@@ -17,7 +17,7 @@ object Dependencies {
 
   val _scalatest = "org.scalatest" %% "scalatest" % "3.0.5"
 
-  val versionAkka = "2.5.18"
+  val versionAkka = "2.5.19"
   lazy val _akkaRemote = "com.typesafe.akka" %% "akka-remote" % versionAkka
 
   lazy val _akkas = Seq(
@@ -44,12 +44,12 @@ object Dependencies {
   )
 
   lazy val _akkaManagements = Seq(
-    ("com.lightbend.akka.management" %% "akka-management" % "0.19.0")
+    ("com.lightbend.akka.management" %% "akka-management" % "0.20.0")
       .excludeAll(ExclusionRule("com.typesafe.akka"))
       .exclude("org.scala-lang", "scala-library")
   )
 
-  val versionAkkaHttp = "10.1.5"
+  val versionAkkaHttp = "10.1.6"
   val _akkaHttpCore = "com.typesafe.akka" %% "akka-http-core" % versionAkkaHttp
 
   val _akkaHttps = Seq(
@@ -157,7 +157,7 @@ object Dependencies {
 //  .exclude("com.fasterxml.jackson.core", "jackson-databind"),
     "com.fasterxml.jackson.module" %% "jackson-module-scala" % versionJackson
   )
-  
+
   val _sjsonnet = "com.lihaoyi" %% "sjsonnet" % "0.1.2"
 
   val _redisclient = "net.debasishg" %% "redisclient" % "3.7"
@@ -165,7 +165,7 @@ object Dependencies {
   val _aspectjweaver = "org.aspectj" % "aspectjweaver" % "1.9.1"
 
   val _sigarLoader = "io.kamon" % "sigar-loader" % "1.6.6" //-rev002"
-  
+
   val _kamonCore = "io.kamon" %% "kamon-core" % "1.1.3"
 
   val _kamonAkka = ("io.kamon" %% "kamon-akka-2.5" % "1.1.2")
@@ -220,7 +220,7 @@ object Dependencies {
   //  ).map(_ % versionCirce)
 
   val _shapeless = "com.chuusai" %% "shapeless" % "2.3.3"
-  
+
   val _chillAkka = "com.twitter" %% "chill-akka" % "0.9.3"
 
   private val versionMacwire = "2.3.1"

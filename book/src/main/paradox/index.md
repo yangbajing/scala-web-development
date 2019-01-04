@@ -1,4 +1,4 @@
-# Scala Web 开发
+# Scala Web 开发——基于Akka构建反应式Web应用
 
 *Akka HTTP*
 
