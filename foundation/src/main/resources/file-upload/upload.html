@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>断点上传</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+</head>
+<body>
+<div class="container">
+    <form role="form" id="form" style="margin-top: 40px">
+        <div id="file0">
+            <div class="form-row">
+                <div class="col form-group">
+                    <label>文件1</label>
+                    <input type="file" name="file"/>
+                </div>
+                <div class="col form-group">
+                    <label>起始偏移</label>
+                    <input type="number" name="startPosition" value="0"/>
+                </div>
+                <div class="col form-group">
+                    <label>结束偏移</label>
+                    <input type="number" name="endPosition" value="0"/>
+                </div>
+            </div>
+            <div data-id="output" class="form-row" style="display: none;">
+                <label></label>
+                <div class="progress" style="height: 2px;">
+                    <div class="progress-bar" role="progressbar" style="width: 0"></div>
+                </div>
+                <div class="form-text"></div>
+            </div>
+        </div>
+        <div id="file1">
+            <div class="form-row">
+                <div class="col form-group">
+                    <label>文件2</label>
+                    <input type="file" name="file"/>
+                </div>
+                <div class="col form-group">
+                    <label>起始偏移</label>
+                    <input type="number" name="startPosition" value="0"/>
+                </div>
+                <div class="col form-group">
+                    <label>结束偏移</label>
+                    <input type="number" name="endPosition" value="0"/>
+                </div>
+            </div>
+            <div data-id="output" class="form-group" style="display: none;">
+                <label></label>
+                <div class="progress" style="height: 2px;">
+                    <div class="progress-bar" role="progressbar" style="width: 0"></div>
+                </div>
+                <div class="form-text"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">上传</button>
+        </div>
+    </form>
+    <ul id="output" style="margin-top: 40px">
+
+    </ul>
+</div>
+<script src="js/sha256.js"></script>
+<script src="js/axios.js"></script>
+<script src="js/jquery.js"></script>
+<script>
+  var blobSliceFunc = File.prototype.slice || File.prototype.webkitSlice || File.prototype.mozSlice;
+
+  /**
+   * 计算文件的sha256值
+   * @param file Web File
+   * @param idx
+   * @param func function(File, Sha256Hex)
+   */
+  function handleFileHash(file, idx, func) {
+    var reader = new FileReader();
+
+    reader.onload = function () {
+      var buf = reader.result;
+      var sha = sha256.create();
+      sha.update(buf);
+      var hash = sha.hex();
+      var $output = $('#file' + idx).find('div[data-id=output]');
+      $output.show();
+      $output.find('label').html('Sha256Hex：' + hash);
+      func(file, idx, hash)
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  function uploadFile(file, idx, hash) {
+    console.log('file', file);
+    var $output = $('#file' + idx).find('div[data-id=output]');
+    var data = new FormData();
+    var startPosition = 0; //51200;
+    var name = hash + '.' + file.size + '.' + startPosition;
+    data.append(name, startPosition > 0 ? blobSliceFunc.call(file, startPosition) : file, file.name);
+
+    var config = {
+      onUploadProgress: function (progressEvent) {
+        var percentCompleted = progressEvent.loaded * 100 / progressEvent.total;
+        console.log('percentCompleted', percentCompleted);
+        $output.find('.progress-bar').css('width', percentCompleted + '%');
+      }
+    };
+
+    axios.post('/file/upload', data, config)
+      .then(function (res) {
+        $output.find('.form-text').html('<pre>' + JSON.stringify(res.data, null, 2) + '</pre>');
+      })
+      .catch(function (err) {
+        $output.find('.form-text').html('<pre>' + JSON.stringify(err, null, 2) + '</pre>');
+      });
+  }
+
+  $(function () {
+    $('#form').on('submit', function (ev) {
+      ev.preventDefault();
+      for (var i = 0; i < 2; i++) {
+        var $input = $('#file'+i).find('input[name=file]');
+        console.log('$input', $input);
+        var input = $input[0] ;
+        console.log('input', input);
+        if (input.files[0]) {
+          handleFileHash(input.files[0], i, uploadFile);
+        }
+      }
+    });
+  })
+</script>
+</body>
+</html>

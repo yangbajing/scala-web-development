@@ -5,5 +5,6 @@
 @@@ index
 
 - [routing-dsl](routing-dsl/index.md)
+- [file-upload](file-upload.md)
 
 @@@

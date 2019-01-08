@@ -7,8 +7,6 @@ object Dependencies {
   val _scalaXml = ("org.scala-lang.modules" %% "scala-xml" % "1.1.0")
     .exclude("org.scala-lang", "scala-library")
 
-  //  val _scalaParserCombinators =  ("org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.0").exclude("org.scala-lang", "scala-library")
-
   val _fastparse = "com.lihaoyi" %% "fastparse" % "1.0.0"
 
   val _scalaJava8Compat =
