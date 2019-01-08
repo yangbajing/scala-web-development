@@ -280,8 +280,8 @@ yangbajing/scala-web-development
     }
 }
 </code></pre>
-<p><code>path(&quot;hello&quot;)</code>定义了一个HTTP访问路由，<code>get</code>代表这个路由提供了 <strong>GET</strong> 请示，而<code>complete</code>涵数允许我们提供响应结果来完成这个路由定义，这里我们返回了一段文本。Akka Http的路由看起来向 <strong>声明式</strong> 的，以一直新颖而又直观的方式来定义HTTP服务。</p>
-<p>用户第一次接触这种涵数套涵数（又像树型结构）的代码方式可能不大习惯，其实我们可以换种方式来实现这段代码：</p>
+<p><code>path(&quot;hello&quot;)</code>定义了一个HTTP访问路由，<code>get</code>代表这个路由提供了 <strong>GET</strong> 请示，而<code>complete</code>函数允许我们提供响应结果来完成这个路由定义，这里我们返回了一段文本。Akka Http的路由看起来向 <strong>声明式</strong> 的，以一直新颖而又直观的方式来定义HTTP服务。</p>
+<p>用户第一次接触这种函数套函数（又像树型结构）的代码方式可能不大习惯，其实我们可以换种方式来实现这段代码：</p>
 <pre class="prettyprint"><code class="language-scala">  def traditionRoute: Route = {
     val respResult = complete(&quot;result&quot;) // 响应结果
     val hPath = path(&quot;hello&quot;) // 绑定的HTTP访问路径
