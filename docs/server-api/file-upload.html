@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="description" content="book">
-<meta name="generator" content="Paradox, paradox-material-theme=0.5.1, mkdocs-material=3.0.3">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
 
 <meta name="lang:clipboard.copy" content="Copy to clipboard">
 <meta name="lang:clipboard.copied" content="Copied to clipboard">
@@ -22,6 +22,8 @@
 <link rel="shortcut icon" href="../assets/images/favicon.png">
 <title>实战：大文件断点上传、下载和秒传 · Scala Web 开发——基于Akka构建反应式Web应用</title>
 <link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<meta name="theme-color" content="#009688" />
 <link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
 <link rel="stylesheet" href="../lib/prettify/prettify.css">
 <script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
@@ -35,6 +37,8 @@ code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
 <link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
 </head>
 <body
+data-md-color-primary="teal"
+data-md-color-accent="indigo"
 >
 <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
 <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -189,11 +193,11 @@ yangbajing/scala-web-development
   </ul></li>
   <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
   <ul>
-    <li><a href="../oauth/oauth2.0.html" class="page">实战：OAuth 2 服务</a></li>
-    <li><a href="../oauth/oauth2.1.html" class="page">OAuth 2简介</a></li>
-    <li><a href="../oauth/oauth2.2.html" class="page">OAuth 2接口设计</a></li>
-    <li><a href="../oauth/oauth2.3.html" class="page">OAuth 2服务实现</a></li>
-    <li><a href="../oauth/oauth2.z.html" class="page">小结</a></li>
+    <li><a href="../oauth/oauth.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth.z.html" class="page">小结</a></li>
   </ul></li>
   <li><a href="../database/index.html" class="page">访问数据库</a>
   <ul>
@@ -271,12 +275,12 @@ yangbajing/scala-web-development
 <p>这里有一个设计取舍：客户端对单个文件不做分片，从文件头开始上传。这样的一个好处是可简化服务端的实现， 同时也可以优化服务端对文件的存储 <em>（同一个文件将一直使用APPEND的方式写入文件，这样可以更高效的利用磁盘IO。同时， 不需要分块合并，若文件很大，生成的大量分块在文件上传完成后再次合并会是一个非常大的资源开销）</em> 。</p>
 <h2><a href="#断点下载" name="断点下载" class="anchor"><span class="anchor-link"></span></a>断点下载</h2>
 <p>这个怎么说呢？断点下载Akka HTTP原生支持。你只需要使用如下代码：</p>
-<pre class="prettyprint"><code class="language-scala">// 支持断点续传
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/fileupload/controller/FileRoute.scala#L36-L39" target="_blank" title="Go to snippet source"></a><code class="language-scala">// 支持断点续传
 private def downloadRoute: Route = path(&quot;download&quot; / Segment) { hash =&gt;
   getFromFile(FileUtils.getLocalPath(hash).toFile)
-}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/fileupload/controller/FileRoute.scala#L36-L39" class="snippet-full-source github">Full source at GitHub</a>
+}</code></pre>
 <p><code>FileUtils.getLocalPath(hash)</code>函数通过对<code>hash</code>值（sha256hex）进行计算和拼接， 获取实际文件的本地存储路径再交给Akka HTTP提供的<code>getFromFile</code>指令，剩下的工作就交给Akka。</p>
-<pre class="prettyprint"><code class="language-scala">def getLocalPath(hash: String): Path = Paths.get(LOCAL_PATH, hash.take(2), hash)</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/fileupload/util/FileUtils.scala#L28" class="snippet-full-source github">Full source at GitHub</a>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/fileupload/util/FileUtils.scala#L28" target="_blank" title="Go to snippet source"></a><code class="language-scala">def getLocalPath(hash: String): Path = Paths.get(LOCAL_PATH, hash.take(2), hash)</code></pre>
 <p>我们可以通过向Akka HTTP发起<code>HEAD</code>请求来查看支持的HTTP功能，看到在反回的header里有<code>Accept-Ranges: bytes</code>， 意思是服务端支持使用字节为单位的范围下载（断点下载功能既基于此实现）。</p>
 <pre><code>$ curl --head http://localhost:33333/file/download/7d0559e2f7bf42f0c2becc7fbf91b20ca2e7ec373c941fca21314169de9c7ef4
 HTTP/1.1 200 OK
@@ -302,21 +306,21 @@ fileupload.Main$ - startup success, ServerBinding(/127.0.0.1:33333)
 <h3><a href="#断点上传实现" name="断点上传实现" class="anchor"><span class="anchor-link"></span></a>断点上传实现</h3>
 <p>基于常规的代码设计方式，我们需要<code>Controller</code>、<code>Service</code>，那就先从<code>Controller</code>开始：</p>
 <h4><a href="#fileroute-uploadroute" name="fileroute-uploadroute" class="anchor"><span class="anchor-link"></span></a>FileRoute#uploadRoute</h4>
-<pre class="prettyprint"><code class="language-scala">private def uploadRoute: Route = path(&quot;upload&quot;) {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/fileupload/controller/FileRoute.scala#L21-L32" target="_blank" title="Go to snippet source"></a><code class="language-scala">private def uploadRoute: Route = path(&quot;upload&quot;) {
   post {
     withoutSizeLimit {
       entity(as[Multipart.FormData]) { formData =&gt;
         onSuccess(fileService.handleUpload(formData)) { results =&gt;
-          import fileupload.util.JacksonSupport._
+          import helloscala.http.JacksonSupport._
           complete(results)
         }
       }
     }
   }
-}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/fileupload/controller/FileRoute.scala#L21-L32" class="snippet-full-source github">Full source at GitHub</a>
+}</code></pre>
 <p>这里需要注意的一个指令是<code>withoutSizeLimit</code>，默认Akka HTTP对请求大小限制比较低，我们可以通过<code>withoutSizeLimit</code> 指令取消对单个API的请求大小限制，同时又不影响整个Web服务的大小限制。另外，这里通过<code>entity(as[Multipart.FormData])</code>以 <strong>Unmarshaller</strong>的方式获取整个<code>Multipart.FormData</code>对象并传入<code>FileService#handleUpload</code>函数进行处理。</p>
 <h4><a href="#fileservice-handleupload" name="fileservice-handleupload" class="anchor"><span class="anchor-link"></span></a>FileService#handleUpload</h4>
-<pre class="prettyprint"><code class="language-scala">  override def handleUpload(formData: Multipart.FormData): Future[Seq[FileBO]] = {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/fileupload/service/FileServiceImpl.scala#L31-L41" target="_blank" title="Go to snippet source"></a><code class="language-scala">  override def handleUpload(formData: Multipart.FormData): Future[Seq[FileBO]] = {
     formData.parts
 //      .groupBy(Constants.FILE_PART_MAX, part =&gt; part.name.split(&#39;.&#39;).head)
 //      .async
@@ -326,11 +330,11 @@ fileupload.Main$ - startup success, ServerBinding(/127.0.0.1:33333)
       .log(&quot;fileInfo&quot;, info =&gt; logger.debug(s&quot;fileInfo: $info&quot;))
       .mapAsync(Constants.FILE_PART_MAX)(processFile)
       .runWith(Sink.seq)
-  }</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/fileupload/service/FileServiceImpl.scala#L31-L41" class="snippet-full-source github">Full source at GitHub</a>
+  }</code></pre>
 <p><code>formData.parts</code>是一个Akka Stream流，类型签名为<code>Source[Multipart.FormData.BodyPart, Any]</code>。有关Akka Stream 更详细的资料请参阅<a href="https://doc.akka.io/docs/akka/current/stream/index.html?language=scala">Akka Streams官方文档</a>。这里， 每个<code>part</code>都代表<code>FormData</code>的一个字段（对应HTML 5的<code>FormData</code>类型，同时前端需要使用 <code>Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryrP4DAyu31ilqEWmz</code>方式发起请求）。每个<code>part.name</code> 都是用英号逗号分隔的三部分来做为请求的字段名，分别是：<code>&lt;hash&gt;.&lt;content length&gt;.&lt;start position&gt;</code>， 这样我们就可以在不加入任何其它字段的情况下告知服务端当前上传文件的sha256hex计算出的hash值、 文件大小（bytes）和上传起始偏移量。</p>
 <h4><a href="#fileutils-uploadfile" name="fileutils-uploadfile" class="anchor"><span class="anchor-link"></span></a>FileUtils#uploadFile</h4>
 <p>文件上传的核心逻辑在<code>FileUtils#uploadFile</code>函数：</p>
-<pre class="prettyprint"><code class="language-scala">def uploadFile(fileInfo: FileInfo)(implicit mat: Materializer, ec: ExecutionContext): Future[FileBO] = {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/fileupload/util/FileUtils.scala#L41-L50" target="_blank" title="Go to snippet source"></a><code class="language-scala">def uploadFile(fileInfo: FileInfo)(implicit mat: Materializer, ec: ExecutionContext): Future[FileBO] = {
   // TODO 需要校验上传完成文件的hash值与提交hash值是否匹配？
   val maybeMeta = fileInfo.hash.flatMap(FileUtils.getFileMeta)
   val beContinue = maybeMeta.isDefined &amp;&amp; fileInfo.startPosition &gt; 0L
@@ -339,9 +343,9 @@ fileupload.Main$ - startup success, ServerBinding(/127.0.0.1:33333)
     case tryValue =&gt;
       logger.debug(s&quot;文件上传完成：$tryValue&quot;)
   }
-}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/fileupload/util/FileUtils.scala#L41-L50" class="snippet-full-source github">Full source at GitHub</a>
+}</code></pre>
 <p><code>uploadFile</code>函数根据是否为续传来分别调用<code>uploadContinue</code>或<code>uploadNewFile</code>函数。首先来看看新文件上传时的代码逻辑：</p>
-<pre class="prettyprint"><code class="language-scala">private def uploadNewFile(fileInfo: FileInfo)(implicit mat: Materializer, ec: ExecutionContext) = {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/fileupload/util/FileUtils.scala#L66-L90" target="_blank" title="Go to snippet source"></a><code class="language-scala">private def uploadNewFile(fileInfo: FileInfo)(implicit mat: Materializer, ec: ExecutionContext) = {
   val bodyPart = fileInfo.bodyPart
   val tmpPath = fileInfo.hash // (1)
     .map(h =&gt; FileUtils.getLocalPath(h))
@@ -365,7 +369,7 @@ fileupload.Main$ - startup success, ServerBinding(/127.0.0.1:33333)
       }
       FileBO(fileInfo.hash, Some(computedHash), localPath, ioResult.count, bodyPart.filename, bodyPart.headers)
     }
-}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/fileupload/util/FileUtils.scala#L66-L90" class="snippet-full-source github">Full source at GitHub</a>
+}</code></pre>
 <ol>
   <li>根据前端是否上传了有效的hash值（sha256hex）来判断是把文件先写入临时文件还是直接写入实际的本地存储位置（根据hash值计算出本地实际的存储位置）。</li>
   <li>Akka HTTP中，上传的文件以流的方式进入，在此对每个<code>ByteString</code>计算并更新sha256值。</li>
@@ -374,7 +378,7 @@ fileupload.Main$ - startup success, ServerBinding(/127.0.0.1:33333)
   <li>根据是否临时文件来判断是否需要将临时文件移动到实际的本地存储路径，通过文件的hash值来计算出实际的本地存储路径。</li>
 </ol>
 <p>断点上传时的逻辑其实相对简单，需要注意的是在<code>(1)</code>处调用<code>FileIO.toPath</code>将流定入本地时需要以<code>APPEND</code>模式追加写入到已存在文件。</p>
-<pre class="prettyprint"><code class="language-scala">private def uploadContinue(fileInfo: FileInfo, meta: FileMeta)(implicit mat: Materializer, ec: ExecutionContext) = {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/fileupload/util/FileUtils.scala#L54-L62" target="_blank" title="Go to snippet source"></a><code class="language-scala">private def uploadContinue(fileInfo: FileInfo, meta: FileMeta)(implicit mat: Materializer, ec: ExecutionContext) = {
   val bodyPart = fileInfo.bodyPart
   val localPath = FileUtils.getLocalPath(fileInfo.hash.get)
   logger.debug(s&quot;断点续传，startPosition：${fileInfo.startPosition}，路径：$localPath&quot;)
@@ -382,7 +386,7 @@ fileupload.Main$ - startup success, ServerBinding(/127.0.0.1:33333)
     .runWith(FileIO.toPath(localPath, Set(APPEND), fileInfo.startPosition))
     .map(ioResult =&gt;
       FileBO(fileInfo.hash, None, localPath, meta.size + ioResult.count, bodyPart.filename, bodyPart.headers))
-}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/fileupload/util/FileUtils.scala#L54-L62" class="snippet-full-source github">Full source at GitHub</a>
+}</code></pre>
 <h2><a href="#秒传" name="秒传" class="anchor"><span class="anchor-link"></span></a>秒传</h2>
 <p>在已实现断点上传功能之上，秒传的实现逻辑就非常清晰了。客户端在调用<code>file/upload</code>接口上传文件之前先调用<code>/file/progress/{hash}</code>接口判断相同hash值文件的上传情况，再决定下一步处理。</p>
 <ol>
@@ -395,23 +399,23 @@ fileupload.Main$ - startup success, ServerBinding(/127.0.0.1:33333)
   <li>其它情况，作为新文件上传</li>
 </ol>
 <p>秒传的代码逻辑台下：</p>
-<pre class="prettyprint"><code class="language-scala">private def uploadRoute: Route = path(&quot;upload&quot;) {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/fileupload/controller/FileRoute.scala#L21-L32" target="_blank" title="Go to snippet source"></a><code class="language-scala">private def uploadRoute: Route = path(&quot;upload&quot;) {
   post {
     withoutSizeLimit {
       entity(as[Multipart.FormData]) { formData =&gt;
         onSuccess(fileService.handleUpload(formData)) { results =&gt;
-          import fileupload.util.JacksonSupport._
+          import helloscala.http.JacksonSupport._
           complete(results)
         }
       }
     }
   }
-}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/fileupload/controller/FileRoute.scala#L21-L32" class="snippet-full-source github">Full source at GitHub</a>
+}</code></pre>
 <p>文件上传进度服务实现如下。</p>
-<pre class="prettyprint"><code class="language-scala">override def progressByHash(hash: String): Future[Option[FileMeta]] = {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/fileupload/service/FileServiceImpl.scala#L24-L27" target="_blank" title="Go to snippet source"></a><code class="language-scala">override def progressByHash(hash: String): Future[Option[FileMeta]] = {
   require(Objects.nonNull(hash) &amp;&amp; hash.nonEmpty, &quot;hash 不能为空。&quot;)
   Future.successful(FileUtils.getFileMeta(hash))
-}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/fileupload/service/FileServiceImpl.scala#L24-L27" class="snippet-full-source github">Full source at GitHub</a>
+}</code></pre>
 <h2><a href="#运行示例" name="运行示例" class="anchor"><span class="anchor-link"></span></a>运行示例</h2>
 <p>通过以下sbt task可以启动文件上传示例程序：<code>sbt &quot;foundation/runMain fileupload.Main&quot;</code>。启动示例程序后， 打开浏览器输入地址：<a href="http://localhost:33333/file-upload/upload.html">http://localhost:33333/file-upload/upload.html</a> 可访问大文件上传示例页面。</p>
 <h2><a href="#小结" name="小结" class="anchor"><span class="anchor-link"></span></a>小结</h2>
@@ -472,7 +476,7 @@ and
 
 </div>
 <div class="md-footer-social">
-<a href="https://github.com/yangbajing" class="md-footer-social__link fa fa-github"></a><a href="https://weibo.com/yangbajing" class="md-footer-social__link fa fa-globe"></a>
+<a href="https://github.com/yangbajing" class="md-footer-social__link fa fa-github"></a><a href="https://weibo.com/yangbajing" class="md-footer-social__link fa fa-globe"></a><a href="https://www.yangbajing.me/" class="md-footer-social__link fa fa-globe"></a>
 </div>
 
 </div>

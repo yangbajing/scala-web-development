@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="description" content="book">
-<meta name="generator" content="Paradox, paradox-material-theme=0.5.1, mkdocs-material=3.0.3">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
 
 <meta name="lang:clipboard.copy" content="Copy to clipboard">
 <meta name="lang:clipboard.copied" content="Copied to clipboard">
@@ -22,6 +22,8 @@
 <link rel="shortcut icon" href="../assets/images/favicon.png">
 <title>使用 JDBC 访问 PostgreSQL · Scala Web 开发——基于Akka构建反应式Web应用</title>
 <link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<meta name="theme-color" content="#009688" />
 <link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
 <link rel="stylesheet" href="../lib/prettify/prettify.css">
 <script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
@@ -35,6 +37,8 @@ code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
 <link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
 </head>
 <body
+data-md-color-primary="teal"
+data-md-color-accent="indigo"
 >
 <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
 <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -189,11 +193,11 @@ yangbajing/scala-web-development
   </ul></li>
   <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
   <ul>
-    <li><a href="../oauth/oauth2.0.html" class="page">实战：OAuth 2 服务</a></li>
-    <li><a href="../oauth/oauth2.1.html" class="page">OAuth 2简介</a></li>
-    <li><a href="../oauth/oauth2.2.html" class="page">OAuth 2接口设计</a></li>
-    <li><a href="../oauth/oauth2.3.html" class="page">OAuth 2服务实现</a></li>
-    <li><a href="../oauth/oauth2.z.html" class="page">小结</a></li>
+    <li><a href="../oauth/oauth.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth.z.html" class="page">小结</a></li>
   </ul></li>
   <li><a href="../database/index.html" class="page">访问数据库</a>
   <ul>
@@ -322,21 +326,21 @@ CREATE TABLE book(
 </code></pre>
 <h3><a href="#代码访问" name="代码访问" class="anchor"><span class="anchor-link"></span></a>代码访问</h3>
 <p>首先，我们定义两个数据库实体对象：<code>Author</code> 和 <code>Book</code>：</p>
-<pre class="prettyprint"><code class="language-scala">case class Author(
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/akkahttp/foundation/data/entity/Author.scala#L4-L9" target="_blank" title="Go to snippet source"></a><code class="language-scala">case class Author(
     id: Long,
     name: String,
     age: Option[Int],
     remark: Option[String]
-)</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/akkahttp/foundation/data/entity/Author.scala#L4-L9" class="snippet-full-source github">Full source at GitHub</a>
-<pre class="prettyprint"><code class="language-scala">case class Book(
+)</code></pre>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/akkahttp/foundation/data/entity/Book.scala#L4-L10" target="_blank" title="Go to snippet source"></a><code class="language-scala">case class Book(
     isbn: String,
     author: Long,
     title: String,
     amount: BigDecimal,
     description: Option[String]
-)</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/akkahttp/foundation/data/entity/Book.scala#L4-L10" class="snippet-full-source github">Full source at GitHub</a>
+)</code></pre>
 <p>接下来在 <code>AuthorRepository</code> 中进行数据库操作，现在先把什么 <code>Service</code>，<code>Controller</code>等放一边，我们使用 <strong>scalatest</strong> 来测试下我们的数 据库访问代码。</p>
-<pre class="prettyprint"><code class="language-scala">class AuthorRepositoryTest extends MeSpec with JDBCSpec {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/test/scala/akkahttp/foundation/data/repository/AuthorRepositoryTest.scala#L11-L39" target="_blank" title="Go to snippet source"></a><code class="language-scala">class AuthorRepositoryTest extends MeSpec with JDBCSpec {
 
   &quot;AuthorRepositoryTest&quot; should {
 
@@ -364,13 +368,13 @@ CREATE TABLE book(
 
   }
 
-}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/test/scala/akkahttp/foundation/data/repository/AuthorRepositoryTest.scala#L11-L39" class="snippet-full-source github">Full source at GitHub</a>
+}</code></pre>
 <p>先不管 <code>MeSpec</code> 和 <code>JDBCSpec</code> 两个 trait，你可以先试试这个测试（前题是你已经设置好数据库环境）。</p>
 <pre class="prettyprint"><code class="language-scala">&gt; testOnly akkahttp.foundation.data.repository.AuthorRepositoryTest
 </code></pre>
 <p><img src="../assets/imgs/testOnly-AuthorRepositoryTest.png" alt="testOnly akkahttp.foundation.data.repository.AuthorRepositoryTest" /></p>
 <p>若一切正常，你会看到测试正确通过。<code>AuthorRepositoryTert</code> 脚本中一共执行了3个测试，其中 <code>should list</code> 测试中打印了一个测试输出，从数据库中 获取到8条记录。下面，让我们来看看 <code>AuthorRepository</code> ，我们怎么在 Scala 中使用 JDBC 来访问数据库的。</p>
-<pre class="prettyprint"><code class="language-scala">class AuthorRepository(dataSource: DataSource) {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/akkahttp/foundation/data/repository/AuthorRepository.scala#L15-L53" target="_blank" title="Go to snippet source"></a><code class="language-scala">class AuthorRepository(dataSource: DataSource) {
   val jdbcTemplate = JdbcTemplate(dataSource)
 
   def update(author: Author): Author = {
@@ -408,7 +412,7 @@ CREATE TABLE book(
     results.map(AuthorRepository.generateResult)
   }
 
-}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/akkahttp/foundation/data/repository/AuthorRepository.scala#L15-L53" class="snippet-full-source github">Full source at GitHub</a>
+}</code></pre>
 <ol>
   <li>这里我们没有使用 Ioc 等方式来管理组件件的依赖，我们在类的构造代码区里实例华一个 <code>jdbcTemplate</code>。</li>
   <li>在 <code>update</code> 方法的开头，我们效验 Author <code>id</code> 是否有效。</li>
@@ -417,7 +421,7 @@ CREATE TABLE book(
   <li>这里使用 <code>RETURNING id</code> 返回数据库序列自动生成的 Author <code>id</code></li>
 </ol>
 <p>在 <code>AuthorRepository</code> 的伴生对象里，有两个简单的帮助函数，<code>generateResult</code> 和 <code>generateArgs</code> ，分别将通过JDBC的ResultSet获取的记录映射 成一个 <code>Author</code> 对象和将 <code>author</code> 对象转换成可用于 <code>INSERT</code>、<code>UPDATE</code>语句字段序列部分及获取有效参数的一个序列。这段话说起来有点拗口，直接来 看看 <code>generateArgs</code> 的代码：</p>
-<pre class="prettyprint"><code class="language-scala">def generateResult(result: Map[String, AnyRef]): Author =
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/akkahttp/foundation/data/repository/AuthorRepository.scala#L59-L90" target="_blank" title="Go to snippet source"></a><code class="language-scala">def generateResult(result: Map[String, AnyRef]): Author =
   Author(
     result(&quot;id&quot;).asInstanceOf[Long],
     result(&quot;name&quot;).asInstanceOf[String],
@@ -448,7 +452,7 @@ def generateArgs(author: Author): (mutable.Buffer[String], mutable.Buffer[Object
     args.append(remark)
   }
   (names, args)
-}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/akkahttp/foundation/data/repository/AuthorRepository.scala#L59-L90" class="snippet-full-source github">Full source at GitHub</a>
+}</code></pre>
 <p>我们有一个 Author 对象的实例：Author(0, &ldquo;羊八井&rdquo;, Some(31), None)。在调用 <code>generateArgs</code> 函数后，将获得以下转出结果：</p>
 <pre class="prettyprint"><code class="language-js">([&quot;name&quot;, &quot;age&quot;], [&quot;羊八井&quot;, 32])
 </code></pre>
@@ -523,7 +527,7 @@ and
 
 </div>
 <div class="md-footer-social">
-<a href="https://github.com/yangbajing" class="md-footer-social__link fa fa-github"></a><a href="https://weibo.com/yangbajing" class="md-footer-social__link fa fa-globe"></a>
+<a href="https://github.com/yangbajing" class="md-footer-social__link fa fa-github"></a><a href="https://weibo.com/yangbajing" class="md-footer-social__link fa fa-globe"></a><a href="https://www.yangbajing.me/" class="md-footer-social__link fa fa-globe"></a>
 </div>
 
 </div>

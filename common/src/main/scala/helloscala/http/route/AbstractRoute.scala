@@ -14,9 +14,10 @@ import akka.stream.scaladsl.{FileIO, Sink, Source}
 import akka.util.ByteString
 import helloscala.common.data.ApiResult
 import helloscala.common.exception.{HSBadRequestException, HSException, HSNotFoundException}
-import helloscala.http.{AkkaHttpSourceQueue, HttpUtils}
 import helloscala.common.types.ObjectId
 import helloscala.common.util.TimeUtils
+import helloscala.http.{AkkaHttpSourceQueue, HttpUtils}
+import message.oauth.{GrantType, ResponseType}
 
 import scala.annotation.tailrec
 import scala.collection.immutable
@@ -24,6 +25,14 @@ import scala.concurrent.Future
 
 trait AbstractRoute extends Directives {
   def route: Route
+
+  implicit def grantTypeFromStringUnmarshaller: FromStringUnmarshaller[GrantType] =
+    Unmarshaller.strict[String, GrantType](str =>
+      GrantType.fromName(str).getOrElse(throw HSBadRequestException("$str 不是有效的GrantType类型")))
+
+  implicit def responseTypeFromStringUnmarshaller: FromStringUnmarshaller[ResponseType] =
+    Unmarshaller.strict[String, ResponseType](str =>
+      ResponseType.fromName(str).getOrElse(throw HSBadRequestException("$str 不是有效的GrantType类型")))
 
   implicit def objectIdFromStringUnmarshaller: FromStringUnmarshaller[ObjectId] =
     Unmarshaller.strict[String, ObjectId] {

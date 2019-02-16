@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="description" content="book">
-<meta name="generator" content="Paradox, paradox-material-theme=0.5.1, mkdocs-material=3.0.3">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
 
 <meta name="lang:clipboard.copy" content="Copy to clipboard">
 <meta name="lang:clipboard.copied" content="Copied to clipboard">
@@ -22,6 +22,8 @@
 <link rel="shortcut icon" href="../../assets/images/favicon.png">
 <title>自定义指令 · Scala Web 开发——基于Akka构建反应式Web应用</title>
 <link rel="stylesheet" href="../../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../../assets/stylesheets/application-palette.22915126.css">
+<meta name="theme-color" content="#009688" />
 <link rel="stylesheet" href="../../lib/material__tabs/dist/mdc.tabs.min.css">
 <link rel="stylesheet" href="../../lib/prettify/prettify.css">
 <script src="../../assets/javascripts/modernizr.1aa3b519.js"></script>
@@ -35,6 +37,8 @@ code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
 <link rel="stylesheet" href="../../assets/stylesheets/paradox-material-theme.css">
 </head>
 <body
+data-md-color-primary="teal"
+data-md-color-accent="indigo"
 >
 <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
 <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -189,11 +193,11 @@ yangbajing/scala-web-development
   </ul></li>
   <li><a href="../../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
   <ul>
-    <li><a href="../../oauth/oauth2.0.html" class="page">实战：OAuth 2 服务</a></li>
-    <li><a href="../../oauth/oauth2.1.html" class="page">OAuth 2简介</a></li>
-    <li><a href="../../oauth/oauth2.2.html" class="page">OAuth 2接口设计</a></li>
-    <li><a href="../../oauth/oauth2.3.html" class="page">OAuth 2服务实现</a></li>
-    <li><a href="../../oauth/oauth2.z.html" class="page">小结</a></li>
+    <li><a href="../../oauth/oauth.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../../oauth/oauth.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../../oauth/oauth.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../../oauth/oauth.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../../oauth/oauth.z.html" class="page">小结</a></li>
   </ul></li>
   <li><a href="../../database/index.html" class="page">访问数据库</a>
   <ul>
@@ -363,7 +367,7 @@ object Directive {
 <p><code>Directive</code>类型有一个抽象方法<code>tapply</code>，参数<code>f</code>是一个函数类型，将类型<code>L</code>传入并返回<code>Route</code>。<code>Directive</code>的伴身对象提供了<code>apply</code>来实现自定义指令。它的参数是一个高阶函数<code>(T =&gt; Route) =&gt; Route</code>，就像小括号那样，我们应把<code>（T =&gt; Route)</code>看成一个整体，它是函数参数，返回类型为<code>Route</code>。</p>
 <p><code>f</code>为我们自定义指令用于从<code>RequestContext</code>里提取值（值的类型为<code>Tuple[L]</code>），而<code>inner</code>就是<code>f</code>提取值后调用的嵌套路由，在调用<code>inner</code>时将提取出的值作为参数传入。</p>
 <p>对于一个提取访问host和port的指令，可以这样实现：</p>
-<pre class="prettyprint"><code class="language-scala">def hostnameAndPort: Directive[(String, Int)] = Directive[(String, Int)] { inner =&gt; ctx =&gt;
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/scala/book/example/route/RouteExample.scala#L98-L106" target="_blank" title="Go to snippet source"></a><code class="language-scala">def hostnameAndPort: Directive[(String, Int)] = Directive[(String, Int)] { inner =&gt; ctx =&gt;
   // inner: (String, Int) =&gt; Route
   // ctx: RequestContext
 
@@ -371,7 +375,7 @@ object Directive {
   val tupleValue: (String, Int) = (authority.host.address(), authority.port)
   val route: Route = inner(tupleValue)
   route(ctx) // Future[RouteResult]
-}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/scala/book/example/route/RouteExample.scala#L98-L106" class="snippet-full-source github">Full source at GitHub</a>
+}</code></pre>
 <p>让我们来分析下这个例子：</p>
 <ol>
   <li>首先是<code>hostnameAndPort</code>指令的类型<code>Directive[(String, Int)]</code>，它从请求上下文（<code>RequestContext</code>）中提取出的值是<code>Tuple2[String, Int]</code>。</li>
@@ -434,7 +438,7 @@ and
 
 </div>
 <div class="md-footer-social">
-<a href="https://github.com/yangbajing" class="md-footer-social__link fa fa-github"></a><a href="https://weibo.com/yangbajing" class="md-footer-social__link fa fa-globe"></a>
+<a href="https://github.com/yangbajing" class="md-footer-social__link fa fa-github"></a><a href="https://weibo.com/yangbajing" class="md-footer-social__link fa fa-globe"></a><a href="https://www.yangbajing.me/" class="md-footer-social__link fa fa-globe"></a>
 </div>
 
 </div>

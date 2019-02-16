@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Authorize Login</title>
+    <link href="/assets/css/bootstrap.css">
+</head>
+<body>
+<div class="container">
+    <form id="form" method="post" action="/auth/signin">
+        <div>
+            <label>账号</label>
+            <input type="text" name="account" placeholder="输入登录账号" value="yangbajing"/>
+        </div>
+        <div>
+            <label>密码</label>
+            <input type="password" name="password" placeholder="登录密码" value="password"/>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">登录</button>
+        </div>
+    </form>
+</div>
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/js/bootstrap.js"></script>
+<script src="/assets/js/qs.js"></script>
+<script src="/assets/js/axios.js"></script>
+<script src="/auth/authorize.js"></script>
+</body>
+</html>

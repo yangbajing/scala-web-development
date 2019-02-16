@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="description" content="book">
-<meta name="generator" content="Paradox, paradox-material-theme=0.5.1, mkdocs-material=3.0.3">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
 
 <meta name="lang:clipboard.copy" content="Copy to clipboard">
 <meta name="lang:clipboard.copied" content="Copied to clipboard">
@@ -22,6 +22,8 @@
 <link rel="shortcut icon" href="../assets/images/favicon.png">
 <title>JSON · Scala Web 开发——基于Akka构建反应式Web应用</title>
 <link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<meta name="theme-color" content="#009688" />
 <link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
 <link rel="stylesheet" href="../lib/prettify/prettify.css">
 <script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
@@ -35,6 +37,8 @@ code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
 <link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
 </head>
 <body
+data-md-color-primary="teal"
+data-md-color-accent="indigo"
 >
 <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
 <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -189,11 +193,11 @@ yangbajing/scala-web-development
   </ul></li>
   <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
   <ul>
-    <li><a href="../oauth/oauth2.0.html" class="page">实战：OAuth 2 服务</a></li>
-    <li><a href="../oauth/oauth2.1.html" class="page">OAuth 2简介</a></li>
-    <li><a href="../oauth/oauth2.2.html" class="page">OAuth 2接口设计</a></li>
-    <li><a href="../oauth/oauth2.3.html" class="page">OAuth 2服务实现</a></li>
-    <li><a href="../oauth/oauth2.z.html" class="page">小结</a></li>
+    <li><a href="../oauth/oauth.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth.z.html" class="page">小结</a></li>
   </ul></li>
   <li><a href="../database/index.html" class="page">访问数据库</a>
   <ul>
@@ -274,7 +278,7 @@ yangbajing/scala-web-development
 <pre class="prettyprint"><code class="language-scala">libraryDependencies += &quot;de.heikoseeberger&quot; %% &quot;akka-http-jackson&quot; % &quot;1.22.0&quot;
 </code></pre>
 <h3><a href="#使用默认的-akka-http-jackson" name="使用默认的-akka-http-jackson" class="anchor"><span class="anchor-link"></span></a>使用默认的 akka-http-jackson</h3>
-<pre class="prettyprint"><code class="language-scala">&quot;Default ObjectMapper&quot; should {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala#L25-L47" target="_blank" title="Go to snippet source"></a><code class="language-scala">&quot;Default ObjectMapper&quot; should {
   import de.heikoseeberger.akkahttpjackson.JacksonSupport._
 
   &quot;从case class序列化和反序列化&quot; in {
@@ -296,7 +300,7 @@ yangbajing/scala-web-development
       throw Unmarshal(requestEntity).to[Foo].failed.futureValue
     }
   }
-}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala#L25-L47" class="snippet-full-source github">Full source at GitHub</a>
+}</code></pre>
 <p>可以看到，默认的 akka-http-jackson 不支持 Java 8 新提供的时间/日期类型序列化，这是因为它默认使用的 Jackson ObjectMapper 没有加载 <strong>JavaTimeModule</strong> 这个模块在 <a href="https://github.com/FasterXML/jackson-modules-java8/tree/master/datetime">https://github.com/FasterXML/jackson-modules-java8/tree/master/datetime</a> 可以找到JavaTimeModule这个模块的更多详细说明。</p>
 <pre class="prettyprint"><code class="language-scala">/**
   * Automatic to and from JSON marshalling/unmarshalling usung an in-scope Jackon&#39;s ObjectMapper
@@ -329,7 +333,7 @@ object JacksonSupport extends JacksonSupport {
     Jackson.marshaller[Object](objectMapper)
 </code></pre>
 <p>可以看到隐式函数又分别定义了两个和一个隐式参数，而 <code>objectMapper: ObjectMapper = defaultObjectMaper</code>这个隐式参数定义了默认值，这样在使用时我们就可以提供自定义的 ObjectMapper 来替代默认的 <code>defaultObjectMapper</code>。先来看看怎样使用自定义的 ObjectMapper：</p>
-<pre class="prettyprint"><code class="language-scala">&quot;Custom ObjectMapper&quot; should {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala#L51-L67" target="_blank" title="Go to snippet source"></a><code class="language-scala">&quot;Custom ObjectMapper&quot; should {
   import de.heikoseeberger.akkahttpjackson.JacksonSupport._
   implicit val objectMapper: ObjectMapper = helloscala.common.json.Jackson.defaultObjectMapper
 
@@ -345,15 +349,24 @@ object JacksonSupport extends JacksonSupport {
     val results = Marshal(foos).to[RequestEntity].flatMap(Unmarshal(_).to[Seq[FooTime]]).futureValue
     foos mustBe results
   }
-}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala#L51-L67" class="snippet-full-source github">Full source at GitHub</a>
+}</code></pre>
 <p>通过在代码上下文中定义一个隐式值：<code>implicit val objectMapper: ObjectMapper = ....</code> <em>（变量名可以取任何名字，不需要是<code>objectMapper</code>。但是需要保证在代码上下文中只有一个ObjectMapper隐式类型。）</em>，Scala 编译器在编译代码时将使用定义的隐式值传入函数 <code>unmarshaller</code> 或 <code>marshaller</code> 中以替代函数定义时设置的默认值。</p>
 <p>自定义 ObjectMapper 定义在object <a href="https://github.com/yangbajing/scala-web-development/tree/master/common/src/main/scala/helloscala/common/json/Jackson.scala">Jackson.scala</a>：</p>
-<pre class="prettyprint"><code class="language-scala">implicit val defaultObjectMapper: ObjectMapper = getObjectMapper
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/common/src/main/scala/helloscala/common/json/Jackson.scala#L24-L49" target="_blank" title="Go to snippet source"></a><code class="language-scala">implicit val defaultObjectMapper: ObjectMapper = getObjectMapper
 
-private def getObjectMapper: ObjectMapper =
-  new ObjectMapper().findAndRegisterModules
-  //.setDateFormat(new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;))
-  //.enable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
+private def getObjectMapper: ObjectMapper = {
+  new ObjectMapper()
+  val FILTER_ID_CLASS: Class[GeneratedMessage] = classOf[GeneratedMessage]
+  new ObjectMapper()
+    .setFilterProvider(new SimpleFilterProvider()
+      .addFilter(FILTER_ID_CLASS.getName, SimpleBeanPropertyFilter.serializeAllExcept(&quot;allFields&quot;)))
+    .setAnnotationIntrospector(new JacksonAnnotationIntrospector() {
+      override def findFilterId(a: Annotated): AnyRef =
+        if (FILTER_ID_CLASS.isAssignableFrom(a.getRawType)) FILTER_ID_CLASS.getName else super.findFilterId(a)
+    })
+    .findAndRegisterModules
+    //.setDateFormat(new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;))
+    //.enable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
     .enable(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES)
     .enable(JsonParser.Feature.ALLOW_SINGLE_QUOTES)
     .enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
@@ -364,10 +377,10 @@ private def getObjectMapper: ObjectMapper =
     .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS) // 允许序列化空的对象
     .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS) // 日期时间类型不序列化成时间戳
     .disable(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS) // 日期时间类型不序列化成时间戳
-    .setSerializationInclusion(JsonInclude.Include.NON_NULL) // 序列化时不包含null的键</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/common/src/main/scala/helloscala/common/json/Jackson.scala#L21-L37" class="snippet-full-source github">Full source at GitHub</a>
+    .setSerializationInclusion(JsonInclude.Include.NON_NULL) // 序列化时不包含null的键</code></pre>
 <h3><a href="#自定义反序列化时允许的mediatype类型" name="自定义反序列化时允许的mediatype类型" class="anchor"><span class="anchor-link"></span></a>自定义反序列化时允许的MediaType类型</h3>
 <p>默认情况下，JacksonSupport要求客户端提交的HTTP请求必需设置Content-Type的mime-type类型为：<code>application/json</code>，但很多时候会遇到不那么规范的客户端，它们并未正确的设置HTTP请求头。这时我们可以自定义JacksonSupport让它在反序列化时支持其它Content-Type：这里定义除了<code>application/json</code>外还支持<code>text/plain</code>类型的请求。</p>
-<pre class="prettyprint"><code class="language-scala">&quot;Custom unmarshallerContentTypes&quot; should {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala#L71-L93" target="_blank" title="Go to snippet source"></a><code class="language-scala">&quot;Custom unmarshallerContentTypes&quot; should {
   final object CustomJacksonSupport extends JacksonSupport {
     override def unmarshallerContentTypes: immutable.Seq[ContentTypeRange] =
       List(MediaTypes.`text/plain`, MediaTypes.`application/json`)
@@ -389,10 +402,10 @@ private def getObjectMapper: ObjectMapper =
     val foo = Unmarshal(entity).to[Foo].futureValue
     foo mustBe Foo(&quot;羊八井&quot;, 2018)
   }
-}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala#L71-L93" class="snippet-full-source github">Full source at GitHub</a>
+}</code></pre>
 <h2><a href="#在-routing-dsl-里使用" name="在-routing-dsl-里使用" class="anchor"><span class="anchor-link"></span></a>在 routing DSL 里使用</h2>
 <p>在 Akka HTTP Routing DSL 里使用Jackson来反序列化/序列化JSON就非常简单了。通过<code>entity(as[FooTime])</code>指令来将提交的JSON数据解析成 <code>FooTime</code> 样本类（将调用 <code>unmarshaller[A]</code> 隐式函数），在<code>complete</code>函数响应结果时将 <code>FooTime</code> 对象序列化成JSON字符串并设置对应的Content-Type（调用 <code>marshaller[A]</code> 隐式函数）。</p>
-<pre class="prettyprint"><code class="language-scala">&quot;routing-dsl&quot; should {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala#L97-L120" target="_blank" title="Go to snippet source"></a><code class="language-scala">&quot;routing-dsl&quot; should {
   import akka.http.scaladsl.server.Directives._
   import de.heikoseeberger.akkahttpjackson.JacksonSupport._
   implicit val objectMapper: ObjectMapper = helloscala.common.json.Jackson.defaultObjectMapper
@@ -415,7 +428,7 @@ private def getObjectMapper: ObjectMapper =
       foo.since.isBefore(payload.since) mustBe true
     }
   }
-}</code></pre><a href="https://github.com/yangbajing/scala-web-development/tree/master/data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala#L97-L120" class="snippet-full-source github">Full source at GitHub</a>
+}</code></pre>
 <h2><a href="#总结" name="总结" class="anchor"><span class="anchor-link"></span></a>总结</h2>
 <p>Akka HTTP通过强大的 Marshal/Unmarshal 机制来实现数据的序列/反序列化，作为一款工具库 Akka HTTP 提供了足够的灵活性，用户可以选择自己喜欢的序列/反序列化工具和使用方式。对于JSON，推荐从 <strong><a href="https://github.com/hseeberger/akka-http-json">https://github.com/hseeberger/akka-http-json</a></strong> 开始，上面很有可能找到你想要的。同时，akka-http-json也是一个不错的学习 Akka HTTP Marshal/Unmarshal 机制的样例。</p>
 <p>完整的测试代码在：<a href="https://github.com/yangbajing/scala-web-development/tree/master/data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala">data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala</a>，可以通过以下命令来运行它：</p>
@@ -478,7 +491,7 @@ and
 
 </div>
 <div class="md-footer-social">
-<a href="https://github.com/yangbajing" class="md-footer-social__link fa fa-github"></a><a href="https://weibo.com/yangbajing" class="md-footer-social__link fa fa-globe"></a>
+<a href="https://github.com/yangbajing" class="md-footer-social__link fa fa-github"></a><a href="https://weibo.com/yangbajing" class="md-footer-social__link fa fa-globe"></a><a href="https://www.yangbajing.me/" class="md-footer-social__link fa fa-globe"></a>
 </div>
 
 </div>

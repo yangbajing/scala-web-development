@@ -23,7 +23,7 @@ class FileRoute(fileService: FileService) extends StrictLogging {
       withoutSizeLimit {
         entity(as[Multipart.FormData]) { formData =>
           onSuccess(fileService.handleUpload(formData)) { results =>
-            import fileupload.util.JacksonSupport._
+            import helloscala.http.JacksonSupport._
             complete(results)
           }
         }
@@ -44,7 +44,7 @@ class FileRoute(fileService: FileService) extends StrictLogging {
   private def progressRoute: Route = path("progress" / Segment) { hash =>
     onSuccess(fileService.progressByHash(hash)) {
       case Some(v) =>
-        import fileupload.util.JacksonSupport._
+        import helloscala.http.JacksonSupport._
         complete(v)
       case None => complete(StatusCodes.NotFound)
     }

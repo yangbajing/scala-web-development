@@ -6,8 +6,11 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.`type`.TypeReference
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
+import com.fasterxml.jackson.databind.introspect.{Annotated, JacksonAnnotationIntrospector}
 import com.fasterxml.jackson.databind.node.{ArrayNode, ObjectNode}
+import com.fasterxml.jackson.databind.ser.impl.{SimpleBeanPropertyFilter, SimpleFilterProvider}
 import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper, SerializationFeature}
+import scalapb.GeneratedMessage
 
 import scala.reflect.ClassTag
 import scala.reflect.runtime.universe._
@@ -20,10 +23,19 @@ object Jackson {
   // #defaultObjectMapper
   implicit val defaultObjectMapper: ObjectMapper = getObjectMapper
 
-  private def getObjectMapper: ObjectMapper =
-    new ObjectMapper().findAndRegisterModules
-    //.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
-    //.enable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
+  private def getObjectMapper: ObjectMapper = {
+    new ObjectMapper()
+    val FILTER_ID_CLASS: Class[GeneratedMessage] = classOf[GeneratedMessage]
+    new ObjectMapper()
+      .setFilterProvider(new SimpleFilterProvider()
+        .addFilter(FILTER_ID_CLASS.getName, SimpleBeanPropertyFilter.serializeAllExcept("allFields")))
+      .setAnnotationIntrospector(new JacksonAnnotationIntrospector() {
+        override def findFilterId(a: Annotated): AnyRef =
+          if (FILTER_ID_CLASS.isAssignableFrom(a.getRawType)) FILTER_ID_CLASS.getName else super.findFilterId(a)
+      })
+      .findAndRegisterModules
+      //.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
+      //.enable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
       .enable(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES)
       .enable(JsonParser.Feature.ALLOW_SINGLE_QUOTES)
       .enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
@@ -35,7 +47,8 @@ object Jackson {
       .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS) // 日期时间类型不序列化成时间戳
       .disable(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS) // 日期时间类型不序列化成时间戳
       .setSerializationInclusion(JsonInclude.Include.NON_NULL) // 序列化时不包含null的键
-  // #defaultObjectMapper
+    // #defaultObjectMapper
+  }
 
   def stringify(value: AnyRef): String = defaultObjectMapper.writeValueAsString(value)
 

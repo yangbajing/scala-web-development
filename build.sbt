@@ -21,18 +21,18 @@ lazy val root = Project("scala-web-root", file("."))
 
 lazy val book = project
   .in(file("book"))
-  .enablePlugins(ParadoxPlugin)
   .enablePlugins(ParadoxMaterialThemePlugin)
   .dependsOn(`engineering-guice`, monitor, test, oauth, foundation, database, common)
   .settings(
     name in (Compile, paradox) := "Scala Web Development",
-//    paradoxTheme := Some(builtinParadoxTheme("generic")),
     Compile / paradoxMaterialTheme ~= {
       _.withLanguage(java.util.Locale.SIMPLIFIED_CHINESE)
+        .withColor("teal", "indigo")
         .withRepository(uri("https://github.com/yangbajing/scala-web-development"))
         .withSocial(
           uri("https://github.com/yangbajing"),
-          uri("https://weibo.com/yangbajing")
+          uri("https://weibo.com/yangbajing"),
+          uri("https://www.yangbajing.me/")
         )
     },
     paradoxProperties ++= Map(
@@ -105,7 +105,8 @@ lazy val oauth = project
   .settings(basicSettings: _*)
   .settings(
     libraryDependencies ++= Seq(
-      )
+      _jwtCore
+    ) ++ _akkaClusters ++ _akkaManagements
   )
 
 lazy val foundation = project

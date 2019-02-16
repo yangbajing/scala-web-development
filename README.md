@@ -1,6 +1,10 @@
-# Scala Web 开发 - 使用 Akka HTTP
+# Scala Web 开发——基于Akka构建反应式Web应用
 
-**本地阅读**
+## 在线阅读
+
+[https://www.yangbajing.me/scala-web-development/](https://www.yangbajing.me/scala-web-development/)
+
+## 本地阅读
 
 ```
 git clone https://github.com/yangbajing/scala-web-development.git

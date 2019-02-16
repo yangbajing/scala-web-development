@@ -1,30 +1,63 @@
 syntax = "proto3";
 
+import "google/protobuf/wrappers.proto";
+import "scalapb/scalapb.proto";
+
 package message.oauth;
+
+enum GrantType {
+    access_token = 0;
+    authorization_code = 1;
+    implicit = 2;
+    password = 3;
+    client_credentials = 4;
+    refresh_token = 5;
+}
+
+enum ResponseType {
+    code = 0;
+}
+
+message AuthorizeParameters {
+    ResponseType response_type = 1 [(scalapb.field).scala_name = "response_type"];
+    string clientId = 2 [(scalapb.field).scala_name = "client_id"];
+    string redirect_uri = 3 [(scalapb.field).scala_name = "redirect_uri"];
+    string scope = 4;
+    string state = 5;
+    google.protobuf.StringValue access_type = 6 [(scalapb.field).scala_name = "access_type"];
+    google.protobuf.StringValue login_hint = 7 [(scalapb.field).scala_name = "login_hint"];
+}
 
 message AuthorizeSigninRequest {
     string account = 1;
     string password = 2;
-    string responseType = 3;
-    string clientId = 4;
-    string redirectUri = 5;
+    string response_type = 3 [(scalapb.field).scala_name = "response_type"];
+    string clientId = 4 [(scalapb.field).scala_name = "client_id"];
+    string redirect_uri = 5 [(scalapb.field).scala_name = "redirect_uri"];
     string scope = 6;
-    string state = 7;
+    google.protobuf.StringValue state = 7;
+    google.protobuf.StringValue access_type = 8 [(scalapb.field).scala_name = "access_type"];
+    google.protobuf.StringValue login_hint = 9 [(scalapb.field).scala_name = "login_hint"];
 }
 
 message AuthorizeTokenRequest {
-    string grantType = 1;
-    string clientId = 2;
-    string clientKey = 3;
-    string code = 4;
-    string redirectUri = 5;
-    string echostr = 6;
+    GrantType grant_type = 1 [(scalapb.field).scala_name = "grant_type"]; // 授权类型
+    string client_id = 2 [(scalapb.field).scala_name = "client_id"]; // 客户端ID
+    google.protobuf.StringValue client_secret = 3 [(scalapb.field).scala_name = "client_secret"]; // 客户端密码
+    google.protobuf.StringValue code = 4; // 授权码
+    google.protobuf.StringValue redirect_uri = 5 [(scalapb.field).scala_name = "redirect_uri"]; // 重定向地址
+    google.protobuf.StringValue echostr = 6; // 随机字符串
+    google.protobuf.StringValue refresh_token = 7 [(scalapb.field).scala_name = "refresh_token"];
+    google.protobuf.StringValue username = 8 [(scalapb.field).scala_name = "username"];
+    google.protobuf.StringValue password = 9 [(scalapb.field).scala_name = "password"];
 }
 
 message AccessToken {
-    string accessToken = 1;
-    int64 expiresIn = 2;
-    string refreshToken = 3;
+    string access_token = 1 [(scalapb.field).scala_name = "access_token"]; // 访问令牌
+    int64 expires_in = 2 [(scalapb.field).scala_name = "expires_in"]; // 过期时间
+    google.protobuf.StringValue refresh_token = 3 [(scalapb.field).scala_name = "refresh_token"]; // 刷新令牌
+    google.protobuf.StringValue token_type = 4 [(scalapb.field).scala_name = "token_type"]; // 令牌类型
+    google.protobuf.StringValue jti = 5; // JWT ID，当access_token 为JWT时，而claim不足以自包含信息时可通过jti向服务端请求更详细数据
 };
 
 message AccessSession {

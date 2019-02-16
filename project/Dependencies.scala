@@ -15,7 +15,7 @@ object Dependencies {
 
   val _scalatest = "org.scalatest" %% "scalatest" % "3.0.5"
 
-  val versionAkka = "2.5.19"
+  val versionAkka = "2.5.20"
   lazy val _akkaRemote = "com.typesafe.akka" %% "akka-remote" % versionAkka
 
   lazy val _akkas = Seq(
@@ -40,18 +40,13 @@ object Dependencies {
     "com.typesafe.akka" %% "akka-cluster-sharding-typed" % versionAkka,
     _akkaMultiNodeTestkit
   )
-
-  lazy val _akkaManagements = Seq(
-    ("com.lightbend.akka.management" %% "akka-management" % "0.20.0")
-      .excludeAll(ExclusionRule("com.typesafe.akka"))
-      .exclude("org.scala-lang", "scala-library")
-  )
-
-  val versionAkkaHttp = "10.1.6"
+  
+  val versionAkkaHttp = "10.1.7"
   val _akkaHttpCore = "com.typesafe.akka" %% "akka-http-core" % versionAkkaHttp
 
   val _akkaHttps = Seq(
     "com.typesafe.akka" %% "akka-http" % versionAkkaHttp,
+    "com.typesafe.akka" %% "akka-http-spray-json" % versionAkkaHttp,
     "com.typesafe.akka" %% "akka-http-testkit" % versionAkkaHttp % Test
   ).map(
     _.exclude("com.typesafe.akka", "akka-stream")
@@ -59,7 +54,12 @@ object Dependencies {
       .exclude("com.typesafe.akka", "akka-stream-testkit")
       .withCrossVersion(CrossVersion.binary))
 
-  private val versionAlpakka = "0.20"
+  lazy val _akkaManagements = Seq(
+    "com.lightbend.akka.management" %% "akka-management" % "1.0.0-RC2",
+    "com.lightbend.akka.management" %% "akka-management-cluster-http" % "1.0.0-RC2"
+  ).map(_.excludeAll(ExclusionRule("com.typesafe.akka")).exclude("org.scala-lang", "scala-library"))
+
+  private val versionAlpakka = "1.0-M2"
 
   val _alpakkaSimpleCodecs =
     ("com.lightbend.akka" %% "akka-stream-alpakka-simple-codecs" % versionAlpakka)
@@ -135,30 +135,30 @@ object Dependencies {
     "com.typesafe.akka" %% "akka-persistence-cassandra-launcher" % versionAkkaPersistenceCassandra % Test
   )
 
-  val _akkaStreamKafka = ("com.typesafe.akka" %% "akka-stream-kafka" % "0.22")
+  val _akkaStreamKafka = ("com.typesafe.akka" %% "akka-stream-kafka" % "1.0-RC1")
     .exclude("com.typesafe.akka", "akka-slf4j")
     .cross(CrossVersion.binary)
 
-  val _akkaHttpJackson = "de.heikoseeberger" %% "akka-http-jackson" % "1.22.0"
+  val _akkaHttpJackson = "de.heikoseeberger" %% "akka-http-jackson" % "1.24.3"
 
   val _config = "com.typesafe" % "config" % "1.3.3"
 
   val _hanlp = "com.hankcs" % "hanlp" % "portable-1.6.6"
 
-  private val versionJackson = "2.9.6"
+  private val versionJackson = "2.9.8"
 
   val _jsons = Seq(
     "com.fasterxml.jackson.datatype" % "jackson-datatype-jdk8" % versionJackson,
     "com.fasterxml.jackson.datatype" % "jackson-datatype-jsr310" % versionJackson,
     "com.fasterxml.jackson.module" % "jackson-module-parameter-names" % versionJackson,
-//    ("org.json4s" %% "json4s-jackson" % "3.6.0")
-//  .exclude("com.fasterxml.jackson.core", "jackson-databind"),
     "com.fasterxml.jackson.module" %% "jackson-module-scala" % versionJackson
   )
 
   val _sjsonnet = "com.lihaoyi" %% "sjsonnet" % "0.1.2"
 
-  val _redisclient = "net.debasishg" %% "redisclient" % "3.7"
+  val _requests = "com.lihaoyi" %% "requests" % "0.1.4"
+
+  val _redisclient = "net.debasishg" %% "redisclient" % "3.9"
 
   val _aspectjweaver = "org.aspectj" % "aspectjweaver" % "1.9.1"
 
@@ -232,17 +232,22 @@ object Dependencies {
     "com.softwaremill.macwire" %% "proxy" % versionMacwire
   )
 
+  val versionSlick = "3.3.0"
   val _slicks = Seq(
-    "com.typesafe.slick" %% "slick" % "3.2.3",
-    "com.typesafe.slick" %% "slick-testkit" % "3.2.3" % Test,
-    "com.github.tminglei" %% "slick-pg" % "0.16.3",
-    "com.github.tminglei" %% "slick-pg_json4s" % "0.16.3"
+    "com.typesafe.slick" %% "slick" % versionSlick,
+    "com.typesafe.slick" %% "slick-testkit" % versionSlick % Test,
+    "com.github.tminglei" %% "slick-pg" % "0.17.1",
+    "com.github.tminglei" %% "slick-pg_json4s" % "0.17.1"
   )
+
+  val _jwtCore = "com.pauldijou" %% "jwt-core" % "1.1.0"
+
+  val _javaJwt = "com.auth0" % "java-jwt" % "3.5.0"
 
   private val versionPoi = "3.17"
   val _pois = Seq("org.apache.poi" % "poi-scratchpad" % versionPoi, "org.apache.poi" % "poi-ooxml" % versionPoi)
 
-  private val versionCassandra = "3.3.2"
+  private val versionCassandra = "3.6.0"
 
   val _cassandraDrivers = Seq(
     "com.datastax.cassandra" % "cassandra-driver-core" % versionCassandra,
@@ -261,7 +266,7 @@ object Dependencies {
 
   val _h2 = "com.h2database" % "h2" % "1.4.197"
 
-  val _bouncycastleProvider = "org.bouncycastle" % "bcprov-jdk15on" % "1.59"
+  val _bouncycastleProvider = "org.bouncycastle" % "bcprov-jdk15on" % "1.60"
 
   private val versionQuartz = "2.2.3"
   val _quartz = "org.quartz-scheduler" % "quartz" % versionQuartz
@@ -276,9 +281,9 @@ object Dependencies {
 
   val _protobuf = "com.google.protobuf" % "protobuf-java" % "3.6.1"
 
-  //  val _scalapb = "com.thesamet.scalapb" %% "scalapb-runtime" % scalapb.compiler.Version.scalapbVersion % "protobuf",
+  val _scalapb = "com.thesamet.scalapb" %% "scalapb-runtime" % scalapb.compiler.Version.scalapbVersion % "protobuf"
 
-  val _swaggerAnnotation = "io.swagger.core.v3" % "swagger-annotations" % "2.0.2"
+  val _swaggerAkkaHttp = "com.github.swagger-akka-http" %% "swagger-akka-http" % "2.0.1"
 
   val _commonsVfs = "org.apache.commons" % "commons-vfs2" % "2.2"
 
