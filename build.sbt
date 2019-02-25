@@ -1,11 +1,11 @@
 import Common._
 import Dependencies._
 
-version in ThisBuild := "1.0.0"
+version in Global := "1.0.0"
 
 shellPrompt := (s => Project.extract(s).currentProject.id + " > ")
 
-scalafmtOnCompile in ThisBuild := true
+scalafmtOnCompile in Global := true
 
 lazy val root = Project("scala-web-root", file("."))
   .aggregate(

@@ -15,7 +15,7 @@ object Dependencies {
 
   val _scalatest = "org.scalatest" %% "scalatest" % "3.0.5"
 
-  val versionAkka = "2.5.20"
+  val versionAkka = "2.5.21"
   lazy val _akkaRemote = "com.typesafe.akka" %% "akka-remote" % versionAkka
 
   lazy val _akkas = Seq(
@@ -135,7 +135,7 @@ object Dependencies {
     "com.typesafe.akka" %% "akka-persistence-cassandra-launcher" % versionAkkaPersistenceCassandra % Test
   )
 
-  val _akkaStreamKafka = ("com.typesafe.akka" %% "akka-stream-kafka" % "1.0-RC1")
+  val _akkaStreamKafka = ("com.typesafe.akka" %% "akka-stream-kafka" % "1.0-RC2")
     .exclude("com.typesafe.akka", "akka-slf4j")
     .cross(CrossVersion.binary)
 

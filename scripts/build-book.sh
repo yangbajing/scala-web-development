@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sbt book/paradox
+#sbt book/paradox
 
 if [ ! -d docs ]; then
   mkdir docs

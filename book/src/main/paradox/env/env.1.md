@@ -13,9 +13,9 @@ Scala有一套官方的编译、构建工具 Sbt，全称：The interactive buil
 下载安装并配置Sbt：
 
 ```
-wget -c http://file.helloscala.com/sbt-1.1.4.tgz
-tar zxf sbt-1.1.4.tgz
-echo 'export SBT_HOME="/home/yangjing/sbt-1.1.4"
+wget -c https://github.com/sbt/sbt/releases/download/v1.2.8/sbt-1.2.8.tgz
+tar zxf sbt-1.2.8.tgz
+echo 'export SBT_HOME="/home/yangjing/sbt-1.2.8"
 export PATH="$SBT_HOME/bin:$PATH"
 ' >> ~/.bash_profile
 . ~/.bash_profile
@@ -26,7 +26,7 @@ export PATH="$SBT_HOME/bin:$PATH"
 
 **Windows**
 
-下载 [sbt-1.1.4.msi](http://file.helloscala.com/sbt-1.1.4.msi) ，双击安装。
+下载 [https://github.com/sbt/sbt/releases/download/v1.2.8/sbt-1.2.8.msi](https://github.com/sbt/sbt/releases/download/v1.2.8/sbt-1.2.8.msi) ，双击安装。
 
 ## 创建一个 Sbt 项目
 
@@ -68,3 +68,34 @@ sbt:Scala Seed Project>
 *运行 scalatest 测试*
 
 ![testOnly example.HelloSpec](.../01.1.testOnly.png)
+
+## 多项目工程
+
+通常在真实的应用开发中，我们都会在一个工程里有多个子项目，使用子项目的形式来区分不同模块。我们只需要在
+[`build.sbt`](../../../../../codes/multi-project/build.sbt) 工程配置文件中使用 `project` 指令来定义不同的子项目即可，一个示例如下：
+
+@@snip [build.sbt](../../../../../codes/multi-project/build.sbt)
+
+- **project**：需要传入一个`File`参数，用于设置子项目的本地路径。
+- **aggregate**：根项目中用于聚合需要的子项目。在Sbt控制台不进入子项目的情况下使用`compile`、`test`等命令时会依次进入所有配置了的子项目执行命令。
+- **dependsOn**：指定依赖的项目。
+- **settings**：对应单项目配置时的配置项都在此设置。
+
+多项目工程目录结构如下：
+```
+├── app
+│   ├── src
+│   │   ├── main
+│   │   └── test
+├── common
+│   ├── src
+│   │   ├── main
+│   │   └── test
+├── project
+│   ├── build.properties
+├── build.sbt
+```
+
+@@@note { title=注意 }
+默认，sbt不会创建`src/main/scala`、`src/test/scala`等相关源码目录，这需要我们手动创建。
+@@@
