@@ -68,28 +68,28 @@ object StandardRoute {
 
 Akka HTTP提供的Routing DSL构造出来的路由结构是一颗树，所以编写指令时通常也是通过“嵌套”的方式来组装到一起的。看一个简单的例子：
 
-@@snip [RouteExample.scala](../../../scala/book/example/route/RouteExample.scala) { #basic-route-tree }
+@@snip [RouteExample.scala](../../scala/book/example/route/RouteExample.scala) { #basic-route-tree }
 
 Akka HTTP提供的Routing DSL以树型结构的方式来构造路由结构，它与 **Playframework** 和 **Spring** 定义路由的方式不太一样，很难说哪一种更好。也许刚开始时你会不大习惯这种路由组织方式，一但熟悉以后你会认为它非常的有趣和高效，且很灵活。
 
 可以看到，若我们的路由非常复杂，它由很多个指令组成，这时假若还把所有路由定义都放到一个代码块里实现就显得非常的臃肿。因为每一个指令都是一个独立的代码块，它通过函数调用的形式组装到一起，我们可以这样对上面定义的路由进行拆分。
 
-@@snip [RouteExample.scala](../../../scala/book/example/route/RouteExample.scala) { #basic-route-1 }
+@@snip [RouteExample.scala](../../scala/book/example/route/RouteExample.scala) { #basic-route-1 }
 
 通过`&`操作符将多个指令组合成一个，所有指令都符合时通过。
 
-@@snip [RouteExample.scala](../../../scala/book/example/route/RouteExample.scala) { #directive-and }
+@@snip [RouteExample.scala](../../scala/book/example/route/RouteExample.scala) { #directive-and }
 
 通过`|`操作符将多个指令组合成一个，只要其中一个指令符合则通过。
 
-@@snip [RouteExample.scala](../../../scala/book/example/route/RouteExample.scala) { #directive-or }
+@@snip [RouteExample.scala](../../scala/book/example/route/RouteExample.scala) { #directive-or }
 
 @@@ note
 上面这段代码来自真实的业务，因为某些落后于时代的安全原因，网管将HTTP的PUT、DELETE、HEAD等方法都禁用了，只保留了GET、POST两个方法。使用如上的技巧可以同时支持两种方式来访问路由。
 
 **还有一种方案来解决这个问题**
 
-@@snip [RouteExample.scala](../../../scala/book/example/route/RouteExample.scala) { #deleteUser2 }
+@@snip [RouteExample.scala](../../scala/book/example/route/RouteExample.scala) { #deleteUser2 }
 
 客户端不需要修改访问地址为 `/user/{userId}/_delete`，它只需要这样访问路由 `POST /user/{userId}?httpMethod=DELETE`。`overrideMethodWithParameter("httpMethod")`会根据`httpMethod`参数的值来将请求上下文里的`HttpRequest.method`转换成 **DELETE** 方法请求。
 @@@

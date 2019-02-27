@@ -44,10 +44,12 @@ object Dependencies {
   val versionAkkaHttp = "10.1.7"
   val _akkaHttpCore = "com.typesafe.akka" %% "akka-http-core" % versionAkkaHttp
 
+  val _akkaHttpTestkit = "com.typesafe.akka" %% "akka-http-testkit" % versionAkkaHttp
+  
   val _akkaHttps = Seq(
     "com.typesafe.akka" %% "akka-http" % versionAkkaHttp,
     "com.typesafe.akka" %% "akka-http-spray-json" % versionAkkaHttp,
-    "com.typesafe.akka" %% "akka-http-testkit" % versionAkkaHttp % Test
+    _akkaHttpTestkit % Test
   ).map(
     _.exclude("com.typesafe.akka", "akka-stream")
       .withCrossVersion(CrossVersion.binary)

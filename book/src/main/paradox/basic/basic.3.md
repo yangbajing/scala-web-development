@@ -4,8 +4,8 @@ HTTP 规范定义了大量概念和功能，它们是不特定于具体实现的
 
 - **HTTP Model**：包括常见的请求、响应、headers等结构，代码都在 `akka-http-core` 模块，它们是构建大多次 Akka HTTP API的基础。
 - **URI Model**：根据 [RFC 3986](https://tools.ietf.org/html/rfc3986#section-1.1.2) 实现了 URI 解析规则。
-- **Marshalling**：将高级（对象）结构转换成某种低级表示形式的过程，其它流行的名称有：**Serialization** 和  **Pickling** 。
-- **Unmarshalling**：将低级表示形式转换成某种高级（对象）结构的过程，其它流行的名称有：**Deserialization** 和 **Unpickling** 。
+- **Marshalling**：将高级（对象）结构转换成某种低级表示形式的过程，其它流行的名称有： **Serialization** 和  **Pickling** 。
+- **Unmarshalling**：将低级表示形式转换成某种高级（对象）结构的过程，其它流行的名称有： **Deserialization** 和 **Unpickling** 。
 - **Encoding / Decoding**：[HTTP spec](http://tools.ietf.org/html/rfc7231#section-3.1.2.1)定义了 `Content-Encoding`头，实现了 HTTP 消息的压缩、解压缩。如：`gzip`、`deflate`……
 - **JSON Support**：根据 **marshalling** 和 **unmarshalling** 实现的 JSON 解析，默认提供了 `akka-http-spray-json` 模块。也可很容易的定义自己的 JSON 解析。
 - **XML Support**：根据 **marshalling** 和 **unmarshalling** 实现的 [Scala XML](https://github.com/scala/scala-xml) 解析，默认提供了 `akka-http-xml` 模块。也可很容易的定义自己的 XML 解析。

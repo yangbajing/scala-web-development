@@ -43,6 +43,9 @@ lazy val book = project
       "scala.binary_version" -> scalaBinaryVersion.value,
       "scaladoc.akka.base_url" -> s"http://doc.akka.io/api/$versionAkka",
       "akka.version" -> versionAkka
+    ),
+    libraryDependencies ++= Seq(
+      _akkaHttpTestkit
     )
   )
 

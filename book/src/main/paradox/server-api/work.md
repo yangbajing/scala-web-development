@@ -27,7 +27,7 @@ Akka HTTP 服务端组件有两层：
 
 ## 启动和停止
 
-Akka HTTP 提供了 `bind` 这个方法来启动服务，它通过指定 `interface` 和 `port` 来绑定服务，并注册处理进入的 HTTP 连接。
+Akka HTTP 提供了 `bind` 这个方法来启动服务，它通过指定 `interface` 和 `port` 来绑定服务，并注册处理函数来处理进入的 HTTP 连接。
 
 ```scala
 import akka.actor.ActorSystem
@@ -52,8 +52,8 @@ val bindingFuture: Future[Http.ServerBinding] =
 
 ## 请求、响应生命周期
 
-低级别的 Akka HTTP 服务端 API 在 `akka-http-core` 模块提供了 `HttpRequest` 接受多个或单个连接，并由 `HttpResponse` 生成响应。处理这
-些请求/响应的函数调用类型叫做：`Flow[HttpRequest, HttpResponse, _]` ，由它来“转换” **请求** 到 **响应** 。
+低级别的 Akka HTTP 服务端 API 在 `akka-http-core` 模块提供了 `HttpRequest` 来接受多个或单个连接，并由 `HttpResponse` 生成响应。处理这
+些请求/响应的函数调用类型叫做：`Flow[HttpRequest, HttpResponse, _]` ，由它来“转换” **请求（HttpRequest）** 到 **响应（HttpResponse）** 。
 
 收到的 HTTP 请求通过调用 `handleWithXXX` 中的一个来处理，主要的方法有：
 
@@ -116,9 +116,8 @@ val bindingFuture: Future[ServerBinding] = serverSource
   .to(handleConnections) // Sink[Http.IncomingConnection, _]
   .run()
 
-bindingFuture.onFailure {
-  case ex: Exception =>
-    log.error(ex, "Failed to bind to {}:{}!", "localhost", 80)
+bindingFuture.failed.foreach { ex =>
+  log.error(ex, "Failed to bind to {}:{}!", "localhost", 80)
 }
 ```
 
@@ -127,15 +126,14 @@ bindingFuture.onFailure {
 
 ### 连接源失败 (Connection Source failures)
 
-下面的例子，我们通过一个 `failureMonitor` actor来捕获 `IncomingConnection` 错误，由 Actor 来处理这个错误，也许它会决定重启服务或关闭
-整个 **ActorSystem**　。
+下面的例子，我们通过一个 `failureMonitor` actor来捕获 `IncomingConnection` 错误，由 Actor 来处理这个错误，也许它会决定重启服务或关闭整个 **ActorSystem**　。
 
 ```scala
 val failureMonitor: ActorRef = system.actorOf(MyExampleMonitoringActor.props)
 
 val reactToTopLevelFailures = Flow[IncomingConnection]
-  .watchTermination()((_, termination) => termination.onFailure {
-    case cause => failureMonitor ! cause
+  .watchTermination()((_, termination) => termination.failed.foreach { cause =>
+    failureMonitor ! cause
   })
 
 serverSource
@@ -146,8 +144,7 @@ serverSource
 
 ### 连接失败 (Connection failures)
  
-故障发生的第3种情况是连接已经建立，但在响应前突然终止，如：client中止了底层的TCP连接。这理此类故障可以使用与前一个相似的方式，但是我们将这个应
-用这个连接的处理流程中。
+故障发生的第3种情况是连接已经建立，但在响应前突然终止，如：client中止了底层的TCP连接。这里此类故障可以使用与前一个相似的处理方式，但是我们将这个应用这个连接的处理流程中。
 
 ```scala
 val reactToConnectionFailure = Flow[HttpRequest]
@@ -166,7 +163,8 @@ val httpEcho = Flow[HttpRequest]
 
 serverSource
   .runForeach { con =>
-    con.handle
+    con.handleWith(httpEcho)
+  }
 ```
 
 大部分时间你都不需要深入理解这个故障处理，Akka 详细的记录了这些故障日志，并有一系列默认的方式来处理这些故障。

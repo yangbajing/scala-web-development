@@ -128,13 +128,13 @@ object Directive {
 }
 ```
 
-`Directive`类型有一个抽象方法`tapply`，参数`f`是一个函数类型，将类型`L`传入并返回`Route`。`Directive`的伴身对象提供了`apply`来实现自定义指令。它的参数是一个高阶函数`(T => Route) => Route`，就像小括号那样，我们应把`（T => Route)`看成一个整体，它是函数参数，返回类型为`Route`。
+`Directive`类型有一个抽象方法`tapply`，参数`f`是一个函数类型，将类型`L`传入并返回`Route`。`Directive`的伴身对象提供了`apply`函数来实现自定义指令，它的参数是一个高阶函数`(T => Route) => Route`，就像小括号那样，我们应把`（T => Route)`看成一个整体，它是函数参数，返回类型为`Route`。
 
 `f`为我们自定义指令用于从`RequestContext`里提取值（值的类型为`Tuple[L]`），而`inner`就是`f`提取值后调用的嵌套路由，在调用`inner`时将提取出的值作为参数传入。
 
 对于一个提取访问host和port的指令，可以这样实现：
 
-@@snip [RouteExample.scala](../../../scala/book/example/route/RouteExample.scala) { #hostnameAndPort }
+@@snip [RouteExample.scala](../../scala/book/example/route/RouteExample.scala) { #hostnameAndPort }
 
 让我们来分析下这个例子：
 
