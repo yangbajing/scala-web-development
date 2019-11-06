@@ -2,8 +2,12 @@ package jwttest
 
 import java.util.Base64
 
-import org.scalatest.{FunSuite, MustMatchers}
-import pdi.jwt.{Jwt, JwtAlgorithm, JwtClaim, JwtHeader}
+import org.scalatest.FunSuite
+import org.scalatest.MustMatchers
+import pdi.jwt.Jwt
+import pdi.jwt.JwtAlgorithm
+import pdi.jwt.JwtClaim
+import pdi.jwt.JwtHeader
 
 class JwtTest extends FunSuite with MustMatchers {
 
@@ -11,8 +15,7 @@ class JwtTest extends FunSuite with MustMatchers {
     val str =
       Jwt.encode(JwtClaim("""{"name":"John Doe","admin":true,"iat":1516239022}""", subject = Some("1234567890")))
     val str1 = Base64.getUrlEncoder.encode(
-      JwtClaim("""{"name":"John Doe","admin":true}""", subject = Some("1234567890")).toJson
-        .getBytes("UTF-8"))
+      JwtClaim("""{"name":"John Doe","admin":true}""", subject = Some("1234567890")).toJson.getBytes("UTF-8"))
     println(str)
     println(str1)
   }
@@ -35,8 +38,7 @@ class JwtTest extends FunSuite with MustMatchers {
         |fSSjAkLRi54PKJ8TFUeOP15h9sQzydI8zJU+upvDEKZsZc/UhT/SySDOxQ4G/523
         |Y0sz/OZtSWcol/UMgQJALesy++GdvoIDLfJX5GBQpuFgFenRiRDabxrE9MNUZ2aP
         |FaFp+DyAe+b4nDwuJaW2LURbr8AEZga7oQj0uYxcYw==
-        |-----END RSA PRIVATE KEY-----""".stripMargin
-    )
+        |-----END RSA PRIVATE KEY-----""".stripMargin)
     println(token)
     token mustBe "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.TCYt5XsITJX1CxPCT8yAV-TVkIEq_PbChOMqsLfRoPsnsgw5WEuts01mq-pQy7UJiN5mgRxD-WUcX16dUEMGlv50aqzpqh4Qktb3rk-BuQy72IFLOqV0G_zS245-kronKb78cPN25DGlcTwLtjPAYuNzVBAh4vGHSrQyHUdBBPM"
   }
@@ -60,8 +62,7 @@ class JwtTest extends FunSuite with MustMatchers {
         |Y0sz/OZtSWcol/UMgQJALesy++GdvoIDLfJX5GBQpuFgFenRiRDabxrE9MNUZ2aP
         |FaFp+DyAe+b4nDwuJaW2LURbr8AEZga7oQj0uYxcYw==
         |-----END RSA PRIVATE KEY-----""".stripMargin,
-      JwtAlgorithm.RS256
-    )
+      JwtAlgorithm.RS256)
     println(token)
 //    token mustBe "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.TCYt5XsITJX1CxPCT8yAV-TVkIEq_PbChOMqsLfRoPsnsgw5WEuts01mq-pQy7UJiN5mgRxD-WUcX16dUEMGlv50aqzpqh4Qktb3rk-BuQy72IFLOqV0G_zS245-kronKb78cPN25DGlcTwLtjPAYuNzVBAh4vGHSrQyHUdBBPM"
   }

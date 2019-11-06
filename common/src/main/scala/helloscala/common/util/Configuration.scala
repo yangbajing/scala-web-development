@@ -1,6 +1,7 @@
 package helloscala.common.util
 
-import java.nio.file.{Path, Paths}
+import java.nio.file.Path
+import java.nio.file.Paths
 import java.time.OffsetDateTime
 import java.util.Properties
 import java.util.function.Consumer
@@ -10,7 +11,7 @@ import com.typesafe.config.impl.ConfigurationHelper
 import helloscala.common.exception.HSException
 import helloscala.common.types.ObjectId
 
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 import scala.collection.mutable
 import scala.concurrent.duration._
 import scala.util.control.NonFatal
@@ -75,9 +76,7 @@ case class Configuration(underlying: Config) {
   def get[A](path: String)(implicit loader: ConfigLoader[A]): A =
     loader.load(underlying, path)
 
-  def getOrElse[A](path: String, deft: => A)(
-      implicit loader: ConfigLoader[A]
-  ): A = get[Option[A]](path).getOrElse(deft)
+  def getOrElse[A](path: String, deft: => A)(implicit loader: ConfigLoader[A]): A = get[Option[A]](path).getOrElse(deft)
 
   /**
    * Get the config at the given path and validate against a set of valid values.
@@ -85,10 +84,7 @@ case class Configuration(underlying: Config) {
   def getAndValidate[A](path: String, values: Set[A])(implicit loader: ConfigLoader[A]): A = {
     val value = get(path)
     if (!values(value)) {
-      throw reportError(
-        path,
-        s"Incorrect value, one of (${values.mkString(", ")}) was expected."
-      )
+      throw reportError(path, s"Incorrect value, one of (${values.mkString(", ")}) was expected.")
     }
     value
   }
@@ -97,9 +93,7 @@ case class Configuration(underlying: Config) {
    * Get a value that may either not exist or be null. Note that this is not generally considered idiomatic Config
    * usage. Instead you should define all config keys in a reference.conf file.
    */
-  def getOptional[A](
-      path: String
-  )(implicit loader: ConfigLoader[A]): Option[A] =
+  def getOptional[A](path: String)(implicit loader: ConfigLoader[A]): Option[A] =
     readValue(path, get[A](path))
 
   /**
@@ -186,8 +180,7 @@ case class Configuration(underlying: Config) {
   def reportError(path: String, message: String, e: Option[Throwable] = None): HSException = {
     val origin = Option(
       if (underlying.hasPath(path)) underlying.getValue(path).origin
-      else underlying.root.origin
-    )
+      else underlying.root.origin)
     Configuration.configError(message, origin, e)
   }
 
@@ -212,8 +205,7 @@ object Configuration {
 
   def configError(message: String, origin: Option[ConfigOrigin], me: Option[Throwable]): HSException = {
     val msg = origin.map(o => s"[$o] $message").getOrElse(message)
-    me.map(e => new HSException(ErrCodes.UNKNOWN, msg, e))
-      .getOrElse(new HSException(ErrCodes.UNKNOWN, msg, null))
+    me.map(e => new HSException(ErrCodes.UNKNOWN, msg, e)).getOrElse(new HSException(ErrCodes.UNKNOWN, msg, null))
   }
 
   def apply(): Configuration = Configuration(ConfigFactory.load())
@@ -234,6 +226,7 @@ trait ConfigLoader[A] {
   def load(config: Config, path: String = ""): A
 
   def map[B](f: A => B): ConfigLoader[B] = new ConfigLoader[B] {
+
     override def load(config: Config, path: String): B =
       f(self.load(config, path))
   }
@@ -243,17 +236,22 @@ object ConfigLoader {
 
   def apply[A](f: Config => String => A): ConfigLoader[A] =
     new ConfigLoader[A] {
+
       override def load(config: Config, path: String): A =
         f(config)(path)
     }
 
   implicit val stringLoader: ConfigLoader[String] = ConfigLoader(_.getString)
+
   implicit val objectIdLoader: ConfigLoader[ObjectId] =
     stringLoader.map(ObjectId.apply)
+
   implicit val seqStringLoader: ConfigLoader[Seq[String]] =
-    ConfigLoader(_.getStringList).map(_.asScala)
+    ConfigLoader(_.getStringList).map(_.asScala.toVector)
+
   implicit val seqObjectIdLoader: ConfigLoader[Seq[ObjectId]] =
     seqStringLoader.map(_.map(ObjectId.apply))
+
   implicit val arrayStringLoader: ConfigLoader[Array[String]] =
     ConfigLoader(_.getStringList).map { list =>
       val arr = new Array[String](list.size())
@@ -262,12 +260,14 @@ object ConfigLoader {
     }
 
   implicit val intLoader: ConfigLoader[Int] = ConfigLoader(_.getInt)
+
   implicit val seqIntLoader: ConfigLoader[Seq[Int]] =
-    ConfigLoader(_.getIntList).map(_.asScala.map(_.toInt))
+    ConfigLoader(_.getIntList).map(_.asScala.map(_.toInt).toVector)
 
   implicit val booleanLoader: ConfigLoader[Boolean] = ConfigLoader(_.getBoolean)
+
   implicit val seqBooleanLoader: ConfigLoader[Seq[Boolean]] =
-    ConfigLoader(_.getBooleanList).map(_.asScala.map(_.booleanValue))
+    ConfigLoader(_.getBooleanList).map(_.asScala.map(_.booleanValue).toVector)
 
   implicit val durationLoader: ConfigLoader[Duration] = ConfigLoader { config => path =>
     if (!config.getIsNull(path)) config.getDuration(path).toNanos.nanos
@@ -276,53 +276,53 @@ object ConfigLoader {
 
   // Note: this does not support null values but it added for convenience
   implicit val seqDurationLoader: ConfigLoader[Seq[Duration]] =
-    ConfigLoader(_.getDurationList).map(_.asScala.map(_.toNanos.nanos))
+    ConfigLoader(_.getDurationList).map(_.asScala.map(_.toNanos.nanos).toVector)
 
   implicit val finiteDurationLoader: ConfigLoader[FiniteDuration] =
     ConfigLoader(_.getDuration).map(_.toNanos.nanos)
+
   implicit val seqFiniteDurationLoader: ConfigLoader[Seq[FiniteDuration]] =
-    ConfigLoader(_.getDurationList).map(_.asScala.map(_.toNanos.nanos))
+    ConfigLoader(_.getDurationList).map(_.asScala.map(_.toNanos.nanos).toVector)
 
   implicit val doubleLoader: ConfigLoader[Double] = ConfigLoader(_.getDouble)
+
   implicit val seqDoubleLoader: ConfigLoader[Seq[Double]] =
-    ConfigLoader(_.getDoubleList).map(_.asScala.map(_.doubleValue))
+    ConfigLoader(_.getDoubleList).map(_.asScala.map(_.doubleValue).toVector)
 
   implicit val numberLoader: ConfigLoader[Number] = ConfigLoader(_.getNumber)
+
   implicit val seqNumberLoader: ConfigLoader[Seq[Number]] =
-    ConfigLoader(_.getNumberList).map(_.asScala)
+    ConfigLoader(_.getNumberList).map(_.asScala.toVector)
 
   implicit val longLoader: ConfigLoader[Long] = ConfigLoader(_.getLong)
-  implicit val seqLongLoader: ConfigLoader[Seq[Long]] =
-    ConfigLoader(_.getDoubleList).map(_.asScala.map(_.longValue))
 
-  implicit val bytesLoader: ConfigLoader[ConfigMemorySize] = ConfigLoader(
-    _.getMemorySize
-  )
+  implicit val seqLongLoader: ConfigLoader[Seq[Long]] =
+    ConfigLoader(_.getDoubleList).map(_.asScala.map(_.longValue).toVector)
+
+  implicit val bytesLoader: ConfigLoader[ConfigMemorySize] = ConfigLoader(_.getMemorySize)
+
   implicit val seqBytesLoader: ConfigLoader[Seq[ConfigMemorySize]] =
-    ConfigLoader(_.getMemorySizeList).map(_.asScala)
+    ConfigLoader(_.getMemorySizeList).map(_.asScala.toVector)
 
   implicit val configLoader: ConfigLoader[Config] = ConfigLoader(_.getConfig)
-  implicit val configListLoader: ConfigLoader[ConfigList] = ConfigLoader(
-    _.getList
-  )
-  implicit val configObjectLoader: ConfigLoader[ConfigObject] = ConfigLoader(
-    _.getObject
-  )
+  implicit val configListLoader: ConfigLoader[ConfigList] = ConfigLoader(_.getList)
+  implicit val configObjectLoader: ConfigLoader[ConfigObject] = ConfigLoader(_.getObject)
+
   implicit val seqConfigLoader: ConfigLoader[Seq[Config]] =
-    ConfigLoader(_.getConfigList).map(_.asScala)
+    ConfigLoader(_.getConfigList).map(_.asScala.toVector)
 
   implicit val configurationLoader: ConfigLoader[Configuration] =
     configLoader.map(Configuration(_))
+
   implicit val seqConfigurationLoader: ConfigLoader[Seq[Configuration]] =
     seqConfigLoader.map(_.map(Configuration(_)))
 
   /**
    * Loads a value, interpreting a null value as None and any other value as Some(value).
    */
-  implicit def optionLoader[A](
-      implicit valueLoader: ConfigLoader[A]
-  ): ConfigLoader[Option[A]] =
+  implicit def optionLoader[A](implicit valueLoader: ConfigLoader[A]): ConfigLoader[Option[A]] =
     new ConfigLoader[Option[A]] {
+
       override def load(config: Config, path: String): Option[A] =
         if (!config.hasPath(path) || config.getIsNull(path)) None
         else {
@@ -338,6 +338,7 @@ object ConfigLoader {
         obj
           .keySet()
           .forEach(new Consumer[String] {
+
             override def accept(key: String): Unit = {
               val value = obj.get(key)
               val propKey =
@@ -369,6 +370,7 @@ object ConfigLoader {
         obj
           .keySet()
           .forEach(new Consumer[String] {
+
             override def accept(key: String): Unit = {
               val value = obj.get(key)
               val propKey =

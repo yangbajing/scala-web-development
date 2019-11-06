@@ -8,7 +8,8 @@ import com.typesafe.scalalogging.StrictLogging
 import scalaweb.auth.service.AuthService
 import scalaweb.auth.web.route.AuthRoute
 
-import scala.util.{Failure, Success}
+import scala.util.Failure
+import scala.util.Success
 
 object OAuthMain extends App with StrictLogging {
   implicit val system = ActorSystem("oauth")

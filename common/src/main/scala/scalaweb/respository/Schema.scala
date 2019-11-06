@@ -3,14 +3,17 @@ package scalaweb.respository
 import java.time.OffsetDateTime
 
 import com.fasterxml.jackson.databind.node.ObjectNode
-import com.typesafe.config.{Config, ConfigFactory}
+import com.typesafe.config.Config
+import com.typesafe.config.ConfigFactory
 import helloscala.common.util.Configuration
 import scalaweb.model.Org
 import scalaweb.respository.SlickProfile.api._
 import slick.basic.DatabasePublisher
-import slick.dbio.{DBIOAction, Streaming}
+import slick.dbio.DBIOAction
+import slick.dbio.Streaming
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 
 object Schema {
   def apply(config: Config): Schema = new Schema(Configuration(config))

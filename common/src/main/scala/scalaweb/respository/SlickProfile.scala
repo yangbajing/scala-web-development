@@ -5,11 +5,13 @@ import java.util.Properties
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.github.tminglei.slickpg._
 import com.typesafe.config.Config
-import com.zaxxer.hikari.{HikariConfig, HikariDataSource}
+import com.zaxxer.hikari.HikariConfig
+import com.zaxxer.hikari.HikariDataSource
 import helloscala.common.json.Jackson
 import helloscala.common.util.Configuration
 import slick.basic.Capability
-import slick.jdbc.{GetResult, JdbcCapabilities}
+import slick.jdbc.GetResult
+import slick.jdbc.JdbcCapabilities
 import slick.util.AsyncExecutor
 
 trait SlickProfile
@@ -28,15 +30,13 @@ trait SlickProfile
       val js = pr.nextJson()
       Jackson.defaultObjectMapper.readTree(js.value).asInstanceOf[ObjectNode]
     }
+
     implicit val getObjectNodeOption: GetResult[Option[ObjectNode]] =
-      mkGetResult(
-        _.nextJsonOption().map(
-          js =>
-            Jackson.defaultObjectMapper
-              .readTree(js.value)
-              .asInstanceOf[ObjectNode]))
+      mkGetResult(_.nextJsonOption().map(js => Jackson.defaultObjectMapper.readTree(js.value).asInstanceOf[ObjectNode]))
+
     implicit val setObjectNode =
       mkSetParameter[ObjectNode](pgjson, jstr => Jackson.defaultObjectMapper.writeValueAsString(jstr))
+
     implicit val setObjectNodeOption =
       mkOptionSetParameter[ObjectNode](pgjson, jstr => Jackson.defaultObjectMapper.writeValueAsString(jstr))
 
@@ -65,10 +65,7 @@ trait SlickProfile
         .getOrElse(Some(true): Rep[Option[Boolean]])
 
     def dynamicFilter(item: Option[Rep[Boolean]], list: Option[Rep[Boolean]]*): Rep[Boolean] =
-      (item +: list)
-        .collect({ case Some(criteria) => criteria })
-        .reduceLeftOption(_ && _)
-        .getOrElse(true: Rep[Boolean])
+      (item +: list).collect({ case Some(criteria) => criteria }).reduceLeftOption(_ && _).getOrElse(true: Rep[Boolean])
 
     def dynamicFilterOr(list: Seq[FilterCriteriaType]): Rep[Option[Boolean]] =
       list
@@ -88,12 +85,13 @@ object SlickProfile extends SlickProfile {
     val numThreads = configuration.getOrElse[Int]("numThreads", 20)
     val maximumPoolSize = configuration.getOrElse[Int]("maximumPoolSize", numThreads)
     val registerMbeans = configuration.getOrElse[Boolean]("registerMbeans", false)
-    val executor = AsyncExecutor(poolName,
-                                 numThreads,
-                                 numThreads,
-                                 configuration.getOrElse[Int]("queueSize", 1000),
-                                 maximumPoolSize,
-                                 registerMbeans = registerMbeans)
+    val executor = AsyncExecutor(
+      poolName,
+      numThreads,
+      numThreads,
+      configuration.getOrElse[Int]("queueSize", 1000),
+      maximumPoolSize,
+      registerMbeans = registerMbeans)
     api.Database.forDataSource(ds, Some(maximumPoolSize), executor)
   }
 
@@ -114,13 +112,14 @@ object SlickProfile extends SlickProfile {
     createHikariDataSource(props)
   }
 
-  private val REMOVED_KEYS = List("useTransaction",
-                                  "ignoreWarnings",
-                                  "allowPrintLog",
-                                  "maxConnections",
-                                  "numThreads",
-                                  "registerMbeans",
-                                  "queueSize")
+  private val REMOVED_KEYS = List(
+    "useTransaction",
+    "ignoreWarnings",
+    "allowPrintLog",
+    "maxConnections",
+    "numThreads",
+    "registerMbeans",
+    "queueSize")
 
   @inline def createHikariDataSource(config: Configuration): HikariDataSource =
     createHikariDataSource(config.getProperties(null))

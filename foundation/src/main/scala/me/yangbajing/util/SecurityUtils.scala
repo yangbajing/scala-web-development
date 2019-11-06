@@ -1,6 +1,7 @@
 package me.yangbajing.util
 
-import java.security.{MessageDigest, SecureRandom}
+import java.security.MessageDigest
+import java.security.SecureRandom
 import java.util
 
 case class SaltPassword(salt: Array[Byte], saltPwd: Array[Byte])

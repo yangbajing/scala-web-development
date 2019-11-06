@@ -1,7 +1,9 @@
 package scalaweb.respository
 
 import helloscala.common.exception.HSNotFoundException
-import scalaweb.model.{OrgCreateReq, OrgPageReq, OrgPageResp}
+import scalaweb.model.OrgCreateReq
+import scalaweb.model.OrgPageReq
+import scalaweb.model.OrgPageResp
 import scalaweb.respository.SlickProfile.api._
 
 import scala.concurrent.ExecutionContext
@@ -20,9 +22,8 @@ object OrgRepo {
         dynamicFilter(
           List(
             req.code.map(code => t.code === code),
-            req.name.map(name => t.name.? like s"%$name%"),
-            req.status.map(status => t.status.? === status)
-          )))
+            req.name.map(name => t.name.?.like(s"%$name%")),
+            req.status.map(status => t.status.? === status))))
 
   def getById(orgId: Int) = tOrg.filter(_.id === orgId).result.headOption
 
@@ -38,7 +39,7 @@ object OrgRepo {
       case None          => DBIO.failed(HSNotFoundException(s"父节点未找到，id: $parent"))
     }
 
-  def removeByIds(orgIds: Iterable[Int]) = tOrg.filter(_.id inSet orgIds).delete
+  def removeByIds(orgIds: Iterable[Int]) = tOrg.filter(_.id.inSet(orgIds)).delete
 
   def tOrg = TableQuery[TableOrg]
 

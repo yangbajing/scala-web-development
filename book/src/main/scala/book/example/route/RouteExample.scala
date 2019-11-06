@@ -1,7 +1,10 @@
 package book.example.route
 
 import akka.http.scaladsl.model.Uri
-import akka.http.scaladsl.server.{Directive, Directive0, Directive1, Route}
+import akka.http.scaladsl.server.Directive
+import akka.http.scaladsl.server.Directive0
+import akka.http.scaladsl.server.Directive1
+import akka.http.scaladsl.server.Route
 import helloscala.http.route.AbstractRoute
 
 case class User(id: Option[Int], username: String, age: Int)
@@ -20,19 +23,19 @@ class RouteExample extends AbstractRoute {
           }
         }
       } ~
-        pathPrefix(IntNumber) { userId =>
-          get { // GET /user/{userId}
-            complete(User(Some(userId), "", 0))
-          } ~
-            put { // PUT /user/{userId}
-              entity(as[User]) { payload =>
-                complete(payload)
-              }
-            } ~
-            delete { // DELETE /user/{userId}
-              complete("Deleted")
-            }
+      pathPrefix(IntNumber) { userId =>
+        get { // GET /user/{userId}
+          complete(User(Some(userId), "", 0))
+        } ~
+        put { // PUT /user/{userId}
+          entity(as[User]) { payload =>
+            complete(payload)
+          }
+        } ~
+        delete { // DELETE /user/{userId}
+          complete("Deleted")
         }
+      }
     }
   // #basic-route-tree
 
@@ -46,23 +49,23 @@ class RouteExample extends AbstractRoute {
           }
         }
       } ~
-        pathPrefix(IntNumber) { userId =>
-          innerUser(userId)
-        }
+      pathPrefix(IntNumber) { userId =>
+        innerUser(userId)
+      }
     }
 
   def innerUser(userId: Int): Route =
     get {
       complete(User(Some(userId), "", 0))
     } ~
-      put {
-        entity(as[User]) { payload =>
-          complete(payload)
-        }
-      } ~
-      delete {
-        complete("Deleted")
+    put {
+      entity(as[User]) { payload =>
+        complete(payload)
       }
+    } ~
+    delete {
+      complete("Deleted")
+    }
   // #basic-route-1
 
   // #directive-and

@@ -1,6 +1,7 @@
 package scalaweb.ant.design.pro.mock
 
-import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
+import akka.http.scaladsl.model.ContentTypes
+import akka.http.scaladsl.model.HttpEntity
 import org.mozilla.javascript.Context
 
 object Mocks {

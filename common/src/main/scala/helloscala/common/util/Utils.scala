@@ -1,11 +1,14 @@
 package helloscala.common.util
 
 import java.nio.ByteBuffer
-import java.nio.file.{Files, Path}
+import java.nio.file.Files
+import java.nio.file.Path
 import java.security.SecureRandom
-import java.time.{LocalDate, LocalDateTime}
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.concurrent.ThreadLocalRandom
-import java.util.{Properties, Random}
+import java.util.Properties
+import java.util.Random
 
 import scala.util.Try
 import scala.util.matching.Regex
@@ -73,7 +76,7 @@ object Utils {
       case l: Long    => Some(l)
       case i: Int     => Some(i.toLong)
       case s: String  => Try(s.toLong).toOption
-      case bi: BigInt => Some(bi.longValue())
+      case bi: BigInt => Some(bi.longValue)
       case _          => None
     }
 
@@ -172,11 +175,7 @@ object Utils {
 
   def propertiesToMap(props: Properties): Map[String, String] = {
     import scala.collection.JavaConverters._
-    props
-      .stringPropertyNames()
-      .asScala
-      .map(name => name -> props.getProperty(name))
-      .toMap
+    props.stringPropertyNames().asScala.map(name => name -> props.getProperty(name)).toMap
   }
 
 }

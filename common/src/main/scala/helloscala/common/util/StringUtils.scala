@@ -9,8 +9,7 @@ object StringUtils {
   val BLACK_CHAR: Char = ' '
   val PRINTER_CHARS: immutable.IndexedSeq[Char] = ('0' to '9') ++ ('a' to 'z') ++ ('A' to 'Z')
   private val HEX_CHARS: Array[Char] = "0123456789abcdef".toCharArray
-  private val HEX_CHAR_SETS = Set
-    .empty[Char] ++ ('0' to '9') ++ ('a' to 'f') ++ ('A' to 'F')
+  private val HEX_CHAR_SETS = Set.empty[Char] ++ ('0' to '9') ++ ('a' to 'f') ++ ('A' to 'F')
 
   def option(text: String): Option[String] =
     if (isBlank(text)) None else Some(text)
@@ -77,8 +76,7 @@ object StringUtils {
         }
         sb.append(
           if (isLower) Character.toLowerCase(c)
-          else Character.toUpperCase(c.toUpper)
-        )
+          else Character.toUpperCase(c.toUpper))
       }
       sb.toString()
     }

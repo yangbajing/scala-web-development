@@ -5,7 +5,8 @@ import java.nio.file.Path
 import java.security.MessageDigest
 
 import akka.stream.ActorMaterializer
-import akka.stream.scaladsl.{FileIO, Sink}
+import akka.stream.scaladsl.FileIO
+import akka.stream.scaladsl.Sink
 import org.bouncycastle.util.encoders.Hex
 
 import scala.concurrent.Future
@@ -100,10 +101,6 @@ object DigestUtils {
   def reactiveSha256(path: Path)(implicit mat: ActorMaterializer): Future[Array[Byte]] = {
     import mat.executionContext
     val md = digestSha256()
-    FileIO
-      .fromPath(path)
-      .map(bytes => md.update(bytes.asByteBuffer))
-      .runWith(Sink.ignore)
-      .map(_ => md.digest())
+    FileIO.fromPath(path).map(bytes => md.update(bytes.asByteBuffer)).runWith(Sink.ignore).map(_ => md.digest())
   }
 }

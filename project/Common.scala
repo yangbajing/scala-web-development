@@ -10,7 +10,6 @@ object Common {
     homepage := Some(url("https://www.yangbajing.me/scala-web-development/")),
     startYear := Some(2018),
     licenses += ("Apache-2.0", new URL("https://www.apache.org/licenses/LICENSE-2.0.txt")),
-    scalaVersion := Dependencies.versionScala,
     javacOptions ++= Seq(
       "-Xlint:deprecation"
     ),

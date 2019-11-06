@@ -1,8 +1,10 @@
 package book.custom.directive
 
-import akka.http.scaladsl.server.{Directive, Directive1}
+import akka.http.scaladsl.server.Directive
+import akka.http.scaladsl.server.Directive1
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import org.scalatest.{FunSuite, MustMatchers}
+import org.scalatest.FunSuite
+import org.scalatest.MustMatchers
 import akka.http.scaladsl.server.Directives._
 
 class CustomDirectiveTest extends FunSuite with MustMatchers with ScalatestRouteTest {

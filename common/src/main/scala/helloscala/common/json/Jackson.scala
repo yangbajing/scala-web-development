@@ -1,15 +1,21 @@
 package helloscala.common.json
 
-import java.lang.reflect.{ParameterizedType, Type => JType}
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.{Type => JType}
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.`type`.TypeReference
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter
-import com.fasterxml.jackson.databind.introspect.{Annotated, JacksonAnnotationIntrospector}
-import com.fasterxml.jackson.databind.node.{ArrayNode, ObjectNode}
-import com.fasterxml.jackson.databind.ser.impl.{SimpleBeanPropertyFilter, SimpleFilterProvider}
-import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper, SerializationFeature}
+import com.fasterxml.jackson.databind.introspect.Annotated
+import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector
+import com.fasterxml.jackson.databind.node.ArrayNode
+import com.fasterxml.jackson.databind.node.ObjectNode
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
 import scalapb.GeneratedMessage
 
 import scala.reflect.ClassTag

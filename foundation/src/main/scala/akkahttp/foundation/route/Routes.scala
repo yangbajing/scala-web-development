@@ -1,6 +1,7 @@
 package akkahttp.foundation.route
 
-import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
+import akka.http.scaladsl.model.ContentTypes
+import akka.http.scaladsl.model.HttpEntity
 import akka.http.scaladsl.server.Directives._
 
 /**
@@ -14,6 +15,6 @@ class Routes {
         complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
       }
     } ~
-      new PageRoute().route
+    new PageRoute().route
 
 }

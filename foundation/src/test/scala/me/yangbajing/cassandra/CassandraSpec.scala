@@ -1,6 +1,7 @@
 package me.yangbajing.cassandra
 
-import org.scalatest.{BeforeAndAfterAll, Suite}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.Suite
 
 /**
  * Created by yangbajing(yangbajing@gmail.com) on 2017-04-24.

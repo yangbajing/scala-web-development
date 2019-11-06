@@ -9,6 +9,7 @@ import fileupload.Constants
 import scala.collection.immutable
 
 case class FileInfo(bodyPart: FormData.BodyPart, hash: Option[String], contentLength: Long, startPosition: Long) {
+
   override def toString: String =
     s"FileInfo(${bodyPart.name}, $hash, $contentLength, $startPosition, ${bodyPart.filename}, ${bodyPart.headers})"
 }
@@ -41,5 +42,4 @@ case class FileBO(
     localPath: Path,
     contentLength: Long,
     filename: Option[String],
-    headers: immutable.Seq[HttpHeader]
-)
+    headers: immutable.Seq[HttpHeader])

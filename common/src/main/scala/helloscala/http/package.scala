@@ -1,6 +1,7 @@
 package helloscala
 
-import akka.http.scaladsl.model.{HttpRequest, HttpResponse}
+import akka.http.scaladsl.model.HttpRequest
+import akka.http.scaladsl.model.HttpResponse
 import akka.stream.scaladsl.SourceQueueWithComplete
 
 import scala.concurrent.Promise

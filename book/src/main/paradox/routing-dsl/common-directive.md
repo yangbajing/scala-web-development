@@ -48,7 +48,7 @@ val BOLT = HttpMethod.custom("BOLT", safe = false,
 val parserSettings = ParserSettings(system).withCustomMethods(BOLT)
 val serverSettings = ServerSettings(system).withParserSettings(parserSettings)
 
-val routes = extractMethod { method ⇒
+val routes = extractMethod { method =>
   complete(s"This is a ${method.name} method request.")
 }
 val binding = Http().bindAndHandle(routes, host, port, settings = serverSettings)

@@ -1,27 +1,40 @@
 package helloscala.http
 
-import java.nio.charset.{Charset, UnsupportedCharsetException}
+import java.nio.charset.Charset
+import java.nio.charset.UnsupportedCharsetException
 import java.time.Instant
 
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers.RawHeader
-import akka.http.scaladsl.unmarshalling.{FromEntityUnmarshaller, Unmarshal}
-import akka.stream.scaladsl.{Keep, Sink, Source}
-import akka.stream.{ActorMaterializer, Materializer, OverflowStrategy, QueueOfferResult}
+import akka.http.scaladsl.unmarshalling.FromEntityUnmarshaller
+import akka.http.scaladsl.unmarshalling.Unmarshal
+import akka.stream.scaladsl.Keep
+import akka.stream.scaladsl.Sink
+import akka.stream.scaladsl.Source
+import akka.stream.ActorMaterializer
+import akka.stream.Materializer
+import akka.stream.OverflowStrategy
+import akka.stream.QueueOfferResult
 import akka.util.ByteString
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.typesafe.scalalogging.StrictLogging
 import helloscala.common.exception.HSException
 import helloscala.common.json.Jackson
-import helloscala.common.util.{DigestUtils, StringUtils, Utils}
+import helloscala.common.util.DigestUtils
+import helloscala.common.util.StringUtils
+import helloscala.common.util.Utils
 
 import scala.collection.JavaConverters._
 import scala.collection.immutable
 import scala.concurrent.duration._
-import scala.concurrent.{Await, ExecutionContext, Future, Promise}
+import scala.concurrent.Await
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
+import scala.concurrent.Promise
 import scala.reflect.ClassTag
-import scala.util.{Failure, Success}
+import scala.util.Failure
+import scala.util.Success
 
 /**
  * Akka HTTP Utils
@@ -72,8 +85,7 @@ object HttpUtils extends StrictLogging {
     }
 
   def mapHttpResponseError[R](
-      response: HttpResponse
-  )(implicit mat: Materializer, ec: ExecutionContext = null): Future[Either[HSException, R]] =
+      response: HttpResponse)(implicit mat: Materializer, ec: ExecutionContext = null): Future[Either[HSException, R]] =
     if (response.entity.contentType.mediaType == MediaTypes.`application/json`) {
       Unmarshal(response.entity)
         .to[HSException](JacksonSupport.unmarshaller, ec, mat)
@@ -240,8 +252,7 @@ object HttpUtils extends StrictLogging {
       RawHeader(HttpConstants.HS_APP_ID, appId),
       RawHeader(HttpConstants.HS_TIMESTAMP, timestamp),
       RawHeader(HttpConstants.HS_ECHO_STR, echoStr),
-      RawHeader(HttpConstants.HS_ACCESS_TOKEN, accessToken)
-    )
+      RawHeader(HttpConstants.HS_ACCESS_TOKEN, accessToken))
     request.withHeaders(headers)
   }
 
@@ -262,17 +273,12 @@ object HttpUtils extends StrictLogging {
       data: AnyRef = null,
       headers: immutable.Seq[HttpHeader] = Nil,
       protocol: HttpProtocol = HttpProtocols.`HTTP/1.1`)(implicit mat: ActorMaterializer): Future[HttpResponse] = {
-    val request = HttpRequest(
-      method,
-      uri.withQuery(Uri.Query(uri.query() ++ params: _*)),
-      headers,
-      entity = data match {
+    val request =
+      HttpRequest(method, uri.withQuery(Uri.Query(uri.query() ++ params: _*)), headers, entity = data match {
         case null                    => HttpEntity.Empty
         case entity: UniversalEntity => entity
         case _                       => HttpEntity(ContentTypes.`application/json`, Jackson.defaultObjectMapper.writeValueAsString(data))
-      },
-      protocol = protocol
-    )
+      }, protocol = protocol)
     singleRequest(request)
   }
 
@@ -340,10 +346,11 @@ object HttpUtils extends StrictLogging {
       HttpEntity.Empty
     }
 
-    HttpRequest(method,
-                uri.withQuery(Uri.Query(params.map { case (key, value) => key -> value.toString }: _*)),
-                headers,
-                entity)
+    HttpRequest(
+      method,
+      uri.withQuery(Uri.Query(params.map { case (key, value) => key -> value.toString }: _*)),
+      headers,
+      entity)
   }
 
   def toStrictEntity(response: HttpResponse)(implicit mat: Materializer): HttpEntity.Strict =

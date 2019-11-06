@@ -1,7 +1,11 @@
 package me.yangbajing.cassandra
 
-import com.datastax.driver.core.{Cluster, DataType}
-import com.datastax.driver.extras.codecs.jdk8.{InstantCodec, LocalDateCodec, LocalTimeCodec, ZonedDateTimeCodec}
+import com.datastax.driver.core.Cluster
+import com.datastax.driver.core.DataType
+import com.datastax.driver.extras.codecs.jdk8.InstantCodec
+import com.datastax.driver.extras.codecs.jdk8.LocalDateCodec
+import com.datastax.driver.extras.codecs.jdk8.LocalTimeCodec
+import com.datastax.driver.extras.codecs.jdk8.ZonedDateTimeCodec
 import me.yangbajing.cassandra.codec.LocalDateTimeCodec
 
 case class CassandraConf(

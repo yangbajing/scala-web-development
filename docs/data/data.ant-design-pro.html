@@ -352,10 +352,10 @@ def toJsonEntity(str: String): HttpEntity.Strict = HttpEntity(ContentTypes.`appl
   val bindingFuture = Http().bindAndHandle(handler = new Routes().route, interface = &quot;0.0.0.0&quot;, port = 22222)
 
   bindingFuture.onComplete {
-    case Success(binding) ⇒
+    case Success(binding) =>
       sys.addShutdownHook(system.terminate())
       logger.info(s&quot;启动Akka HTTP Server成功，绑定地址: $binding&quot;)
-    case Failure(e) ⇒
+    case Failure(e) =>
       logger.error(s&quot;启动Akka HTTP Server失败：${e.getMessage}&quot;, e)
       system.terminate()
   }

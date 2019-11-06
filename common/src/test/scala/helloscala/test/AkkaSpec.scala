@@ -2,7 +2,8 @@ package helloscala.test
 
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
-import org.scalatest.{BeforeAndAfterAll, Suite}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.Suite
 
 import scala.concurrent.Await
 import scala.concurrent.duration._

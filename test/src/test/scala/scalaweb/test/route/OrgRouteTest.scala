@@ -4,9 +4,14 @@ import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import org.scalatest.concurrent.ScalaFutures
-import org.scalatest.{BeforeAndAfterAll, MustMatchers, OptionValues, WordSpec}
-import scalaweb.model.{Org, OrgCreateReq}
-import scalaweb.respository.{OrgRepo, Schema}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.MustMatchers
+import org.scalatest.OptionValues
+import org.scalatest.WordSpec
+import scalaweb.model.Org
+import scalaweb.model.OrgCreateReq
+import scalaweb.respository.OrgRepo
+import scalaweb.respository.Schema
 import scalaweb.service.OrgService
 
 import scala.util.control.NonFatal

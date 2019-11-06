@@ -1,6 +1,8 @@
 package helloscala.common.util
 
-import java.sql.{Date => SQLDate, Time => SQLTime, Timestamp => SQLTimestamp}
+import java.sql.{Date => SQLDate}
+import java.sql.{Time => SQLTime}
+import java.sql.{Timestamp => SQLTimestamp}
 import java.time._
 import java.time.format.DateTimeFormatter
 import java.util.Date
@@ -75,7 +77,7 @@ object TimeUtils extends StrictLogging {
    * @return 成功返回 LocalDate
    */
   def toLocalDate(date: String): LocalDate =
-    Try(LocalDate.parse(date, formatterDate)) getOrElse {
+    Try(LocalDate.parse(date, formatterDate)).getOrElse {
       val (year, month, day) = date.split("""[-/:]""") match {
         case Array(y, m, d) =>
           (y.toInt, m.toInt, d.toInt)
@@ -84,15 +86,11 @@ object TimeUtils extends StrictLogging {
         case Array(y) =>
           (y.toInt, 1, 1)
         case _ =>
-          throw new IllegalArgumentException(
-            s"$date is invalid iso date format"
-          )
+          throw new IllegalArgumentException(s"$date is invalid iso date format")
       }
 
       if (year < 0 || year > 9999)
-        throw new IllegalArgumentException(
-          s"$date is invalid iso date format ($year)"
-        )
+        throw new IllegalArgumentException(s"$date is invalid iso date format ($year)")
 
       LocalDate.of(year, month, day)
     }
@@ -104,7 +102,7 @@ object TimeUtils extends StrictLogging {
    * @return 成功返回 LocalTime
    */
   def toLocalTime(time: String): LocalTime =
-    Try(LocalTime.parse(time, formatterTime)) getOrElse {
+    Try(LocalTime.parse(time, formatterTime)).getOrElse {
       val (hour, minute, second, nano) =
         time.split("""[:-]""") match {
           case Array(h, m, s) =>
@@ -119,9 +117,7 @@ object TimeUtils extends StrictLogging {
           case Array(h) =>
             (h.toInt, 0, 0, 0)
           case _ =>
-            throw new IllegalArgumentException(
-              s"$time is invalid iso time format"
-            )
+            throw new IllegalArgumentException(s"$time is invalid iso time format")
         }
 
       LocalTime.of(hour, minute, second, nano)
@@ -149,7 +145,7 @@ object TimeUtils extends StrictLogging {
    * @return 成功返回 LocalDateTime
    */
   def toLocalDateTime(ldt: String): LocalDateTime =
-    Try(LocalDateTime.parse(ldt, formatterDateTime)) getOrElse {
+    Try(LocalDateTime.parse(ldt, formatterDateTime)).getOrElse {
       ldt.split("""[ Tt]+""") match {
         case Array(date, time) =>
           toLocalDateTime(date, time)
@@ -157,9 +153,7 @@ object TimeUtils extends StrictLogging {
           if (containsDateKeys(dOrT)) toLocalDateTime(dOrT, "")
           else toLocalDateTime("", dOrT)
         case _ =>
-          throw new DateTimeException(
-            s"$ldt 是无效的日期时间格式，推荐格式：yyyy-MM-dd HH:mm:ss"
-          )
+          throw new DateTimeException(s"$ldt 是无效的日期时间格式，推荐格式：yyyy-MM-dd HH:mm:ss")
       }
     }
 
@@ -192,24 +186,17 @@ object TimeUtils extends StrictLogging {
         case Array(date, timezone) =>
           val (time, zone) = timezone.split("""[+-]""") match {
             case Array(timeStr, zoneStr) =>
-              (
-                timeStr,
-                zoneOf((if (timezone.indexOf('-') < 0) '+' else '-') + zoneStr)
-              )
+              (timeStr, zoneOf((if (timezone.indexOf('-') < 0) '+' else '-') + zoneStr))
             case Array(timeStr) => (timeStr, ZONE_CHINA_OFFSET)
             case _ =>
-              throw new DateTimeException(
-                s"$zdt 无有效的时区信息，推荐格式：yyyy-MM-dd HH:mm:ss[+Z]"
-              )
+              throw new DateTimeException(s"$zdt 无有效的时区信息，推荐格式：yyyy-MM-dd HH:mm:ss[+Z]")
           }
           toZonedDateTime(date, time, zone)
         case Array(dOrT) =>
           if (containsDateKeys(dOrT)) toZonedDateTime(dOrT, "")
           else toZonedDateTime("", dOrT)
         case _ =>
-          throw new DateTimeException(
-            s"$zdt 是无效的日期时间格式，推荐格式：yyyy-MM-dd HH:mm:ss[+Z]"
-          )
+          throw new DateTimeException(s"$zdt 是无效的日期时间格式，推荐格式：yyyy-MM-dd HH:mm:ss[+Z]")
       }
     } catch {
       case e: Exception =>
@@ -229,26 +216,17 @@ object TimeUtils extends StrictLogging {
         case Array(date, timezone) =>
           val (time, zone) = timezone.split("""[+-]""") match {
             case Array(timeStr, zoneStr) =>
-              (
-                timeStr,
-                zoneOffsetOf(
-                  (if (timezone.indexOf('-') < 0) '+' else '-') + zoneStr
-                )
-              )
+              (timeStr, zoneOffsetOf((if (timezone.indexOf('-') < 0) '+' else '-') + zoneStr))
             case Array(timeStr) => (timeStr, ZONE_CHINA_OFFSET)
             case _ =>
-              throw new DateTimeException(
-                s"$zdt 无有效的时区信息，推荐格式：yyyy-MM-dd HH:mm:ss[+Z]"
-              )
+              throw new DateTimeException(s"$zdt 无有效的时区信息，推荐格式：yyyy-MM-dd HH:mm:ss[+Z]")
           }
           toOffsetDateTime(date, time, zone)
         case Array(dOrT) =>
           if (containsDateKeys(dOrT)) toOffsetDateTime(dOrT, "")
           else toOffsetDateTime("", dOrT)
         case _ =>
-          throw new DateTimeException(
-            s"$zdt 是无效的日期时间格式，推荐格式：yyyy-MM-dd HH:mm:ss[+Z]"
-          )
+          throw new DateTimeException(s"$zdt 是无效的日期时间格式，推荐格式：yyyy-MM-dd HH:mm:ss[+Z]")
       }
     } catch {
       case e: Exception =>

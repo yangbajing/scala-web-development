@@ -1,7 +1,11 @@
 package scalaweb.service
 
-import scalaweb.model.{Org, OrgCreateReq, OrgPageReq, OrgPageResp}
-import scalaweb.respository.{OrgRepo, Schema}
+import scalaweb.model.Org
+import scalaweb.model.OrgCreateReq
+import scalaweb.model.OrgPageReq
+import scalaweb.model.OrgPageResp
+import scalaweb.respository.OrgRepo
+import scalaweb.respository.Schema
 
 import scala.concurrent.Future
 

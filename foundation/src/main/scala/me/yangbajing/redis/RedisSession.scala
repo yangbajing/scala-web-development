@@ -1,6 +1,7 @@
 package me.yangbajing.redis
 
-import com.redis.{RedisClient, RedisClientPool}
+import com.redis.RedisClient
+import com.redis.RedisClientPool
 
 /**
  * Redis访问组件

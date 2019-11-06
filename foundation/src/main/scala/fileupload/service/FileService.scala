@@ -2,15 +2,16 @@ package fileupload.service
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.Multipart
-import akka.stream.ActorMaterializer
-import fileupload.model.{FileBO, FileMeta}
+import akka.stream.Materializer
+import fileupload.model.FileBO
+import fileupload.model.FileMeta
 
 import scala.concurrent.Future
 
 trait FileService {
 
   implicit val system: ActorSystem
-  implicit val mat: ActorMaterializer
+  implicit val mat: Materializer
 
   def progressByHash(hash: String): Future[Option[FileMeta]]
 
@@ -20,5 +21,5 @@ trait FileService {
 
 object FileService {
 
-  def apply(system: ActorSystem, mat: ActorMaterializer) = new FileServiceImpl(system, mat)
+  def apply(system: ActorSystem, mat: Materializer) = new FileServiceImpl(system, mat)
 }

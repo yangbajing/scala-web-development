@@ -1,7 +1,8 @@
 package me.yangbajing.jdbc
 
 import org.postgresql.ds.PGSimpleDataSource
-import org.scalatest.{BeforeAndAfterAll, Suite}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.Suite
 
 /**
  * Created by yangbajing(yangbajing@gmail.com) on 2017-04-19.
@@ -19,7 +20,7 @@ trait JDBCSpec extends BeforeAndAfterAll {
     dataSource.setPassword("hldev")
   }
 
-  override def afterAll() {
+  override def afterAll(): Unit = {
     //dataSource
     super.afterAll()
   }

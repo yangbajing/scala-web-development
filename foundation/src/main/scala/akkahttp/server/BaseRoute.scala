@@ -1,6 +1,7 @@
 package akkahttp.server
 
-import akka.http.scaladsl.server.{Directives, Route}
+import akka.http.scaladsl.server.Directives
+import akka.http.scaladsl.server.Route
 
 /**
  * Created by yangbajing(yangbajing@gmail.com) on 2017-04-17.

@@ -10,17 +10,19 @@ import akka.stream.scaladsl.Sink
 import akkahttp.foundation.data.entity.User
 import com.datastax.driver.core.Row
 import me.yangbajing.cassandra.StandaloneCassandraSession
-import me.yangbajing.util.{SaltPassword, TimeUtils, Utils}
+import me.yangbajing.util.SaltPassword
+import me.yangbajing.util.TimeUtils
+import me.yangbajing.util.Utils
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 
 /**
  * Created by yangbajing(yangbajing@gmail.com) on 2017-04-24.
  */
 class UserRepository(cassandraSession: StandaloneCassandraSession)(
     implicit val materializer: Materializer,
-    ec: ExecutionContext
-) {
+    ec: ExecutionContext) {
 
   import cassandraSession.session
 
@@ -32,12 +34,13 @@ class UserRepository(cassandraSession: StandaloneCassandraSession)(
   def insert(user: User, password: SaltPassword): Future[Done] = {
     val stmt = cassandraSession
       .prepare("insert into hldev.user(id, email, name, created_at, salt, salt_password) values(?, ?, ?, ?, ?, ?)")
-      .bind(user.id,
-            user.email,
-            user.email.split('@')(0),
-            user.createdAt,
-            ByteBuffer.wrap(password.salt),
-            ByteBuffer.wrap(password.saltPwd))
+      .bind(
+        user.id,
+        user.email,
+        user.email.split('@')(0),
+        user.createdAt,
+        ByteBuffer.wrap(password.salt),
+        ByteBuffer.wrap(password.saltPwd))
     CassandraSource(stmt).runWith(Sink.ignore)
   }
 
@@ -49,27 +52,22 @@ class UserRepository(cassandraSession: StandaloneCassandraSession)(
    * @return Option(User, Salt Bytes, Salt Password Bytes)
    */
   def login(email: String, password: String): Future[Option[(User, Array[Byte], Array[Byte])]] = {
-    val stmt = cassandraSession
-      .prepare("select * from hldev.user where email = ? ALLOW FILTERING")
-      .bind(email)
+    val stmt = cassandraSession.prepare("select * from hldev.user where email = ? ALLOW FILTERING").bind(email)
     CassandraSource(stmt)
       .runWith(Sink.headOption) // (3)
       .map(
         maybeRow => // (4)
           maybeRow.map(
             row =>
-              (UserRepository.mapToUser(row),
-               Utils.byteBufferToArray(row.getBytes("salt")),
-               Utils.byteBufferToArray(row.getBytes("salt_password")))))
+              (
+                UserRepository.mapToUser(row),
+                Utils.byteBufferToArray(row.getBytes("salt")),
+                Utils.byteBufferToArray(row.getBytes("salt_password")))))
   }
 
   def findById(userId: UUID): Future[Option[User]] = {
-    val stmt = cassandraSession
-      .prepare("select * from hldev.user where id = ?")
-      .bind(userId)
-    CassandraSource(stmt)
-      .runWith(Sink.headOption)
-      .map(maybeRow => maybeRow.map(row => UserRepository.mapToUser(row)))
+    val stmt = cassandraSession.prepare("select * from hldev.user where id = ?").bind(userId)
+    CassandraSource(stmt).runWith(Sink.headOption).map(maybeRow => maybeRow.map(row => UserRepository.mapToUser(row)))
   }
 
   def existsByEmail(email: String): Future[Boolean] =
@@ -82,9 +80,10 @@ class UserRepository(cassandraSession: StandaloneCassandraSession)(
 object UserRepository {
 
   private def mapToUser(row: Row) =
-    User(row.getUUID("id"),
-         row.getString("email"),
-         row.getString("name"),
-         TimeUtils.toLocalDateTime(row.getTimestamp("created_at")))
+    User(
+      row.getUUID("id"),
+      row.getString("email"),
+      row.getString("name"),
+      TimeUtils.toLocalDateTime(row.getTimestamp("created_at")))
 
 }
