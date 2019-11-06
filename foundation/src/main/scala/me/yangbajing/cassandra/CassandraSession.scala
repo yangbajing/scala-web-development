@@ -2,7 +2,9 @@ package me.yangbajing.cassandra
 
 import java.util
 
-import com.datastax.driver.core.{Cluster, PreparedStatement, Session}
+import com.datastax.driver.core.Cluster
+import com.datastax.driver.core.PreparedStatement
+import com.datastax.driver.core.Session
 import com.typesafe.scalalogging.StrictLogging
 
 /**

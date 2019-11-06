@@ -22,4 +22,3 @@ Rest/HTTP 接口来发布和连接到应用生态中，这时候一个 Web 框�
 - **akka-parsing**：数据包解析等功能
 
 *本章代码见：[codes/akka-http-foundation](https://github.com/yangbajing/scala-web-development/tree/master/codes/akka-http-foundation)*
-

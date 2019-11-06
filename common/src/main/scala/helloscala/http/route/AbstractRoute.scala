@@ -1,23 +1,36 @@
 package helloscala.http.route
 
-import java.nio.file.{Files, Path}
-import java.time.{LocalDate, LocalDateTime, LocalTime}
+import java.nio.file.Files
+import java.nio.file.Path
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 
 import akka.http.scaladsl.model._
-import akka.http.scaladsl.model.headers.CacheDirectives.{`no-cache`, `no-store`}
-import akka.http.scaladsl.server.PathMatcher.{Matched, Unmatched}
+import akka.http.scaladsl.model.headers.CacheDirectives.`no-cache`
+import akka.http.scaladsl.model.headers.CacheDirectives.`no-store`
+import akka.http.scaladsl.server.PathMatcher.Matched
+import akka.http.scaladsl.server.PathMatcher.Unmatched
 import akka.http.scaladsl.server._
 import akka.http.scaladsl.server.directives.FileInfo
 import akka.http.scaladsl.server.util.Tuple
-import akka.http.scaladsl.unmarshalling.{FromRequestUnmarshaller, FromStringUnmarshaller, Unmarshaller}
-import akka.stream.scaladsl.{FileIO, Sink, Source}
+import akka.http.scaladsl.unmarshalling.FromRequestUnmarshaller
+import akka.http.scaladsl.unmarshalling.FromStringUnmarshaller
+import akka.http.scaladsl.unmarshalling.Unmarshaller
+import akka.stream.scaladsl.FileIO
+import akka.stream.scaladsl.Sink
+import akka.stream.scaladsl.Source
 import akka.util.ByteString
 import helloscala.common.data.ApiResult
-import helloscala.common.exception.{HSBadRequestException, HSException, HSNotFoundException}
+import helloscala.common.exception.HSBadRequestException
+import helloscala.common.exception.HSException
+import helloscala.common.exception.HSNotFoundException
 import helloscala.common.types.ObjectId
 import helloscala.common.util.TimeUtils
-import helloscala.http.{AkkaHttpSourceQueue, HttpUtils}
-import message.oauth.{GrantType, ResponseType}
+import helloscala.http.AkkaHttpSourceQueue
+import helloscala.http.HttpUtils
+import message.oauth.GrantType
+import message.oauth.ResponseType
 
 import scala.annotation.tailrec
 import scala.collection.immutable
@@ -56,15 +69,15 @@ trait AbstractRoute extends Directives {
     }
 
   def ObjectIdPath: PathMatcher1[ObjectId] =
-    PathMatcher("""[\da-fA-F]{24}""".r) flatMap { string =>
+    PathMatcher("""[\da-fA-F]{24}""".r).flatMap { string =>
       try ObjectId.parse(string).toOption
       catch {
-        case _: IllegalArgumentException ⇒ None
+        case _: IllegalArgumentException => None
       }
     }
 
   def ObjectIdSegment: PathMatcher1[String] =
-    PathMatcher("""[\da-fA-F]{24}""".r) flatMap { string =>
+    PathMatcher("""[\da-fA-F]{24}""".r).flatMap { string =>
       Some(string).filter(ObjectId.isValid)
     }
 
@@ -164,9 +177,10 @@ trait AbstractRoute extends Directives {
 
   def multiUploadedFile: Directive1[immutable.Seq[(FileInfo, Path)]] =
     entity(as[Multipart.FormData])
-      .flatMap { formData ⇒
-        extractRequestContext.flatMap { ctx ⇒
-          import ctx.{executionContext, materializer}
+      .flatMap { formData =>
+        extractRequestContext.flatMap { ctx =>
+          import ctx.executionContext
+          import ctx.materializer
 
           val multiPartF = formData.parts
             .map { part =>
@@ -190,12 +204,12 @@ trait AbstractRoute extends Directives {
 
   def multiFileUpload: Directive1[immutable.Seq[(FileInfo, Source[ByteString, Any])]] =
     entity(as[Multipart.FormData])
-      .flatMap { formData ⇒
-        extractRequestContext.flatMap { ctx ⇒
+      .flatMap { formData =>
+        extractRequestContext.flatMap { ctx =>
           import ctx.materializer
 
           val multiPartF = formData.parts
-            .map(part ⇒ (FileInfo(part.name, part.filename.get, part.entity.contentType), part.entity.dataBytes))
+            .map(part => (FileInfo(part.name, part.filename.get, part.entity.contentType), part.entity.dataBytes))
             .runWith(Sink.seq)
 
           onSuccess(multiPartF)

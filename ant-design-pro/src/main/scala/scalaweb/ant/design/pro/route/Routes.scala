@@ -12,30 +12,30 @@ class Routes extends AbstractRoute {
       pathGet("currentUser") {
         complete(Mocks.apiCurrentUser)
       } ~
-        pathGet("fake_chart_data") {
-          complete(Mocks.apiFakeChartData)
-        } ~
-        pathGet("tags") {
-          complete(Mocks.apiTags)
-        } ~
-        pathGet("activities") {
-          complete(Mocks.apiActivities)
-        } ~
-        pathGet("fake_list") {
-          parameter('count.as[Int]) { count =>
-            complete(Mocks.apiFakeList(count))
-          }
-        } ~
-        pathPrefix("project") {
-          pathGet("notice") {
-            complete(Mocks.project.notice)
-          }
+      pathGet("fake_chart_data") {
+        complete(Mocks.apiFakeChartData)
+      } ~
+      pathGet("tags") {
+        complete(Mocks.apiTags)
+      } ~
+      pathGet("activities") {
+        complete(Mocks.apiActivities)
+      } ~
+      pathGet("fake_list") {
+        parameter('count.as[Int]) { count =>
+          complete(Mocks.apiFakeList(count))
         }
-    } ~
-      notPathPrefixTest("api") {
-        getFromResourceDirectory("dist") ~
-          getFromResource("dist/index.html")
+      } ~
+      pathPrefix("project") {
+        pathGet("notice") {
+          complete(Mocks.project.notice)
+        }
       }
+    } ~
+    notPathPrefixTest("api") {
+      getFromResourceDirectory("dist") ~
+      getFromResource("dist/index.html")
+    }
   // #routes
 
 }

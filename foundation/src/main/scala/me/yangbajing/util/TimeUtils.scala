@@ -1,6 +1,7 @@
 package me.yangbajing.util
 
-import java.sql.{Date => SQLDate, Timestamp => SQLTimestamp}
+import java.sql.{Date => SQLDate}
+import java.sql.{Timestamp => SQLTimestamp}
 import java.time._
 import java.time.format.DateTimeFormatter
 import java.util.Date
@@ -28,7 +29,7 @@ class TimeUtils extends Serializable {
    * @return 成功返回 LocalDate
    */
   def toLocalDate(date: String): LocalDate =
-    Try(LocalDate.parse(date, formatterDate)) getOrElse {
+    Try(LocalDate.parse(date, formatterDate)).getOrElse {
       val (year, month, day) = date.split("""[-:]""") match {
         case Array(y, m, d) =>
           (y.toInt, m.toInt, d.toInt)
@@ -53,7 +54,7 @@ class TimeUtils extends Serializable {
    * @return 成功返回 LocalTime
    */
   def toLocalTime(time: String): LocalTime =
-    Try(LocalTime.parse(time, formatterTime)) getOrElse {
+    Try(LocalTime.parse(time, formatterTime)).getOrElse {
       val (hour, minute, second, nano) =
         time.split("""[:-]""") match {
           case Array(h, m, s) =>
@@ -94,7 +95,7 @@ class TimeUtils extends Serializable {
    * @return 成功返回 LocalDateTime
    */
   def toLocalDateTime(datetime: String): LocalDateTime =
-    Try(LocalDateTime.parse(datetime, formatterDateTime)) getOrElse {
+    Try(LocalDateTime.parse(datetime, formatterDateTime)).getOrElse {
       datetime.split("""[ Tt]+""") match {
         case Array(date, time) =>
           toLocalDateTime(date, time)

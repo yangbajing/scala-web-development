@@ -8,9 +8,12 @@ import akka.stream.Materializer
 import akka.stream.scaladsl.FileIO
 import com.typesafe.scalalogging.StrictLogging
 import fileupload.Constants
-import fileupload.model.{FileBO, FileInfo, FileMeta}
+import fileupload.model.FileBO
+import fileupload.model.FileInfo
+import fileupload.model.FileMeta
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 
 object FileUtils extends StrictLogging {
   val TMP_DIR: Path = getOrCreateDirectories(Paths.get("/tmp/file-upload/tmp"))

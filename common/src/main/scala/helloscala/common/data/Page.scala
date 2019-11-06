@@ -1,13 +1,19 @@
 package helloscala.common.data
 
-import java.time.{LocalDate, LocalDateTime, LocalTime, ZonedDateTime}
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.ZonedDateTime
 import java.util.UUID
 
 import com.typesafe.scalalogging.StrictLogging
-import helloscala.common.util.{StringUtils, TimeUtils}
+import helloscala.common.util.StringUtils
+import helloscala.common.util.TimeUtils
 
 import scala.beans.BeanProperty
-import scala.util.{Failure, Success, Try}
+import scala.util.Failure
+import scala.util.Success
+import scala.util.Try
 
 /**
  * Created by yangbajing(yangbajing@gmail.com) on 2017-04-28.
@@ -58,98 +64,80 @@ case class PageInput(@BeanProperty page: Int, @BeanProperty size: Int, @BeanProp
     getString(key).flatMap(str => Try(UUID.fromString(str)).toOption)
 
   def getLocalDate(key: String): Option[LocalDate] =
-    getString(key).flatMap(
-      str =>
-        Try(TimeUtils.toLocalDate(str)) match {
-          case Success(v) =>
-            Some(v)
-          case Failure(e) =>
-            logger.warn(s"getLocalDate($key) error: ${e.getMessage}", e)
-            None
-      }
-    )
+    getString(key).flatMap(str =>
+      Try(TimeUtils.toLocalDate(str)) match {
+        case Success(v) =>
+          Some(v)
+        case Failure(e) =>
+          logger.warn(s"getLocalDate($key) error: ${e.getMessage}", e)
+          None
+      })
 
   def getLocalTime(key: String): Option[LocalTime] =
-    getString(key).flatMap(
-      str =>
-        Try(TimeUtils.toLocalTime(str)) match {
-          case Success(v) =>
-            Some(v)
-          case Failure(e) =>
-            logger.warn(s"getLocalTime($key) error: ${e.getMessage}", e)
-            None
-      }
-    )
+    getString(key).flatMap(str =>
+      Try(TimeUtils.toLocalTime(str)) match {
+        case Success(v) =>
+          Some(v)
+        case Failure(e) =>
+          logger.warn(s"getLocalTime($key) error: ${e.getMessage}", e)
+          None
+      })
 
   def getLocalDateTime(key: String): Option[LocalDateTime] =
-    getString(key).flatMap(
-      str =>
-        Try(TimeUtils.toLocalDateTime(str)) match {
-          case Success(v) =>
-            Some(v)
-          case Failure(e) =>
-            logger.warn(s"getLocalDateTime($key) error: ${e.getMessage}", e)
-            None
-      }
-    )
+    getString(key).flatMap(str =>
+      Try(TimeUtils.toLocalDateTime(str)) match {
+        case Success(v) =>
+          Some(v)
+        case Failure(e) =>
+          logger.warn(s"getLocalDateTime($key) error: ${e.getMessage}", e)
+          None
+      })
 
   def getZonedDateTime(key: String): Option[ZonedDateTime] =
-    getString(key).flatMap(
-      str =>
-        Try(TimeUtils.toZonedDateTime(str)) match {
-          case Success(v) =>
-            Some(v)
-          case Failure(e) =>
-            logger.warn(s"getZonedDateTime($key) error: ${e.getMessage}", e)
-            None
-      }
-    )
+    getString(key).flatMap(str =>
+      Try(TimeUtils.toZonedDateTime(str)) match {
+        case Success(v) =>
+          Some(v)
+        case Failure(e) =>
+          logger.warn(s"getZonedDateTime($key) error: ${e.getMessage}", e)
+          None
+      })
 
   def getDouble(key: String): Option[Double] =
-    params
-      .get(key)
-      .flatMap {
-        case d: Double => Some(d)
-        case s: String => Try(s.toDouble).toOption
-        case v         => None
-      }
+    params.get(key).flatMap {
+      case d: Double => Some(d)
+      case s: String => Try(s.toDouble).toOption
+      case v         => None
+    }
 
   def getBoolean(key: String): Option[Boolean] =
-    params
-      .get(key)
-      .flatMap {
-        case b: Boolean => Some(b)
-        case s: String  => Try(s.toBoolean).toOption
-        case _          => None
-      }
+    params.get(key).flatMap {
+      case b: Boolean => Some(b)
+      case s: String  => Try(s.toBoolean).toOption
+      case _          => None
+    }
 
   def getInt(key: String): Option[Int] =
-    params
-      .get(key)
-      .flatMap {
-        case i: Int    => Some(i)
-        case l: Long   => Some(l.toInt)
-        case s: String => Try(s.toInt).toOption
-        case _         => None
-      }
+    params.get(key).flatMap {
+      case i: Int    => Some(i)
+      case l: Long   => Some(l.toInt)
+      case s: String => Try(s.toInt).toOption
+      case _         => None
+    }
 
   def getLong(key: String): Option[Long] =
-    params
-      .get(key)
-      .flatMap {
-        case l: Long   => Some(l)
-        case i: Int    => Some(i.toLong)
-        case s: String => Try(s.toLong).toOption
-        case _         => None
-      }
+    params.get(key).flatMap {
+      case l: Long   => Some(l)
+      case i: Int    => Some(i.toLong)
+      case s: String => Try(s.toLong).toOption
+      case _         => None
+    }
 
   def getString(key: String): Option[String] =
-    params
-      .get(key)
-      .flatMap {
-        case s: String if StringUtils.isNoneBlank(s) => Some(s)
-        case _                                       => None
-      }
+    params.get(key).flatMap {
+      case s: String if StringUtils.isNoneBlank(s) => Some(s)
+      case _                                       => None
+    }
 
 }
 

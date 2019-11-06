@@ -11,6 +11,8 @@
 * [scala](scala/index.md)
 * [basic](basic/index.md)
 * [server-api](server-api/index.md)
+- [routing-dsl](routing-dsl/index.md)
+- [directives](directives/index.md)
 * [data](data/index.md)
 * [test](test/index.md)
 * [oauth](oauth/index.md)

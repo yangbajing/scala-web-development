@@ -1,0 +1,185 @@
+syntax = "proto3";
+package fusion.discovery.model;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/any.proto";
+import "scalapb/scalapb.proto";
+
+option (scalapb.options) = {
+  collection_type: "scala.collection.immutable.Seq"
+};
+
+message ServerStatusQuery {
+}
+message ServerStatusBO {
+    int32 status = 1;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Config
+////////////////////////////////////////////////////////////////////////////////
+
+message ConfigQuery {
+    string namespace = 1;
+    repeated string data_ids = 2;
+    string group_name = 3;
+}
+message ConfigItem {
+    string namespace = 1;
+    string data_id = 2;
+    string group_name = 3;
+    string content = 4;
+}
+message ConfigQueried {
+    repeated ConfigItem configs = 1;
+}
+
+message ConfigPublish {
+    string namespace = 1;
+    string data_id = 2;
+    string group_name = 3;
+    string content = 4;
+}
+message ConfigPublished {
+    string version = 1;
+    google.protobuf.StringValue old_content = 2;
+}
+
+message ConfigRemove {
+    string namespace = 1;
+    string data_id = 2;
+    string group_name = 3;
+}
+
+message ConfigChangeListen {
+    string namespace = 1;
+    string data_id = 2;
+    string group_name = 3;
+}
+message ConfigChanged {
+    string namespace = 1;
+    string data_id = 2;
+    string group_name = 3;
+    string content = 4;
+    int32 version = 5;
+    google.protobuf.StringValue old_content = 6;
+    int32 change_type = 7; // 1: add, 2: update, 3: delete
+}
+
+message ConfigReply {
+    int32 status = 1;
+    oneof data {
+        ConfigQueried queried = 2;
+        ConfigPublished published = 3;
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Instance
+////////////////////////////////////////////////////////////////////////////////
+
+message InstanceRegister {
+    string namespace = 1;
+    string service_name = 2;
+    string group_name = 3;
+    string cluster_name = 4;
+    string ip = 5;
+    int32 port = 6;
+    // instance weight
+    double weight = 7;
+    // instance health status
+    bool healthy = 8;
+    // If instance is enabled to accept request
+    bool enabled = 9;
+    // If instance is ephemeral
+    bool ephemeral = 10;
+    // user extended attributes
+    map<string, string> metadata = 11;
+}
+
+message InstanceModify {
+    string namespace = 1;
+    string service_name = 2;
+    string group_name = 3;
+    string ip = 4;
+    int32 port = 5;
+    // instance weight
+    double weight = 6;
+    // instance health status
+    bool healthy = 7;
+    // If instance is enabled to accept request
+    bool enabled = 8;
+    // If instance is ephemeral
+    bool ephemeral = 9;
+    // user extended attributes
+    map<string, string> metadata = 10;
+}
+message InstanceModified {
+    int32 status = 1;
+}
+
+message InstanceRemove {
+    string namespace = 1;
+    string service_name = 2;
+    string group_name = 3;
+    string cluster_name = 4;
+    string ip = 5;
+    int32 port = 6;
+}
+
+message Instance {
+    // unique id of this instance.
+    string instance_id = 1;
+    // Service information of instance
+    string namespace = 2;
+    string service_name = 3;
+    string group_name = 4;
+    // instance ip
+    string ip = 5;
+    // instance port
+    int32 port = 6;
+    // cluster information of instance
+    string cluster_name = 7;
+    // instance weight
+    double weight = 8;
+    // instance health status
+    bool healthy = 9;
+    // If instance is enabled to accept request
+    bool enabled = 10;
+    // If instance is ephemeral
+    bool ephemeral = 11;
+    // user extended attributes
+    map<string, string> metadata = 12;
+}
+
+message InstanceQuery {
+    string namespace = 1;
+    string service_name = 2;
+    string group_name = 3;
+    // only return all healthy instances
+    bool all_healthy = 4;
+    // only return one healthy instance
+    bool one_healthy = 5;
+    repeated string cluster_name = 6;
+}
+message InstanceQueried {
+    repeated Instance instances = 2;
+}
+
+message InstanceHeartbeat {
+    string namespace = 1;
+    string service_name = 2;
+    string group_name = 3;
+    string ip = 4;
+    int32 port = 5;
+}
+
+message InstanceReply {
+    int32 status = 1;
+    oneof data {
+        InstanceQueried queried = 2;
+//        InstanceRegistered registered = 3;
+//        InstanceRemoved removed = 4;
+//        InstanceModified modified = 5;
+    }
+}

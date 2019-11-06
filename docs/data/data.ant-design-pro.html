@@ -165,14 +165,30 @@ yangbajing/scala-web-development
     <li><a href="../basic/basic.1.html" class="page">Web 工作方式</a></li>
     <li><a href="../basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
     <li><a href="../basic/basic.3.html" class="page">Akka HTTP 的通用抽象</a></li>
-    <li><a href="../basic/basic.4.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
-    <li><a href="../basic/basic.5.html" class="page">高级服务端 API</a></li>
     <li><a href="../basic/basic.z.html" class="page">小结</a></li>
   </ul></li>
   <li><a href="../server-api/index.html" class="page">服务端API</a>
   <ul>
-    <li><a href="../server-api/routing-dsl/index.html" class="page">路由DSL</a></li>
-    <li><a href="../server-api/file-upload.html" class="page">实战：大文件断点上传、下载和秒传</a></li>
+    <li><a href="../server-api/work.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="../server-api/advanced.html" class="page">高级服务端 API</a></li>
+  </ul></li>
+  <li><a href="../routing-dsl/index.html" class="page">路由DSL</a>
+  <ul>
+    <li><a href="../routing-dsl/route.html" class="page">Route 路由</a></li>
+    <li><a href="../routing-dsl/directive.html" class="page">Directive 指令</a></li>
+    <li><a href="../routing-dsl/custom-directive.html" class="page">自定义指令</a></li>
+    <li><a href="../routing-dsl/rejections.html" class="page">拒绝 rejections</a></li>
+    <li><a href="../routing-dsl/exception.html" class="page">异常处理</a></li>
+    <li><a href="../routing-dsl/file-upload.html" class="page">实战：大文件断点上传、下载和秒传</a></li>
+  </ul></li>
+  <li><a href="../directives/index.html" class="page">常用指令</a>
+  <ul>
+    <li><a href="../directives/path.html" class="page">PathDirectives（路径指令）</a></li>
+    <li><a href="../directives/method.html" class="page">directives/method.html</a></li>
+    <li><a href="../directives/parameter_form.html" class="page">directives/parameter_form.html</a></li>
+    <li><a href="../directives/marshalling.html" class="page">directives/marshalling.html</a></li>
+    <li><a href="../directives/file.html" class="page">directives/file.html</a></li>
+    <li><a href="../directives/cookie.html" class="page">directives/cookie.html</a></li>
   </ul></li>
   <li><a href="../data/index.html" class="page">数据</a>
   <ul>
@@ -238,7 +254,7 @@ yangbajing/scala-web-development
 <ul style="display: none">
 <li class="md-nav__item md-version" id="project.version">
 <label class="md-nav__link" for="__version">
-<i class="md-icon" title="Version">label_outline</i> f2e68315+20190225-1941
+<i class="md-icon" title="Version">label_outline</i> 1.0.0
 </label>
 </li>
 </ul>
@@ -274,35 +290,35 @@ yangbajing/scala-web-development
 <p>Ant Design Pro 已经是一个完整的后台前端应用，我们只需要使用 Akka HTTP 为其提供后端API接口服务支持和静态资源文件的HTTP获取功能。</p>
 <h3><a href="#创建api" name="创建api" class="anchor"><span class="anchor-link"></span></a>创建API</h3>
 <p>Akka HTTP 的 Routing DSL 是从上到下一级一级的匹配路由的，当前一个路由不匹配时才判断下一个路由，这样一直到最后一个。利用这个特性，我们可以在整个路由定义的最后来设置返回React SPA需要的静态资源文件。</p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/ant-design-pro/src/main/scala/scalaweb/ant/design/pro/route/Routes.scala#L10-L38" target="_blank" title="Go to snippet source"></a><code class="language-scala">def route: Route =
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/ant-design-pro/src/main/scala/scalaweb/ant/design/pro/route/Routes.scala#L10-L38" target="_blank" title="Go to snippet source"></a><code class="language-scala">def route: Route =
   pathPrefix(&quot;api&quot;) {
     pathGet(&quot;currentUser&quot;) {
       complete(Mocks.apiCurrentUser)
     } ~
-      pathGet(&quot;fake_chart_data&quot;) {
-        complete(Mocks.apiFakeChartData)
-      } ~
-      pathGet(&quot;tags&quot;) {
-        complete(Mocks.apiTags)
-      } ~
-      pathGet(&quot;activities&quot;) {
-        complete(Mocks.apiActivities)
-      } ~
-      pathGet(&quot;fake_list&quot;) {
-        parameter(&#39;count.as[Int]) { count =&gt;
-          complete(Mocks.apiFakeList(count))
-        }
-      } ~
-      pathPrefix(&quot;project&quot;) {
-        pathGet(&quot;notice&quot;) {
-          complete(Mocks.project.notice)
-        }
+    pathGet(&quot;fake_chart_data&quot;) {
+      complete(Mocks.apiFakeChartData)
+    } ~
+    pathGet(&quot;tags&quot;) {
+      complete(Mocks.apiTags)
+    } ~
+    pathGet(&quot;activities&quot;) {
+      complete(Mocks.apiActivities)
+    } ~
+    pathGet(&quot;fake_list&quot;) {
+      parameter(&#39;count.as[Int]) { count =&gt;
+        complete(Mocks.apiFakeList(count))
       }
+    } ~
+    pathPrefix(&quot;project&quot;) {
+      pathGet(&quot;notice&quot;) {
+        complete(Mocks.project.notice)
+      }
+    }
   } ~
-    notPathPrefixTest(&quot;api&quot;) {
-      getFromResourceDirectory(&quot;dist&quot;) ~
-        getFromResource(&quot;dist/index.html&quot;)
-    }</code></pre>
+  notPathPrefixTest(&quot;api&quot;) {
+    getFromResourceDirectory(&quot;dist&quot;) ~
+    getFromResource(&quot;dist/index.html&quot;)
+  }</code></pre>
 <p>这里的重点在 <code>notPathPrefixTest(api) { .... }</code> 部分，这一块代码是用来返回 Ant Design Pro 静态资源的。首先它将判断请求URI不是以 <code>/api</code> 开头，若请求URI以<code>/api</code>开关则不进入里面的获取静态资源代码逻辑，而是直接返回一个预定义的指令：<code>reject</code>。通常，我们都会将API接口统一到 <code>/api</code> 这样的路径下，这样非 <code>/api</code> 开头的URI请求就可以交到下面的两句代码执行，来实现SPA应用在资源未找到时服务端默认返回 <code>/index.html</code> 的需求。</p>
 <pre><code>getFromResourceDirectory(&quot;dist&quot;) ~
   getFromResource(&quot;dist/index.html&quot;)
@@ -313,7 +329,7 @@ yangbajing/scala-web-development
 </ul>
 <p>总体上，以上两个指令组合使用就可以实现类似 Nginx 的 <code>try_files $uri /index.html;</code> 效果</p>
 <p><strong>Mocks.scala</strong>，定义了API接口数据并组装成 <code>HttpEntity</code> 对象。</p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/ant-design-pro/src/main/scala/scalaweb/ant/design/pro/mock/Mocks.scala#L9-L17" target="_blank" title="Go to snippet source"></a><code class="language-scala">object project {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/ant-design-pro/src/main/scala/scalaweb/ant/design/pro/mock/Mocks.scala#L10-L18" target="_blank" title="Go to snippet source"></a><code class="language-scala">object project {
   def notice = toJsonEntity(Project.notice)
 }
 def apiCurrentUser = toJsonEntity(Api.currentUser)
@@ -323,7 +339,7 @@ def apiActivities = toJsonEntity(Api.activities)
 
 def toJsonEntity(str: String): HttpEntity.Strict = HttpEntity(ContentTypes.`application/json`, str)</code></pre>
 <p>这里为了演示Akka HTTP与Ant Design Pro的集成，我并未直接去实现后端接口数据模型的生成逻辑，比如：model定义、数据存储操作等。而是通过直接返回字符串形式的JSON数据来模拟：</p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/ant-design-pro/src/main/scala/scalaweb/ant/design/pro/mock/Api.scala#L67-L68" target="_blank" title="Go to snippet source"></a><code class="language-scala">val currentUser =
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/ant-design-pro/src/main/scala/scalaweb/ant/design/pro/mock/Api.scala#L67-L68" target="_blank" title="Go to snippet source"></a><code class="language-scala">val currentUser =
   &quot;&quot;&quot;{&quot;name&quot;:&quot;羊八井&quot;,&quot;avatar&quot;:&quot;https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png&quot;,&quot;userid&quot;:&quot;00000001&quot;,&quot;email&quot;:&quot;yangbajing@gmail.com&quot;,&quot;signature&quot;:&quot;海纳百川，有容乃大&quot;,&quot;title&quot;:&quot;一个好爸爸&quot;,&quot;group&quot;:&quot;华龙海数－某某某事业群－某某平台部－某某技术部－Developer&quot;,&quot;tags&quot;:[{&quot;key&quot;:&quot;0&quot;,&quot;label&quot;:&quot;很有想法的&quot;},{&quot;key&quot;:&quot;1&quot;,&quot;label&quot;:&quot;专注后端&quot;},{&quot;key&quot;:&quot;2&quot;,&quot;label&quot;:&quot;强~&quot;},{&quot;key&quot;:&quot;3&quot;,&quot;label&quot;:&quot;彪悍&quot;},{&quot;key&quot;:&quot;4&quot;,&quot;label&quot;:&quot;重庆崽儿&quot;},{&quot;key&quot;:&quot;5&quot;,&quot;label&quot;:&quot;海纳百川&quot;}],&quot;notifyCount&quot;:12,&quot;country&quot;:&quot;China&quot;,&quot;geographic&quot;:{&quot;province&quot;:{&quot;label&quot;:&quot;重庆市&quot;,&quot;key&quot;:&quot;330000&quot;},&quot;city&quot;:{&quot;label&quot;:&quot;渝北区&quot;,&quot;key&quot;:&quot;402260&quot;}},&quot;address&quot;:&quot;渝北区金开大道西段106号10栋移动新媒体产业大厦11楼&quot;,&quot;phone&quot;:&quot;023-88888888&quot;}&quot;&quot;&quot;</code></pre>
 <p>通过<code>def toJsonEntity(str: String): HttpEntity.Strict = HttpEntity(ContentTypes.</code>application/json<code>, str)</code>函数，将JSON字符串实例化为一个<code>HttpEntity</code>对象并设置<code>Content-Type</code>为<code>application/json</code>类型。</p><div class="callout note "><div class="callout-title">注意</div>
 <p>这里只定义了Ant Design Pro的 <strong>dashboard</strong> 栏目下3个页面需要的接口，其它接口并未实现，因为对于这个示例它们并不是重点。</p></div>
@@ -344,18 +360,18 @@ def toJsonEntity(str: String): HttpEntity.Strict = HttpEntity(ContentTypes.`appl
 <p>这时还未启动Akka HTTP后端服务，看到在请求后端API <code>/api/currentUser</code>时报504网关超时错误。这代表我们设置的 webpack.proxy 已经生效，接下来让我们启动Akka HTTP后端服务。</p>
 <h3><a href="#启动akka-http-server" name="启动akka-http-server" class="anchor"><span class="anchor-link"></span></a>启动Akka HTTP Server</h3>
 <p><strong>Main.scala</strong></p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/ant-design-pro/src/main/scala/scalaweb/ant/design/pro/Main.scala#L12-L28" target="_blank" title="Go to snippet source"></a><code class="language-scala">object Main extends App with StrictLogging {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/ant-design-pro/src/main/scala/scalaweb/ant/design/pro/Main.scala#L13-L29" target="_blank" title="Go to snippet source"></a><code class="language-scala">object Main extends App with StrictLogging {
   implicit val system = ActorSystem()
-  implicit val materializer = ActorMaterializer()
+  implicit val materializer = Materializer(system)
   import system.dispatcher
 
   val bindingFuture = Http().bindAndHandle(handler = new Routes().route, interface = &quot;0.0.0.0&quot;, port = 22222)
 
   bindingFuture.onComplete {
-    case Success(binding) ⇒
+    case Success(binding) =&gt;
       sys.addShutdownHook(system.terminate())
       logger.info(s&quot;启动Akka HTTP Server成功，绑定地址: $binding&quot;)
-    case Failure(e) ⇒
+    case Failure(e) =&gt;
       logger.error(s&quot;启动Akka HTTP Server失败：${e.getMessage}&quot;, e)
       system.terminate()
   }
@@ -390,13 +406,13 @@ sbt &quot;project ant-design-pro&quot; assembly
 <p><em>本章源码在：<a href="https://github.com/yangbajing/scala-web-development/tree/master/ant-design-pro">https://github.com/yangbajing/scala-web-development/tree/master/ant-design-pro</a></em></p>
 </div>
 <div>
-<a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/data/data.ant-design-pro.md" title="Edit this page" class="md-source-file md-edit">
+<a href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/main/paradox/data/data.ant-design-pro.md" title="Edit this page" class="md-source-file md-edit">
 Edit this page
 </a>
 </div>
 <div class="print-only">
 <span class="md-source-file md-version">
-f2e68315+20190225-1941
+1.0.0
 </span>
 </div>
 </article>

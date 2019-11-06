@@ -39,14 +39,14 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % "test"
 import scala.collection.mutable
 import org.scalatest._
 
-class FirstTest extends WordSpec with MustMatchers {
+class FirstTest extends WordSpec with Matchers {
   "A Stack" should {
     "pop values in last-in-first-out order" in {
       val stack = mutable.Stack.empty[Int]
       stack.push(1)
       stack.push(2)
-      stack.pop() mustBe 2
-      stack.pop() mustBe 1
+      stack.pop() shouldBe 2
+      stack.pop() shouldBe 1
     }
     
     "throw NoSuchElementException if an empty stack is popped" in {
@@ -86,10 +86,10 @@ class FirstTest extends WordSpec with MustMatchers {
 
 除了默认的断言函数，如：`assert`、`assertResult`、`assertThrows`等，ScalaTest还提供了更好用的 **Matchers**。**Matchers** 具有以下特性：
 
-- 基于表达式断言的DSL，如：`stack.pop() mustBe 2`。更易读，以人类语言的方式来编写测试断言。
+- 基于表达式断言的DSL，如：`stack.pop() shouldBe 2`。更易读，以人类语言的方式来编写测试断言。
 - 丰富的断言类型，支持更直观的断言表达式，如：`"abbccxxx" should startWith regex ("a(b*)(c*)" withGroups ("bb", "cc"))`。
 
-只需要在测试类混入 `MustMatchers` 特质，就可以使用 ScalaTest 提供的强大的 Matchers 特性。
+只需要在测试类混入 `Matchers` 特质，就可以使用 ScalaTest 提供的强大的 Matchers 特性。
 
 ## OptionValues
 
@@ -155,7 +155,7 @@ override implicit def patienceConfig = PatienceConfig(Span(60, Seconds), Span(50
         3
       }
       val result = f.futureValue
-      result mustBe 3
+      result shouldBe 3
     }
   }
 ```
@@ -197,7 +197,7 @@ ScalaMock是由 Paul Butcher 编写的一个原生的开源Scala Mocking框架�
     "function mock" in {
       val m = mockFunction[Int, String]
       m expects 42 returning "Forty two"
-      m(42) mustBe "Forty two"
+      m(42) shouldBe "Forty two"
     }
   }
 ```

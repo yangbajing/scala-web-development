@@ -1,8 +1,10 @@
 package fileupload.controller
 
-import akka.http.scaladsl.model.{Multipart, StatusCodes}
+import akka.http.scaladsl.model.Multipart
+import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.server.{Directive0, Route}
+import akka.http.scaladsl.server.Directive0
+import akka.http.scaladsl.server.Route
 import com.typesafe.scalalogging.StrictLogging
 import fileupload.service.FileService
 import fileupload.util.FileUtils
@@ -12,8 +14,8 @@ class FileRoute(fileService: FileService) extends StrictLogging {
   def route: Route = pathPrefix("file") {
     log {
       uploadRoute ~
-        downloadRoute ~
-        progressRoute
+      downloadRoute ~
+      progressRoute
     }
   }
 

@@ -1,16 +1,16 @@
 package multi
 
-import org.scalatest.{FunSuite, MustMatchers}
+import org.scalatest.{FunSuite, Matchers}
 
-class UtilsTest extends FunSuite with MustMatchers {
+class UtilsTest extends FunSuite with Matchers {
 
   test("isBlank") {
-    Utils.isBlank("   ") mustBe true
-    Utils.isBlank("") mustBe true
-    Utils.isBlank(null) mustBe true
-    Utils.isBlank("df") mustBe false
-    Utils.isBlank("df  ") mustBe false
-    Utils.isBlank("  df  ") mustBe false
+    Utils.isBlank("   ") shouldBe true
+    Utils.isBlank("") shouldBe true
+    Utils.isBlank(null) shouldBe true
+    Utils.isBlank("df") shouldBe false
+    Utils.isBlank("df  ") shouldBe false
+    Utils.isBlank("  df  ") shouldBe false
   }
 
 }

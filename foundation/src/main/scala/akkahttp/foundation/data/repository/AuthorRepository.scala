@@ -61,8 +61,7 @@ object AuthorRepository {
       result("id").asInstanceOf[Long],
       result("name").asInstanceOf[String],
       result.get("age").map(_.asInstanceOf[Int]),
-      result.get("remark").map(_.asInstanceOf[String])
-    )
+      result.get("remark").map(_.asInstanceOf[String]))
 
   /**
    * 获取有效的数据库查询字段名列表和参数值列表
@@ -75,16 +74,16 @@ object AuthorRepository {
     val args = mutable.Buffer.empty[Object]
 
     names.append("name")
-    args.append(author.name)
+    args += author.name
 
     author.age.foreach { value =>
       names.append("age")
-      args.append(Integer.valueOf(value))
+      args += Integer.valueOf(value)
     }
 
     author.remark.foreach { remark =>
       names.append("remark")
-      args.append(remark)
+      args += remark
     }
     (names, args)
   }

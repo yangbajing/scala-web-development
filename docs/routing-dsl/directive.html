@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="book">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="book">
+<link rel="shortcut icon" href="../assets/images/favicon.png">
+<title>Directive 指令 · Scala Web 开发——基于Akka HTTP</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<meta name="theme-color" content="#009688" />
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+</head>
+<body
+data-md-color-primary="teal"
+data-md-color-accent="indigo"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Scala Web 开发——基于Akka HTTP" class="md-header-nav__button md-logo">
+<i class="md-icon">local_library</i>
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Scala Web 开发——基于Akka HTTP
+</span>
+<span class="md-header-nav__topic">
+Directive 指令
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/yangbajing/scala-web-development"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+yangbajing/scala-web-development
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Scala Web 开发——基于Akka HTTP" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<i class="md-icon">local_library</i>
+</a>
+<a href="../index.html" title="Scala Web 开发——基于Akka HTTP">
+Scala Web 开发——基于Akka HTTP
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/yangbajing/scala-web-development"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+yangbajing/scala-web-development
+</div>
+</a>
+
+</div>
+<ul>
+  <li><a href="../preface.html" class="page">前言</a></li>
+  <li><a href="../env/index.html" class="page">Scala 环境配置</a>
+  <ul>
+    <li><a href="../env/env.1.html" class="page">Sbt</a></li>
+    <li><a href="../env/env.2.html" class="page">IDE开发工具</a></li>
+    <li><a href="../env/env.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../scala/index.html" class="page">Scala 语言基础</a>
+  <ul>
+    <li><a href="../scala/scala.0.html" class="page">REPL</a></li>
+    <li><a href="../scala/scala.1.html" class="page">你好，Scala</a></li>
+    <li><a href="../scala/scala.2.html" class="page">Scala基础</a></li>
+    <li><a href="../scala/scala.3.html" class="page">流程和函数</a></li>
+    <li><a href="../scala/scala.4.html" class="page">集合</a></li>
+    <li><a href="../scala/scala.5.html" class="page">class和object</a></li>
+    <li><a href="../scala/scala.6.html" class="page">函数式</a></li>
+    <li><a href="../scala/scala.7.html" class="page">Trait</a></li>
+    <li><a href="../scala/scala.8.html" class="page">并发</a></li>
+    <li><a href="../scala/scala.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../basic/index.html" class="page">Akka HTTP 基础</a>
+  <ul>
+    <li><a href="../basic/basic.0.html" class="page">Akka HTTP 基础</a></li>
+    <li><a href="../basic/basic.1.html" class="page">Web 工作方式</a></li>
+    <li><a href="../basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
+    <li><a href="../basic/basic.3.html" class="page">Akka HTTP 的通用抽象</a></li>
+    <li><a href="../basic/basic.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../server-api/index.html" class="page">服务端API</a>
+  <ul>
+    <li><a href="../server-api/work.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="../server-api/advanced.html" class="page">高级服务端 API</a></li>
+  </ul></li>
+  <li><a href="../routing-dsl/index.html" class="page">路由DSL</a>
+  <ul>
+    <li><a href="../routing-dsl/route.html" class="page">Route 路由</a></li>
+    <li><a href="../routing-dsl/directive.html" class="active page">Directive 指令</a></li>
+    <li><a href="../routing-dsl/custom-directive.html" class="page">自定义指令</a></li>
+    <li><a href="../routing-dsl/rejections.html" class="page">拒绝 rejections</a></li>
+    <li><a href="../routing-dsl/exception.html" class="page">异常处理</a></li>
+    <li><a href="../routing-dsl/file-upload.html" class="page">实战：大文件断点上传、下载和秒传</a></li>
+  </ul></li>
+  <li><a href="../directives/index.html" class="page">常用指令</a>
+  <ul>
+    <li><a href="../directives/path.html" class="page">PathDirectives（路径指令）</a></li>
+    <li><a href="../directives/method.html" class="page">directives/method.html</a></li>
+    <li><a href="../directives/parameter_form.html" class="page">directives/parameter_form.html</a></li>
+    <li><a href="../directives/marshalling.html" class="page">directives/marshalling.html</a></li>
+    <li><a href="../directives/file.html" class="page">directives/file.html</a></li>
+    <li><a href="../directives/cookie.html" class="page">directives/cookie.html</a></li>
+  </ul></li>
+  <li><a href="../data/index.html" class="page">数据</a>
+  <ul>
+    <li><a href="../data/data.0.html" class="page">数据</a></li>
+    <li><a href="../data/data.1.html" class="page">JSON</a></li>
+    <li><a href="../data/data.ant-design-pro.html" class="page">实战：为Ant Design Pro提供后端接口</a></li>
+    <li><a href="../data/data.kryo.html" class="page">Kryo</a></li>
+    <li><a href="../data/data.2.html" class="page">Protobuf</a></li>
+    <li><a href="../data/data.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../test/index.html" class="page">测试</a>
+  <ul>
+    <li><a href="../test/test.0.html" class="page">测试</a></li>
+    <li><a href="../test/test.1.html" class="page">Scalatest</a></li>
+    <li><a href="../test/test.2.html" class="page">测试异步代码</a></li>
+    <li><a href="../test/test.3.html" class="page">端到端测试Route</a></li>
+    <li><a href="../test/test.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
+  <ul>
+    <li><a href="../oauth/oauth.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../database/index.html" class="page">访问数据库</a>
+  <ul>
+    <li><a href="../database/database.0.html" class="page">访问数据库</a></li>
+    <li><a href="../database/database.1.html" class="page">使用 JDBC 访问 PostgreSQL</a></li>
+    <li><a href="../database/database.2.html" class="page">使用 Slick 访问数据库</a></li>
+    <li><a href="../database/database.3.html" class="page">访问 Cassandra 数据库</a></li>
+    <li><a href="../database/database.4.html" class="page">访问 Redis</a></li>
+    <li><a href="../database/database.5.html" class="page">访问 Elasticsearch</a></li>
+    <li><a href="../database/database.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../engineering/index.html" class="page">工程化</a>
+  <ul>
+    <li><a href="../engineering/swagger.html" class="page">使用Swagger编写API文档</a></li>
+    <li><a href="../engineering/guice.html" class="page">使用Guice管理类依赖</a></li>
+  </ul></li>
+  <li><a href="../appendix/index.html" class="page">附录</a>
+  <ul>
+    <li><a href="../appendix/appendix.0.html" class="page">参考资料</a></li>
+    <li><a href="../appendix/appendix.1.html" class="page">专业术语</a></li>
+    <li><a href="../appendix/appendix.2.html" class="page">词汇表</a></li>
+  </ul></li>
+  <li><a href="../donate.html" class="page">赞助</a></li>
+</ul>
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../routing-dsl/directive.html#directive-指令" class="header">Directive 指令</a>
+  <ul>
+    <li><a href="../routing-dsl/directive.html#指令基础" class="header">指令基础</a></li>
+    <li><a href="../routing-dsl/directive.html#指令可以做什么-" class="header">指令可以做什么？</a></li>
+    <li><a href="../routing-dsl/directive.html#组合指令" class="header">组合指令</a></li>
+    <li><a href="../routing-dsl/directive.html#使用concat来连接多个指令" class="header">使用<code>concat</code>来连接多个指令</a></li>
+    <li><a href="../routing-dsl/directive.html#类型安全的指令" class="header">类型安全的指令</a></li>
+    <li><a href="../routing-dsl/directive.html#指令类型参数里的-tuple-自动拉平-flattening-" class="header">指令类型参数里的 Tuple （自动拉平 flattening）</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 1.0.0
+</label>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../routing-dsl/directive.html#directive-指令" class="header">Directive 指令</a>
+  <ul>
+    <li><a href="../routing-dsl/directive.html#指令基础" class="header">指令基础</a></li>
+    <li><a href="../routing-dsl/directive.html#指令可以做什么-" class="header">指令可以做什么？</a></li>
+    <li><a href="../routing-dsl/directive.html#组合指令" class="header">组合指令</a></li>
+    <li><a href="../routing-dsl/directive.html#使用concat来连接多个指令" class="header">使用<code>concat</code>来连接多个指令</a></li>
+    <li><a href="../routing-dsl/directive.html#类型安全的指令" class="header">类型安全的指令</a></li>
+    <li><a href="../routing-dsl/directive.html#指令类型参数里的-tuple-自动拉平-flattening-" class="header">指令类型参数里的 Tuple （自动拉平 flattening）</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#directive-指令" name="directive-指令" class="anchor"><span class="anchor-link"></span></a>Directive 指令</h1>
+<p><strong>指令</strong> 是用于创建任意复杂路由结构的小型构建块，Akka HTTP已经预先定义了大部分指令，当然我们也可以很轻松的定义自己的指令。</p>
+<h2><a href="#指令基础" name="指令基础" class="anchor"><span class="anchor-link"></span></a>指令基础</h2>
+<p>通过指令来创建路由，需要理解指令是如何工作的。我们先来看看指令和原始的<code>Route</code>的对比。因为<code>Route</code>只是函数的类型别名，所有<code>Route</code>实例可以任何方式写入函数实例，如作为函数文本：</p>
+<pre class="prettyprint"><code class="language-scala">val route: Route = { ctx =&gt; ctx.complete(&quot;yeah&quot;) }  // 或者可简写为：_.complete(&quot;yeah&quot;)
+</code></pre>
+<p>而<code>complete</code>指令将变得更短：</p>
+<pre class="prettyprint"><code class="language-scala">val route: Route = complete(&quot;yeah&quot;)
+</code></pre>
+<p><code>complete</code>指令定义如下：</p>
+<pre class="prettyprint"><code class="language-scala">def complete(m: =&gt; ToResponseMarshallable): StandardRoute =
+  StandardRoute(_.complete(m))
+
+abstract class StandardRoute extends Route {
+  def toDirective[L: Tuple]: Directive[L] = StandardRoute.toDirective(this)
+}
+
+object StandardRoute {
+  def apply(route: Route): StandardRoute = route match {
+    case x: StandardRoute =&gt; x
+    case x                =&gt; new StandardRoute { def apply(ctx: RequestContext) = x(ctx) }
+  }
+}
+</code></pre>
+<h2><a href="#指令可以做什么-" name="指令可以做什么-" class="anchor"><span class="anchor-link"></span></a>指令可以做什么？</h2>
+<p>指令用来灵活、高效的构造路由结构，简单来说它可以做如下这些事情：</p>
+<ol>
+  <li>
+  <p>将<code>Route</code>传入的请求上下文<code>RequestContext</code>转换为内部路由需要的格式（修改请求）。</p>
+  <pre class="prettyprint"><code class="language-scala">mapRequest(request =&gt; request.withHeaders(request.headers :+ RawHeader(&quot;custom-key&quot;, &quot;custom-value&quot;)))
+</code></pre></li>
+  <li>
+  <p>根据设置的逻辑来过滤<code>RequestContext</code>，符合的通过（pass），不符合的拒绝（reject）。</p>
+  <pre class="prettyprint"><code class="language-scala">path(&quot;api&quot; / &quot;user&quot; / &quot;page&quot;)
+</code></pre></li>
+  <li>
+  <p>从<code>RequestContext</code>中提取值，并使它在内部路径内的路由可用。</p>
+  <pre class="prettyprint"><code class="language-scala">extract(ctx =&gt; ctx.request.uri)
+</code></pre></li>
+  <li>
+  <p>定义一些处理逻辑附加到<code>Future[RouteRoute]</code>的转换链上，可用于修改响应或拒绝。</p>
+  <pre class="prettyprint"><code class="language-scala">mapRouteResultPF {
+  case RouteResult.Rejected(_) =&gt;
+    RouteResult.Complete(HttpResponse(StatusCodes.InternalServerError))
+}
+</code></pre></li>
+  <li>
+  <p>完成请求（使用<code>complete</code>）</p>
+  <pre class="prettyprint"><code class="language-scala">complete(&quot;OK&quot;)
+</code></pre></li>
+</ol>
+<p>指令已经包含了路由（<code>Route</code>）可以用的所有功能，可以对请求和响应进行任意复杂的转换处理。</p>
+<h2><a href="#组合指令" name="组合指令" class="anchor"><span class="anchor-link"></span></a>组合指令</h2>
+<p>Akka HTTP提供的Routing DSL构造出来的路由结构是一颗树，所以编写指令时通常也是通过“嵌套”的方式来组装到一起的。看一个简单的例子：</p>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/main/scala/book/example/route/RouteExample.scala#L17-L39" target="_blank" title="Go to snippet source"></a><code class="language-scala">val route: Route =
+  pathPrefix(&quot;user&quot;) {
+    pathEndOrSingleSlash { // POST /user
+      post {
+        entity(as[User]) { payload =&gt;
+          complete(payload)
+        }
+      }
+    } ~
+    pathPrefix(IntNumber) { userId =&gt;
+      get { // GET /user/{userId}
+        complete(User(Some(userId), &quot;&quot;, 0))
+      } ~
+      put { // PUT /user/{userId}
+        entity(as[User]) { payload =&gt;
+          complete(payload)
+        }
+      } ~
+      delete { // DELETE /user/{userId}
+        complete(&quot;Deleted&quot;)
+      }
+    }
+  }</code></pre>
+<p>Akka HTTP提供的Routing DSL以树型结构的方式来构造路由结构，它与 <strong>Playframework</strong> 和 <strong>Spring</strong> 定义路由的方式不太一样，很难说哪一种更好。也许刚开始时你会不大习惯这种路由组织方式，一但熟悉以后你会认为它非常的有趣和高效，且很灵活。</p>
+<p>可以看到，若我们的路由非常复杂，它由很多个指令组成，这时假若还把所有路由定义都放到一个代码块里实现就显得非常的臃肿。因为每一个指令都是一个独立的代码块，它通过函数调用的形式组装到一起，我们可以这样对上面定义的路由进行拆分。</p>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/main/scala/book/example/route/RouteExample.scala#L43-L68" target="_blank" title="Go to snippet source"></a><code class="language-scala">val route1: Route =
+  pathPrefix(&quot;user&quot;) {
+    pathEndOrSingleSlash {
+      post {
+        entity(as[User]) { payload =&gt;
+          complete(payload)
+        }
+      }
+    } ~
+    pathPrefix(IntNumber) { userId =&gt;
+      innerUser(userId)
+    }
+  }
+
+def innerUser(userId: Int): Route =
+  get {
+    complete(User(Some(userId), &quot;&quot;, 0))
+  } ~
+  put {
+    entity(as[User]) { payload =&gt;
+      complete(payload)
+    }
+  } ~
+  delete {
+    complete(&quot;Deleted&quot;)
+  }</code></pre>
+<p>通过<code>&amp;</code>操作符将多个指令组合成一个，所有指令都符合时通过。</p>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/main/scala/book/example/route/RouteExample.scala#L72-L78" target="_blank" title="Go to snippet source"></a><code class="language-scala">val pathEndPost: Directive[Unit] = pathEndOrSingleSlash &amp; post
+
+val createUser: Route = pathEndPost {
+  entity(as[User]) { payload =&gt;
+    complete(payload)
+  }
+}</code></pre>
+<p>通过<code>|</code>操作符将多个指令组合成一个，只要其中一个指令符合则通过。</p>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/main/scala/book/example/route/RouteExample.scala#L82-L87" target="_blank" title="Go to snippet source"></a><code class="language-scala">val deleteEnhance: Directive1[Int] =
+  (pathPrefix(IntNumber) &amp; delete) | (path(IntNumber / &quot;_delete&quot;) &amp; put)
+
+val deleteUser: Route = deleteEnhance { userId =&gt;
+  complete(s&quot;Deleted User, userId: $userId&quot;)
+}</code></pre><div class="callout note "><div class="callout-title">Note</div>
+<p>上面这段代码来自真实的业务，因为某些落后于时代的安全原因，网管将HTTP的PUT、DELETE、HEAD等方法都禁用了，只保留了GET、POST两个方法。使用如上的技巧可以同时支持两种方式来访问路由。</p>
+<p><strong>还有一种方案来解决这个问题</strong></p>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/main/scala/book/example/route/RouteExample.scala#L91-L97" target="_blank" title="Go to snippet source"></a><code class="language-scala">val deleteUser2 = pathPrefix(IntNumber) { userId =&gt;
+  overrideMethodWithParameter(&quot;httpMethod&quot;) {
+    delete {
+      complete(s&quot;Deleted User, userId: $userId&quot;)
+    }
+  }
+}</code></pre>
+<p>客户端不需要修改访问地址为 <code>/user/{userId}/_delete</code>，它只需要这样访问路由 <code>POST /user/{userId}?httpMethod=DELETE</code>。<code>overrideMethodWithParameter(&quot;httpMethod&quot;)</code>会根据<code>httpMethod</code>参数的值来将请求上下文里的<code>HttpRequest.method</code>转换成 <strong>DELETE</strong> 方法请求。</p></div><div class="callout warning "><div class="callout-title">Warning</div>
+<p>可以看到，将多个指令组合成一个指令可以简化我们的代码。但是，若过多地将几个指令压缩组合成一个指令，可能并不会得到易读、可维护的代码。</p></div>
+<h2><a href="#使用concat来连接多个指令" name="使用concat来连接多个指令" class="anchor"><span class="anchor-link"></span></a>使用<code>concat</code>来连接多个指令</h2>
+<p>除了通过<code>~</code>链接操作符来将各个指令连接起来形成路由树，也可以通过<code>concat</code>指令来将同级路由（指令）连接起来（子路由还是需要通过嵌套的方式组合）。</p>
+<pre class="prettyprint"><code class="language-scala">val route: Route = concat(a, b, c) // 等价于 a ~ b ~ c
+</code></pre>
+<h2><a href="#类型安全的指令" name="类型安全的指令" class="anchor"><span class="anchor-link"></span></a>类型安全的指令</h2>
+<p>当使用<code>&amp;</code>和<code>|</code>操作符组合多个指令时，Routing DSL将确保其按期望的方式工作，并且还会在编译器检查是否满足逻辑约束。下面是一些例子：</p>
+<pre class="prettyprint"><code class="language-scala">val route1 = path(&quot;user&quot; / IntNumber) | get // 不能编译
+val route2 = path(&quot;user&quot; / IntNumber) | path(&quot;user&quot; / DoubleNumber) // 不能编译
+val route3 = path(&quot;user&quot; / IntNumber) | parameter(&#39;userId.as[Int]) // OK
+
+// 组合指令同时从URI的path路径和查询参数时获取值
+val pathAndQuery = path(&quot;user&quot; / IntNumber) &amp; parameters(&#39;status.as[Int], &#39;type.as[Int])
+val route4 = pathAndQuery { (userId, status, type) =&gt;
+    ....
+  }
+</code></pre>
+<h2><a href="#指令类型参数里的-tuple-自动拉平-flattening-" name="指令类型参数里的-tuple-自动拉平-flattening-" class="anchor"><span class="anchor-link"></span></a>指令类型参数里的 Tuple （自动拉平 flattening）</h2>
+<pre class="prettyprint"><code class="language-scala">abstract class Directive[L](implicit val ev: Tuple[L])
+
+type Directive0 = Directive[Unit]
+type Directive1[T] = Directive[Tuple1[T]]
+</code></pre>
+<p>指令的定义，它是一个泛型类。参数类型<code>L</code>需要可转化成<code>akka.http.scaladsl.server.util.Tuple</code>类型（即Scala的无组类型，TupleX）。下面是一些例子，DSL可以自动转换参数类型为符合的<code>Tuple</code>。</p>
+<pre class="prettyprint"><code class="language-scala">val futureOfInt: Future[Int] = Future.successful(1)
+val route =
+  path(&quot;success&quot;) {
+    onSuccess(futureOfInt) { //: Directive[Tuple1[Int]]
+      i =&gt; complete(&quot;Future was completed.&quot;)
+    }
+  }
+</code></pre>
+<p><code>onSuccess(futureOfInt)</code>将返回值自动转换成了<code>Directive[Tuple1[Int]]</code>，等价于<code>Directive1[Int]</code>。</p>
+<pre class="prettyprint"><code class="language-scala">val futureOfTuple2: Future[Tuple2[Int,Int]] = Future.successful( (1,2) )
+val route =
+  path(&quot;success&quot;) {
+    onSuccess(futureOfTuple2) { //: Directive[Tuple2[Int,Int]]
+      (i, j) =&gt; complete(&quot;Future was completed.&quot;)
+    }
+  }
+</code></pre>
+<p><code>onSuccess(futureOfTuple2)</code>返回<code>Directive1[Tuple2[Int, Int]]</code>，等价于<code>Directive[Tuple1[Tuple2[Int, Int]]]</code>。但DSL将自动转换成指令<code>Directive[Tuple2[Int, Int]]</code>以避免嵌套元组。</p>
+<pre class="prettyprint"><code class="language-scala">val futureOfUnit: Future[Unit] = Future.successful( () )
+val route =
+  path(&quot;success&quot;) {
+    onSuccess(futureOfUnit) { //: Directive0
+      complete(&quot;Future was completed.&quot;)
+    }
+  }
+</code></pre>
+<p>对于<code>Unit</code>，它比较特殊。<code>onSuccess(futureOfUnit)</code>返回<code>Directive[Tuple1[Unit]]</code>。DSL将会自动转换为<code>Directive[Unit]</code>，等价于<code>Directive0</code>。</p>
+</div>
+<div>
+<a href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/main/paradox/routing-dsl/directive.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+1.0.0
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../routing-dsl/route.html" title="Route 路由" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+Route 路由
+</span>
+</div>
+</a>
+<a href="../routing-dsl/custom-directive.html" title="自定义指令" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+自定义指令
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+<div class="md-footer-social">
+<a href="https://github.com/yangbajing" class="md-footer-social__link fa fa-github"></a><a href="https://weibo.com/yangbajing" class="md-footer-social__link fa fa-globe"></a><a href="https://www.yangbajing.me/" class="md-footer-social__link fa fa-globe"></a>
+</div>
+
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>

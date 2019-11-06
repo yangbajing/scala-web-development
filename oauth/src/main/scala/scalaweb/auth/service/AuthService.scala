@@ -6,20 +6,26 @@ import java.time.Duration
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.marshalling.Marshal
-import akka.http.scaladsl.model.{FormData, HttpMethods, HttpRequest}
+import akka.http.scaladsl.model.FormData
+import akka.http.scaladsl.model.HttpMethods
+import akka.http.scaladsl.model.HttpRequest
 import akka.http.scaladsl.unmarshalling.Unmarshal
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
+import akka.stream.Materializer
 import com.typesafe.scalalogging.StrictLogging
 import helloscala.common.exception.HSNotImplementedException
 import helloscala.common.json.Jackson
 import message.oauth._
-import pdi.jwt.{Jwt, JwtAlgorithm, JwtClaim, JwtHeader}
+import pdi.jwt.Jwt
+import pdi.jwt.JwtAlgorithm
+import pdi.jwt.JwtClaim
+import pdi.jwt.JwtHeader
 
 import scala.concurrent.Future
 
 class AuthService(implicit system: ActorSystem) extends StrictLogging {
   import system.dispatcher
-  implicit val mat = ActorMaterializer()
+  implicit val mat = Materializer(system)
 
   /**
    * 刷新访问领牌
@@ -64,19 +70,14 @@ class AuthService(implicit system: ActorSystem) extends StrictLogging {
   def accessTokenForAuthorization(req: AuthorizeTokenRequest): Future[AccessToken] =
     Future {
       val accessToken = Jwt.encode(JwtHeader(JwtAlgorithm.RS256), JwtClaim(), privateKey)
-      AccessToken(
-        accessToken,
-        Duration.ofHours(2).getSeconds
-      )
+      AccessToken(accessToken, Duration.ofHours(2).getSeconds)
     }
 
   def authorizeSignin(req: AuthorizeSigninRequest): Future[String] = Future {
     logger.debug(Jackson.stringify(req))
     val code = "code"
-    val redirectUri = List(
-      "code" -> code,
-      "state" -> req.state.getOrElse("")
-    ).filter(_._2.nonEmpty)
+    val redirectUri = List("code" -> code, "state" -> req.state.getOrElse(""))
+      .filter(_._2.nonEmpty)
       .map { case (name, value) => s"$name=$value" }
       .mkString(s"${URLDecoder.decode(req.redirect_uri, "UTF-8")}?", "&", "")
     logger.debug("redirectUri: " + redirectUri)
@@ -95,12 +96,8 @@ class AuthService(implicit system: ActorSystem) extends StrictLogging {
         "client_id" -> "111111",
         "client_secret" -> "111111",
         "code" -> code,
-        "redirect_uri" -> "http://localhost:33333/auth/callback"
-      ).toEntity
-    )
-    Http()
-      .singleRequest(request)
-      .flatMap(response => Unmarshal(response.entity).to[AccessToken])
+        "redirect_uri" -> "http://localhost:33333/auth/callback").toEntity)
+    Http().singleRequest(request).flatMap(response => Unmarshal(response.entity).to[AccessToken])
   }
 
 }

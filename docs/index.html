@@ -160,14 +160,30 @@ yangbajing/scala-web-development
     <li><a href="basic/basic.1.html" class="page">Web 工作方式</a></li>
     <li><a href="basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
     <li><a href="basic/basic.3.html" class="page">Akka HTTP 的通用抽象</a></li>
-    <li><a href="basic/basic.4.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
-    <li><a href="basic/basic.5.html" class="page">高级服务端 API</a></li>
     <li><a href="basic/basic.z.html" class="page">小结</a></li>
   </ul></li>
   <li><a href="server-api/index.html" class="page">服务端API</a>
   <ul>
-    <li><a href="server-api/routing-dsl/index.html" class="page">路由DSL</a></li>
-    <li><a href="server-api/file-upload.html" class="page">实战：大文件断点上传、下载和秒传</a></li>
+    <li><a href="server-api/work.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="server-api/advanced.html" class="page">高级服务端 API</a></li>
+  </ul></li>
+  <li><a href="routing-dsl/index.html" class="page">路由DSL</a>
+  <ul>
+    <li><a href="routing-dsl/route.html" class="page">Route 路由</a></li>
+    <li><a href="routing-dsl/directive.html" class="page">Directive 指令</a></li>
+    <li><a href="routing-dsl/custom-directive.html" class="page">自定义指令</a></li>
+    <li><a href="routing-dsl/rejections.html" class="page">拒绝 rejections</a></li>
+    <li><a href="routing-dsl/exception.html" class="page">异常处理</a></li>
+    <li><a href="routing-dsl/file-upload.html" class="page">实战：大文件断点上传、下载和秒传</a></li>
+  </ul></li>
+  <li><a href="directives/index.html" class="page">常用指令</a>
+  <ul>
+    <li><a href="directives/path.html" class="page">PathDirectives（路径指令）</a></li>
+    <li><a href="directives/method.html" class="page">directives/method.html</a></li>
+    <li><a href="directives/parameter_form.html" class="page">directives/parameter_form.html</a></li>
+    <li><a href="directives/marshalling.html" class="page">directives/marshalling.html</a></li>
+    <li><a href="directives/file.html" class="page">directives/file.html</a></li>
+    <li><a href="directives/cookie.html" class="page">directives/cookie.html</a></li>
   </ul></li>
   <li><a href="data/index.html" class="page">数据</a>
   <ul>
@@ -224,7 +240,7 @@ yangbajing/scala-web-development
 <ul style="display: none">
 <li class="md-nav__item md-version" id="project.version">
 <label class="md-nav__link" for="__version">
-<i class="md-icon" title="Version">label_outline</i> f2e68315+20190225-1941
+<i class="md-icon" title="Version">label_outline</i> 1.0.0
 </label>
 </li>
 </ul>
@@ -306,34 +322,66 @@ yangbajing/scala-web-development
       <li><a href="basic/basic.3.html#xml-support" class="header">XML Support</a></li>
       <li><a href="basic/basic.3.html#akka-http-timeouts" class="header">Akka HTTP Timeouts</a></li>
     </ul></li>
-    <li><a href="basic/basic.4.html" class="page">Akka HTTP 如何使得 Web 工作</a>
-    <ul>
-      <li><a href="basic/basic.4.html#启动和停止" class="header">启动和停止</a></li>
-      <li><a href="basic/basic.4.html#请求-响应生命周期" class="header">请求、响应生命周期</a></li>
-      <li><a href="basic/basic.4.html#错误处理" class="header">错误处理</a></li>
-    </ul></li>
-    <li><a href="basic/basic.5.html" class="page">高级服务端 API</a></li>
     <li><a href="basic/basic.z.html" class="page">小结</a></li>
   </ul></li>
   <li><a href="server-api/index.html" class="page">服务端API</a>
   <ul>
-    <li><a href="server-api/routing-dsl/index.html" class="page">路由DSL</a>
+    <li><a href="server-api/work.html" class="page">Akka HTTP 如何使得 Web 工作</a>
     <ul>
-      <li><a href="server-api/routing-dsl/route.html" class="page">Route 路由</a></li>
-      <li><a href="server-api/routing-dsl/directive.html" class="page">Directive 指令</a></li>
-      <li><a href="server-api/routing-dsl/common-directive.html" class="page">常用指令（Directives）</a></li>
-      <li><a href="server-api/routing-dsl/custom-directive.html" class="page">自定义指令</a></li>
-      <li><a href="server-api/routing-dsl/rejections.html" class="page">拒绝 rejections</a></li>
-      <li><a href="server-api/routing-dsl/exception.html" class="page">异常处理</a></li>
+      <li><a href="server-api/work.html#启动和停止" class="header">启动和停止</a></li>
+      <li><a href="server-api/work.html#请求-响应生命周期" class="header">请求、响应生命周期</a></li>
+      <li><a href="server-api/work.html#错误处理" class="header">错误处理</a></li>
     </ul></li>
-    <li><a href="server-api/file-upload.html" class="page">实战：大文件断点上传、下载和秒传</a>
+    <li><a href="server-api/advanced.html" class="page">高级服务端 API</a></li>
+  </ul></li>
+  <li><a href="routing-dsl/index.html" class="page">路由DSL</a>
+  <ul>
+    <li><a href="routing-dsl/route.html" class="page">Route 路由</a>
     <ul>
-      <li><a href="server-api/file-upload.html#断点下载" class="header">断点下载</a></li>
-      <li><a href="server-api/file-upload.html#断点上传" class="header">断点上传</a></li>
-      <li><a href="server-api/file-upload.html#秒传" class="header">秒传</a></li>
-      <li><a href="server-api/file-upload.html#运行示例" class="header">运行示例</a></li>
-      <li><a href="server-api/file-upload.html#小结" class="header">小结</a></li>
+      <li><a href="routing-dsl/route.html#requestcontext" class="header">RequestContext</a></li>
+      <li><a href="routing-dsl/route.html#routeresult" class="header">RouteResult</a></li>
+      <li><a href="routing-dsl/route.html#组合路由" class="header">组合路由</a></li>
+      <li><a href="routing-dsl/route.html#路由树" class="header">路由树</a></li>
     </ul></li>
+    <li><a href="routing-dsl/directive.html" class="page">Directive 指令</a>
+    <ul>
+      <li><a href="routing-dsl/directive.html#指令基础" class="header">指令基础</a></li>
+      <li><a href="routing-dsl/directive.html#指令可以做什么-" class="header">指令可以做什么？</a></li>
+      <li><a href="routing-dsl/directive.html#组合指令" class="header">组合指令</a></li>
+      <li><a href="routing-dsl/directive.html#使用concat来连接多个指令" class="header">使用<code>concat</code>来连接多个指令</a></li>
+      <li><a href="routing-dsl/directive.html#类型安全的指令" class="header">类型安全的指令</a></li>
+      <li><a href="routing-dsl/directive.html#指令类型参数里的-tuple-自动拉平-flattening-" class="header">指令类型参数里的 Tuple （自动拉平 flattening）</a></li>
+    </ul></li>
+    <li><a href="routing-dsl/custom-directive.html" class="page">自定义指令</a>
+    <ul>
+      <li><a href="routing-dsl/custom-directive.html#命名配置" class="header">命名配置</a></li>
+      <li><a href="routing-dsl/custom-directive.html#转换已存在的指令" class="header">转换已存在的指令</a></li>
+      <li><a href="routing-dsl/custom-directive.html#从头开始实现一个指令" class="header">从头开始实现一个指令</a></li>
+    </ul></li>
+    <li><a href="routing-dsl/rejections.html" class="page">拒绝 rejections</a></li>
+    <li><a href="routing-dsl/exception.html" class="page">异常处理</a></li>
+    <li><a href="routing-dsl/file-upload.html" class="page">实战：大文件断点上传、下载和秒传</a>
+    <ul>
+      <li><a href="routing-dsl/file-upload.html#断点下载" class="header">断点下载</a></li>
+      <li><a href="routing-dsl/file-upload.html#断点上传" class="header">断点上传</a></li>
+      <li><a href="routing-dsl/file-upload.html#秒传" class="header">秒传</a></li>
+      <li><a href="routing-dsl/file-upload.html#运行示例" class="header">运行示例</a></li>
+      <li><a href="routing-dsl/file-upload.html#小结" class="header">小结</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a href="directives/index.html" class="page">常用指令</a>
+  <ul>
+    <li><a href="directives/path.html" class="page">PathDirectives（路径指令）</a>
+    <ul>
+      <li><a href="directives/path.html#path示例" class="header">Path示例</a></li>
+      <li><a href="directives/path.html#深入uri-path" class="header">深入<code>Uri.Path</code></a></li>
+      <li><a href="directives/path.html#深入pathmatcher" class="header">深入<code>PathMatcher</code></a></li>
+    </ul></li>
+    <li><a href="directives/method.html" class="page">directives/method.html</a></li>
+    <li><a href="directives/parameter_form.html" class="page">directives/parameter_form.html</a></li>
+    <li><a href="directives/marshalling.html" class="page">directives/marshalling.html</a></li>
+    <li><a href="directives/file.html" class="page">directives/file.html</a></li>
+    <li><a href="directives/cookie.html" class="page">directives/cookie.html</a></li>
   </ul></li>
   <li><a href="data/index.html" class="page">数据</a>
   <ul>
@@ -441,13 +489,13 @@ yangbajing/scala-web-development
 </div>
 </div>
 <div>
-<a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/index.md" title="Edit this page" class="md-source-file md-edit">
+<a href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/main/paradox/index.md" title="Edit this page" class="md-source-file md-edit">
 Edit this page
 </a>
 </div>
 <div class="print-only">
 <span class="md-source-file md-version">
-f2e68315+20190225-1941
+1.0.0
 </span>
 </div>
 </article>

@@ -3,16 +3,17 @@ package scalaweb.auth
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.management.scaladsl.AkkaManagement
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import com.typesafe.scalalogging.StrictLogging
 import scalaweb.auth.service.AuthService
 import scalaweb.auth.web.route.AuthRoute
 
-import scala.util.{Failure, Success}
+import scala.util.Failure
+import scala.util.Success
 
 object OAuthMain extends App with StrictLogging {
   implicit val system = ActorSystem("oauth")
-  implicit val mat = ActorMaterializer()
+  implicit val mat = Materializer(system)
 
   val management = AkkaManagement(system)
   management.start()
