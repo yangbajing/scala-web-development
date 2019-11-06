@@ -2,7 +2,7 @@ package scalaweb.ant.design.pro
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import com.typesafe.scalalogging.StrictLogging
 import scalaweb.ant.design.pro.route.Routes
 
@@ -12,7 +12,7 @@ import scala.util.Success
 // #main
 object Main extends App with StrictLogging {
   implicit val system = ActorSystem()
-  implicit val materializer = ActorMaterializer()
+  implicit val materializer = Materializer(system)
   import system.dispatcher
 
   val bindingFuture = Http().bindAndHandle(handler = new Routes().route, interface = "0.0.0.0", port = 22222)

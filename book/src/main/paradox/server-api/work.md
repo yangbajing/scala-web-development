@@ -32,11 +32,11 @@ Akka HTTP 提供了 `bind` 这个方法来启动服务，它通过指定 `interf
 ```scala
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import akka.stream.scaladsl._
 
 implicit val system = ActorSystem()
-implicit val materializer = ActorMaterializer()
+implicit val materializer = Materializer(system)
 implicit val executionContext = system.dispatcher
 
 val serverSource: Source[Http.IncomingConnection, Future[Http.ServerBinding]] =

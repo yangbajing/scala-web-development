@@ -17,7 +17,7 @@ trait CassandraSpec extends BeforeAndAfterAll {
     cassandraSession = new CassandraSession(cluster)
   }
 
-  override def afterAll() {
+  override def afterAll(): Unit = {
     cassandraSession.close()
     //dataSource
     super.afterAll()

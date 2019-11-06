@@ -224,7 +224,7 @@ object Unmarshaller
 ```scala
 import akka.http.scaladsl.unmarshalling.Unmarshal
 import system.dispatcher // Optional ExecutionContext (default from Materializer)
-implicit val materializer: Materializer = ActorMaterializer()
+implicit val materializer: Materializer = Materializer(system)
 
 import scala.concurrent.Await
 import scala.concurrent.duration._

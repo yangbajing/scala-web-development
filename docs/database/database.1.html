@@ -165,14 +165,30 @@ yangbajing/scala-web-development
     <li><a href="../basic/basic.1.html" class="page">Web 工作方式</a></li>
     <li><a href="../basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
     <li><a href="../basic/basic.3.html" class="page">Akka HTTP 的通用抽象</a></li>
-    <li><a href="../basic/basic.4.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
-    <li><a href="../basic/basic.5.html" class="page">高级服务端 API</a></li>
     <li><a href="../basic/basic.z.html" class="page">小结</a></li>
   </ul></li>
   <li><a href="../server-api/index.html" class="page">服务端API</a>
   <ul>
-    <li><a href="../server-api/routing-dsl/index.html" class="page">路由DSL</a></li>
-    <li><a href="../server-api/file-upload.html" class="page">实战：大文件断点上传、下载和秒传</a></li>
+    <li><a href="../server-api/work.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="../server-api/advanced.html" class="page">高级服务端 API</a></li>
+  </ul></li>
+  <li><a href="../routing-dsl/index.html" class="page">路由DSL</a>
+  <ul>
+    <li><a href="../routing-dsl/route.html" class="page">Route 路由</a></li>
+    <li><a href="../routing-dsl/directive.html" class="page">Directive 指令</a></li>
+    <li><a href="../routing-dsl/custom-directive.html" class="page">自定义指令</a></li>
+    <li><a href="../routing-dsl/rejections.html" class="page">拒绝 rejections</a></li>
+    <li><a href="../routing-dsl/exception.html" class="page">异常处理</a></li>
+    <li><a href="../routing-dsl/file-upload.html" class="page">实战：大文件断点上传、下载和秒传</a></li>
+  </ul></li>
+  <li><a href="../directives/index.html" class="page">常用指令</a>
+  <ul>
+    <li><a href="../directives/path.html" class="page">PathDirectives（路径指令）</a></li>
+    <li><a href="../directives/method.html" class="page">directives/method.html</a></li>
+    <li><a href="../directives/parameter_form.html" class="page">directives/parameter_form.html</a></li>
+    <li><a href="../directives/marshalling.html" class="page">directives/marshalling.html</a></li>
+    <li><a href="../directives/file.html" class="page">directives/file.html</a></li>
+    <li><a href="../directives/cookie.html" class="page">directives/cookie.html</a></li>
   </ul></li>
   <li><a href="../data/index.html" class="page">数据</a>
   <ul>
@@ -237,7 +253,7 @@ yangbajing/scala-web-development
 <ul style="display: none">
 <li class="md-nav__item md-version" id="project.version">
 <label class="md-nav__link" for="__version">
-<i class="md-icon" title="Version">label_outline</i> f2e68315+20190225-1941
+<i class="md-icon" title="Version">label_outline</i> 1.0.0
 </label>
 </li>
 </ul>
@@ -326,21 +342,10 @@ CREATE TABLE book(
 </code></pre>
 <h3><a href="#代码访问" name="代码访问" class="anchor"><span class="anchor-link"></span></a>代码访问</h3>
 <p>首先，我们定义两个数据库实体对象：<code>Author</code> 和 <code>Book</code>：</p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/akkahttp/foundation/data/entity/Author.scala#L4-L9" target="_blank" title="Go to snippet source"></a><code class="language-scala">case class Author(
-    id: Long,
-    name: String,
-    age: Option[Int],
-    remark: Option[String]
-)</code></pre>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/akkahttp/foundation/data/entity/Book.scala#L4-L10" target="_blank" title="Go to snippet source"></a><code class="language-scala">case class Book(
-    isbn: String,
-    author: Long,
-    title: String,
-    amount: BigDecimal,
-    description: Option[String]
-)</code></pre>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/foundation/src/main/scala/akkahttp/foundation/data/entity/Author.scala#L4" target="_blank" title="Go to snippet source"></a><code class="language-scala">case class Author(id: Long, name: String, age: Option[Int], remark: Option[String])</code></pre>
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/foundation/src/main/scala/akkahttp/foundation/data/entity/Book.scala#L4" target="_blank" title="Go to snippet source"></a><code class="language-scala">case class Book(isbn: String, author: Long, title: String, amount: BigDecimal, description: Option[String])</code></pre>
 <p>接下来在 <code>AuthorRepository</code> 中进行数据库操作，现在先把什么 <code>Service</code>，<code>Controller</code>等放一边，我们使用 <strong>scalatest</strong> 来测试下我们的数 据库访问代码。</p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/test/scala/akkahttp/foundation/data/repository/AuthorRepositoryTest.scala#L11-L39" target="_blank" title="Go to snippet source"></a><code class="language-scala">class AuthorRepositoryTest extends MeSpec with JDBCSpec {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/foundation/src/test/scala/akkahttp/foundation/data/repository/AuthorRepositoryTest.scala#L11-L39" target="_blank" title="Go to snippet source"></a><code class="language-scala">class AuthorRepositoryTest extends MeSpec with JDBCSpec {
 
   &quot;AuthorRepositoryTest&quot; should {
 
@@ -349,20 +354,20 @@ CREATE TABLE book(
     &quot;create&quot; in {
       val account = Author(0, &quot;羊八井&quot;, Some(31), None)
       val result = accountRepository.create(account)
-      result.id must be &gt; 0L
+      result.id should be &gt; 0L
     }
 
     &quot;update&quot; in {
       val author = Author(1, &quot;羊八井&quot;, Some(32), None)
       val result = accountRepository.update(author)
-      result.id mustBe author.id
-      result.name mustBe author.name
-      result.age mustBe author.age
+      result.id shouldBe author.id
+      result.name shouldBe author.name
+      result.age shouldBe author.age
     }
 
     &quot;list&quot; in {
       val results = accountRepository.list()
-      results must not be empty
+      results should not be empty
       println(s&quot;results size: ${results.size}&quot;)
     }
 
@@ -374,7 +379,7 @@ CREATE TABLE book(
 </code></pre>
 <p><img src="../assets/imgs/testOnly-AuthorRepositoryTest.png" alt="testOnly akkahttp.foundation.data.repository.AuthorRepositoryTest" /></p>
 <p>若一切正常，你会看到测试正确通过。<code>AuthorRepositoryTert</code> 脚本中一共执行了3个测试，其中 <code>should list</code> 测试中打印了一个测试输出，从数据库中 获取到8条记录。下面，让我们来看看 <code>AuthorRepository</code> ，我们怎么在 Scala 中使用 JDBC 来访问数据库的。</p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/akkahttp/foundation/data/repository/AuthorRepository.scala#L15-L53" target="_blank" title="Go to snippet source"></a><code class="language-scala">class AuthorRepository(dataSource: DataSource) {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/foundation/src/main/scala/akkahttp/foundation/data/repository/AuthorRepository.scala#L15-L53" target="_blank" title="Go to snippet source"></a><code class="language-scala">class AuthorRepository(dataSource: DataSource) {
   val jdbcTemplate = JdbcTemplate(dataSource)
 
   def update(author: Author): Author = {
@@ -421,13 +426,12 @@ CREATE TABLE book(
   <li>这里使用 <code>RETURNING id</code> 返回数据库序列自动生成的 Author <code>id</code></li>
 </ol>
 <p>在 <code>AuthorRepository</code> 的伴生对象里，有两个简单的帮助函数，<code>generateResult</code> 和 <code>generateArgs</code> ，分别将通过JDBC的ResultSet获取的记录映射 成一个 <code>Author</code> 对象和将 <code>author</code> 对象转换成可用于 <code>INSERT</code>、<code>UPDATE</code>语句字段序列部分及获取有效参数的一个序列。这段话说起来有点拗口，直接来 看看 <code>generateArgs</code> 的代码：</p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/foundation/src/main/scala/akkahttp/foundation/data/repository/AuthorRepository.scala#L59-L90" target="_blank" title="Go to snippet source"></a><code class="language-scala">def generateResult(result: Map[String, AnyRef]): Author =
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/foundation/src/main/scala/akkahttp/foundation/data/repository/AuthorRepository.scala#L59-L89" target="_blank" title="Go to snippet source"></a><code class="language-scala">def generateResult(result: Map[String, AnyRef]): Author =
   Author(
     result(&quot;id&quot;).asInstanceOf[Long],
     result(&quot;name&quot;).asInstanceOf[String],
     result.get(&quot;age&quot;).map(_.asInstanceOf[Int]),
-    result.get(&quot;remark&quot;).map(_.asInstanceOf[String])
-  )
+    result.get(&quot;remark&quot;).map(_.asInstanceOf[String]))
 
 /**
  * 获取有效的数据库查询字段名列表和参数值列表
@@ -440,16 +444,16 @@ def generateArgs(author: Author): (mutable.Buffer[String], mutable.Buffer[Object
   val args = mutable.Buffer.empty[Object]
 
   names.append(&quot;name&quot;)
-  args.append(author.name)
+  args += author.name
 
   author.age.foreach { value =&gt;
     names.append(&quot;age&quot;)
-    args.append(Integer.valueOf(value))
+    args += Integer.valueOf(value)
   }
 
   author.remark.foreach { remark =&gt;
     names.append(&quot;remark&quot;)
-    args.append(remark)
+    args += remark
   }
   (names, args)
 }</code></pre>
@@ -473,13 +477,13 @@ val sql = &quot;&quot;&quot;INSERT INTO author(${JdbcTemplate.sqlNames(names)}) 
 <p>JDBC是Java里标准的SQL访问方式，Scala 作为一门 JVM 语言是天然支持的。而 PostgreSQL 是开源界里优秀的关系型数据库，也是功能做为丰富的。这里我们 知道了在 Scala 里面怎样使用 SQL 来访问关系型数据库，下一节将介绍怎样访问 Cassandra 这一强大的 NoSQL 数据库。</p>
 </div>
 <div>
-<a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/database/database.1.md" title="Edit this page" class="md-source-file md-edit">
+<a href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/main/paradox/database/database.1.md" title="Edit this page" class="md-source-file md-edit">
 Edit this page
 </a>
 </div>
 <div class="print-only">
 <span class="md-source-file md-version">
-f2e68315+20190225-1941
+1.0.0
 </span>
 </div>
 </article>

@@ -12,7 +12,7 @@ import akka.http.scaladsl.unmarshalling.Unmarshal
 import akka.stream.scaladsl.Keep
 import akka.stream.scaladsl.Sink
 import akka.stream.scaladsl.Source
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import akka.stream.Materializer
 import akka.stream.OverflowStrategy
 import akka.stream.QueueOfferResult
@@ -180,7 +180,7 @@ object HttpUtils extends StrictLogging {
   def getMediaTypeFromSuffix(suffix: String): Option[MediaType] =
     ???
 
-  def cachedHostConnectionPool(url: String)(implicit mat: ActorMaterializer): HttpSourceQueue = {
+  def cachedHostConnectionPool(url: String)(implicit mat: Materializer): HttpSourceQueue = {
     val uri = Uri(url)
     uri.scheme match {
       case "http"  => cachedHostConnectionPool(uri.authority.host.address(), uri.authority.port)
@@ -194,10 +194,10 @@ object HttpUtils extends StrictLogging {
    *
    * @param host 默认host
    * @param port 默认port
-   * @param mat  ActorMaterializer
+   * @param mat  Materializer
    * @return
    */
-  def cachedHostConnectionPool(host: String, port: Int = 80)(implicit mat: ActorMaterializer): HttpSourceQueue = {
+  def cachedHostConnectionPool(host: String, port: Int = 80)(implicit mat: Materializer): HttpSourceQueue = {
     implicit val system = mat.system
     val poolClientFlow = Http().cachedHostConnectionPool[Promise[HttpResponse]](host, port)
     Source
@@ -215,10 +215,10 @@ object HttpUtils extends StrictLogging {
    *
    * @param host 默认host
    * @param port 默认port
-   * @param mat  ActorMaterializer
+   * @param mat  Materializer
    * @return
    */
-  def cachedHostConnectionPoolHttps(host: String, port: Int = 80)(implicit mat: ActorMaterializer): HttpSourceQueue = {
+  def cachedHostConnectionPoolHttps(host: String, port: Int = 80)(implicit mat: Materializer): HttpSourceQueue = {
     implicit val system = mat.system
     val poolClientFlow = Http().cachedHostConnectionPoolHttps[Promise[HttpResponse]](host, port)
     Source
@@ -272,7 +272,7 @@ object HttpUtils extends StrictLogging {
       params: Seq[(String, String)] = Nil,
       data: AnyRef = null,
       headers: immutable.Seq[HttpHeader] = Nil,
-      protocol: HttpProtocol = HttpProtocols.`HTTP/1.1`)(implicit mat: ActorMaterializer): Future[HttpResponse] = {
+      protocol: HttpProtocol = HttpProtocols.`HTTP/1.1`)(implicit mat: Materializer): Future[HttpResponse] = {
     val request =
       HttpRequest(method, uri.withQuery(Uri.Query(uri.query() ++ params: _*)), headers, entity = data match {
         case null                    => HttpEntity.Empty
@@ -286,10 +286,10 @@ object HttpUtils extends StrictLogging {
    * 发送 Http 请求，使用 [[akka.http.scaladsl.HttpExt.singleRequest]]
    *
    * @param request HttpRequest
-   * @param mat ActorMaterializer
+   * @param mat Materializer
    * @return
    */
-  def singleRequest(request: HttpRequest)(implicit mat: ActorMaterializer): Future[HttpResponse] =
+  def singleRequest(request: HttpRequest)(implicit mat: Materializer): Future[HttpResponse] =
     Http()(mat.system).singleRequest(request)
 
   /**
@@ -356,7 +356,7 @@ object HttpUtils extends StrictLogging {
   def toStrictEntity(response: HttpResponse)(implicit mat: Materializer): HttpEntity.Strict =
     toStrictEntity(response.entity)
 
-  def toByteString(response: HttpResponse)(implicit mat: ActorMaterializer): Future[ByteString] =
+  def toByteString(response: HttpResponse)(implicit mat: Materializer): Future[ByteString] =
     Unmarshal(response.entity).to[ByteString]
 
   def toStrictEntity(responseEntity: ResponseEntity)(implicit mat: Materializer): HttpEntity.Strict = {

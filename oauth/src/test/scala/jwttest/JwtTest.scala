@@ -3,13 +3,13 @@ package jwttest
 import java.util.Base64
 
 import org.scalatest.FunSuite
-import org.scalatest.MustMatchers
+import org.scalatest.Matchers
 import pdi.jwt.Jwt
 import pdi.jwt.JwtAlgorithm
 import pdi.jwt.JwtClaim
 import pdi.jwt.JwtHeader
 
-class JwtTest extends FunSuite with MustMatchers {
+class JwtTest extends FunSuite with Matchers {
 
   test("claim") {
     val str =
@@ -40,7 +40,7 @@ class JwtTest extends FunSuite with MustMatchers {
         |FaFp+DyAe+b4nDwuJaW2LURbr8AEZga7oQj0uYxcYw==
         |-----END RSA PRIVATE KEY-----""".stripMargin)
     println(token)
-    token mustBe "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.TCYt5XsITJX1CxPCT8yAV-TVkIEq_PbChOMqsLfRoPsnsgw5WEuts01mq-pQy7UJiN5mgRxD-WUcX16dUEMGlv50aqzpqh4Qktb3rk-BuQy72IFLOqV0G_zS245-kronKb78cPN25DGlcTwLtjPAYuNzVBAh4vGHSrQyHUdBBPM"
+    token shouldBe "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.TCYt5XsITJX1CxPCT8yAV-TVkIEq_PbChOMqsLfRoPsnsgw5WEuts01mq-pQy7UJiN5mgRxD-WUcX16dUEMGlv50aqzpqh4Qktb3rk-BuQy72IFLOqV0G_zS245-kronKb78cPN25DGlcTwLtjPAYuNzVBAh4vGHSrQyHUdBBPM"
   }
 
   test("jwt from plain text") {
@@ -64,7 +64,7 @@ class JwtTest extends FunSuite with MustMatchers {
         |-----END RSA PRIVATE KEY-----""".stripMargin,
       JwtAlgorithm.RS256)
     println(token)
-//    token mustBe "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.TCYt5XsITJX1CxPCT8yAV-TVkIEq_PbChOMqsLfRoPsnsgw5WEuts01mq-pQy7UJiN5mgRxD-WUcX16dUEMGlv50aqzpqh4Qktb3rk-BuQy72IFLOqV0G_zS245-kronKb78cPN25DGlcTwLtjPAYuNzVBAh4vGHSrQyHUdBBPM"
+//    token shouldBe "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.TCYt5XsITJX1CxPCT8yAV-TVkIEq_PbChOMqsLfRoPsnsgw5WEuts01mq-pQy7UJiN5mgRxD-WUcX16dUEMGlv50aqzpqh4Qktb3rk-BuQy72IFLOqV0G_zS245-kronKb78cPN25DGlcTwLtjPAYuNzVBAh4vGHSrQyHUdBBPM"
   }
 
   test("decode") {
@@ -82,7 +82,7 @@ class JwtTest extends FunSuite with MustMatchers {
     val result2 = Jwt.decode(token2, publicKey, List(JwtAlgorithm.RS256))
     println(result1)
     println(result2)
-    result1 mustBe result2
+    result1 shouldBe result2
   }
 
   test("HS284") {

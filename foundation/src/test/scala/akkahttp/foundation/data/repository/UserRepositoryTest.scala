@@ -22,34 +22,34 @@ class UserRepositoryTest extends MeSpec with CassandraSpec {
     val userId = UUIDs.timeBased()
 
     "existsByEmail" in {
-      userRepository.existsByEmail("yangbajing@gmail.com").futureValue mustBe false
+      userRepository.existsByEmail("yangbajing@gmail.com").futureValue shouldBe false
     }
 
     "insert" in {
       val user = User(userId, "yangbajing@gmail.com", "羊八井")
-      userRepository.insert(user, SecurityUtils.generatePassword("yangbajing")).futureValue mustBe Done
+      userRepository.insert(user, SecurityUtils.generatePassword("yangbajing")).futureValue shouldBe Done
     }
 
     "login" in {
       val result = userRepository.login("yangbajing@gmail.com", "yangbajing").futureValue
-      result must not be empty
+      result should not be empty
       val (user, salt, saltPwd) = result.value
-      user.name mustBe "yangbajing"
-      user.email mustBe "yangbajing@gmail.com"
-      SecurityUtils.matchSaltPassword(salt, saltPwd, "yangbajing".getBytes) mustBe true
+      user.name shouldBe "yangbajing"
+      user.email shouldBe "yangbajing@gmail.com"
+      SecurityUtils.matchSaltPassword(salt, saltPwd, "yangbajing".getBytes) shouldBe true
     }
 
     "findById" in {
       val result = userRepository.findById(userId).futureValue
-      result must not be empty
+      result should not be empty
       val user = result.value
-      user.name mustBe "yangbajing"
-      user.email mustBe "yangbajing@gmail.com"
+      user.name shouldBe "yangbajing"
+      user.email shouldBe "yangbajing@gmail.com"
     }
 
     "deleteById" in {
-      userRepository.deleteById(userId).futureValue mustBe Done
-      userRepository.findById(userId).futureValue mustBe empty
+      userRepository.deleteById(userId).futureValue shouldBe Done
+      userRepository.findById(userId).futureValue shouldBe empty
     }
 
   }

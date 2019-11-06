@@ -1,17 +1,17 @@
 package example.route
 
+import akka.http.scaladsl.model.headers.RawHeader
 import akka.http.scaladsl.model.HttpResponse
 import akka.http.scaladsl.model.StatusCodes
-import akka.http.scaladsl.model.headers.RawHeader
+import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Directive
 import akka.http.scaladsl.server.Directive1
 import akka.http.scaladsl.server.RouteResult
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import akka.http.scaladsl.server.Directives._
-import org.scalatest.MustMatchers
+import org.scalatest.Matchers
 import org.scalatest.WordSpecLike
 
-class TestRoutesTest extends WordSpecLike with ScalatestRouteTest with MustMatchers {
+class TestRoutesTest extends WordSpecLike with ScalatestRouteTest with Matchers {
 
   val textParam: Directive1[String] = parameter("text".as[String])
   val lengthDirective: Directive1[Int] = textParam.map(text => text.length)
@@ -31,7 +31,7 @@ class TestRoutesTest extends WordSpecLike with ScalatestRouteTest with MustMatch
   "Routes Test" should {
     "ctx.unmatchedPath" in {
       Get("/api/user/page") ~> route ~> check {
-        status mustBe StatusCodes.OK
+        status shouldBe StatusCodes.OK
         val resp = responseAs[String]
         println(resp)
       }

@@ -113,7 +113,7 @@ Get("/ball/1337") ~> route ~> check {
 - **Segment**：路径为字符串，URI里面实际的路径段。
     ```scala
     final case class Segment(head: String, tail: SlashOrEmpty) extends Path {
-      if (head.isEmpty) throw new IllegalArgumentException("Path segment must not be empty")
+      if (head.isEmpty) throw new IllegalArgumentException("Path segment should not be empty")
       type Head = String
     }
     ```

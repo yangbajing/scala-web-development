@@ -2,7 +2,7 @@ package fileupload
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import akka.stream.Materializer
 import com.typesafe.scalalogging.StrictLogging
 import fileupload.controller.FileRoute

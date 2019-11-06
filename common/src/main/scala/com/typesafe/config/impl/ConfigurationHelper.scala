@@ -4,7 +4,7 @@ import java.util.Properties
 
 import com.typesafe.config.ConfigFactory
 import com.typesafe.config.ConfigParseOptions
-import helloscala.common.util.Configuration
+import helloscala.common.Configuration
 
 object ConfigurationHelper {
 

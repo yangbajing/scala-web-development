@@ -55,7 +55,7 @@ class OrgRouteTest
     extends WordSpec
     with BeforeAndAfterAll
     with ScalatestRouteTest
-    with MustMatchers
+    with Matchers
     with OptionValues
     with ScalaFutures {
 
@@ -72,12 +72,12 @@ class OrgRouteTest
     "create" in {
       val req = OrgCreateReq(Some("000001"), "测试组织", None, None)
       Post("/org/item", req) ~> route ~> check {
-        status mustBe StatusCodes.Created
+        status shouldBe StatusCodes.Created
         org = responseAs[Org]
         orgIds += org.id
-        org.id must be > 0
-        org.parent mustBe None
-        org.updatedAt mustBe None
+        org.id should be > 0
+        org.parent shouldBe None
+        org.updatedAt shouldBe None
       }
     }
 
@@ -120,7 +120,7 @@ class OrgRouteTest
 - **WordSpec**：使用了**Word**风格的测试，必需要混入这样的一个测试规范接口。类似的有：**FutureSpec**、**FlatSpec**等
 - **BeforeAndAfterAll**：提供了所有测试用例执行前或完成后的钩子函数
 - **ScalatestRouteTest**：Akka HTTP Routing 测试的辅助函数
-- **MustMatchers**：用户友好的断言DSL
+- **Matchers**：用户友好的断言DSL
 - **OptionValues**：Option类型的辅助函数
 - **ScalaFutures**：Future类型的辅助函数
 

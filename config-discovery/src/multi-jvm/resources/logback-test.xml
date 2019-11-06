@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="false">
+    <include resource="fusion/log/logback/base.xml"/>
+
+    <logger name="ch.qos" level="WARN"/>
+    <logger name="slick.jdbc.JdbcBackend.statement" level="DEBUG"/>
+    <logger name="slick.jdbc.JdbcBackend.benchmark" level="DEBUG"/>
+    <logger name="org.mongodb.driver" level="WARN"/>
+    <logger name="org.apache.kafka" level="WARN"/>
+    <logger name="net.schmizz.sshj" level="WARN"/>
+    <logger name="akka.cluster" level="INFO"/>
+    <logger name="com.zaxxer" level="WARN"/>
+    <logger name="io.getquill" level="WARN"/>
+    <logger name="com.akkafusion" level="DEBUG"/>
+    <logger name="fusion" level="DEBUG"/>
+    <logger name="fusion.http" level="WARN"/>
+    <logger name="helloscala" level="DEBUG"/>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

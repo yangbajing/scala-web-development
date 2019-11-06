@@ -1,0 +1,51 @@
+syntax = "proto3";
+package fusion.discovery.grpc;
+
+import "fusion/discovery/model/discovery.proto";
+
+service ConfigService {
+    // 查询服务状态
+    rpc ServerStatus (fusion.discovery.model.ServerStatusQuery) returns (fusion.discovery.model.ServerStatusBO) {
+    }
+
+    // 查询配置
+    rpc QueryConfig (fusion.discovery.model.ConfigQuery) returns (fusion.discovery.model.ConfigReply) {
+    }
+
+    // 发布配置
+    rpc PublishConfig (fusion.discovery.model.ConfigPublish) returns (fusion.discovery.model.ConfigReply) {
+    }
+
+    // 删除配置
+    rpc RemoveConfig (fusion.discovery.model.ConfigRemove) returns (fusion.discovery.model.ConfigReply) {
+    }
+
+    // 监听配置变化
+    rpc ListenerConfig (fusion.discovery.model.ConfigChangeListen) returns (stream fusion.discovery.model.ConfigChanged) {
+    }
+}
+
+service NamingService {
+    // 查询服务状态
+    rpc ServerStatus (fusion.discovery.model.ServerStatusQuery) returns (fusion.discovery.model.ServerStatusBO) {
+    }
+
+    // 添加实例
+    rpc RegisterInstance (fusion.discovery.model.InstanceRegister) returns (fusion.discovery.model.InstanceReply) {
+    }
+
+    // 修改实例
+    rpc ModifyInstance (fusion.discovery.model.InstanceModify) returns (fusion.discovery.model.InstanceReply) {
+    }
+
+    // 删除实例
+    rpc RemoveInstance (fusion.discovery.model.InstanceRemove) returns (fusion.discovery.model.InstanceReply) {
+    }
+
+    // 查询实例
+    rpc QueryInstance (fusion.discovery.model.InstanceQuery) returns (fusion.discovery.model.InstanceReply) {
+    }
+
+    rpc Heartbeat (stream fusion.discovery.model.InstanceHeartbeat) returns (stream fusion.discovery.model.ServerStatusBO) {
+    }
+}

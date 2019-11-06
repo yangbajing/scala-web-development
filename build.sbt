@@ -11,6 +11,7 @@ ThisBuild / shellPrompt := (s => Project.extract(s).currentProject.id + " > ")
 
 lazy val root = Project("scala-web-development", file(".")).aggregate(
   test,
+  `config-discovery`,
   `engineering-guice`,
   oauth,
   monitor,
@@ -22,7 +23,15 @@ lazy val root = Project("scala-web-development", file(".")).aggregate(
 lazy val book = project
   .in(file("book"))
   .enablePlugins(ParadoxMaterialThemePlugin)
-  .dependsOn(`engineering-guice`, monitor, test, oauth, foundation, database, common)
+  .dependsOn(
+    `config-discovery`,
+    `engineering-guice`,
+    monitor,
+    test,
+    oauth,
+    foundation,
+    database,
+    common % "compile->compile;test->test")
   .settings(
     name in (Compile, paradox) := "Scala Web Development",
     Compile / paradoxMaterialTheme ~= {
@@ -44,7 +53,21 @@ lazy val book = project
         "akka.version" -> versionAkka),
     libraryDependencies ++= Seq(_akkaHttpTestkit))
 
-lazy val test = project.in(file("test")).dependsOn(common % "compile->compile;test->test").settings(basicSettings: _*)
+lazy val test = project
+  .in(file("test"))
+  .dependsOn(common % "compile->compile;test->test")
+  .settings(basicSettings: _*)
+  .settings(libraryDependencies ++= _slicks)
+
+lazy val `config-discovery` = project
+  .in(file("config-discovery"))
+  .enablePlugins(AkkaGrpcPlugin, JavaAgent)
+  .dependsOn(common % "compile->compile;test->test")
+  .settings(basicSettings: _*)
+  .settings(
+    javaAgents += "org.mortbay.jetty.alpn" % "jetty-alpn-agent" % "2.0.9" % "runtime;test",
+    mainClass in assembly := Some("scalaweb.discovery.server.Application"),
+    libraryDependencies ++= Seq(_scalapb, _akkaPersistence) ++ _akkaClusters)
 
 lazy val `ant-design-pro` = project
   .in(file("ant-design-pro"))
@@ -71,7 +94,7 @@ lazy val monitor = project
   .settings(
     mainClass in assembly := Some("scalaweb.monitor.boot.Main"),
     //    test in assembly := {},
-    libraryDependencies ++= Seq(_sjsonnet) ++ _kamons)
+    libraryDependencies ++= Seq() ++ _kamons)
 
 lazy val data = project
   .in(file("data"))
@@ -106,7 +129,8 @@ lazy val common = project
         _postgresql,
         _hikariCP,
         "com.thesamet.scalapb" %% "scalapb-runtime" % scalapb.compiler.Version.scalapbVersion % "protobuf",
-        _scalaCollectionCompat,
         _config,
-        _akkaHttpTestkit % Test) ++ _akkas ++ _akkaHttps ++ _slicks ++ _logs,
+        _akkaHttpTestkit % Test,
+        _scalaCollectionCompat,
+        _scalaJava8Compat) ++ _akkas ++ _akkaHttps ++ _logs,
     PB.targets in Compile := Seq(scalapb.gen(flatPackage = true) -> (sourceManaged in Compile).value))

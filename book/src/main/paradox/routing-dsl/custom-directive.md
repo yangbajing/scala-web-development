@@ -50,7 +50,7 @@ val myDirective: Directive1[String] =
 
 // tests:
 Get("/?a=2&b=5") ~> myDirective(x => complete(x)) ~> check {
-  responseAs[String] mustBe "7"
+  responseAs[String] shouldBe "7"
 }
 ```
 

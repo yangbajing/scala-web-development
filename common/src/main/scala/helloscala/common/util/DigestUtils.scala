@@ -4,7 +4,7 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.Path
 import java.security.MessageDigest
 
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import akka.stream.scaladsl.FileIO
 import akka.stream.scaladsl.Sink
 import org.bouncycastle.util.encoders.Hex
@@ -93,12 +93,12 @@ object DigestUtils {
   def sha512Hex(data: String): String =
     sha512Hex(data.getBytes(StandardCharsets.UTF_8))
 
-  def reactiveSha256Hex(path: Path)(implicit mat: ActorMaterializer): Future[String] = {
+  def reactiveSha256Hex(path: Path)(implicit mat: Materializer): Future[String] = {
     import mat.executionContext
     reactiveSha256(path).map(bytes => Hex.toHexString(bytes))
   }
 
-  def reactiveSha256(path: Path)(implicit mat: ActorMaterializer): Future[Array[Byte]] = {
+  def reactiveSha256(path: Path)(implicit mat: Materializer): Future[Array[Byte]] = {
     import mat.executionContext
     val md = digestSha256()
     FileIO.fromPath(path).map(bytes => md.update(bytes.asByteBuffer)).runWith(Sink.ignore).map(_ => md.digest())

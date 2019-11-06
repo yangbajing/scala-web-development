@@ -10,7 +10,7 @@ import akka.http.scaladsl.model.FormData
 import akka.http.scaladsl.model.HttpMethods
 import akka.http.scaladsl.model.HttpRequest
 import akka.http.scaladsl.unmarshalling.Unmarshal
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import akka.stream.Materializer
 import com.typesafe.scalalogging.StrictLogging
 import helloscala.common.exception.HSNotImplementedException

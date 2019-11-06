@@ -1,7 +1,7 @@
 package helloscala.test
 
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
+import akka.stream.Materializer
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.Suite
 
@@ -13,11 +13,11 @@ trait AkkaSpec extends BeforeAndAfterAll {
 
   protected def createActorSystem() = ActorSystem("AkkaTest")
 
-  protected def createActorMaterializer()(implicit system: ActorSystem) = ActorMaterializer()
+  protected def createActorMaterializer()(implicit system: ActorSystem) = Materializer(system)
 
   implicit val system: ActorSystem = createActorSystem()
 
-  implicit val materializer: ActorMaterializer = createActorMaterializer()
+  implicit val materializer: Materializer = createActorMaterializer()
 
   override protected def afterAll(): Unit = {
     super.afterAll()

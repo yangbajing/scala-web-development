@@ -25,14 +25,16 @@ object Dependencies {
     "com.typesafe.akka" %% "akka-stream-testkit" % versionAkka % Test)
     .map(_.exclude("org.scala-lang.modules", s"scala-java8-compat").cross(CrossVersion.binary))
 
-  lazy val _akkaPersistence = "com.typesafe.akka" %% "akka-persistence-query" % versionAkka
+  lazy val _akkaPersistenceQuery = "com.typesafe.akka" %% "akka-persistence-query" % versionAkka
 
   lazy val _akkaMultiNodeTestkit = "com.typesafe.akka" %% "akka-multi-node-testkit" % versionAkka % Test
 
+  lazy val _akkaPersistence = "com.typesafe.akka" %% "akka-persistence-typed" % versionAkka
+
   lazy val _akkaClusters = Seq(
     "com.typesafe.akka" %% "akka-cluster-typed" % versionAkka,
-    //"com.typesafe.akka" %% "akka-cluster-metrics" % versionAkka,
     "com.typesafe.akka" %% "akka-cluster-sharding-typed" % versionAkka,
+    "com.typesafe.akka" %% "akka-discovery" % versionAkka,
     _akkaMultiNodeTestkit)
 
   val versionAkkaHttp = "10.1.10"
@@ -87,7 +89,7 @@ object Dependencies {
 
   val _alpakkaCassandra =
     ("com.lightbend.akka" %% "akka-stream-alpakka-cassandra" % versionAlpakka)
-      .excludeAll(ExclusionRule("com.typesafe.akka"), ExclusionRule("com.datastax.cassandra"))
+      .excludeAll(ExclusionRule("com.typesafe.akka"))
 
   val _alpakkaElasticsearch =
     ("com.lightbend.akka" %% "akka-stream-alpakka-elasticsearch" % versionAlpakka)
@@ -103,24 +105,7 @@ object Dependencies {
   val _alpakkaText =
     ("com.lightbend.akka" %% "akka-stream-alpakka-text" % versionAlpakka).excludeAll(ExclusionRule("com.typesafe.akka"))
 
-  val _alpakkas = Seq(
-    _alpakkaText,
-    _alpakkaSimpleCodecs,
-    _alpakkaXml,
-    _alpakkaCsv,
-    _alpakkaJsonStreaming,
-    _alpakkaFile,
-    _alpakkaFtp,
-    _alpakkaUnixDomainSocket)
-
-  val _alpakkaNoSQLs = Seq(
-    _alpakkaMongodb,
-    _alpakkaCassandra,
-    //                           _alpakkaHbase,
-    //                           _alpakksHdfs,
-    _alpakkaElasticsearch)
-
-  private val versionAkkaPersistenceCassandra = "0.88"
+  private val versionAkkaPersistenceCassandra = "0.100"
 
   val _akkaPersistenceCassandras = Seq(
     "com.typesafe.akka" %% "akka-persistence-cassandra" % versionAkkaPersistenceCassandra,
@@ -132,19 +117,15 @@ object Dependencies {
 
   val _akkaHttpJackson = "de.heikoseeberger" %% "akka-http-jackson" % "1.29.1"
 
-  val _config = "com.typesafe" % "config" % "1.3.3"
+  val _config = "com.typesafe" % "config" % "1.3.4"
 
-  val _hanlp = "com.hankcs" % "hanlp" % "portable-1.6.6"
+  val _hanlp = "com.hankcs" % "hanlp" % "portable-1.7.5"
 
   val _sjsonnet = "com.lihaoyi" %% "sjsonnet" % "0.1.6"
 
   val _requests = "com.lihaoyi" %% "requests" % "0.2.0"
 
   val _redisclient = "net.debasishg" %% "redisclient" % "3.10"
-
-  val _aspectjweaver = "org.aspectj" % "aspectjweaver" % "1.9.1"
-
-  val _sigarLoader = "io.kamon" % "sigar-loader" % "1.6.6" //-rev002"
 
   val _kamonCore = "io.kamon" %% "kamon-core" % "2.0.1"
 
@@ -171,20 +152,6 @@ object Dependencies {
 
   val _kamons = Seq(_kamonCore, _kamonAkka, _kamonAkkaHttp, _kamonSystemMetrics)
 
-  val _scopt = "com.github.scopt" %% "scopt" % "3.7.0"
-
-  private val versionCats = "2.0.0"
-
-  val _catses = Seq("org.typelevel" %% "cats-laws", "org.typelevel" %% "cats-free").map(_ % versionCats)
-
-  //  private val versionCirce = "0.9.3"
-  //  val _circes = Seq(
-  //    "io.circe" %% "circe-core",
-  //    "io.circe" %% "circe-generic",
-  //    "io.circe" %% "circe-parser",
-  //    "io.circe" %% "circe-java8"
-  //  ).map(_ % versionCirce)
-
   val versionSlick = "3.3.2"
 
   val _slicks = Seq(
@@ -195,7 +162,7 @@ object Dependencies {
 
   val _jwtCore = "com.pauldijou" %% "jwt-core" % "4.1.0"
 
-  private val versionPoi = "3.17"
+  private val versionPoi = "4.1.1"
   val _pois = Seq("org.apache.poi" % "poi-scratchpad" % versionPoi, "org.apache.poi" % "poi-ooxml" % versionPoi)
 
   private val versionCassandra = "3.7.2"
@@ -203,6 +170,8 @@ object Dependencies {
   val _cassandraDrivers = Seq(
     "com.datastax.cassandra" % "cassandra-driver-core" % versionCassandra,
     "com.datastax.cassandra" % "cassandra-driver-extras" % versionCassandra)
+
+  val _cassandraJavaCore = "com.datastax.oss" % "java-driver-core" % "4.2.2"
 
   val _logs =
     Seq("com.typesafe.scala-logging" %% "scala-logging" % "3.9.2", "ch.qos.logback" % "logback-classic" % "1.2.3")

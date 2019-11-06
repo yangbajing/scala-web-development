@@ -17,20 +17,20 @@ class AuthorRepositoryTest extends MeSpec with JDBCSpec {
     "create" in {
       val account = Author(0, "羊八井", Some(31), None)
       val result = accountRepository.create(account)
-      result.id must be > 0L
+      result.id should be > 0L
     }
 
     "update" in {
       val author = Author(1, "羊八井", Some(32), None)
       val result = accountRepository.update(author)
-      result.id mustBe author.id
-      result.name mustBe author.name
-      result.age mustBe author.age
+      result.id shouldBe author.id
+      result.name shouldBe author.name
+      result.age shouldBe author.age
     }
 
     "list" in {
       val results = accountRepository.list()
-      results must not be empty
+      results should not be empty
       println(s"results size: ${results.size}")
     }
 

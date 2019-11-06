@@ -1,7 +1,6 @@
 package me.yangbajing
 
 import akka.actor.ActorSystem
-import akka.stream.ActorMaterializer
 import akka.stream.Materializer
 import org.scalatest._
 import org.scalatest.concurrent.ScalaFutures
@@ -14,7 +13,7 @@ import org.scalatest.time.Span
  */
 trait MeSpec
     extends WordSpec
-    with MustMatchers
+    with Matchers
     with OptionValues
     with EitherValues
     with ScalaFutures
