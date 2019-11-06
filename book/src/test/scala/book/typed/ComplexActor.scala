@@ -23,7 +23,7 @@ import org.scalatest.time.Span
 import scala.concurrent.Await
 import scala.concurrent.duration._
 
-object DeepActor {
+object ComplexActor {
 
   sealed trait Command
   trait ControlCommand extends Command { val clientId: String }
@@ -40,16 +40,16 @@ object DeepActor {
   final case class ConnectCounted(count: Int, status: Int = IntStatus.OK) extends Reply
   final case class ReplyError(status: Int, clientId: String) extends Reply
 
-  val serviceKey = ServiceKey[Command]("deep")
+  val serviceKey = ServiceKey[Command]("complex")
 
   def apply(): Behavior[Command] = Behaviors.setup { context =>
     context.system.receptionist ! Receptionist.Register(serviceKey, context.self)
-    new DeepActor(context).receive()
+    new ComplexActor(context).receive()
   }
 }
 
-final class DeepActor(context: ActorContext[DeepActor.Command]) {
-  import DeepActor._
+final class ComplexActor(context: ActorContext[ComplexActor.Command]) {
+  import ComplexActor._
   private var connects = Map.empty[String, ActorRef[Command]]
 
   def receive(): Behavior[Command] =
@@ -59,7 +59,7 @@ final class DeepActor(context: ActorContext[DeepActor.Command]) {
           if (connects.contains(clientId)) {
             replyTo ! Connected(IntStatus.CONFLICT, clientId)
           } else {
-            val child = context.spawn(DeepClient(clientId, context.self.narrow[ControlCommand]), clientId)
+            val child = context.spawn(ComplexClient(clientId, context.self.narrow[ControlCommand]), clientId)
             context.watch(child)
             connects = connects.updated(clientId, child)
             child ! cmd
@@ -99,20 +99,20 @@ final class DeepActor(context: ActorContext[DeepActor.Command]) {
 
 }
 
-object DeepClient {
-  import DeepActor._
+object ComplexClient {
+  import ComplexActor._
 
   def apply(clientId: String, parent: ActorRef[ControlCommand]): Behavior[Command] = Behaviors.setup { context =>
-    Behaviors.withTimers(timers => new DeepClient(clientId, parent, timers, context).init())
+    Behaviors.withTimers(timers => new ComplexClient(clientId, parent, timers, context).init())
   }
 }
 
-final class DeepClient private (
+final class ComplexClient private (
     clientId: String,
-    parent: ActorRef[DeepActor.ControlCommand],
-    timers: TimerScheduler[DeepActor.Command],
-    context: ActorContext[DeepActor.Command]) {
-  import DeepActor._
+    parent: ActorRef[ComplexActor.ControlCommand],
+    timers: TimerScheduler[ComplexActor.Command],
+    context: ActorContext[ComplexActor.Command]) {
+  import ComplexActor._
 
   def active(): Behavior[Command] = Behaviors.receiveMessagePartial {
     case AskMessage(_, message, reply) =>
@@ -139,7 +139,7 @@ final class DeepClient private (
 
 }
 
-class DeepActorSpec
+class ComplexActorSpec
     extends WordSpec
     with Matchers
     with ScalaFutures
@@ -147,65 +147,66 @@ class DeepActorSpec
     with BeforeAndAfterAll
     with StrictLogging {
 
-  implicit private val system = ActorSystem(SpawnProtocol(), "deep-manager")
+  implicit private val system = ActorSystem(SpawnProtocol(), "complex-manager")
   implicit private val timeout = Timeout(2.seconds)
 
   implicit override def patienceConfig: PatienceConfig = PatienceConfig(Span(10, Seconds), Span(50, Millis))
 
-  "DeepActor" should {
-    var deepActor: ActorRef[DeepActor.Command] = null
+  "ComplexActor" should {
+    var complexActor: ActorRef[ComplexActor.Command] = null
 
     "Create actor from outside of ActorSystem[_]" in {
-      deepActor = system
-        .ask[ActorRef[DeepActor.Command]](replTo => SpawnProtocol.Spawn(DeepActor(), "deep", Props.empty, replTo))
+      complexActor = system
+        .ask[ActorRef[ComplexActor.Command]](replTo =>
+          SpawnProtocol.Spawn(ComplexActor(), "complex", Props.empty, replTo))
         .futureValue
-      deepActor.path.name shouldBe "deep"
+      complexActor.path.name shouldBe "complex"
     }
 
     "Discover actors using ServiceKey[T]" in {
-      val maybeDeepActor = AkkaUtils.findActorByServiceKey(DeepActor.serviceKey, 500.millis).futureValue
+      val maybeDeepActor = AkkaUtils.findActorByServiceKey(ComplexActor.serviceKey, 500.millis).futureValue
       val ref = maybeDeepActor.value
-      ref shouldBe deepActor
+      ref shouldBe complexActor
     }
 
     val client1 = "client1"
 
     "Connect" in {
       val connected =
-        deepActor.ask[DeepActor.Reply](DeepActor.Connect(client1, _)).mapTo[DeepActor.Connected].futureValue
+        complexActor.ask[ComplexActor.Reply](ComplexActor.Connect(client1, _)).mapTo[ComplexActor.Connected].futureValue
       connected.status should be(IntStatus.OK)
       connected.clientId should be(client1)
 
       val connectCounted =
-        deepActor.ask[DeepActor.Reply](DeepActor.ConnectCount).mapTo[DeepActor.ConnectCounted].futureValue
+        complexActor.ask[ComplexActor.Reply](ComplexActor.ConnectCount).mapTo[ComplexActor.ConnectCounted].futureValue
       connectCounted.count should be > 0
     }
 
     "AskMessage" in {
-      val messageAsked = deepActor
-        .ask[DeepActor.Reply](DeepActor.AskMessage(client1, "hello", _))
-        .mapTo[DeepActor.MessageAsked]
+      val messageAsked = complexActor
+        .ask[ComplexActor.Reply](ComplexActor.AskMessage(client1, "hello", _))
+        .mapTo[ComplexActor.MessageAsked]
         .futureValue
-      messageAsked should be(DeepActor.MessageAsked(IntStatus.OK, client1, "olleh"))
+      messageAsked should be(ComplexActor.MessageAsked(IntStatus.OK, client1, "olleh"))
     }
 
     "Disconnect" in {
-      val disconnected = deepActor
-        .ask[DeepActor.Reply](replyTo => DeepActor.Disconnect(client1, replyTo))
-        .mapTo[DeepActor.Disconnected]
+      val disconnected = complexActor
+        .ask[ComplexActor.Reply](replyTo => ComplexActor.Disconnect(client1, replyTo))
+        .mapTo[ComplexActor.Disconnected]
         .futureValue
       disconnected.status should be(IntStatus.OK)
       disconnected.clientId should be(client1)
 
       val connectCounted =
-        deepActor.ask[DeepActor.Reply](DeepActor.ConnectCount).mapTo[DeepActor.ConnectCounted].futureValue
+        complexActor.ask[ComplexActor.Reply](ComplexActor.ConnectCount).mapTo[ComplexActor.ConnectCounted].futureValue
       connectCounted.count should be(0)
     }
 
     "AskMessage return 404" in {
-      val messageAsked = deepActor
-        .ask[DeepActor.Reply](DeepActor.AskMessage(client1, "hello", _))
-        .mapTo[DeepActor.ReplyError]
+      val messageAsked = complexActor
+        .ask[ComplexActor.Reply](ComplexActor.AskMessage(client1, "hello", _))
+        .mapTo[ComplexActor.ReplyError]
         .futureValue
       messageAsked.status should be(IntStatus.NOT_FOUND)
     }
