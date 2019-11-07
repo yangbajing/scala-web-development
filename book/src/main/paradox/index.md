@@ -15,9 +15,12 @@
 - [directives](directives/index.md)
 * [data](data/index.md)
 * [test](test/index.md)
+* [actor](actor/index.md)
 * [oauth](oauth/index.md)
 * [database](database/index.md)
-* [enginerring](engineering/index.md)
+* [engineering](engineering/index.md)
+* [grpc](grpc/index.md)
+* [config-discovery](config-discovery/index.md)
 * [appendix](appendix/index.md)
 * [donate](donate.md)
 

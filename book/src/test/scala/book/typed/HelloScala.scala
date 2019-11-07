@@ -6,6 +6,7 @@ import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
 import org.scalatest.WordSpecLike
 
+// #HelloScala-scala
 object HelloScala {
   // #HelloScala
   sealed trait Command
@@ -32,25 +33,27 @@ class HelloScalaSpec extends ScalaTestWithActorTestKit with WordSpecLike {
   import HelloScala._
 
   "HelloScala" should {
+    // #HelloScalaSpec
     "tell" in {
-      val actorRef = spawn(HelloScala(), "hello-on-tell")
+      val actorRef = spawn(HelloScala(), "tell")
       actorRef ! Tell("Hello")
     }
 
-    "ask" in {
-      val actorRef = spawn(HelloScala(), "hello-on-ask")
+    "replyTo" in {
+      val actorRef = spawn(HelloScala(), "replyTo")
       val probe = createTestProbe[Reply]()
       actorRef ! Hello("hello", probe.ref)
-
       probe.expectMessageType[HelloReply] should be(HelloReply("hello, scala!"))
     }
 
-    "ask pattern" in {
+    "ask" in {
       import akka.actor.typed.scaladsl.AskPattern._
-      val actorRef = spawn(HelloScala(), "hello-on-ask-pattern")
+      val actorRef = spawn(HelloScala(), "ask")
       val reply = actorRef.ask[Reply](replyTo => Hello("Hello", replyTo)).mapTo[HelloReply].futureValue
       reply.message should be("Hello, scala!")
     }
+    // #HelloScalaSpec
   }
 
 }
+// #HelloScala-scala

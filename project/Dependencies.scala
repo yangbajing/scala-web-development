@@ -4,6 +4,11 @@ object Dependencies {
   val versionScala = "2.13.1"
   val versionScalaLib = "2.13"
   val versionScalaCollectionCompat = "2.1.2"
+  val versionAkka = "2.6.0"
+  val versionAkkaHttp = "10.1.10"
+  val versionAkkaManagement = "1.0.4"
+  val versionAlpakka = "1.1.2"
+  val versionAkkaPersistenceCassandra = "0.100"
 
   val _scalaXml = ("org.scala-lang.modules" %% "scala-xml" % "1.2.0").exclude("org.scala-lang", "scala-library")
 
@@ -13,9 +18,6 @@ object Dependencies {
   val _scalaCollectionCompat = "org.scala-lang.modules" %% "scala-collection-compat" % versionScalaCollectionCompat
 
   val _scalatest = "org.scalatest" %% "scalatest" % "3.0.8"
-
-  val versionAkka = "2.6.0-RC2"
-  lazy val _akkaRemote = "com.typesafe.akka" %% "akka-remote" % versionAkka
 
   lazy val _akkas = Seq(
     "com.typesafe.akka" %% "akka-slf4j" % versionAkka,
@@ -27,7 +29,7 @@ object Dependencies {
 
   lazy val _akkaPersistenceQuery = "com.typesafe.akka" %% "akka-persistence-query" % versionAkka
 
-  lazy val _akkaMultiNodeTestkit = "com.typesafe.akka" %% "akka-multi-node-testkit" % versionAkka % Test
+  lazy val _akkaMultiNodeTestkit = "com.typesafe.akka" %% "akka-multi-node-testkit" % versionAkka
 
   lazy val _akkaPersistence = "com.typesafe.akka" %% "akka-persistence-typed" % versionAkka
 
@@ -35,13 +37,7 @@ object Dependencies {
     "com.typesafe.akka" %% "akka-cluster-typed" % versionAkka,
     "com.typesafe.akka" %% "akka-cluster-sharding-typed" % versionAkka,
     "com.typesafe.akka" %% "akka-discovery" % versionAkka,
-    _akkaMultiNodeTestkit)
-
-  val versionAkkaHttp = "10.1.10"
-
-  val _akkaHttpCore = ("com.typesafe.akka" %% "akka-http-core" % versionAkkaHttp)
-    .exclude("com.typesafe.akka", "akka-stream")
-    .cross(CrossVersion.binary)
+    _akkaMultiNodeTestkit % Test)
 
   val _akkaHttpTestkit = ("com.typesafe.akka" %% "akka-http-testkit" % versionAkkaHttp)
     .exclude("com.typesafe.akka", "akka-stream")
@@ -53,11 +49,9 @@ object Dependencies {
     .map(_.exclude("com.typesafe.akka", "akka-stream").cross(CrossVersion.binary))
 
   lazy val _akkaManagements = Seq(
-    "com.lightbend.akka.management" %% "akka-management" % "1.0.3",
-    "com.lightbend.akka.management" %% "akka-management-cluster-http" % "1.0.3")
+    "com.lightbend.akka.management" %% "akka-management" % versionAkkaManagement,
+    "com.lightbend.akka.management" %% "akka-management-cluster-http" % versionAkkaManagement)
     .map(_.excludeAll(ExclusionRule("com.typesafe.akka")).exclude("org.scala-lang", "scala-library"))
-
-  private val versionAlpakka = "1.1.2"
 
   val _alpakkaSimpleCodecs =
     ("com.lightbend.akka" %% "akka-stream-alpakka-simple-codecs" % versionAlpakka)
@@ -105,8 +99,6 @@ object Dependencies {
   val _alpakkaText =
     ("com.lightbend.akka" %% "akka-stream-alpakka-text" % versionAlpakka).excludeAll(ExclusionRule("com.typesafe.akka"))
 
-  private val versionAkkaPersistenceCassandra = "0.100"
-
   val _akkaPersistenceCassandras = Seq(
     "com.typesafe.akka" %% "akka-persistence-cassandra" % versionAkkaPersistenceCassandra,
     "com.typesafe.akka" %% "akka-persistence-cassandra-launcher" % versionAkkaPersistenceCassandra % Test)
@@ -142,8 +134,6 @@ object Dependencies {
     .exclude("com.typesafe.akka", "akka-stream")
     .cross(CrossVersion.binary)
     .exclude("org.scala-lang", "scala-library")
-
-  // need aspectjweaver
 
   val _kamonSystemMetrics = ("io.kamon" %% "kamon-system-metrics" % "2.0.0")
     .exclude("io.kamon", "kamon-core")
@@ -192,8 +182,6 @@ object Dependencies {
   val _postgresql = "org.postgresql" % "postgresql" % "42.2.8"
 
   val _mysql = "mysql" % "mysql-connector-java" % "8.0.18"
-
-  val _mssql = "com.microsoft.sqlserver" % "mssql-jdbc" % "6.4.0.jre8"
 
   val _hikariCP = "com.zaxxer" % "HikariCP" % "3.4.1"
 

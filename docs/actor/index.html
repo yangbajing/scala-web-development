@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="description" content="book">
+<meta name="generator" content="Paradox, paradox-material-theme=0.6.0, mkdocs-material=3.0.3">
+
+<meta name="lang:clipboard.copy" content="Copy to clipboard">
+<meta name="lang:clipboard.copied" content="Copied to clipboard">
+<meta name="lang:search.language" content="">
+<meta name="lang:search.pipeline.stopwords" content="true">
+<meta name="lang:search.pipeline.trimmer" content="true">
+<meta name="lang:search.result.none" content="No matching documents">
+<meta name="lang:search.result.one" content="1 matching document">
+<meta name="lang:search.result.other" content="# matching documents">
+<meta name="lang:search.tokenizer" content="[\s\-]+">
+
+
+<meta name="description" content="book">
+<link rel="shortcut icon" href="../assets/images/favicon.png">
+<title>Akka Actor · Scala Web 开发——基于Akka HTTP</title>
+<link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
+<link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+<meta name="theme-color" content="#009688" />
+<link rel="stylesheet" href="../lib/material__tabs/dist/mdc.tabs.min.css">
+<link rel="stylesheet" href="../lib/prettify/prettify.css">
+<script src="../assets/javascripts/modernizr.1aa3b519.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+<style>
+body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}
+code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}
+</style>
+<link rel="stylesheet" href="../assets/fonts/font-awesome.css">
+<link rel="stylesheet" href="../assets/fonts/material-icons.css">
+<link rel="stylesheet" href="../assets/stylesheets/paradox-material-theme.css">
+</head>
+<body
+data-md-color-primary="teal"
+data-md-color-accent="indigo"
+>
+<input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+<input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+<label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+<header class="md-header" data-md-component="header">
+<nav class="md-header-nav md-grid">
+<div class="md-flex">
+<div class="md-flex__cell md-flex__cell--shrink">
+<a href="../index.html" title="Scala Web 开发——基于Akka HTTP" class="md-header-nav__button md-logo">
+<i class="md-icon">local_library</i>
+</a>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch">
+<div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+<span class="md-header-nav__topic">
+Scala Web 开发——基于Akka HTTP
+</span>
+<span class="md-header-nav__topic">
+Akka Actor
+</span>
+</div>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+<label class="md-icon md-search__icon" for="__search"></label>
+<button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">&#xE5CD;</button>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix>
+<div class="md-search-result" data-md-component="result">
+<div class="md-search-result__meta">
+Type to start searching
+</div>
+<ol class="md-search-result__list"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<div class="md-header-nav__source">
+<a href="https://github.com/yangbajing/scala-web-development"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+yangbajing/scala-web-development
+</div>
+</a>
+
+</div>
+</div>
+</div>
+</nav>
+</header>
+
+<div class="md-container">
+<main class="md-main">
+<div class="md-main__inner md-grid" data-md-component="container">
+<div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--primary" data-md-level="0" style="visibility: hidden">
+<label class="md-nav__title md-nav__title--site" for="drawer">
+<a href="../index.html" title="Scala Web 开发——基于Akka HTTP" class="md-nav__button md-logo">
+<span class="md-nav__button md-logo">
+<i class="md-icon">local_library</i>
+</a>
+<a href="../index.html" title="Scala Web 开发——基于Akka HTTP">
+Scala Web 开发——基于Akka HTTP
+</a>
+</label>
+<div class="md-nav__source">
+<a href="https://github.com/yangbajing/scala-web-development"
+title="Go to repository"
+class="md-source"
+data-md-source="github">
+<div class="md-source__icon">
+<i class="fa fa-github"></i>
+</div>
+<div class="md-source__repository">
+yangbajing/scala-web-development
+</div>
+</a>
+
+</div>
+<ul>
+  <li><a href="../preface.html" class="page">前言</a></li>
+  <li><a href="../env/index.html" class="page">Scala 环境配置</a>
+  <ul>
+    <li><a href="../env/env.1.html" class="page">Sbt</a></li>
+    <li><a href="../env/env.2.html" class="page">IDE开发工具</a></li>
+    <li><a href="../env/env.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../scala/index.html" class="page">Scala 语言基础</a>
+  <ul>
+    <li><a href="../scala/scala.0.html" class="page">REPL</a></li>
+    <li><a href="../scala/scala.1.html" class="page">你好，Scala</a></li>
+    <li><a href="../scala/scala.2.html" class="page">Scala基础</a></li>
+    <li><a href="../scala/scala.3.html" class="page">流程和函数</a></li>
+    <li><a href="../scala/scala.4.html" class="page">集合</a></li>
+    <li><a href="../scala/scala.5.html" class="page">class和object</a></li>
+    <li><a href="../scala/scala.6.html" class="page">函数式</a></li>
+    <li><a href="../scala/scala.7.html" class="page">Trait</a></li>
+    <li><a href="../scala/scala.8.html" class="page">并发</a></li>
+    <li><a href="../scala/scala.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../basic/index.html" class="page">Akka HTTP 基础</a>
+  <ul>
+    <li><a href="../basic/basic.0.html" class="page">Akka HTTP 基础</a></li>
+    <li><a href="../basic/basic.1.html" class="page">Web 工作方式</a></li>
+    <li><a href="../basic/basic.2.html" class="page">使用 Akka Http 搭建一个简单的 Web 服务</a></li>
+    <li><a href="../basic/basic.3.html" class="page">Akka HTTP 的通用抽象</a></li>
+    <li><a href="../basic/basic.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../server-api/index.html" class="page">服务端API</a>
+  <ul>
+    <li><a href="../server-api/work.html" class="page">Akka HTTP 如何使得 Web 工作</a></li>
+    <li><a href="../server-api/advanced.html" class="page">高级服务端 API</a></li>
+  </ul></li>
+  <li><a href="../routing-dsl/index.html" class="page">路由DSL</a>
+  <ul>
+    <li><a href="../routing-dsl/route.html" class="page">Route 路由</a></li>
+    <li><a href="../routing-dsl/directive.html" class="page">Directive 指令</a></li>
+    <li><a href="../routing-dsl/custom-directive.html" class="page">自定义指令</a></li>
+    <li><a href="../routing-dsl/rejections.html" class="page">拒绝 rejections</a></li>
+    <li><a href="../routing-dsl/exception.html" class="page">异常处理</a></li>
+    <li><a href="../routing-dsl/file-upload.html" class="page">实战：大文件断点上传、下载和秒传</a></li>
+  </ul></li>
+  <li><a href="../directives/index.html" class="page">常用指令</a>
+  <ul>
+    <li><a href="../directives/path.html" class="page">PathDirectives（路径指令）</a></li>
+    <li><a href="../directives/method.html" class="page">directives/method.html</a></li>
+    <li><a href="../directives/parameter_form.html" class="page">directives/parameter_form.html</a></li>
+    <li><a href="../directives/marshalling.html" class="page">directives/marshalling.html</a></li>
+    <li><a href="../directives/file.html" class="page">directives/file.html</a></li>
+    <li><a href="../directives/cookie.html" class="page">directives/cookie.html</a></li>
+  </ul></li>
+  <li><a href="../data/index.html" class="page">数据</a>
+  <ul>
+    <li><a href="../data/data.0.html" class="page">数据</a></li>
+    <li><a href="../data/data.1.html" class="page">JSON</a></li>
+    <li><a href="../data/data.ant-design-pro.html" class="page">实战：为Ant Design Pro提供后端接口</a></li>
+    <li><a href="../data/data.kryo.html" class="page">Kryo</a></li>
+    <li><a href="../data/data.2.html" class="page">Protobuf</a></li>
+    <li><a href="../data/data.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../test/index.html" class="page">测试</a>
+  <ul>
+    <li><a href="../test/test.0.html" class="page">测试</a></li>
+    <li><a href="../test/test.1.html" class="page">Scalatest</a></li>
+    <li><a href="../test/test.2.html" class="page">测试异步代码</a></li>
+    <li><a href="../test/test.3.html" class="page">端到端测试Route</a></li>
+    <li><a href="../test/test.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../actor/index.html" class="active page">Akka Actor</a>
+  <ul>
+    <li><a href="../actor/actor.html" class="page">Akka Typed Actor</a></li>
+    <li><a href="../actor/cluster.html" class="page">Akka 集群</a></li>
+    <li><a href="../actor/actor-test.html" class="page">Akka Actor 测试</a></li>
+    <li><a href="../actor/actor.z.html" class="page">Actor小结</a></li>
+  </ul></li>
+  <li><a href="../oauth/index.html" class="page">实战：实现OAuth 2服务</a>
+  <ul>
+    <li><a href="../oauth/oauth.0.html" class="page">实战：OAuth 2 服务</a></li>
+    <li><a href="../oauth/oauth.1.html" class="page">OAuth 2简介</a></li>
+    <li><a href="../oauth/oauth.2.html" class="page">OAuth 2接口设计</a></li>
+    <li><a href="../oauth/oauth.3.html" class="page">OAuth 2服务实现</a></li>
+    <li><a href="../oauth/oauth.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../database/index.html" class="page">访问数据库</a>
+  <ul>
+    <li><a href="../database/database.0.html" class="page">访问数据库</a></li>
+    <li><a href="../database/database.1.html" class="page">使用 JDBC 访问 PostgreSQL</a></li>
+    <li><a href="../database/database.2.html" class="page">使用 Slick 访问数据库</a></li>
+    <li><a href="../database/database.3.html" class="page">访问 Cassandra 数据库</a></li>
+    <li><a href="../database/database.4.html" class="page">访问 Redis</a></li>
+    <li><a href="../database/database.5.html" class="page">访问 Elasticsearch</a></li>
+    <li><a href="../database/database.z.html" class="page">小结</a></li>
+  </ul></li>
+  <li><a href="../engineering/index.html" class="page">工程化</a>
+  <ul>
+    <li><a href="../engineering/swagger.html" class="page">使用Swagger编写API文档</a></li>
+    <li><a href="../engineering/guice.html" class="page">使用Guice管理类依赖</a></li>
+  </ul></li>
+  <li><a href="../grpc/index.html" class="page">Akka Grpc</a></li>
+  <li><a href="../config-discovery/index.html" class="page">实战：配置管理、服务发现系统</a></li>
+  <li><a href="../appendix/index.html" class="page">附录</a>
+  <ul>
+    <li><a href="../appendix/appendix.0.html" class="page">参考资料</a></li>
+    <li><a href="../appendix/appendix.1.html" class="page">专业术语</a></li>
+    <li><a href="../appendix/appendix.2.html" class="page">词汇表</a></li>
+  </ul></li>
+  <li><a href="../donate.html" class="page">赞助</a></li>
+</ul>
+<nav class="md-nav md-nav--secondary">
+</nav>
+
+</nav>
+<ul style="display: none">
+<li class="md-nav__item md-version" id="project.version">
+<label class="md-nav__link" for="__version">
+<i class="md-icon" title="Version">label_outline</i> 1.0.0
+</label>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="md-content">
+<article class="md-content__inner md-typeset">
+<div class="md-content__searchable">
+<h1><a href="#akka-actor" name="akka-actor" class="anchor"><span class="anchor-link"></span></a>Akka Actor</h1>
+<div class="toc ">
+<ul>
+  <li><a href="../actor/actor.html" class="page">Akka Typed Actor</a>
+  <ul>
+    <li><a href="../actor/actor.html#hello-scala-" class="header">Hello Scala!</a></li>
+    <li><a href="../actor/actor.html#更复杂的一个示例" class="header">更复杂的一个示例</a></li>
+    <li><a href="../actor/actor.html#在actorsystem-外部创建actor" class="header">在ActorSystem[_]外部创建actor</a></li>
+    <li><a href="../actor/actor.html#小结" class="header">小结</a></li>
+  </ul></li>
+  <li><a href="../actor/cluster.html" class="page">Akka 集群</a></li>
+  <li><a href="../actor/actor-test.html" class="page">Akka Actor 测试</a>
+  <ul>
+    <li><a href="../actor/actor-test.html#actor测试" class="header">Actor测试</a></li>
+    <li><a href="../actor/actor-test.html#集群测试" class="header">集群测试</a></li>
+  </ul></li>
+  <li><a href="../actor/actor.z.html" class="page">Actor小结</a></li>
+</ul>
+</div>
+</div>
+<div>
+<a href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/main/paradox/actor/index.md" title="Edit this page" class="md-source-file md-edit">
+Edit this page
+</a>
+</div>
+<div class="print-only">
+<span class="md-source-file md-version">
+1.0.0
+</span>
+</div>
+</article>
+</div>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-nav">
+<nav class="md-footer-nav__inner md-grid">
+<a href="../test/test.z.html" title="小结" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+</div>
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Previous
+</span>
+小结
+</span>
+</div>
+</a>
+<a href="../actor/actor.html" title="Akka Typed Actor" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+<span class="md-flex__ellipsis">
+<span class="md-footer-nav__direction">
+Next
+</span>
+Akka Typed Actor
+</span>
+</div>
+<div class="md-flex__cell md-flex__cell--shrink">
+<i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+</div>
+</a>
+</nav>
+</div>
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-footer-copyright">
+Powered by
+<a href="https://github.com/lightbend/paradox">Paradox</a>
+and
+<a href="https://jonas.github.io/paradox-material-theme/">Paradox Material Theme</a>
+
+</div>
+<div class="md-footer-social">
+<a href="https://github.com/yangbajing" class="md-footer-social__link fa fa-github"></a><a href="https://weibo.com/yangbajing" class="md-footer-social__link fa fa-globe"></a><a href="https://www.yangbajing.me/" class="md-footer-social__link fa fa-globe"></a>
+</div>
+
+</div>
+</div>
+</footer>
+
+</div>
+<script src="../assets/javascripts/application.583bbe55.js"></script>
+<script src="../assets/javascripts/paradox-material-theme.js"></script>
+<script>app.initialize({version:"0.17",url:{base:"../."}})</script>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function(event) {
+window.prettyPrint && prettyPrint();
+});
+</script>
+</body>
+</html>
