@@ -12,11 +12,11 @@ import org.scalatest.Matchers
 import org.scalatest.WordSpecLike
 
 class TestRoutesTest extends WordSpecLike with ScalatestRouteTest with Matchers {
-
   val textParam: Directive1[String] = parameter("text".as[String])
   val lengthDirective: Directive1[Int] = textParam.map(text => text.length)
 
-  val twoIntParameters: Directive[(Int, Int)] = parameters(("a".as[Int], "b".as[Int]))
+  val twoIntParameters: Directive[(Int, Int)] = parameters(
+    ("a".as[Int], "b".as[Int]))
 
   val myDirective: Directive1[String] = twoIntParameters.tmap {
     case (a, b) => (a + b).toString
@@ -25,7 +25,6 @@ class TestRoutesTest extends WordSpecLike with ScalatestRouteTest with Matchers 
   val route = pathPrefix("api") { ctx =>
     println(ctx.unmatchedPath)
     ctx.complete(ctx.request.uri.path.toString())
-
   }
 
   "Routes Test" should {
@@ -38,7 +37,10 @@ class TestRoutesTest extends WordSpecLike with ScalatestRouteTest with Matchers 
     }
 
     "test" in {
-      mapRequest(request => request.withHeaders(request.headers :+ RawHeader("custom-key", "custom-value")))
+      mapRequest(
+        request =>
+          request.withHeaders(
+            request.headers :+ RawHeader("custom-key", "custom-value")))
       path("api" / "user" / "page")
       mapRouteResultPF {
         case RouteResult.Rejected(_) =>
@@ -47,5 +49,4 @@ class TestRoutesTest extends WordSpecLike with ScalatestRouteTest with Matchers 
       extract(ctx => ctx.request.uri)
     }
   }
-
 }

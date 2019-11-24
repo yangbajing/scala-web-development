@@ -23,7 +23,6 @@ class OrgRouteTest
     with Matchers
     with OptionValues
     with ScalaFutures {
-
   private val schema = Schema()
   private var orgIds: Set[Int] = Set()
   private val route: Route = new OrgRoute(new OrgService(schema)).route
@@ -74,5 +73,4 @@ class OrgRouteTest
     schema.db.close()
     super.afterAll()
   }
-
 }

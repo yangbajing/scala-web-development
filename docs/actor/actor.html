@@ -237,7 +237,13 @@ yangbajing/scala-web-development
     <li><a href="../engineering/swagger.html" class="page">使用Swagger编写API文档</a></li>
     <li><a href="../engineering/guice.html" class="page">使用Guice管理类依赖</a></li>
   </ul></li>
-  <li><a href="../grpc/index.html" class="page">Akka Grpc</a></li>
+  <li><a href="../grpc/index.html" class="page">Akka gRPC</a>
+  <ul>
+    <li><a href="../grpc/grpc.html" class="page">gRPC服务</a></li>
+    <li><a href="../grpc/build-tool.html" class="page">构建工具</a></li>
+    <li><a href="../grpc/deployment.html" class="page">部署</a></li>
+    <li><a href="../grpc/grpc.z.html" class="page">小结</a></li>
+  </ul></li>
   <li><a href="../config-discovery/index.html" class="page">实战：配置管理、服务发现系统</a></li>
   <li><a href="../appendix/index.html" class="page">附录</a>
   <ul>
@@ -296,7 +302,7 @@ yangbajing/scala-web-development
 <h1><a href="#akka-typed-actor" name="akka-typed-actor" class="anchor"><span class="anchor-link"></span></a>Akka Typed Actor</h1>
 <h2><a href="#hello-scala-" name="hello-scala-" class="anchor"><span class="anchor-link"></span></a>Hello Scala!</h2>
 <p>Akka Typed Actor从2.4开始直到2.5可以商用，进而Akka 2.6已经把Akka Typed Actor做为推荐的Actor使用模式。Typed Actor与原先的Untyped Actor最大的区别Actor有类型了，其签名也改成了<code>akka.actor.typed.ActorRef[T]</code>。通过一个简单的示例来看看在Akka Typed环境下怎样使用Actor。</p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/test/scala/book/typed/HelloScala.scala#L12-L28" target="_blank" title="Go to snippet source"></a><code class="language-scala">sealed trait Command
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/test/scala/book/typed/HelloScala.scala#L12-L28" target="_blank" title="Go to snippet source"></a><code class="language-scala">sealed trait Command
 final case class Hello(message: String, replyTo: ActorRef[Reply]) extends Command
 final case class Tell(message: String) extends Command
 
@@ -316,7 +322,7 @@ def apply(): Behavior[Command] = Behaviors.setup { context =&gt;
 <p>Akka Typed不再需要通过类的形式来实现<code>Actor</code>接口定义，而是函数的形式来定义actor。可以看到，定义的actor类型为<code>Behavior[T]</code>（**形为**），通过<code>Behaviors.receiveMessage[T](T =&gt; Behavior[T]): Receive[T]</code>函数来处理接收到的消息，而<code>Receive</code>继承了<code>Behavior</code> trait。通过函数签名可以看到，每次接收到消息并对其处理完成后，都必需要返回一个新的形为。</p>
 <p><code>apply(): Behavior[Command]</code>函数签名里的范性参数类型<code>Command</code>限制了这个actor将只接收<code>Command</code>或<code>Command</code>子类型的消息，编译器将在编译期对传给actor的消息做类型检查，相对于从前的untyped actor可以向actor传入任何类型的消息，这可以限制的减少程序中的bug。特别是在程序规模很大，当你定义了成百上千个消息时。</p>
 <p>也因为有类型的actor，在Akka Typed中没有了隐式发送的<code>sender: ActorRef</code>，必需在发送的消息里面包含回复字段，就如<code>Hello</code>消息定义里的<code>replyTo: ActorRef[Reply]</code>字段一样。actor在处理完<code>Hello</code>消息后可以通过它向发送者回复处理结果。</p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/test/scala/book/typed/HelloScala.scala#L37-L54" target="_blank" title="Go to snippet source"></a><code class="language-scala">&quot;tell&quot; in {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/test/scala/book/typed/HelloScala.scala#L37-L58" target="_blank" title="Go to snippet source"></a><code class="language-scala">&quot;tell&quot; in {
   val actorRef = spawn(HelloScala(), &quot;tell&quot;)
   actorRef ! Tell(&quot;Hello&quot;)
 }
@@ -331,7 +337,11 @@ def apply(): Behavior[Command] = Behaviors.setup { context =&gt;
 &quot;ask&quot; in {
   import akka.actor.typed.scaladsl.AskPattern._
   val actorRef = spawn(HelloScala(), &quot;ask&quot;)
-  val reply = actorRef.ask[Reply](replyTo =&gt; Hello(&quot;Hello&quot;, replyTo)).mapTo[HelloReply].futureValue
+  val reply =
+    actorRef
+      .ask[Reply](replyTo =&gt; Hello(&quot;Hello&quot;, replyTo))
+      .mapTo[HelloReply]
+      .futureValue
   reply.message should be(&quot;Hello, scala!&quot;)
 }</code></pre>
 <h2><a href="#更复杂的一个示例" name="更复杂的一个示例" class="anchor"><span class="anchor-link"></span></a>更复杂的一个示例</h2>
@@ -488,7 +498,7 @@ val helloScala: ActorRef[HelloScala.Command] = Await.result(helloScalaF, 2.secon
 <p>本文通过两个例子展示了Akka Typed的特性，它与经典actor的区别还是挺大的。从untyped和typed，actor拥有了类型，这对于大规模actor系统开发可以在编译期发现很多重复，它将强制你在设计actor时首先考虑消息的定义。定义的消息即是actor之间的数据交互协议，消息定义的过程也是业务模式和模块划分的过程。</p>
 <p><strong>完整示例代码</strong></p>
 <p><strong>HelloScala.scala</strong></p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/test/scala/book/typed/HelloScala.scala#L10-L58" target="_blank" title="Go to snippet source"></a><code class="language-scala">object HelloScala {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/test/scala/book/typed/HelloScala.scala#L10-L61" target="_blank" title="Go to snippet source"></a><code class="language-scala">object HelloScala {
   sealed trait Command
   final case class Hello(message: String, replyTo: ActorRef[Reply]) extends Command
   final case class Tell(message: String) extends Command
@@ -527,41 +537,64 @@ class HelloScalaSpec extends ScalaTestWithActorTestKit with WordSpecLike {
     &quot;ask&quot; in {
       import akka.actor.typed.scaladsl.AskPattern._
       val actorRef = spawn(HelloScala(), &quot;ask&quot;)
-      val reply = actorRef.ask[Reply](replyTo =&gt; Hello(&quot;Hello&quot;, replyTo)).mapTo[HelloReply].futureValue
+      val reply =
+        actorRef
+          .ask[Reply](replyTo =&gt; Hello(&quot;Hello&quot;, replyTo))
+          .mapTo[HelloReply]
+          .futureValue
       reply.message should be(&quot;Hello, scala!&quot;)
     }
   }
-
 }</code></pre>
 <p><strong>ComplexActor.scala</strong></p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/test/scala/book/typed/ComplexActor.scala#L32-L291" target="_blank" title="Go to snippet source"></a><code class="language-scala">object ComplexActor {
-
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/test/scala/book/typed/ComplexActor.scala#L32-L331" target="_blank" title="Go to snippet source"></a><code class="language-scala">object ComplexActor {
   sealed trait Command
   trait ControlCommand extends Command { val clientId: String }
   trait ReplyCommand extends Command { val replyTo: ActorRef[Reply] }
 
-  final case class Connect(clientId: String, replyTo: ActorRef[Reply]) extends ControlCommand with ReplyCommand
-  final case class Disconnect(clientId: String, replyTo: ActorRef[Reply]) extends ControlCommand with ReplyCommand
-  final case class AskMessage(clientId: String, message: String, replyTo: ActorRef[Reply]) extends ReplyCommand
+  final case class Connect(clientId: String, replyTo: ActorRef[Reply])
+      extends ControlCommand
+      with ReplyCommand
+  final case class Disconnect(clientId: String, replyTo: ActorRef[Reply])
+      extends ControlCommand
+      with ReplyCommand
+  final case class AskMessage(
+      clientId: String,
+      message: String,
+      replyTo: ActorRef[Reply])
+      extends ReplyCommand
   final case class ConnectCount(replyTo: ActorRef[Reply]) extends ReplyCommand
-  final case class QueryResource(clientId: String, replyTo: ActorRef[Reply]) extends ReplyCommand
-  final case class PublishEvent(clientId: String, event: String, payload: String) extends Command
+  final case class QueryResource(clientId: String, replyTo: ActorRef[Reply])
+      extends ReplyCommand
+  final case class PublishEvent(clientId: String, event: String, payload: String)
+      extends Command
   final private[typed] case object SessionTimeout extends Command
-  final private case class ServiceKeyRegistered(registered: Receptionist.Registered) extends Command
+  final private case class ServiceKeyRegistered(
+      registered: Receptionist.Registered)
+      extends Command
 
   sealed trait Reply
   final case class Connected(status: Int, clientId: String) extends Reply
   final case class Disconnected(status: Int, clientId: String) extends Reply
-  final case class MessageAsked(status: Int, clientId: String, reply: String) extends Reply
-  final case class ConnectCounted(count: Int, status: Int = IntStatus.OK) extends Reply
-  final case class ResourceQueried(status: Int, clientId: String, resources: Seq[String]) extends Reply
+  final case class MessageAsked(status: Int, clientId: String, reply: String)
+      extends Reply
+  final case class ConnectCounted(count: Int, status: Int = IntStatus.OK)
+      extends Reply
+  final case class ResourceQueried(
+      status: Int,
+      clientId: String,
+      resources: Seq[String])
+      extends Reply
   final case class ReplyError(status: Int) extends Reply
 
   val serviceKey = ServiceKey[Command](&quot;complex&quot;)
 
   def apply(): Behavior[Command] = Behaviors.setup { context =&gt;
-    val registerAdapter = context.messageAdapter[Receptionist.Registered](value =&gt; ServiceKeyRegistered(value))
-    context.system.receptionist ! Receptionist.Register(serviceKey, context.self, registerAdapter)
+    val registerAdapter =
+      context.messageAdapter[Receptionist.Registered](value =&gt;
+        ServiceKeyRegistered(value))
+    context.system.receptionist ! Receptionist
+      .Register(serviceKey, context.self, registerAdapter)
     new ComplexActor(context).init()
   }
 }
@@ -579,7 +612,8 @@ final class ComplexActor(context: ActorContext[ComplexActor.Command]) {
         cmd.replyTo ! ReplyError(IntStatus.SERVICE_UNAVAILABLE)
         Behaviors.same
       case other =&gt;
-        context.log.warn(&quot;Actor not registered, receive invalid message: {}&quot;, other)
+        context.log
+          .warn(&quot;Actor not registered, receive invalid message: {}&quot;, other)
         Behaviors.same
     }
 
@@ -592,7 +626,8 @@ final class ComplexActor(context: ActorContext[ComplexActor.Command]) {
           } else {
             val child = context.spawn(
               Behaviors
-                .supervise(ComplexClient(clientId, context.self.narrow[ControlCommand]))
+                .supervise(
+                  ComplexClient(clientId, context.self.narrow[ControlCommand]))
                 .onFailure(SupervisorStrategy.restart),
               clientId)
             context.watch(child)
@@ -643,13 +678,18 @@ final class ComplexActor(context: ActorContext[ComplexActor.Command]) {
 object ComplexClient {
   import ComplexActor._
 
-  final private[typed] case class InternalQueryResource(resources: Try[Seq[String]], replyTo: ActorRef[Reply])
+  final private[typed] case class InternalQueryResource(
+      resources: Try[Seq[String]],
+      replyTo: ActorRef[Reply])
       extends Command
 
-  def apply(clientId: String, parent: ActorRef[ControlCommand]): Behavior[Command] = Behaviors.setup { context =&gt;
-    Behaviors.withTimers(timers =&gt; new ComplexClient(clientId, parent, timers, context).init())
-  }
-
+  def apply(
+      clientId: String,
+      parent: ActorRef[ControlCommand]): Behavior[Command] =
+    Behaviors.setup { context =&gt;
+      Behaviors.withTimers(timers =&gt;
+        new ComplexClient(clientId, parent, timers, context).init())
+    }
 }
 
 final class ComplexClient private (
@@ -671,7 +711,8 @@ final class ComplexClient private (
       Behaviors.same
 
     case QueryResource(_, replyTo) =&gt;
-      context.pipeToSelf(findExternalResource())(value =&gt; InternalQueryResource(value, replyTo))
+      context.pipeToSelf(findExternalResource())(value =&gt;
+        InternalQueryResource(value, replyTo))
       Behaviors.same
 
     case InternalQueryResource(tryValue, replyTo) =&gt;
@@ -703,7 +744,6 @@ final class ComplexClient private (
     TimeUnit.MILLISECONDS.sleep(10)
     Range(0, 10).map(_.toString).toVector
   }
-
 }
 
 class ComplexActorSpec
@@ -713,11 +753,11 @@ class ComplexActorSpec
     with OptionValues
     with BeforeAndAfterAll
     with StrictLogging {
-
   implicit private val system = ActorSystem(SpawnProtocol(), &quot;complex-manager&quot;)
   implicit private val timeout = Timeout(2.seconds)
 
-  implicit override def patienceConfig: PatienceConfig = PatienceConfig(Span(10, Seconds), Span(50, Millis))
+  implicit override def patienceConfig: PatienceConfig =
+    PatienceConfig(Span(10, Seconds), Span(50, Millis))
 
   &quot;ComplexActor&quot; should {
     var complexActor: ActorRef[ComplexActor.Command] = null
@@ -731,7 +771,10 @@ class ComplexActorSpec
     }
 
     &quot;Discover actors using ServiceKey[T]&quot; in {
-      val maybeDeepActor = AkkaUtils.findActorByServiceKey(ComplexActor.serviceKey, 500.millis).futureValue
+      val maybeDeepActor =
+        AkkaUtils
+          .findActorByServiceKey(ComplexActor.serviceKey, 500.millis)
+          .futureValue
       val ref = maybeDeepActor.value
       ref shouldBe complexActor
     }
@@ -740,12 +783,18 @@ class ComplexActorSpec
 
     &quot;Connect&quot; in {
       val connected =
-        complexActor.ask[ComplexActor.Reply](ComplexActor.Connect(client1, _)).mapTo[ComplexActor.Connected].futureValue
+        complexActor
+          .ask[ComplexActor.Reply](ComplexActor.Connect(client1, _))
+          .mapTo[ComplexActor.Connected]
+          .futureValue
       connected.status should be(IntStatus.OK)
       connected.clientId should be(client1)
 
       val connectCounted =
-        complexActor.ask[ComplexActor.Reply](ComplexActor.ConnectCount).mapTo[ComplexActor.ConnectCounted].futureValue
+        complexActor
+          .ask[ComplexActor.Reply](ComplexActor.ConnectCount)
+          .mapTo[ComplexActor.ConnectCounted]
+          .futureValue
       connectCounted.count should be &gt; 0
     }
 
@@ -754,7 +803,8 @@ class ComplexActorSpec
         .ask[ComplexActor.Reply](ComplexActor.AskMessage(client1, &quot;hello&quot;, _))
         .mapTo[ComplexActor.MessageAsked]
         .futureValue
-      messageAsked should be(ComplexActor.MessageAsked(IntStatus.OK, client1, &quot;olleh&quot;))
+      messageAsked should be(
+        ComplexActor.MessageAsked(IntStatus.OK, client1, &quot;olleh&quot;))
     }
 
     &quot;QueryResource&quot; in {
@@ -768,14 +818,18 @@ class ComplexActorSpec
 
     &quot;Disconnect&quot; in {
       val disconnected = complexActor
-        .ask[ComplexActor.Reply](replyTo =&gt; ComplexActor.Disconnect(client1, replyTo))
+        .ask[ComplexActor.Reply](replyTo =&gt;
+          ComplexActor.Disconnect(client1, replyTo))
         .mapTo[ComplexActor.Disconnected]
         .futureValue
       disconnected.status should be(IntStatus.OK)
       disconnected.clientId should be(client1)
 
       val connectCounted =
-        complexActor.ask[ComplexActor.Reply](ComplexActor.ConnectCount).mapTo[ComplexActor.ConnectCounted].futureValue
+        complexActor
+          .ask[ComplexActor.Reply](ComplexActor.ConnectCount)
+          .mapTo[ComplexActor.ConnectCounted]
+          .futureValue
       connectCounted.count should be(0)
     }
 
@@ -786,7 +840,6 @@ class ComplexActorSpec
         .futureValue
       messageAsked.status should be(IntStatus.NOT_FOUND)
     }
-
   }
 
   override protected def afterAll(): Unit = {
@@ -796,7 +849,7 @@ class ComplexActorSpec
 }</code></pre>
 </div>
 <div>
-<a href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/main/paradox/actor/actor.md" title="Edit this page" class="md-source-file md-edit">
+<a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/actor/actor.md" title="Edit this page" class="md-source-file md-edit">
 Edit this page
 </a>
 </div>

@@ -40,12 +40,19 @@ trait AbstractRoute extends Directives {
   def route: Route
 
   implicit def grantTypeFromStringUnmarshaller: FromStringUnmarshaller[GrantType] =
-    Unmarshaller.strict[String, GrantType](str =>
-      GrantType.fromName(str).getOrElse(throw HSBadRequestException("$str 不是有效的GrantType类型")))
+    Unmarshaller.strict[String, GrantType](
+      str =>
+        GrantType
+          .fromName(str)
+          .getOrElse(throw HSBadRequestException("$str 不是有效的GrantType类型")))
 
-  implicit def responseTypeFromStringUnmarshaller: FromStringUnmarshaller[ResponseType] =
-    Unmarshaller.strict[String, ResponseType](str =>
-      ResponseType.fromName(str).getOrElse(throw HSBadRequestException("$str 不是有效的GrantType类型")))
+  implicit def responseTypeFromStringUnmarshaller
+      : FromStringUnmarshaller[ResponseType] =
+    Unmarshaller.strict[String, ResponseType](
+      str =>
+        ResponseType
+          .fromName(str)
+          .getOrElse(throw HSBadRequestException("$str 不是有效的GrantType类型")))
 
   implicit def objectIdFromStringUnmarshaller: FromStringUnmarshaller[ObjectId] =
     Unmarshaller.strict[String, ObjectId] {
@@ -63,7 +70,8 @@ trait AbstractRoute extends Directives {
       LocalTime.parse(str, TimeUtils.formatterTime)
     }
 
-  implicit def localDateTimeFromStringUnmarshaller: FromStringUnmarshaller[LocalDateTime] =
+  implicit def localDateTimeFromStringUnmarshaller
+      : FromStringUnmarshaller[LocalDateTime] =
     Unmarshaller.strict[String, LocalDateTime] { str =>
       LocalDateTime.parse(str, TimeUtils.formatterDateTime)
     }
@@ -81,23 +89,27 @@ trait AbstractRoute extends Directives {
       Some(string).filter(ObjectId.isValid)
     }
 
-  def hsLogRequest(logger: com.typesafe.scalalogging.Logger): Directive0 = mapRequest { req =>
-    def entity = req.entity match {
-      case HttpEntity.Empty => ""
-      case _                => "\n" + req.entity
-    }
+  def hsLogRequest(logger: com.typesafe.scalalogging.Logger): Directive0 =
+    mapRequest { req =>
+      def entity = req.entity match {
+        case HttpEntity.Empty => ""
+        case _                => "\n" + req.entity
+      }
 
-    logger.debug(s"""
+      logger.debug(s"""
          |method: ${req.method.value}
          |uri: ${req.uri}
          |search: ${req.uri.rawQueryString}
          |header: ${req.headers.mkString("\n        ")}$entity""".stripMargin)
-    req
-  }
+      req
+    }
 
   def setNoCache: Directive0 =
     mapResponseHeaders(
-      h => h ++ List(headers.`Cache-Control`(`no-store`, `no-cache`), headers.RawHeader("Pragma", "no-cache")))
+      h =>
+        h ++ List(
+          headers.`Cache-Control`(`no-store`, `no-cache`),
+          headers.RawHeader("Pragma", "no-cache")))
 
   def completeOk: Route = complete(HttpEntity.Empty)
 
@@ -111,9 +123,11 @@ trait AbstractRoute extends Directives {
 
   def pathDelete[L](pm: PathMatcher[L]): Directive[L] = path(pm) & delete
 
-  def putEntity[T](um: FromRequestUnmarshaller[T]): Directive1[T] = put & entity(um)
+  def putEntity[T](um: FromRequestUnmarshaller[T]): Directive1[T] =
+    put & entity(um)
 
-  def postEntity[T](um: FromRequestUnmarshaller[T]): Directive1[T] = post & entity(um)
+  def postEntity[T](um: FromRequestUnmarshaller[T]): Directive1[T] =
+    post & entity(um)
 
   def completionStageComplete(
       future: java.util.concurrent.CompletionStage[AnyRef],
@@ -133,7 +147,10 @@ trait AbstractRoute extends Directives {
   }
 
   @tailrec
-  final def objectComplete(obj: Any, needContainer: Boolean = false, successCode: StatusCode = StatusCodes.OK): Route =
+  final def objectComplete(
+      obj: Any,
+      needContainer: Boolean = false,
+      successCode: StatusCode = StatusCodes.OK): Route =
     obj match {
       case Right(result) =>
         objectComplete(result, needContainer, successCode)
@@ -188,7 +205,14 @@ trait AbstractRoute extends Directives {
               val uploadedF: Future[(FileInfo, Path)] =
                 part.entity.dataBytes
                   .runWith(FileIO.toPath(destination))
-                  .map(_ => (FileInfo(part.name, part.filename.get, part.entity.contentType), destination))
+                  .map(
+                    _ =>
+                      (
+                        FileInfo(
+                          part.name,
+                          part.filename.get,
+                          part.entity.contentType),
+                        destination))
               uploadedF
             }
             .runWith(Sink.seq)
@@ -202,14 +226,19 @@ trait AbstractRoute extends Directives {
         case list => provide(list)
       }
 
-  def multiFileUpload: Directive1[immutable.Seq[(FileInfo, Source[ByteString, Any])]] =
+  def multiFileUpload
+      : Directive1[immutable.Seq[(FileInfo, Source[ByteString, Any])]] =
     entity(as[Multipart.FormData])
       .flatMap { formData =>
         extractRequestContext.flatMap { ctx =>
           import ctx.materializer
 
           val multiPartF = formData.parts
-            .map(part => (FileInfo(part.name, part.filename.get, part.entity.contentType), part.entity.dataBytes))
+            .map(
+              part =>
+                (
+                  FileInfo(part.name, part.filename.get, part.entity.contentType),
+                  part.entity.dataBytes))
             .runWith(Sink.seq)
 
           onSuccess(multiPartF)
@@ -231,7 +260,10 @@ trait AbstractRoute extends Directives {
     extractRequestContext { ctx =>
       val req = ctx.request
       val request = req.copy(uri = uri.withQuery(req.uri.query()))
-      val future = HttpUtils.hostRequest(request)(sourceQueue.httpSourceQueue, ctx.executionContext)
+      val future =
+        HttpUtils.hostRequest(request)(
+          sourceQueue.httpSourceQueue,
+          ctx.executionContext)
       onSuccess(future) { response =>
         complete(response)
       }
@@ -249,5 +281,4 @@ trait AbstractRoute extends Directives {
         pass
     }
   }
-
 }

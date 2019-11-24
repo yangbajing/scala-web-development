@@ -14,7 +14,6 @@ import scala.util.Try
 import scala.util.matching.Regex
 
 object Utils {
-
   val REGEX_DIGIT: Regex = """[\d,]+""".r
   val RANDOM_CHARS: IndexedSeq[Char] = ('0' to '9') ++ ('a' to 'z') ++ ('A' to 'Z')
 
@@ -168,14 +167,18 @@ object Utils {
     account.contains('@')
 
   @inline
-  def option(s: String): Option[String] = Some(s).filter(str => StringUtils.isNoneBlank(str))
+  def option(s: String): Option[String] =
+    Some(s).filter(str => StringUtils.isNoneBlank(str))
 
   @inline
   def option[V](v: V): Option[V] = Option(v)
 
   def propertiesToMap(props: Properties): Map[String, String] = {
     import scala.collection.JavaConverters._
-    props.stringPropertyNames().asScala.map(name => name -> props.getProperty(name)).toMap
+    props
+      .stringPropertyNames()
+      .asScala
+      .map(name => name -> props.getProperty(name))
+      .toMap
   }
-
 }

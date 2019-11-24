@@ -10,7 +10,6 @@ import fileupload.service.FileService
 import fileupload.util.FileUtils
 
 class FileRoute(fileService: FileService) extends StrictLogging {
-
   def route: Route = pathPrefix("file") {
     log {
       uploadRoute ~
@@ -57,5 +56,4 @@ class FileRoute(fileService: FileService) extends StrictLogging {
     logger.debug(req.toString())
     pass
   }
-
 }

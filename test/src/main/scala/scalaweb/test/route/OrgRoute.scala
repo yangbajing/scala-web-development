@@ -8,7 +8,6 @@ import scalaweb.model.OrgPageReq
 import scalaweb.service.OrgService
 
 class OrgRoute(orgService: OrgService) extends AbstractRoute {
-
   def route: Route = pathPrefix("org") {
     createRoute ~
     getRoute ~
@@ -26,12 +25,12 @@ class OrgRoute(orgService: OrgService) extends AbstractRoute {
     futureComplete(orgService.getById(orgId))
   }
 
-  private val pagePdm = ('code.?, 'name.?, 'status.as[Int].?, 'page.as[Int].?(1), 'size.as[Int].?(30))
+  private val pagePdm =
+    ('code.?, 'name.?, 'status.as[Int].?, 'page.as[Int].?(1), 'size.as[Int].?(30))
 
   def pageRoute: Route = pathGet("page") {
     parameters(pagePdm).as(OrgPageReq) { req =>
       futureComplete(orgService.page(req))
     }
   }
-
 }

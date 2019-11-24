@@ -237,7 +237,13 @@ yangbajing/scala-web-development
     <li><a href="../engineering/swagger.html" class="page">使用Swagger编写API文档</a></li>
     <li><a href="../engineering/guice.html" class="page">使用Guice管理类依赖</a></li>
   </ul></li>
-  <li><a href="../grpc/index.html" class="page">Akka Grpc</a></li>
+  <li><a href="../grpc/index.html" class="page">Akka gRPC</a>
+  <ul>
+    <li><a href="../grpc/grpc.html" class="page">gRPC服务</a></li>
+    <li><a href="../grpc/build-tool.html" class="page">构建工具</a></li>
+    <li><a href="../grpc/deployment.html" class="page">部署</a></li>
+    <li><a href="../grpc/grpc.z.html" class="page">小结</a></li>
+  </ul></li>
   <li><a href="../config-discovery/index.html" class="page">实战：配置管理、服务发现系统</a></li>
   <li><a href="../appendix/index.html" class="page">附录</a>
   <ul>
@@ -303,18 +309,22 @@ yangbajing/scala-web-development
 <pre class="prettyprint"><code class="language-scala">libraryDependencies += &quot;de.heikoseeberger&quot; %% &quot;akka-http-jackson&quot; % &quot;1.22.0&quot;
 </code></pre>
 <h3><a href="#使用默认的-akka-http-jackson" name="使用默认的-akka-http-jackson" class="anchor"><span class="anchor-link"></span></a>使用默认的 akka-http-jackson</h3>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala#L25-L47" target="_blank" title="Go to snippet source"></a><code class="language-scala">&quot;Default ObjectMapper&quot; should {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala#L24-L50" target="_blank" title="Go to snippet source"></a><code class="language-scala">&quot;Default ObjectMapper&quot; should {
   import de.heikoseeberger.akkahttpjackson.JacksonSupport._
 
   &quot;从case class序列化和反序列化&quot; in {
     val foo = Foo(&quot;bar&quot;, 2018)
-    val result = Marshal(foo).to[RequestEntity].flatMap(Unmarshal(_).to[Foo]).futureValue
+    val result =
+      Marshal(foo).to[RequestEntity].flatMap(Unmarshal(_).to[Foo]).futureValue
     foo shouldBe result
   }
 
   &quot;从数组case class序列化和反序列化&quot; in {
     val foos = Seq(Foo(&quot;bar&quot;, 2018))
-    val result = Marshal(foos).to[RequestEntity].flatMap(Unmarshal(_).to[Seq[Foo]]).futureValue
+    val result = Marshal(foos)
+      .to[RequestEntity]
+      .flatMap(Unmarshal(_).to[Seq[Foo]])
+      .futureValue
     foos shouldBe result
   }
 
@@ -358,9 +368,10 @@ object JacksonSupport extends JacksonSupport {
     Jackson.marshaller[Object](objectMapper)
 </code></pre>
 <p>可以看到隐式函数又分别定义了两个和一个隐式参数，而 <code>objectMapper: ObjectMapper = defaultObjectMaper</code>这个隐式参数定义了默认值，这样在使用时我们就可以提供自定义的 ObjectMapper 来替代默认的 <code>defaultObjectMapper</code>。先来看看怎样使用自定义的 ObjectMapper：</p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala#L51-L67" target="_blank" title="Go to snippet source"></a><code class="language-scala">&quot;Custom ObjectMapper&quot; should {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala#L54-L75" target="_blank" title="Go to snippet source"></a><code class="language-scala">&quot;Custom ObjectMapper&quot; should {
   import de.heikoseeberger.akkahttpjackson.JacksonSupport._
-  implicit val objectMapper: ObjectMapper = helloscala.common.json.Jackson.defaultObjectMapper
+  implicit val objectMapper: ObjectMapper =
+    helloscala.common.json.Jackson.defaultObjectMapper
 
   &quot;支持OffsetDateTime&quot; in {
     val foo = FooTime(&quot;羊八井&quot;, OffsetDateTime.now())
@@ -371,23 +382,30 @@ object JacksonSupport extends JacksonSupport {
 
   &quot;从数组case class序列化和反序列化&quot; in {
     val foos = Seq(FooTime(&quot;羊八井&quot;, OffsetDateTime.now()))
-    val results = Marshal(foos).to[RequestEntity].flatMap(Unmarshal(_).to[Seq[FooTime]]).futureValue
+    val results =
+      Marshal(foos)
+        .to[RequestEntity]
+        .flatMap(Unmarshal(_).to[Seq[FooTime]])
+        .futureValue
     foos shouldBe results
   }
 }</code></pre>
 <p>通过在代码上下文中定义一个隐式值：<code>implicit val objectMapper: ObjectMapper = ....</code> <em>（变量名可以取任何名字，不需要是<code>objectMapper</code>。但是需要保证在代码上下文中只有一个ObjectMapper隐式类型。）</em>，Scala 编译器在编译代码时将使用定义的隐式值传入函数 <code>unmarshaller</code> 或 <code>marshaller</code> 中以替代函数定义时设置的默认值。</p>
 <p>自定义 ObjectMapper 定义在object <a href="https://github.com/yangbajing/scala-web-development/tree/master/common/src/main/scala/helloscala/common/json/Jackson.scala">Jackson.scala</a>：</p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/common/src/main/scala/helloscala/common/json/Jackson.scala#L30-L55" target="_blank" title="Go to snippet source"></a><code class="language-scala">implicit val defaultObjectMapper: ObjectMapper = getObjectMapper
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/common/src/main/scala/helloscala/common/json/Jackson.scala#L30-L58" target="_blank" title="Go to snippet source"></a><code class="language-scala">implicit val defaultObjectMapper: ObjectMapper = getObjectMapper
 
 private def getObjectMapper: ObjectMapper = {
   new ObjectMapper()
   val FILTER_ID_CLASS: Class[GeneratedMessage] = classOf[GeneratedMessage]
   new ObjectMapper()
-    .setFilterProvider(new SimpleFilterProvider()
-      .addFilter(FILTER_ID_CLASS.getName, SimpleBeanPropertyFilter.serializeAllExcept(&quot;allFields&quot;)))
+    .setFilterProvider(new SimpleFilterProvider().addFilter(
+      FILTER_ID_CLASS.getName,
+      SimpleBeanPropertyFilter.serializeAllExcept(&quot;allFields&quot;)))
     .setAnnotationIntrospector(new JacksonAnnotationIntrospector() {
       override def findFilterId(a: Annotated): AnyRef =
-        if (FILTER_ID_CLASS.isAssignableFrom(a.getRawType)) FILTER_ID_CLASS.getName else super.findFilterId(a)
+        if (FILTER_ID_CLASS.isAssignableFrom(a.getRawType))
+          FILTER_ID_CLASS.getName
+        else super.findFilterId(a)
     })
     .findAndRegisterModules
     //.setDateFormat(new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;))
@@ -405,7 +423,7 @@ private def getObjectMapper: ObjectMapper = {
     .setSerializationInclusion(JsonInclude.Include.NON_NULL) // 序列化时不包含null的键</code></pre>
 <h3><a href="#自定义反序列化时允许的mediatype类型" name="自定义反序列化时允许的mediatype类型" class="anchor"><span class="anchor-link"></span></a>自定义反序列化时允许的MediaType类型</h3>
 <p>默认情况下，JacksonSupport要求客户端提交的HTTP请求必需设置Content-Type的mime-type类型为：<code>application/json</code>，但很多时候会遇到不那么规范的客户端，它们并未正确的设置HTTP请求头。这时我们可以自定义JacksonSupport让它在反序列化时支持其它Content-Type：这里定义除了<code>application/json</code>外还支持<code>text/plain</code>类型的请求。</p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala#L71-L93" target="_blank" title="Go to snippet source"></a><code class="language-scala">&quot;Custom unmarshallerContentTypes&quot; should {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala#L79-L101" target="_blank" title="Go to snippet source"></a><code class="language-scala">&quot;Custom unmarshallerContentTypes&quot; should {
   final object CustomJacksonSupport extends JacksonSupport {
     override def unmarshallerContentTypes: immutable.Seq[ContentTypeRange] =
       List(MediaTypes.`text/plain`, MediaTypes.`application/json`)
@@ -430,10 +448,11 @@ private def getObjectMapper: ObjectMapper = {
 }</code></pre>
 <h2><a href="#在-routing-dsl-里使用" name="在-routing-dsl-里使用" class="anchor"><span class="anchor-link"></span></a>在 routing DSL 里使用</h2>
 <p>在 Akka HTTP Routing DSL 里使用Jackson来反序列化/序列化JSON就非常简单了。通过<code>entity(as[FooTime])</code>指令来将提交的JSON数据解析成 <code>FooTime</code> 样本类（将调用 <code>unmarshaller[A]</code> 隐式函数），在<code>complete</code>函数响应结果时将 <code>FooTime</code> 对象序列化成JSON字符串并设置对应的Content-Type（调用 <code>marshaller[A]</code> 隐式函数）。</p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala#L97-L120" target="_blank" title="Go to snippet source"></a><code class="language-scala">&quot;routing-dsl&quot; should {
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/data/src/test/scala/scalaweb/data/json/jackson/JacksonSupportTest.scala#L105-L129" target="_blank" title="Go to snippet source"></a><code class="language-scala">&quot;routing-dsl&quot; should {
   import akka.http.scaladsl.server.Directives._
   import de.heikoseeberger.akkahttpjackson.JacksonSupport._
-  implicit val objectMapper: ObjectMapper = helloscala.common.json.Jackson.defaultObjectMapper
+  implicit val objectMapper: ObjectMapper =
+    helloscala.common.json.Jackson.defaultObjectMapper
 
   val route: Route = path(&quot;api&quot;) {
     post {
@@ -462,7 +481,7 @@ private def getObjectMapper: ObjectMapper = {
 <p><em>测试结果示例：</em> <img src="../assets/imgs/json/JacksonSupportTest.png" /></p>
 </div>
 <div>
-<a href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/main/paradox/data/data.1.md" title="Edit this page" class="md-source-file md-edit">
+<a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/data/data.1.md" title="Edit this page" class="md-source-file md-edit">
 Edit this page
 </a>
 </div>

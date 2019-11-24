@@ -9,11 +9,14 @@ object Dependencies {
   val versionAkkaManagement = "1.0.4"
   val versionAlpakka = "1.1.2"
   val versionAkkaPersistenceCassandra = "0.100"
+  val versionAlpnAgent = "2.0.9"
 
-  val _scalaXml = ("org.scala-lang.modules" %% "scala-xml" % "1.2.0").exclude("org.scala-lang", "scala-library")
+  val _scalaXml = ("org.scala-lang.modules" %% "scala-xml" % "1.2.0")
+    .exclude("org.scala-lang", "scala-library")
 
   val _scalaJava8Compat =
-    ("org.scala-lang.modules" %% "scala-java8-compat" % "0.9.0").exclude("org.scala-lang", "scala-library")
+    ("org.scala-lang.modules" %% "scala-java8-compat" % "0.9.0")
+      .exclude("org.scala-lang", "scala-library")
 
   val _scalaCollectionCompat = "org.scala-lang.modules" %% "scala-collection-compat" % versionScalaCollectionCompat
 
@@ -21,11 +24,13 @@ object Dependencies {
 
   lazy val _akkas = Seq(
     "com.typesafe.akka" %% "akka-slf4j" % versionAkka,
+    "com.typesafe.akka" %% "akka-discovery" % versionAkka,
     "com.typesafe.akka" %% "akka-stream-typed" % versionAkka,
     "com.typesafe.akka" %% "akka-serialization-jackson" % versionAkka,
     "com.typesafe.akka" %% "akka-actor-testkit-typed" % versionAkka % Test,
-    "com.typesafe.akka" %% "akka-stream-testkit" % versionAkka % Test)
-    .map(_.exclude("org.scala-lang.modules", s"scala-java8-compat").cross(CrossVersion.binary))
+    "com.typesafe.akka" %% "akka-stream-testkit" % versionAkka % Test).map(
+    _.exclude("org.scala-lang.modules", s"scala-java8-compat")
+      .cross(CrossVersion.binary))
 
   lazy val _akkaPersistenceQuery = "com.typesafe.akka" %% "akka-persistence-query" % versionAkka
 
@@ -39,39 +44,47 @@ object Dependencies {
     "com.typesafe.akka" %% "akka-discovery" % versionAkka,
     _akkaMultiNodeTestkit % Test)
 
-  val _akkaHttpTestkit = ("com.typesafe.akka" %% "akka-http-testkit" % versionAkkaHttp)
-    .exclude("com.typesafe.akka", "akka-stream")
-    .cross(CrossVersion.binary)
+  val _akkaHttpTestkit =
+    ("com.typesafe.akka" %% "akka-http-testkit" % versionAkkaHttp)
+      .exclude("com.typesafe.akka", "akka-stream")
+      .cross(CrossVersion.binary)
 
   val _akkaHttps = Seq(
     "com.typesafe.akka" %% "akka-http" % versionAkkaHttp,
+    "com.typesafe.akka" %% "akka-http2-support" % versionAkkaHttp,
     "com.typesafe.akka" %% "akka-http-spray-json" % versionAkkaHttp)
     .map(_.exclude("com.typesafe.akka", "akka-stream").cross(CrossVersion.binary))
 
   lazy val _akkaManagements = Seq(
     "com.lightbend.akka.management" %% "akka-management" % versionAkkaManagement,
     "com.lightbend.akka.management" %% "akka-management-cluster-http" % versionAkkaManagement)
-    .map(_.excludeAll(ExclusionRule("com.typesafe.akka")).exclude("org.scala-lang", "scala-library"))
+    .map(
+      _.excludeAll(ExclusionRule("com.typesafe.akka"))
+        .exclude("org.scala-lang", "scala-library"))
 
   val _alpakkaSimpleCodecs =
     ("com.lightbend.akka" %% "akka-stream-alpakka-simple-codecs" % versionAlpakka)
       .excludeAll(ExclusionRule("com.typesafe.akka"))
 
   val _alpakkaXml =
-    ("com.lightbend.akka" %% "akka-stream-alpakka-xml" % versionAlpakka).excludeAll(ExclusionRule("com.typesafe.akka"))
+    ("com.lightbend.akka" %% "akka-stream-alpakka-xml" % versionAlpakka)
+      .excludeAll(ExclusionRule("com.typesafe.akka"))
 
   val _alpakkaCsv =
-    ("com.lightbend.akka" %% "akka-stream-alpakka-csv" % versionAlpakka).excludeAll(ExclusionRule("com.typesafe.akka"))
+    ("com.lightbend.akka" %% "akka-stream-alpakka-csv" % versionAlpakka)
+      .excludeAll(ExclusionRule("com.typesafe.akka"))
 
   val _alpakkaJsonStreaming =
     ("com.lightbend.akka" %% "akka-stream-alpakka-json-streaming" % versionAlpakka)
       .excludeAll(ExclusionRule("com.typesafe.akka"))
 
   val _alpakkaFile =
-    ("com.lightbend.akka" %% "akka-stream-alpakka-file" % versionAlpakka).excludeAll(ExclusionRule("com.typesafe.akka"))
+    ("com.lightbend.akka" %% "akka-stream-alpakka-file" % versionAlpakka)
+      .excludeAll(ExclusionRule("com.typesafe.akka"))
 
   val _alpakkaFtp =
-    ("com.lightbend.akka" %% "akka-stream-alpakka-ftp" % versionAlpakka).excludeAll(ExclusionRule("com.typesafe.akka"))
+    ("com.lightbend.akka" %% "akka-stream-alpakka-ftp" % versionAlpakka)
+      .excludeAll(ExclusionRule("com.typesafe.akka"))
 
   val _alpakkaUnixDomainSocket =
     ("com.lightbend.akka" %% "akka-stream-alpakka-unix-domain-socket" % versionAlpakka)
@@ -94,10 +107,12 @@ object Dependencies {
       .excludeAll(ExclusionRule("com.typesafe.akka"))
 
   val _alpakksHdfs =
-    ("com.lightbend.akka" %% "akka-stream-alpakka-hdfs" % versionAlpakka).excludeAll(ExclusionRule("com.typesafe.akka"))
+    ("com.lightbend.akka" %% "akka-stream-alpakka-hdfs" % versionAlpakka)
+      .excludeAll(ExclusionRule("com.typesafe.akka"))
 
   val _alpakkaText =
-    ("com.lightbend.akka" %% "akka-stream-alpakka-text" % versionAlpakka).excludeAll(ExclusionRule("com.typesafe.akka"))
+    ("com.lightbend.akka" %% "akka-stream-alpakka-text" % versionAlpakka)
+      .excludeAll(ExclusionRule("com.typesafe.akka"))
 
   val _akkaPersistenceCassandras = Seq(
     "com.typesafe.akka" %% "akka-persistence-cassandra" % versionAkkaPersistenceCassandra,
@@ -153,7 +168,9 @@ object Dependencies {
   val _jwtCore = "com.pauldijou" %% "jwt-core" % "4.1.0"
 
   private val versionPoi = "4.1.1"
-  val _pois = Seq("org.apache.poi" % "poi-scratchpad" % versionPoi, "org.apache.poi" % "poi-ooxml" % versionPoi)
+  val _pois = Seq(
+    "org.apache.poi" % "poi-scratchpad" % versionPoi,
+    "org.apache.poi" % "poi-ooxml" % versionPoi)
 
   private val versionCassandra = "3.7.2"
 
@@ -163,8 +180,12 @@ object Dependencies {
 
   val _cassandraJavaCore = "com.datastax.oss" % "java-driver-core" % "4.2.2"
 
+  val _alpnAgent = "org.mortbay.jetty.alpn" % "jetty-alpn-agent" % versionAlpnAgent
+
   val _logs =
-    Seq("com.typesafe.scala-logging" %% "scala-logging" % "3.9.2", "ch.qos.logback" % "logback-classic" % "1.2.3")
+    Seq(
+      "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
+      "ch.qos.logback" % "logback-classic" % "1.2.3")
 
   val _rhino = "org.mozilla" % "rhino" % "1.7.10"
 
@@ -192,5 +213,4 @@ object Dependencies {
   val _commonsVfs = "org.apache.commons" % "commons-vfs2" % "2.2"
 
   val _jsch = "com.jcraft" % "jsch" % "0.1.54"
-
 }

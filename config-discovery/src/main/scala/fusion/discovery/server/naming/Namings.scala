@@ -55,32 +55,38 @@ object Namings {
 
   case object HealthCheckKey extends Command
 
-  case class RegisterInstance(in: InstanceRegister, replyTo: ActorRef[InstanceReply]) extends ServiceCommand {
+  case class RegisterInstance(
+      in: InstanceRegister,
+      replyTo: ActorRef[InstanceReply])
+      extends ServiceCommand {
     override def namespace: String = in.namespace
     override def serviceName: String = in.serviceName
   }
 
-  case class RemoveInstance(in: InstanceRemove, replyTo: ActorRef[InstanceReply]) extends ServiceCommand {
+  case class RemoveInstance(in: InstanceRemove, replyTo: ActorRef[InstanceReply])
+      extends ServiceCommand {
     override def namespace: String = in.namespace
     override def serviceName: String = in.serviceName
   }
 
-  case class ModifyInstance(in: InstanceModify, replyTo: ActorRef[InstanceReply]) extends ServiceCommand {
+  case class ModifyInstance(in: InstanceModify, replyTo: ActorRef[InstanceReply])
+      extends ServiceCommand {
     override def namespace: String = in.namespace
     override def serviceName: String = in.serviceName
   }
 
-  case class QueryInstance(in: InstanceQuery, replyTo: ActorRef[InstanceReply]) extends ServiceCommand {
+  case class QueryInstance(in: InstanceQuery, replyTo: ActorRef[InstanceReply])
+      extends ServiceCommand {
     override def namespace: String = in.namespace
     override def serviceName: String = in.serviceName
   }
 
   case class Heartbeat(in: InstanceHeartbeat) extends Command
 
-  case class NamingServiceKey(namespace: String, serviceName: String) extends CborSerializable
+  case class NamingServiceKey(namespace: String, serviceName: String)
+      extends CborSerializable
 
   object NamingServiceKey {
-
     def entityId(namespace: String, serviceName: String): Either[String, String] = {
       if (StringUtils.isBlank(namespace) || StringUtils.isBlank(serviceName)) {
         Left("entityId invalid, need [namespace]_[serviceName] format.")
@@ -89,18 +95,21 @@ object Namings {
       }
     }
 
-    def unapply(entityId: String): Option[NamingServiceKey] = entityId.split('_') match {
-      case Array(namespace, serviceName) => Some(NamingServiceKey(namespace, serviceName))
-      case _                             => None
-    }
+    def unapply(entityId: String): Option[NamingServiceKey] =
+      entityId.split('_') match {
+        case Array(namespace, serviceName) =>
+          Some(NamingServiceKey(namespace, serviceName))
+        case _ => None
+      }
   }
 
-  def apply(entityId: String): Behavior[Command] = Behaviors.setup[Command] { context =>
-    val namingServiceKey = NamingServiceKey
-      .unapply(entityId)
-      .getOrElse(throw HSBadRequestException(
-        s"${context.self} create child error. entityId invalid, need [namespace]_[serviceName] format."))
-    Behaviors.withTimers(timers => new Namings(namingServiceKey, timers, context))
+  def apply(entityId: String): Behavior[Command] = Behaviors.setup[Command] {
+    context =>
+      val namingServiceKey = NamingServiceKey
+        .unapply(entityId)
+        .getOrElse(throw HSBadRequestException(
+          s"${context.self} create child error. entityId invalid, need [namespace]_[serviceName] format."))
+      Behaviors.withTimers(timers => new Namings(namingServiceKey, timers, context))
   }
 
   def toInstance(in: InstanceRegister): Instance = {
@@ -122,10 +131,11 @@ object Namings {
   def makeInstanceId(ip: String, port: Int, serviceName: String): String = {
     require(StringUtils.isNoneBlank(ip), s"ip invalid, is: $ip")
     require(port > 0, s"port invalid: is: $port")
-    require(StringUtils.isNoneBlank(serviceName), s"serviceName invalid, is: $serviceName")
+    require(
+      StringUtils.isNoneBlank(serviceName),
+      s"serviceName invalid, is: $serviceName")
     s"$ip-$port-$serviceName"
   }
-
 }
 
 class NamingEntity(
@@ -150,17 +160,22 @@ class Namings private (
   import Namings._
   private val internalService = new InternalService(namingServiceKey)
 
-  timers.startTimerWithFixedDelay(HealthCheckKey, HealthCheckKey, HEALTH_CHECK_DURATION)
+  timers.startTimerWithFixedDelay(
+    HealthCheckKey,
+    HealthCheckKey,
+    HEALTH_CHECK_DURATION)
   context.log.debug(s"Namings started: $namingServiceKey")
 
-  override def onMessage(msg: Namings.Command): Behavior[Namings.Command] = msg match {
-    case Heartbeat(in)                 => processHeartbeat(in)
-    case QueryInstance(in, replyTo)    => queryInstance(in, replyTo)
-    case RegisterInstance(in, replyTo) => registerInstance(in.copy(healthy = true), replyTo)
-    case RemoveInstance(in, replyTo)   => removeInstance(in, replyTo)
-    case ModifyInstance(in, replyTo)   => modifyInstance(in, replyTo)
-    case HealthCheckKey                => refresh()
-  }
+  override def onMessage(msg: Namings.Command): Behavior[Namings.Command] =
+    msg match {
+      case Heartbeat(in)              => processHeartbeat(in)
+      case QueryInstance(in, replyTo) => queryInstance(in, replyTo)
+      case RegisterInstance(in, replyTo) =>
+        registerInstance(in.copy(healthy = true), replyTo)
+      case RemoveInstance(in, replyTo) => removeInstance(in, replyTo)
+      case ModifyInstance(in, replyTo) => modifyInstance(in, replyTo)
+      case HealthCheckKey              => refresh()
+    }
 
   private def refresh(): Namings = {
     internalService.refreshHealthy()
@@ -172,7 +187,9 @@ class Namings private (
     this
   }
 
-  private def queryInstance(in: InstanceQuery, replyTo: ActorRef[InstanceReply]): Namings = {
+  private def queryInstance(
+      in: InstanceQuery,
+      replyTo: ActorRef[InstanceReply]): Namings = {
     val result = try {
       val items = internalService.queryInstance(in)
       val status = if (items.isEmpty) IntStatus.NOT_FOUND else IntStatus.OK
@@ -184,7 +201,9 @@ class Namings private (
     this
   }
 
-  private def modifyInstance(in: InstanceModify, replyTo: ActorRef[InstanceReply]): Namings = {
+  private def modifyInstance(
+      in: InstanceModify,
+      replyTo: ActorRef[InstanceReply]): Namings = {
     val result = try {
       internalService.modifyInstance(in) match {
         case Some(_) => InstanceReply(IntStatus.OK)
@@ -197,14 +216,20 @@ class Namings private (
     this
   }
 
-  private def removeInstance(in: InstanceRemove, replyTo: ActorRef[InstanceReply]): Namings = {
+  private def removeInstance(
+      in: InstanceRemove,
+      replyTo: ActorRef[InstanceReply]): Namings = {
     val instId = makeInstanceId(in.ip, in.port, in.serviceName)
-    val status = if (internalService.removeInstance(instId)) IntStatus.OK else IntStatus.NOT_FOUND
+    val status =
+      if (internalService.removeInstance(instId)) IntStatus.OK
+      else IntStatus.NOT_FOUND
     replyTo ! InstanceReply(status)
     this
   }
 
-  private def registerInstance(in: InstanceRegister, replyTo: ActorRef[InstanceReply]): Namings = {
+  private def registerInstance(
+      in: InstanceRegister,
+      replyTo: ActorRef[InstanceReply]): Namings = {
     val result = try {
       internalService.addInstance(toInstance(in))
       InstanceReply(IntStatus.OK)
@@ -214,5 +239,4 @@ class Namings private (
     replyTo ! result
     this
   }
-
 }

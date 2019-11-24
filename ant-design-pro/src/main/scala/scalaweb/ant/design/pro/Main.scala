@@ -15,7 +15,11 @@ object Main extends App with StrictLogging {
   implicit val materializer = Materializer(system)
   import system.dispatcher
 
-  val bindingFuture = Http().bindAndHandle(handler = new Routes().route, interface = "0.0.0.0", port = 22222)
+  val bindingFuture =
+    Http().bindAndHandle(
+      handler = new Routes().route,
+      interface = "0.0.0.0",
+      port = 22222)
 
   bindingFuture.onComplete {
     case Success(binding) =>
@@ -25,6 +29,5 @@ object Main extends App with StrictLogging {
       logger.error(s"启动Akka HTTP Server失败：${e.getMessage}", e)
       system.terminate()
   }
-
 }
 // #main

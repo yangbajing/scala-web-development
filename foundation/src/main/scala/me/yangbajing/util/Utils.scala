@@ -9,7 +9,6 @@ import scala.util.matching.Regex
  * Created by yangbajing(yangbajing@gmail.com) on 2017-04-24.
  */
 object Utils {
-
   val REGEX_DIGIT: Regex = """[\d,]+""".r
   val RANDOM_CHARS: IndexedSeq[Char] = ('0' to '9') ++ ('a' to 'z') ++ ('A' to 'Z')
 
@@ -36,5 +35,4 @@ object Utils {
     }
     sb.toString()
   }
-
 }

@@ -45,13 +45,16 @@ class AuthService(implicit system: ActorSystem) extends StrictLogging {
     req.grant_type match {
       case GrantType.authorization_code => accessTokenForAuthorization(req)
       case GrantType.client_credentials => accessTokenForClient(req)
-      case _                            => Future.failed(HSNotImplementedException(s"不支持的授权类型：${req.grant_type}"))
+      case _ =>
+        Future.failed(HSNotImplementedException(s"不支持的授权类型：${req.grant_type}"))
     }
 
   def accessTokenForClient(req: AuthorizeTokenRequest): Future[AccessToken] =
-    Future.failed(HSNotImplementedException(s"暂未实现，只支持${GrantType.client_credentials}模式"))
+    Future.failed(
+      HSNotImplementedException(s"暂未实现，只支持${GrantType.client_credentials}模式"))
 
-  val privateKey = """-----BEGIN RSA PRIVATE KEY-----
+  val privateKey =
+    """-----BEGIN RSA PRIVATE KEY-----
                            |MIICWwIBAAKBgQDdlatRjRjogo3WojgGHFHYLugdUWAY9iR3fy4arWNA1KoS8kVw
                            |33cJibXr8bvwUAUparCwlvdbH6dvEOfou0/gCFQsHUfQrSDv+MuSUMAe8jzKE4qW
                            |+jK+xQU9a03GUnKHkkle+Q0pX/g6jXZ7r1/xAK5Do2kQ+X5xK9cipRgEKwIDAQAB
@@ -69,7 +72,8 @@ class AuthService(implicit system: ActorSystem) extends StrictLogging {
 
   def accessTokenForAuthorization(req: AuthorizeTokenRequest): Future[AccessToken] =
     Future {
-      val accessToken = Jwt.encode(JwtHeader(JwtAlgorithm.RS256), JwtClaim(), privateKey)
+      val accessToken =
+        Jwt.encode(JwtHeader(JwtAlgorithm.RS256), JwtClaim(), privateKey)
       AccessToken(accessToken, Duration.ofHours(2).getSeconds)
     }
 
@@ -97,7 +101,8 @@ class AuthService(implicit system: ActorSystem) extends StrictLogging {
         "client_secret" -> "111111",
         "code" -> code,
         "redirect_uri" -> "http://localhost:33333/auth/callback").toEntity)
-    Http().singleRequest(request).flatMap(response => Unmarshal(response.entity).to[AccessToken])
+    Http()
+      .singleRequest(request)
+      .flatMap(response => Unmarshal(response.entity).to[AccessToken])
   }
-
 }

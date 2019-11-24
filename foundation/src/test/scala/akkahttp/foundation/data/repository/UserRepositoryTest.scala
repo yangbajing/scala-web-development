@@ -22,16 +22,21 @@ class UserRepositoryTest extends MeSpec with CassandraSpec {
     val userId = UUIDs.timeBased()
 
     "existsByEmail" in {
-      userRepository.existsByEmail("yangbajing@gmail.com").futureValue shouldBe false
+      userRepository
+        .existsByEmail("yangbajing@gmail.com")
+        .futureValue shouldBe false
     }
 
     "insert" in {
       val user = User(userId, "yangbajing@gmail.com", "羊八井")
-      userRepository.insert(user, SecurityUtils.generatePassword("yangbajing")).futureValue shouldBe Done
+      userRepository
+        .insert(user, SecurityUtils.generatePassword("yangbajing"))
+        .futureValue shouldBe Done
     }
 
     "login" in {
-      val result = userRepository.login("yangbajing@gmail.com", "yangbajing").futureValue
+      val result =
+        userRepository.login("yangbajing@gmail.com", "yangbajing").futureValue
       result should not be empty
       val (user, salt, saltPwd) = result.value
       user.name shouldBe "yangbajing"
@@ -51,7 +56,5 @@ class UserRepositoryTest extends MeSpec with CassandraSpec {
       userRepository.deleteById(userId).futureValue shouldBe Done
       userRepository.findById(userId).futureValue shouldBe empty
     }
-
   }
-
 }

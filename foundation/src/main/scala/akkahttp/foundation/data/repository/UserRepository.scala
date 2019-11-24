@@ -23,17 +23,18 @@ import scala.concurrent.Future
 class UserRepository(cassandraSession: StandaloneCassandraSession)(
     implicit val materializer: Materializer,
     ec: ExecutionContext) {
-
   import cassandraSession.session
 
   def deleteById(userId: UUID): Future[Done] = {
-    val stmt = cassandraSession.prepare("delete from hldev.user where id = ?").bind(userId)
+    val stmt =
+      cassandraSession.prepare("delete from hldev.user where id = ?").bind(userId)
     CassandraSource(stmt).runWith(Sink.ignore)
   }
 
   def insert(user: User, password: SaltPassword): Future[Done] = {
     val stmt = cassandraSession
-      .prepare("insert into hldev.user(id, email, name, created_at, salt, salt_password) values(?, ?, ?, ?, ?, ?)")
+      .prepare(
+        "insert into hldev.user(id, email, name, created_at, salt, salt_password) values(?, ?, ?, ?, ?, ?)")
       .bind(
         user.id,
         user.email,
@@ -51,8 +52,12 @@ class UserRepository(cassandraSession: StandaloneCassandraSession)(
    * @param password 登录密码
    * @return Option(User, Salt Bytes, Salt Password Bytes)
    */
-  def login(email: String, password: String): Future[Option[(User, Array[Byte], Array[Byte])]] = {
-    val stmt = cassandraSession.prepare("select * from hldev.user where email = ? ALLOW FILTERING").bind(email)
+  def login(
+      email: String,
+      password: String): Future[Option[(User, Array[Byte], Array[Byte])]] = {
+    val stmt = cassandraSession
+      .prepare("select * from hldev.user where email = ? ALLOW FILTERING")
+      .bind(email)
     CassandraSource(stmt)
       .runWith(Sink.headOption) // (3)
       .map(
@@ -66,24 +71,25 @@ class UserRepository(cassandraSession: StandaloneCassandraSession)(
   }
 
   def findById(userId: UUID): Future[Option[User]] = {
-    val stmt = cassandraSession.prepare("select * from hldev.user where id = ?").bind(userId)
-    CassandraSource(stmt).runWith(Sink.headOption).map(maybeRow => maybeRow.map(row => UserRepository.mapToUser(row)))
+    val stmt =
+      cassandraSession.prepare("select * from hldev.user where id = ?").bind(userId)
+    CassandraSource(stmt)
+      .runWith(Sink.headOption)
+      .map(maybeRow => maybeRow.map(row => UserRepository.mapToUser(row)))
   }
 
   def existsByEmail(email: String): Future[Boolean] =
-    CassandraSource(
-      cassandraSession.prepare("select count(1) as COUNT from hldev.user where email = ? ALLOW FILTERING").bind(email))
-      .runWith(Sink.head)
-      .map(row => row.getLong("COUNT") == 1)
+    CassandraSource(cassandraSession
+      .prepare(
+        "select count(1) as COUNT from hldev.user where email = ? ALLOW FILTERING")
+      .bind(email)).runWith(Sink.head).map(row => row.getLong("COUNT") == 1)
 }
 
 object UserRepository {
-
   private def mapToUser(row: Row) =
     User(
       row.getUUID("id"),
       row.getString("email"),
       row.getString("name"),
       TimeUtils.toLocalDateTime(row.getTimestamp("created_at")))
-
 }

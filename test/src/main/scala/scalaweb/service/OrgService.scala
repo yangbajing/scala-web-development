@@ -18,6 +18,6 @@ class OrgService(schema: Schema) {
 
   def create(req: OrgCreateReq): Future[Org] = runTransaction(OrgRepo.create(req))
 
-  def removeByIds(ids: Iterable[Int]): Future[Int] = runTransaction(OrgRepo.removeByIds(ids))
-
+  def removeByIds(ids: Iterable[Int]): Future[Int] =
+    runTransaction(OrgRepo.removeByIds(ids))
 }

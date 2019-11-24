@@ -23,14 +23,12 @@ private class CqlCache(session: Session) extends StrictLogging {
       pstmt
     }
   }
-
 }
 
 /**
  * Created by yangbajing(yangbajing@gmail.com) on 2017-03-22.
  */
 abstract class StandaloneCassandraSession(val cluster: Cluster) {
-
   /**
    * 获得 Cassandra 连接 Session
    */
@@ -50,7 +48,7 @@ abstract class StandaloneCassandraSession(val cluster: Cluster) {
     if (cluster != null) {
       cluster.close()
     }
-
 }
 
-class CassandraSession(override val cluster: Cluster) extends StandaloneCassandraSession(cluster)
+class CassandraSession(override val cluster: Cluster)
+    extends StandaloneCassandraSession(cluster)

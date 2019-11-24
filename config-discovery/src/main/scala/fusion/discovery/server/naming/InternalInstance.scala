@@ -29,7 +29,8 @@ final private[server] class InternalInstance(private val underlying: Instance)
   @transient val instanceId: String = underlying.instanceId
   @transient var lastTickTimestamp: Long = System.currentTimeMillis()
 
-  def healthy: Boolean = (System.currentTimeMillis() - lastTickTimestamp) < Namings.UNHEALTHY_CHECK_THRESHOLD_MILLIS
+  def healthy: Boolean =
+    (System.currentTimeMillis() - lastTickTimestamp) < Namings.UNHEALTHY_CHECK_THRESHOLD_MILLIS
 
   def refresh(): InternalInstance = {
     lastTickTimestamp = System.currentTimeMillis()
@@ -48,21 +49,24 @@ final private[server] class InternalInstance(private val underlying: Instance)
 
   override def canEqual(that: Any): Boolean = {
     this == that || (that match {
-      case other: InternalInstance => other.underlying.instanceId == underlying.instanceId
-      case _                       => false
+      case other: InternalInstance =>
+        other.underlying.instanceId == underlying.instanceId
+      case _ => false
     })
   }
 
   override def equals(obj: Any): Boolean = canEqual(obj)
 }
 
-final private[server] class InternalService(namingServiceKey: NamingServiceKey) extends StrictLogging {
+final private[server] class InternalService(namingServiceKey: NamingServiceKey)
+    extends StrictLogging {
   private var curHealthyIdx = 0
   private var instances = Vector[InternalInstance]()
   private var instIds = Map[String, Int]() // instance id, insts index
 
   def queryInstance(in: InstanceQuery): Vector[Instance] = {
-    logger.debug(s"queryInstance($in); curHealthyIdx: $curHealthyIdx; instIds: $instIds; $instances")
+    logger.debug(
+      s"queryInstance($in); curHealthyIdx: $curHealthyIdx; instIds: $instIds; $instances")
     val selects =
       if (in.allHealthy) allHealthy()
       else if (in.oneHealthy) oneHealthy()
@@ -76,7 +80,8 @@ final private[server] class InternalService(namingServiceKey: NamingServiceKey) 
       case None      => new InternalInstance(inst) +: instances
     }
     saveInstances(items)
-    logger.debug(s"addInstance($inst) after; curHealthyIdx: $curHealthyIdx; instIds: $instIds; $instances")
+    logger.debug(
+      s"addInstance($inst) after; curHealthyIdx: $curHealthyIdx; instIds: $instIds; $instances")
     this
   }
 
@@ -130,7 +135,14 @@ final private[server] class InternalService(namingServiceKey: NamingServiceKey) 
       case Some(idx) =>
         instances(idx).refresh()
       case None =>
-        val inst = Instance(instId, in.namespace, in.groupName, in.serviceName, in.ip, in.port, enabled = true)
+        val inst = Instance(
+          instId,
+          in.namespace,
+          in.groupName,
+          in.serviceName,
+          in.ip,
+          in.port,
+          enabled = true)
         saveInstances(new InternalInstance(inst) +: instances)
     }
     this
@@ -145,5 +157,4 @@ final private[server] class InternalService(namingServiceKey: NamingServiceKey) 
     this.instances = items.sortWith(_ > _)
     instIds = this.instances.view.map(_.instanceId).zipWithIndex.toMap
   }
-
 }

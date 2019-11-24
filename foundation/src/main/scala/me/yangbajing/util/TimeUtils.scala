@@ -1,7 +1,7 @@
 package me.yangbajing.util
 
-import java.sql.{Date => SQLDate}
-import java.sql.{Timestamp => SQLTimestamp}
+import java.sql.{ Date => SQLDate }
+import java.sql.{ Timestamp => SQLTimestamp }
 import java.time._
 import java.time.format.DateTimeFormatter
 import java.util.Date
@@ -9,14 +9,16 @@ import java.util.Date
 import scala.util.Try
 
 class TimeUtils extends Serializable {
-
   val DATE_TIME_EPOCH: LocalDateTime = LocalDateTime.of(1970, 1, 1, 0, 0, 0)
   val ZONE_CHINA_OFFSET: ZoneOffset = ZoneOffset.ofHours(8)
-  val formatterDateTime: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+  val formatterDateTime: DateTimeFormatter =
+    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
   val formatterMonth: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM")
   val formatterDate: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE
-  val formatterDateHours: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH")
-  val formatterDateMinutes: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+  val formatterDateHours: DateTimeFormatter =
+    DateTimeFormatter.ofPattern("yyyy-MM-dd HH")
+  val formatterDateMinutes: DateTimeFormatter =
+    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
   val formatterMinutes: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
   val formatterTime: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
 
@@ -42,7 +44,8 @@ class TimeUtils extends Serializable {
       }
 
       if (year < 0 || year > 9999)
-        throw new IllegalArgumentException(s"$date is invalid iso date format ($year)")
+        throw new IllegalArgumentException(
+          s"$date is invalid iso date format ($year)")
 
       LocalDate.of(year, month, day)
     }
@@ -100,9 +103,11 @@ class TimeUtils extends Serializable {
         case Array(date, time) =>
           toLocalDateTime(date, time)
         case Array(dOrT) =>
-          if (containsDateKeys(dOrT)) toLocalDateTime(dOrT, "") else toLocalDateTime("", dOrT)
+          if (containsDateKeys(dOrT)) toLocalDateTime(dOrT, "")
+          else toLocalDateTime("", dOrT)
         case _ =>
-          throw new IllegalArgumentException(s"$datetime is invalid iso datetime format")
+          throw new IllegalArgumentException(
+            s"$datetime is invalid iso datetime format")
       }
     }
 
@@ -119,15 +124,19 @@ class TimeUtils extends Serializable {
 
   def toLocalDateTime(date: Date): LocalDateTime =
     if (date eq null) null
-    else LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime), ZONE_CHINA_OFFSET)
+    else
+      LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime), ZONE_CHINA_OFFSET)
 
-  def toDate(ldt: LocalDateTime): Date = new Date(ldt.toInstant(ZONE_CHINA_OFFSET).toEpochMilli)
+  def toDate(ldt: LocalDateTime): Date =
+    new Date(ldt.toInstant(ZONE_CHINA_OFFSET).toEpochMilli)
 
   def toDate(zdt: ZonedDateTime): Date = new Date(zdt.toInstant.toEpochMilli)
 
-  def toEpochMilli(dt: LocalDateTime): Long = dt.toInstant(ZONE_CHINA_OFFSET).toEpochMilli
+  def toEpochMilli(dt: LocalDateTime): Long =
+    dt.toInstant(ZONE_CHINA_OFFSET).toEpochMilli
 
-  def toEpochMilli(dt: String): Long = toLocalDateTime(dt).toInstant(ZONE_CHINA_OFFSET).toEpochMilli
+  def toEpochMilli(dt: String): Long =
+    toLocalDateTime(dt).toInstant(ZONE_CHINA_OFFSET).toEpochMilli
 
   def toSqlTimestamp(dt: LocalDateTime) = new SQLTimestamp(toEpochMilli(dt))
 
@@ -141,8 +150,8 @@ class TimeUtils extends Serializable {
   /**
    * @return 一天的结尾：
    */
-  def nowEnd(): LocalDateTime = LocalTime.of(23, 59, 59, 999999999).atDate(LocalDate.now())
-
+  def nowEnd(): LocalDateTime =
+    LocalTime.of(23, 59, 59, 999999999).atDate(LocalDate.now())
 }
 
 object TimeUtils extends TimeUtils {}

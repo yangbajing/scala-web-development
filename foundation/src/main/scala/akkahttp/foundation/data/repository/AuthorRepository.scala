@@ -46,15 +46,15 @@ class AuthorRepository(dataSource: DataSource) {
   }
 
   def list(): Vector[Author] = {
-    val (results, _) = jdbcTemplate.queryMany("SELECT id, name, age, remark FROM author ORDER BY id DESC")
+    val (results, _) =
+      jdbcTemplate.queryMany(
+        "SELECT id, name, age, remark FROM author ORDER BY id DESC")
     results.map(AuthorRepository.generateResult)
   }
-
 }
 // #AuthorRepository
 
 object AuthorRepository {
-
   // #help-function
   def generateResult(result: Map[String, AnyRef]): Author =
     Author(
@@ -69,7 +69,8 @@ object AuthorRepository {
    * @param author Author实例
    * @return
    */
-  def generateArgs(author: Author): (mutable.Buffer[String], mutable.Buffer[Object]) = {
+  def generateArgs(
+      author: Author): (mutable.Buffer[String], mutable.Buffer[Object]) = {
     val names = mutable.Buffer.empty[String]
     val args = mutable.Buffer.empty[Object]
 
@@ -88,5 +89,4 @@ object AuthorRepository {
     (names, args)
   }
   // #help-function
-
 }

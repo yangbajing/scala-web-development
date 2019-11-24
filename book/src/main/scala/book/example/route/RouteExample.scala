@@ -10,7 +10,6 @@ import helloscala.http.route.AbstractRoute
 case class User(id: Option[Int], username: String, age: Int)
 
 class RouteExample extends AbstractRoute {
-
   import helloscala.http.JacksonSupport._
 
   // #basic-route-tree
@@ -98,14 +97,16 @@ class RouteExample extends AbstractRoute {
   // #deleteUser2
 
   // #hostnameAndPort
-  def hostnameAndPort: Directive[(String, Int)] = Directive[(String, Int)] { inner => ctx =>
-    // inner: (String, Int) => Route
-    // ctx: RequestContext
+  def hostnameAndPort: Directive[(String, Int)] = Directive[(String, Int)] {
+    inner =>
+      ctx =>
+        // inner: (String, Int) => Route
+        // ctx: RequestContext
 
-    val authority: Uri.Authority = ctx.request.uri.authority
-    val tupleValue: (String, Int) = (authority.host.address(), authority.port)
-    val route: Route = inner(tupleValue)
-    route(ctx) // Future[RouteResult]
+        val authority: Uri.Authority = ctx.request.uri.authority
+        val tupleValue: (String, Int) = (authority.host.address(), authority.port)
+        val route: Route = inner(tupleValue)
+        route(ctx) // Future[RouteResult]
   }
   // #hostnameAndPort
 }

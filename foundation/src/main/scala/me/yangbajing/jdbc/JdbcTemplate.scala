@@ -23,7 +23,6 @@ case class HlSqlLabel(label: String, name: String, jdbcType: Int)
  * @param dataSource 数据源
  */
 class JdbcTemplate private (val dataSource: DataSource) extends StrictLogging {
-
   /**
    * 执行insert, update, delete, alert 语句
    *
@@ -42,14 +41,16 @@ class JdbcTemplate private (val dataSource: DataSource) extends StrictLogging {
   }
 
   def querySingle(sql: String, args: scala.collection.Seq[Object] = Nil)(
-      implicit igConn: HlJdbcConnection = HlJdbcConnection.empty): Option[(Map[String, Object], Vector[HlSqlLabel])] = {
+      implicit igConn: HlJdbcConnection = HlJdbcConnection.empty)
+      : Option[(Map[String, Object], Vector[HlSqlLabel])] = {
     val (results, metaDatas) = queryMany(sql, args)
     //    if (results.size > 1) throw new IllegalAccessException(s"$sql 返回结果大于1行")
     results.headOption.map(map => (map, metaDatas))
   }
 
   def queryMany(sql: String, args: scala.collection.Seq[Object] = Nil)(
-      implicit igConn: HlJdbcConnection = HlJdbcConnection.empty): (Vector[Map[String, Object]], Vector[HlSqlLabel]) = {
+      implicit igConn: HlJdbcConnection = HlJdbcConnection.empty)
+      : (Vector[Map[String, Object]], Vector[HlSqlLabel]) = {
     val func = (pstmt: PreparedStatement) => {
       val results = mutable.ArrayBuffer.empty[Map[String, Object]]
       val rs = pstmt.executeQuery()
@@ -57,11 +58,18 @@ class JdbcTemplate private (val dataSource: DataSource) extends StrictLogging {
 
       val range = (1 to metaData.getColumnCount).toVector
 
-      val labels = range.map(column =>
-        HlSqlLabel(metaData.getColumnLabel(column), metaData.getColumnName(column), metaData.getColumnType(column)))
+      val labels = range.map(
+        column =>
+          HlSqlLabel(
+            metaData.getColumnLabel(column),
+            metaData.getColumnName(column),
+            metaData.getColumnType(column)))
 
       while (rs.next()) {
-        val maps = range.map(column => labels(column - 1).label -> rs.getObject(column)).toMap
+        val maps =
+          range
+            .map(column => labels(column - 1).label -> rs.getObject(column))
+            .toMap
         results += maps
       }
       (results.toVector, labels)
@@ -70,7 +78,10 @@ class JdbcTemplate private (val dataSource: DataSource) extends StrictLogging {
     execute(func, sql, args)
   }
 
-  def execute[R](resultSetFunc: PreparedStatement => R, sql: String, args: scala.collection.Seq[Object])(
+  def execute[R](
+      resultSetFunc: PreparedStatement => R,
+      sql: String,
+      args: scala.collection.Seq[Object])(
       implicit igConn: HlJdbcConnection = HlJdbcConnection.empty): R =
     _execute { conn =>
       val pstmt = conn.underlying.prepareStatement(sql)
@@ -86,7 +97,10 @@ class JdbcTemplate private (val dataSource: DataSource) extends StrictLogging {
 
   private def _execute[R](func: HlJdbcConnection => R)(
       implicit igConn: HlJdbcConnection = HlJdbcConnection.empty): R = {
-    val conn = if (igConn == HlJdbcConnection.empty) HlJdbcConnection(dataSource.getConnection) else igConn
+    val conn =
+      if (igConn == HlJdbcConnection.empty)
+        HlJdbcConnection(dataSource.getConnection)
+      else igConn
     try {
       func(conn)
     } finally {
@@ -99,18 +113,18 @@ class JdbcTemplate private (val dataSource: DataSource) extends StrictLogging {
     val conn = HlJdbcConnection(dataSource.getConnection)
     JdbcTemplate.using(conn)(func)
   }
-
 }
 
 object JdbcTemplate {
-
   Class.forName("org.postgresql.Driver")
 
   // [name, age] => "name" = ?, "age" = ?
-  def sqlUpdateSets(names: Iterable[String]): String = names.map(name => s""""$name" = ?""").mkString(", ")
+  def sqlUpdateSets(names: Iterable[String]): String =
+    names.map(name => s""""$name" = ?""").mkString(", ")
 
   // [name, age] => "name", "age"
-  def sqlNames(names: Iterable[String]): String = names.mkString("\"", "\", \"", "\"")
+  def sqlNames(names: Iterable[String]): String =
+    names.mkString("\"", "\", \"", "\"")
 
   // [value1, value2] => ?, ?
   def sqlArgs(args: Iterable[_]): String = args.map(_ => "?").mkString(", ")
@@ -153,5 +167,4 @@ object JdbcTemplate {
       conn.setAutoCommit(autoCommit)
     }
   }
-
 }

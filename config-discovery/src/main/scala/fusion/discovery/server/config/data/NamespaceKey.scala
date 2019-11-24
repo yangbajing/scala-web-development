@@ -21,16 +21,23 @@ import akka.cluster.ddata.ORMap
 import akka.cluster.ddata.ReplicatedData
 import fusion.json.jackson.CborSerializable
 
-case class NamespaceKey(namespace: String) extends Key[ORMap[String, ConfigContent]](namespace) with CborSerializable
+case class NamespaceKey(namespace: String)
+    extends Key[ORMap[String, ConfigContent]](namespace)
+    with CborSerializable
 
-case class ConfigContent(namespace: String, dataId: String, version: Int, content: String)
+case class ConfigContent(
+    namespace: String,
+    dataId: String,
+    version: Int,
+    content: String)
     extends ReplicatedData
     with CborSerializable {
   type T = ConfigContent
 
   override def merge(that: ConfigContent): ConfigContent = {
     if (this == that) this
-    else if (namespace == that.namespace && dataId == that.dataId && version < that.version) that
+    else if (namespace == that.namespace && dataId == that.dataId && version < that.version)
+      that
     else this
   }
 }

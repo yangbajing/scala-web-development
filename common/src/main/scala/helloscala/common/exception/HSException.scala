@@ -2,7 +2,8 @@ package helloscala.common.exception
 
 import helloscala.common.IntStatus
 
-class HSException(val errCode: Int, val errMsg: String, val cause: Throwable) extends RuntimeException(errMsg, cause) {
+class HSException(val errCode: Int, val errMsg: String, val cause: Throwable)
+    extends RuntimeException(errMsg, cause) {
   def this(errMsg: String, cause: Throwable) {
     this(IntStatus.INTERNAL_ERROR, errMsg, cause)
   }

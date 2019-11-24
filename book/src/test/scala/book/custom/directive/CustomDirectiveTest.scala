@@ -8,7 +8,6 @@ import org.scalatest.Matchers
 import akka.http.scaladsl.server.Directives._
 
 class CustomDirectiveTest extends FunSuite with Matchers with ScalatestRouteTest {
-
   val twoIntParameters: Directive[(Int, Int)] =
     parameters(("a".as[Int], "b".as[Int]))
 
@@ -22,5 +21,4 @@ class CustomDirectiveTest extends FunSuite with Matchers with ScalatestRouteTest
       responseAs[String] shouldBe "7"
     }
   }
-
 }

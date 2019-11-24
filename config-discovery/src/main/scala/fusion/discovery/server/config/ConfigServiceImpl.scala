@@ -35,7 +35,10 @@ import scala.collection.immutable
 import scala.concurrent.Future
 import scala.concurrent.duration._
 
-class ConfigServiceImpl(configManager: ActorRef[ConfigManager.Command], system: ActorSystem[_]) extends ConfigService {
+class ConfigServiceImpl(
+    configManager: ActorRef[ConfigManager.Command],
+    system: ActorSystem[_])
+    extends ConfigService {
   import system.executionContext
   implicit private val mat = Materializer(system)
   implicit private val timeout = Timeout(5.seconds)
@@ -46,29 +49,38 @@ class ConfigServiceImpl(configManager: ActorRef[ConfigManager.Command], system: 
 
   override def queryConfig(in: ConfigQuery): Future[ConfigReply] = {
     configManager
-      .ask[immutable.Seq[ConfigContent]](replyTo => ConfigManager.GetContent(in.namespace, in.dataIds, replyTo))
+      .ask[immutable.Seq[ConfigContent]](replyTo =>
+        ConfigManager.GetContent(in.namespace, in.dataIds, replyTo))
       .map { contents =>
-        val queried = ConfigQueried(contents.map(c => ConfigItem(c.namespace, "DEFAULT", c.dataId, c.content)))
+        val queried =
+          ConfigQueried(contents.map(c =>
+            ConfigItem(c.namespace, "DEFAULT", c.dataId, c.content)))
         ConfigReply(IntStatus.OK, ConfigReply.Data.Queried(queried))
       }
   }
 
   override def publishConfig(in: ConfigPublish): Future[ConfigReply] = {
     configManager
-      .ask[Configs.ModifyReply](replyTo => ConfigManager.UpdateContent(in.namespace, in.dataId, in.content, replyTo))
+      .ask[Configs.ModifyReply](replyTo =>
+        ConfigManager.UpdateContent(in.namespace, in.dataId, in.content, replyTo))
       .map(reply => ConfigReply(reply.status))
   }
 
   override def removeConfig(in: ConfigRemove): Future[ConfigReply] = {
     configManager
-      .ask[Configs.ModifyReply](replyTo => ConfigManager.RemoveContent(in.namespace, in.dataId, replyTo))
+      .ask[Configs.ModifyReply](replyTo =>
+        ConfigManager.RemoveContent(in.namespace, in.dataId, replyTo))
       .map(reply => ConfigReply(reply.status))
   }
 
-  override def listenerConfig(in: ConfigChangeListen): Source[ConfigChanged, NotUsed] = {
-    val (queue, source) = Source.queue[ConfigChanged](8, OverflowStrategy.dropHead).preMaterialize()
-    configManager ! ConfigManager.RegisterChangeListener(UUID.randomUUID(), in, queue)
+  override def listenerConfig(
+      in: ConfigChangeListen): Source[ConfigChanged, NotUsed] = {
+    val (queue, source) =
+      Source.queue[ConfigChanged](8, OverflowStrategy.dropHead).preMaterialize()
+    configManager ! ConfigManager.RegisterChangeListener(
+      UUID.randomUUID(),
+      in,
+      queue)
     source
   }
-
 }

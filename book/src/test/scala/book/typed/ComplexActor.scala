@@ -30,33 +30,53 @@ import scala.util.Try
 
 // #ComplexActor-scala
 object ComplexActor {
-
   sealed trait Command
   trait ControlCommand extends Command { val clientId: String }
   trait ReplyCommand extends Command { val replyTo: ActorRef[Reply] }
 
-  final case class Connect(clientId: String, replyTo: ActorRef[Reply]) extends ControlCommand with ReplyCommand
-  final case class Disconnect(clientId: String, replyTo: ActorRef[Reply]) extends ControlCommand with ReplyCommand
-  final case class AskMessage(clientId: String, message: String, replyTo: ActorRef[Reply]) extends ReplyCommand
+  final case class Connect(clientId: String, replyTo: ActorRef[Reply])
+      extends ControlCommand
+      with ReplyCommand
+  final case class Disconnect(clientId: String, replyTo: ActorRef[Reply])
+      extends ControlCommand
+      with ReplyCommand
+  final case class AskMessage(
+      clientId: String,
+      message: String,
+      replyTo: ActorRef[Reply])
+      extends ReplyCommand
   final case class ConnectCount(replyTo: ActorRef[Reply]) extends ReplyCommand
-  final case class QueryResource(clientId: String, replyTo: ActorRef[Reply]) extends ReplyCommand
-  final case class PublishEvent(clientId: String, event: String, payload: String) extends Command
+  final case class QueryResource(clientId: String, replyTo: ActorRef[Reply])
+      extends ReplyCommand
+  final case class PublishEvent(clientId: String, event: String, payload: String)
+      extends Command
   final private[typed] case object SessionTimeout extends Command
-  final private case class ServiceKeyRegistered(registered: Receptionist.Registered) extends Command
+  final private case class ServiceKeyRegistered(
+      registered: Receptionist.Registered)
+      extends Command
 
   sealed trait Reply
   final case class Connected(status: Int, clientId: String) extends Reply
   final case class Disconnected(status: Int, clientId: String) extends Reply
-  final case class MessageAsked(status: Int, clientId: String, reply: String) extends Reply
-  final case class ConnectCounted(count: Int, status: Int = IntStatus.OK) extends Reply
-  final case class ResourceQueried(status: Int, clientId: String, resources: Seq[String]) extends Reply
+  final case class MessageAsked(status: Int, clientId: String, reply: String)
+      extends Reply
+  final case class ConnectCounted(count: Int, status: Int = IntStatus.OK)
+      extends Reply
+  final case class ResourceQueried(
+      status: Int,
+      clientId: String,
+      resources: Seq[String])
+      extends Reply
   final case class ReplyError(status: Int) extends Reply
 
   val serviceKey = ServiceKey[Command]("complex")
 
   def apply(): Behavior[Command] = Behaviors.setup { context =>
-    val registerAdapter = context.messageAdapter[Receptionist.Registered](value => ServiceKeyRegistered(value))
-    context.system.receptionist ! Receptionist.Register(serviceKey, context.self, registerAdapter)
+    val registerAdapter =
+      context.messageAdapter[Receptionist.Registered](value =>
+        ServiceKeyRegistered(value))
+    context.system.receptionist ! Receptionist
+      .Register(serviceKey, context.self, registerAdapter)
     new ComplexActor(context).init()
   }
 }
@@ -74,7 +94,8 @@ final class ComplexActor(context: ActorContext[ComplexActor.Command]) {
         cmd.replyTo ! ReplyError(IntStatus.SERVICE_UNAVAILABLE)
         Behaviors.same
       case other =>
-        context.log.warn("Actor not registered, receive invalid message: {}", other)
+        context.log
+          .warn("Actor not registered, receive invalid message: {}", other)
         Behaviors.same
     }
 
@@ -87,7 +108,8 @@ final class ComplexActor(context: ActorContext[ComplexActor.Command]) {
           } else {
             val child = context.spawn(
               Behaviors
-                .supervise(ComplexClient(clientId, context.self.narrow[ControlCommand]))
+                .supervise(
+                  ComplexClient(clientId, context.self.narrow[ControlCommand]))
                 .onFailure(SupervisorStrategy.restart),
               clientId)
             context.watch(child)
@@ -138,13 +160,18 @@ final class ComplexActor(context: ActorContext[ComplexActor.Command]) {
 object ComplexClient {
   import ComplexActor._
 
-  final private[typed] case class InternalQueryResource(resources: Try[Seq[String]], replyTo: ActorRef[Reply])
+  final private[typed] case class InternalQueryResource(
+      resources: Try[Seq[String]],
+      replyTo: ActorRef[Reply])
       extends Command
 
-  def apply(clientId: String, parent: ActorRef[ControlCommand]): Behavior[Command] = Behaviors.setup { context =>
-    Behaviors.withTimers(timers => new ComplexClient(clientId, parent, timers, context).init())
-  }
-
+  def apply(
+      clientId: String,
+      parent: ActorRef[ControlCommand]): Behavior[Command] =
+    Behaviors.setup { context =>
+      Behaviors.withTimers(timers =>
+        new ComplexClient(clientId, parent, timers, context).init())
+    }
 }
 
 final class ComplexClient private (
@@ -166,7 +193,8 @@ final class ComplexClient private (
       Behaviors.same
 
     case QueryResource(_, replyTo) =>
-      context.pipeToSelf(findExternalResource())(value => InternalQueryResource(value, replyTo))
+      context.pipeToSelf(findExternalResource())(value =>
+        InternalQueryResource(value, replyTo))
       Behaviors.same
 
     case InternalQueryResource(tryValue, replyTo) =>
@@ -198,7 +226,6 @@ final class ComplexClient private (
     TimeUnit.MILLISECONDS.sleep(10)
     Range(0, 10).map(_.toString).toVector
   }
-
 }
 
 class ComplexActorSpec
@@ -208,11 +235,11 @@ class ComplexActorSpec
     with OptionValues
     with BeforeAndAfterAll
     with StrictLogging {
-
   implicit private val system = ActorSystem(SpawnProtocol(), "complex-manager")
   implicit private val timeout = Timeout(2.seconds)
 
-  implicit override def patienceConfig: PatienceConfig = PatienceConfig(Span(10, Seconds), Span(50, Millis))
+  implicit override def patienceConfig: PatienceConfig =
+    PatienceConfig(Span(10, Seconds), Span(50, Millis))
 
   "ComplexActor" should {
     var complexActor: ActorRef[ComplexActor.Command] = null
@@ -226,7 +253,10 @@ class ComplexActorSpec
     }
 
     "Discover actors using ServiceKey[T]" in {
-      val maybeDeepActor = AkkaUtils.findActorByServiceKey(ComplexActor.serviceKey, 500.millis).futureValue
+      val maybeDeepActor =
+        AkkaUtils
+          .findActorByServiceKey(ComplexActor.serviceKey, 500.millis)
+          .futureValue
       val ref = maybeDeepActor.value
       ref shouldBe complexActor
     }
@@ -235,12 +265,18 @@ class ComplexActorSpec
 
     "Connect" in {
       val connected =
-        complexActor.ask[ComplexActor.Reply](ComplexActor.Connect(client1, _)).mapTo[ComplexActor.Connected].futureValue
+        complexActor
+          .ask[ComplexActor.Reply](ComplexActor.Connect(client1, _))
+          .mapTo[ComplexActor.Connected]
+          .futureValue
       connected.status should be(IntStatus.OK)
       connected.clientId should be(client1)
 
       val connectCounted =
-        complexActor.ask[ComplexActor.Reply](ComplexActor.ConnectCount).mapTo[ComplexActor.ConnectCounted].futureValue
+        complexActor
+          .ask[ComplexActor.Reply](ComplexActor.ConnectCount)
+          .mapTo[ComplexActor.ConnectCounted]
+          .futureValue
       connectCounted.count should be > 0
     }
 
@@ -249,7 +285,8 @@ class ComplexActorSpec
         .ask[ComplexActor.Reply](ComplexActor.AskMessage(client1, "hello", _))
         .mapTo[ComplexActor.MessageAsked]
         .futureValue
-      messageAsked should be(ComplexActor.MessageAsked(IntStatus.OK, client1, "olleh"))
+      messageAsked should be(
+        ComplexActor.MessageAsked(IntStatus.OK, client1, "olleh"))
     }
 
     "QueryResource" in {
@@ -263,14 +300,18 @@ class ComplexActorSpec
 
     "Disconnect" in {
       val disconnected = complexActor
-        .ask[ComplexActor.Reply](replyTo => ComplexActor.Disconnect(client1, replyTo))
+        .ask[ComplexActor.Reply](replyTo =>
+          ComplexActor.Disconnect(client1, replyTo))
         .mapTo[ComplexActor.Disconnected]
         .futureValue
       disconnected.status should be(IntStatus.OK)
       disconnected.clientId should be(client1)
 
       val connectCounted =
-        complexActor.ask[ComplexActor.Reply](ComplexActor.ConnectCount).mapTo[ComplexActor.ConnectCounted].futureValue
+        complexActor
+          .ask[ComplexActor.Reply](ComplexActor.ConnectCount)
+          .mapTo[ComplexActor.ConnectCounted]
+          .futureValue
       connectCounted.count should be(0)
     }
 
@@ -281,7 +322,6 @@ class ComplexActorSpec
         .futureValue
       messageAsked.status should be(IntStatus.NOT_FOUND)
     }
-
   }
 
   override protected def afterAll(): Unit = {

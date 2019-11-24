@@ -27,8 +27,9 @@ object NamingProxy {
   val NAME = "namingProxy"
   //val NamingProxyServiceKey = ServiceKey[Namings.Command](NAME)
 
-  def apply(shardRegion: ActorRef[ShardingEnvelope[Namings.Command]]): Behavior[Namings.Command] = Behaviors.setup {
-    context =>
+  def apply(shardRegion: ActorRef[ShardingEnvelope[Namings.Command]])
+      : Behavior[Namings.Command] =
+    Behaviors.setup { context =>
       //context.system.receptionist ! Receptionist.Register(NamingProxyServiceKey, context.self)
 
       Behaviors.receiveMessagePartial {
@@ -43,10 +44,10 @@ object NamingProxy {
         case cmd @ Namings.Heartbeat(in) =>
           Namings.NamingServiceKey.entityId(in.namespace, in.serviceName) match {
             case Right(entityId) => shardRegion ! ShardingEnvelope(entityId, cmd)
-            case Left(errMsg)    => context.log.warn(s"Heartbeat error: $errMsg; cmd: $cmd")
+            case Left(errMsg) =>
+              context.log.warn(s"Heartbeat error: $errMsg; cmd: $cmd")
           }
           Behaviors.same
       }
-  }
-
+    }
 }

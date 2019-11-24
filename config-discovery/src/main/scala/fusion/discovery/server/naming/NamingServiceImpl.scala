@@ -32,7 +32,10 @@ import helloscala.common.util.StringUtils
 import scala.concurrent.Future
 import scala.concurrent.duration._
 
-class NamingServiceImpl(namingProxy: ActorRef[Namings.Command], system: ActorSystem[_]) extends NamingService {
+class NamingServiceImpl(
+    namingProxy: ActorRef[Namings.Command],
+    system: ActorSystem[_])
+    extends NamingService {
   import system.executionContext
   implicit private val timeout = Timeout(5.seconds)
   implicit private val scheduler = system.scheduler
@@ -47,39 +50,48 @@ class NamingServiceImpl(namingProxy: ActorRef[Namings.Command], system: ActorSys
    * 添加实例
    */
   override def registerInstance(in: InstanceRegister): Future[InstanceReply] = {
-    namingProxy.ask[InstanceReply](replyTo => Namings.RegisterInstance(in, replyTo)).recover {
-      case _: TimeoutException => InstanceReply(IntStatus.GATEWAY_TIMEOUT)
-    }
+    namingProxy
+      .ask[InstanceReply](replyTo => Namings.RegisterInstance(in, replyTo))
+      .recover {
+        case _: TimeoutException => InstanceReply(IntStatus.GATEWAY_TIMEOUT)
+      }
   }
 
   /**
    * 修改实例
    */
   override def modifyInstance(in: InstanceModify): Future[InstanceReply] = {
-    namingProxy.ask[InstanceReply](replyTo => Namings.ModifyInstance(in, replyTo)).recover {
-      case _: TimeoutException => InstanceReply(IntStatus.GATEWAY_TIMEOUT)
-    }
+    namingProxy
+      .ask[InstanceReply](replyTo => Namings.ModifyInstance(in, replyTo))
+      .recover {
+        case _: TimeoutException => InstanceReply(IntStatus.GATEWAY_TIMEOUT)
+      }
   }
 
   /**
    * 删除实例
    */
   override def removeInstance(in: InstanceRemove): Future[InstanceReply] = {
-    namingProxy.ask[InstanceReply](replyTo => Namings.RemoveInstance(in, replyTo)).recover {
-      case _: TimeoutException => InstanceReply(IntStatus.GATEWAY_TIMEOUT)
-    }
+    namingProxy
+      .ask[InstanceReply](replyTo => Namings.RemoveInstance(in, replyTo))
+      .recover {
+        case _: TimeoutException => InstanceReply(IntStatus.GATEWAY_TIMEOUT)
+      }
   }
 
   /**
    * 查询实例
    */
   override def queryInstance(in: InstanceQuery): Future[InstanceReply] = {
-    namingProxy.ask[InstanceReply](replyTo => Namings.QueryInstance(in, replyTo)).recover {
-      case _: TimeoutException => InstanceReply(IntStatus.GATEWAY_TIMEOUT)
-    }
+    namingProxy
+      .ask[InstanceReply](replyTo => Namings.QueryInstance(in, replyTo))
+      .recover {
+        case _: TimeoutException => InstanceReply(IntStatus.GATEWAY_TIMEOUT)
+      }
   }
 
-  override def heartbeat(in: Source[InstanceHeartbeat, NotUsed]): Source[ServerStatusBO, NotUsed] = {
+  override def heartbeat(
+      in: Source[InstanceHeartbeat, NotUsed]): Source[ServerStatusBO, NotUsed] = {
     in.map { cmd =>
       if (checkHeartbeat(cmd)) {
         namingProxy ! Namings.Heartbeat(cmd)
@@ -94,5 +106,4 @@ class NamingServiceImpl(namingProxy: ActorRef[Namings.Command], system: ActorSys
     StringUtils.isNoneBlank(v.namespace) && StringUtils.isNoneBlank(v.ip) && v.port > 0 &&
     StringUtils.isNoneBlank(v.serviceName)
   }
-
 }

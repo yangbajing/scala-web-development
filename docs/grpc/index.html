@@ -20,7 +20,7 @@
 
 <meta name="description" content="book">
 <link rel="shortcut icon" href="../assets/images/favicon.png">
-<title>Akka Grpc · Scala Web 开发——基于Akka HTTP</title>
+<title>Akka gRPC · Scala Web 开发——基于Akka HTTP</title>
 <link rel="stylesheet" href="../assets/stylesheets/application.451f80e5.css">
 <link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
 <meta name="theme-color" content="#009688" />
@@ -60,7 +60,7 @@ data-md-color-accent="indigo"
 Scala Web 开发——基于Akka HTTP
 </span>
 <span class="md-header-nav__topic">
-Akka Grpc
+Akka gRPC
 </span>
 </div>
 </div>
@@ -237,7 +237,13 @@ yangbajing/scala-web-development
     <li><a href="../engineering/swagger.html" class="page">使用Swagger编写API文档</a></li>
     <li><a href="../engineering/guice.html" class="page">使用Guice管理类依赖</a></li>
   </ul></li>
-  <li><a href="../grpc/index.html" class="active page">Akka Grpc</a></li>
+  <li><a href="../grpc/index.html" class="active page">Akka gRPC</a>
+  <ul>
+    <li><a href="../grpc/grpc.html" class="page">gRPC服务</a></li>
+    <li><a href="../grpc/build-tool.html" class="page">构建工具</a></li>
+    <li><a href="../grpc/deployment.html" class="page">部署</a></li>
+    <li><a href="../grpc/grpc.z.html" class="page">小结</a></li>
+  </ul></li>
   <li><a href="../config-discovery/index.html" class="page">实战：配置管理、服务发现系统</a></li>
   <li><a href="../appendix/index.html" class="page">附录</a>
   <ul>
@@ -264,10 +270,29 @@ yangbajing/scala-web-development
 <div class="md-content">
 <article class="md-content__inner md-typeset">
 <div class="md-content__searchable">
-<h1><a href="#akka-grpc" name="akka-grpc" class="anchor"><span class="anchor-link"></span></a>Akka Grpc</h1>
+<h1><a href="#akka-grpc" name="akka-grpc" class="anchor"><span class="anchor-link"></span></a>Akka gRPC</h1>
+<p>gRPC使用Protobuf进行数据序列化，基于HTTP 2提供RPC通信。具有快速、高效、易用、可扩展等特点。采用HTTP 2作为底层协议，可以更好的与已有的HTTP基础服务整合，简化了运维管理（不需要为了RPC单独开放网络端口，并对其进行管理）。gRPC支持请求/响应和Stream多种接口形式，可以实现服务端推送功能。</p>
+<p>Akka提供了开箱即用的 <a href="https://doc.akka.io/docs/akka-grpc/current/">akka-grpc</a>，从编译、构建、发布……与Scala/Akka生态完美整合。<a href="https://doc.akka.io/docs/akka-grpc/current/whygrpc.html"><strong>Why gRPC</strong></a> 这篇文章详细的说明了为什么需要gRPC，特别是gRPC与REST、SOAP、Message Bus和Akka Remoting的区别，阐述的简明扼要。</p>
+<div class="toc ">
+<ul>
+  <li><a href="../grpc/grpc.html" class="page">gRPC服务</a>
+  <ul>
+    <li><a href="../grpc/grpc.html#定义消息和服务" class="header">定义消息和服务</a></li>
+    <li><a href="../grpc/grpc.html#实现-grpc-服务" class="header">实现 gRPC 服务</a></li>
+    <li><a href="../grpc/grpc.html#测试-grpc-服务" class="header">测试 gRPC 服务</a></li>
+  </ul></li>
+  <li><a href="../grpc/build-tool.html" class="page">构建工具</a>
+  <ul>
+    <li><a href="../grpc/build-tool.html#sbt-配置" class="header">sbt 配置</a></li>
+    <li><a href="../grpc/build-tool.html#目录结构" class="header">目录结构</a></li>
+  </ul></li>
+  <li><a href="../grpc/deployment.html" class="page">部署</a></li>
+  <li><a href="../grpc/grpc.z.html" class="page">小结</a></li>
+</ul>
+</div>
 </div>
 <div>
-<a href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/main/paradox/grpc/index.md" title="Edit this page" class="md-source-file md-edit">
+<a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/grpc/index.md" title="Edit this page" class="md-source-file md-edit">
 Edit this page
 </a>
 </div>
@@ -296,13 +321,13 @@ Previous
 </span>
 </div>
 </a>
-<a href="../config-discovery/index.html" title="实战：配置管理、服务发现系统" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+<a href="../grpc/grpc.html" title="gRPC服务" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
 <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
 <span class="md-flex__ellipsis">
 <span class="md-footer-nav__direction">
 Next
 </span>
-实战：配置管理、服务发现系统
+gRPC服务
 </span>
 </div>
 <div class="md-flex__cell md-flex__cell--shrink">

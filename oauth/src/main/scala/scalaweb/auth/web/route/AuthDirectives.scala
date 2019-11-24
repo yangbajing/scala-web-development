@@ -25,14 +25,17 @@ trait AuthDirectives { this: AbstractRoute =>
     }
     authorization
       .orElse(ctx.request.uri.query().get(GrantType.access_token.name))
-      .orElse(ctx.request.headers.find(_.lowercaseName() == GrantType.access_token.name).map(_.value()))
+      .orElse(
+        ctx.request.headers
+          .find(_.lowercaseName() == GrantType.access_token.name)
+          .map(_.value()))
   }
 
   def extractAccessSession: Directive1[AccessSession] =
     optionalAccessToken.flatMap {
       case Some(accessToken) =>
-        onSuccess(authService.getAccessSession(accessToken)).flatMap(accessOwner => provide(accessOwner))
+        onSuccess(authService.getAccessSession(accessToken)).flatMap(accessOwner =>
+          provide(accessOwner))
       case None => reject(AuthRejection("access_token参数必传"))
     }
-
 }

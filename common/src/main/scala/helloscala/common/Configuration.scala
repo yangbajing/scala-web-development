@@ -6,7 +6,7 @@ import java.util.Objects
 import java.util.Properties
 
 import akka.actor.typed.ActorSystem
-import akka.{actor => classic}
+import akka.{ actor => classic }
 import com.typesafe.config._
 import com.typesafe.config.impl.ConfigurationHelper
 import com.typesafe.scalalogging.StrictLogging
@@ -27,19 +27,24 @@ import scala.util.control.NonFatal
 final case class Configuration(underlying: Config) {
   def discoveryEnable(): Boolean = getOrElse("fusion.discovery.enable", false)
 
-  def withFallback(config: Config): Configuration = new Configuration(underlying.withFallback(config))
+  def withFallback(config: Config): Configuration =
+    new Configuration(underlying.withFallback(config))
 
-  def withFallback(config: Configuration): Configuration = new Configuration(underlying.withFallback(config.underlying))
+  def withFallback(config: Configuration): Configuration =
+    new Configuration(underlying.withFallback(config.underlying))
 
-  def computeIfMap[T, R](path: String, func: T => R)(implicit o: ConfigLoader[Option[T]]): Option[R] = {
+  def computeIfMap[T, R](path: String, func: T => R)(
+      implicit o: ConfigLoader[Option[T]]): Option[R] = {
     get[Option[T]](path).map(v => func(v))
   }
 
-  def computeIfFlatMap[T, R](path: String, func: T => Option[R])(implicit o: ConfigLoader[Option[T]]): Option[R] = {
+  def computeIfFlatMap[T, R](path: String, func: T => Option[R])(
+      implicit o: ConfigLoader[Option[T]]): Option[R] = {
     get[Option[T]](path).flatMap(v => func(v))
   }
 
-  def computeIfForeach[T](path: String, func: T => Unit)(implicit o: ConfigLoader[Option[T]]): Unit = {
+  def computeIfForeach[T](path: String, func: T => Unit)(
+      implicit o: ConfigLoader[Option[T]]): Unit = {
     get[Option[T]](path).foreach(v => func(v))
   }
 
@@ -100,15 +105,19 @@ final case class Configuration(underlying: Config) {
   def get[A](path: String)(implicit loader: ConfigLoader[A]): A =
     loader.load(underlying, path)
 
-  def getOrElse[A](path: String, deft: => A)(implicit loader: ConfigLoader[A]): A = get[Option[A]](path).getOrElse(deft)
+  def getOrElse[A](path: String, deft: => A)(implicit loader: ConfigLoader[A]): A =
+    get[Option[A]](path).getOrElse(deft)
 
   /**
    * Get the config at the given path and validate against a set of valid values.
    */
-  def getAndValidate[A](path: String, values: Set[A])(implicit loader: ConfigLoader[A]): A = {
+  def getAndValidate[A](path: String, values: Set[A])(
+      implicit loader: ConfigLoader[A]): A = {
     val value = get(path)
     if (!values(value)) {
-      throw reportError(path, s"Incorrect value, one of (${values.mkString(", ")}) was expected.")
+      throw reportError(
+        path,
+        s"Incorrect value, one of (${values.mkString(", ")}) was expected.")
     }
     value
   }
@@ -184,7 +193,8 @@ final case class Configuration(underlying: Config) {
    * Returns every path as a set of key to value pairs, by recursively iterating through the
    * config objects.
    */
-  def entrySet: Set[(String, ConfigValue)] = underlying.entrySet().asScala.map(e => e.getKey -> e.getValue).toSet
+  def entrySet: Set[(String, ConfigValue)] =
+    underlying.entrySet().asScala.map(e => e.getKey -> e.getValue).toSet
 
   /**
    * Creates a configuration error for a specific configuration key.
@@ -200,7 +210,10 @@ final case class Configuration(underlying: Config) {
    * @param e       the related exception
    * @return a configuration exception
    */
-  def reportError(path: String, message: String, e: Option[Throwable] = None): HSException = {
+  def reportError(
+      path: String,
+      message: String,
+      e: Option[Throwable] = None): HSException = {
     val origin = Option(
       if (underlying.hasPath(path)) underlying.getValue(path).origin
       else underlying.root.origin)
@@ -242,7 +255,8 @@ object Configuration extends StrictLogging {
         val clz = Option(Class.forName("fusion.discovery.DiscoveryUtils"))
           .getOrElse(Class.forName("fusion.discovery.DiscoveryUtils$"))
         val service = clz.getMethod("defaultConfigService").invoke(null)
-        val clzConfigService = Class.forName("fusion.discovery.client.FusionConfigService")
+        val clzConfigService =
+          Class.forName("fusion.discovery.client.FusionConfigService")
         val value = clzConfigService.getMethod("getConfig").invoke(service)
         val confStr = Objects.requireNonNull(value, "未能获取到配置内容").toString
         logger.info(s"收到配置内容：$confStr")
@@ -258,7 +272,8 @@ object Configuration extends StrictLogging {
     } else {
       val configFrom = Option(System.getProperty("config.file"))
         .map(_ => "-Dconfig.file")
-        .orElse(Option(System.getProperty("config.resource")).map(_ => "-Dconfig.resource"))
+        .orElse(Option(System.getProperty("config.resource")).map(_ =>
+          "-Dconfig.resource"))
         .orElse(Option(System.getProperty("config.url")).map(_ => "-Dconfig.url"))
         .getOrElse("Jar包内部")
       logger.info(s"使用本地配置，来自：$configFrom")
@@ -283,7 +298,8 @@ object Configuration extends StrictLogging {
     new Configuration(c.withFallback(ConfigFactory.load()).resolve())
   }
   def load(): Configuration = load(ConfigFactory.load())
-  def load(system: classic.ActorSystem): Configuration = load(system.settings.config)
+  def load(system: classic.ActorSystem): Configuration =
+    load(system.settings.config)
   def load(system: ActorSystem[_]): Configuration = load(system.settings.config)
 
   def load(props: Properties): Configuration = {
@@ -295,11 +311,13 @@ object Configuration extends StrictLogging {
     load(ConfigFactory.parseString(content))
   }
 
-  def configError(message: String, origin: Option[ConfigOrigin], me: Option[Throwable]): HSException = {
+  def configError(
+      message: String,
+      origin: Option[ConfigOrigin],
+      me: Option[Throwable]): HSException = {
     val msg = origin.map(o => s"[$o] $message").getOrElse(message)
     me.map(e => new HSException(msg, e)).getOrElse(new HSException(msg))
   }
-
 }
 
 /**
@@ -308,12 +326,13 @@ object Configuration extends StrictLogging {
 trait ConfigLoader[A] { self =>
   def load(config: Config, path: String = ""): A
 
-  def map[B](f: A => B): ConfigLoader[B] = (config: Config, path: String) => f(self.load(config, path))
+  def map[B](f: A => B): ConfigLoader[B] =
+    (config: Config, path: String) => f(self.load(config, path))
 }
 
 object ConfigLoader {
-
-  def apply[A](f: Config => String => A): ConfigLoader[A] = (config: Config, path: String) => f(config)(path)
+  def apply[A](f: Config => String => A): ConfigLoader[A] =
+    (config: Config, path: String) => f(config)(path)
 
   implicit val stringLoader: ConfigLoader[String] = ConfigLoader(_.getString)
 
@@ -346,9 +365,10 @@ object ConfigLoader {
   implicit val seqBooleanLoader: ConfigLoader[Seq[Boolean]] =
     ConfigLoader(_.getBooleanList).map(_.asScala.map(_.booleanValue).toVector)
 
-  implicit val durationLoader: ConfigLoader[Duration] = ConfigLoader { config => path =>
-    if (!config.getIsNull(path)) config.getDuration(path).toNanos.nanos
-    else Duration.Inf
+  implicit val durationLoader: ConfigLoader[Duration] = ConfigLoader {
+    config => path =>
+      if (!config.getIsNull(path)) config.getDuration(path).toNanos.nanos
+      else Duration.Inf
   }
 
   // Note: this does not support null values but it added for convenience
@@ -376,14 +396,16 @@ object ConfigLoader {
   implicit val seqLongLoader: ConfigLoader[Seq[Long]] =
     ConfigLoader(_.getDoubleList).map(_.asScala.map(_.longValue).toVector)
 
-  implicit val bytesLoader: ConfigLoader[ConfigMemorySize] = ConfigLoader(_.getMemorySize)
+  implicit val bytesLoader: ConfigLoader[ConfigMemorySize] = ConfigLoader(
+    _.getMemorySize)
 
   implicit val seqBytesLoader: ConfigLoader[Seq[ConfigMemorySize]] =
     ConfigLoader(_.getMemorySizeList).map(_.asScala.toVector)
 
   implicit val configLoader: ConfigLoader[Config] = ConfigLoader(_.getConfig)
   implicit val configListLoader: ConfigLoader[ConfigList] = ConfigLoader(_.getList)
-  implicit val configObjectLoader: ConfigLoader[ConfigObject] = ConfigLoader(_.getObject)
+  implicit val configObjectLoader: ConfigLoader[ConfigObject] = ConfigLoader(
+    _.getObject)
 
   implicit val seqConfigLoader: ConfigLoader[Seq[Config]] =
     ConfigLoader(_.getConfigList).map(_.asScala.toVector)
@@ -397,7 +419,8 @@ object ConfigLoader {
   /**
    * Loads a value, interpreting a null value as None and any other value as Some(value).
    */
-  implicit def optionLoader[A](implicit valueLoader: ConfigLoader[A]): ConfigLoader[Option[A]] =
+  implicit def optionLoader[A](
+      implicit valueLoader: ConfigLoader[A]): ConfigLoader[Option[A]] =
     (config: Config, path: String) => {
       if (!config.hasPath(path) || config.getIsNull(path)) None
       else {
@@ -408,7 +431,6 @@ object ConfigLoader {
 
   implicit val propertiesLoader: ConfigLoader[Properties] =
     new ConfigLoader[Properties] {
-
       def make(props: Properties, parentKeys: String, obj: ConfigObject): Unit =
         obj.keySet().forEach { key =>
           val value = obj.get(key)
@@ -435,8 +457,10 @@ object ConfigLoader {
 
   implicit val scalaMapLoader: ConfigLoader[Map[String, String]] =
     new ConfigLoader[Map[String, String]] {
-
-      def make(props: mutable.Map[String, String], parentKeys: String, obj: ConfigObject): Unit =
+      def make(
+          props: mutable.Map[String, String],
+          parentKeys: String,
+          obj: ConfigObject): Unit =
         obj.keySet().forEach { key: String =>
           val value = obj.get(key)
           val propKey =

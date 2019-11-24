@@ -36,12 +36,15 @@ import org.scalatest.time.Span
 
 import scala.concurrent.duration._
 
-class ConfigEntityTest extends ScalaTestWithActorTestKit(s"""
+class ConfigEntityTest
+    extends ScalaTestWithActorTestKit(s"""
       akka.persistence.journal.plugin = "akka.persistence.journal.inmem"
       akka.persistence.snapshot-store.plugin = "akka.persistence.snapshot-store.local"
-      akka.persistence.snapshot-store.local.dir = "target/snapshot-${UUID.randomUUID().toString}"
-    """) with FusionTestWordSpec {
-
+      akka.persistence.snapshot-store.local.dir = "target/snapshot-${UUID
+      .randomUUID()
+      .toString}"
+    """)
+    with FusionTestWordSpec {
   implicit override val patience: PatienceConfig =
     PatienceConfig(scaled(Span(10, Seconds)), scaled(Span(15, Millis)))
   implicit override val timeout: Timeout = 5.seconds
@@ -61,8 +64,11 @@ class ConfigEntityTest extends ScalaTestWithActorTestKit(s"""
       TimeUnit.SECONDS.sleep(5)
       println(s"configEntity: $configEntity")
       val published = configEntity
-        .ask[ConfigReply](replyTo =>
-          ConfigEntity.PublishContent(ConfigPublish(namespace, dataId, groupName, content), replyTo))
+        .ask[ConfigReply](
+          replyTo =>
+            ConfigEntity.PublishContent(
+              ConfigPublish(namespace, dataId, groupName, content),
+              replyTo))
         .futureValue
       println(s"Published: $published")
       TimeUnit.SECONDS.sleep(5)
@@ -70,13 +76,16 @@ class ConfigEntityTest extends ScalaTestWithActorTestKit(s"""
 
     "query" in {
       val reply = configShard
-        .ask[ConfigReply](replyTo =>
-          ShardingEnvelope(entityId, ConfigEntity.QueryContent(ConfigQuery(namespace, List(dataId)), replyTo)))
+        .ask[ConfigReply](
+          replyTo =>
+            ShardingEnvelope(
+              entityId,
+              ConfigEntity
+                .QueryContent(ConfigQuery(namespace, List(dataId)), replyTo)))
         .futureValue
       reply.status should be(IntStatus.OK)
       val queried = reply.data.asInstanceOf[ConfigReply.Data.Queried].value
       println(s"query result: $queried")
     }
   }
-
 }

@@ -9,9 +9,7 @@ import me.yangbajing.jdbc.JDBCSpec
  */
 // #AuthorRepositoryTest
 class AuthorRepositoryTest extends MeSpec with JDBCSpec {
-
   "AuthorRepositoryTest" should {
-
     val accountRepository = new AuthorRepository(dataSource)
 
     "create" in {
@@ -33,8 +31,6 @@ class AuthorRepositoryTest extends MeSpec with JDBCSpec {
       results should not be empty
       println(s"results size: ${results.size}")
     }
-
   }
-
 }
 // #AuthorRepositoryTest

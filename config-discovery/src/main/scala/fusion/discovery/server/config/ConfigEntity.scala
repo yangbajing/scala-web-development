@@ -35,18 +35,25 @@ object ConfigEntity {
   private val RESERVED_VERSIONS_TAKE = 19
 
   sealed trait Command extends CborSerializable
-  case class PublishContent(in: ConfigPublish, replyTo: ActorRef[ConfigReply]) extends Command
-  case class QueryContent(in: ConfigQuery, replyTo: ActorRef[ConfigReply]) extends Command
+  case class PublishContent(in: ConfigPublish, replyTo: ActorRef[ConfigReply])
+      extends Command
+  case class QueryContent(in: ConfigQuery, replyTo: ActorRef[ConfigReply])
+      extends Command
 
   sealed trait Event extends CborSerializable
   case class Published(in: ConfigPublish) extends Event
 
   case class Content(content: String, version: Int) extends CborSerializable
 
-  case class State(namespace: String, dataId: String, groupName: String, contents: List[Content])
+  case class State(
+      namespace: String,
+      dataId: String,
+      groupName: String,
+      contents: List[Content])
       extends CborSerializable {
     @transient def headContent: Option[Content] = contents.headOption
-    @transient def headContentVersion: Int = if (contents.isEmpty) -1 else contents.head.version
+    @transient def headContentVersion: Int =
+      if (contents.isEmpty) -1 else contents.head.version
   }
 
   val TypeKey: EntityTypeKey[Command] = EntityTypeKey[Command]("ConfigEntity")
@@ -64,8 +71,11 @@ object ConfigEntity {
     })
   }
 
-  def apply(entityId: String, persistenceId: PersistenceId, initState: State): Behavior[Command] = Behaviors.setup {
-    context =>
+  def apply(
+      entityId: String,
+      persistenceId: PersistenceId,
+      initState: State): Behavior[Command] =
+    Behaviors.setup { context =>
       context.log.info(
         s"ConfigEntity start up. entityId: $entityId, persistenceId: $persistenceId, initState: $initState")
 
@@ -74,20 +84,24 @@ object ConfigEntity {
         initState,
         commandHandler(context),
         eventHandler(context))
-  }
+    }
 
-  private def commandHandler(context: ActorContext[Command])(state: State, cmd: Command): Effect[Event, State] = {
+  private def commandHandler(context: ActorContext[Command])(
+      state: State,
+      cmd: Command): Effect[Event, State] = {
     context.log.debug(s"commandHandler($state, $cmd)")
     cmd match {
       case PublishContent(in, replyTo) =>
         Effect.persist(Published(in)).thenRun { newState =>
           val result = newState match {
-            case State(_, _, _, content :: _) if content.version > state.headContentVersion =>
+            case State(_, _, _, content :: _)
+                if content.version > state.headContentVersion =>
               ConfigReply(IntStatus.OK)
             case _ =>
               ConfigReply(IntStatus.INTERNAL_ERROR)
           }
-          context.log.debug(s"PublishContent thenRun, result: $result, newState: $newState")
+          context.log.debug(
+            s"PublishContent thenRun, result: $result, newState: $newState")
           replyTo ! result
         }
       case QueryContent(in, replyTo) =>
@@ -102,15 +116,16 @@ object ConfigEntity {
     }
   }
 
-  private def eventHandler(context: ActorContext[Command])(state: State, event: Event): State = {
+  private def eventHandler(
+      context: ActorContext[Command])(state: State, event: Event): State = {
     context.log.debug(s"eventHandler($state, $event)")
     event match {
       case Published(in) =>
         context.log.debug(s"Published receive: $in")
         val version = state.contents.headOption.map(_.version + 1).getOrElse(0)
-        val contents = Content(in.content, version) :: state.contents.take(RESERVED_VERSIONS_TAKE)
+        val contents = Content(in.content, version) :: state.contents.take(
+            RESERVED_VERSIONS_TAKE)
         state.copy(contents = contents)
     }
   }
-
 }

@@ -12,8 +12,10 @@ import message.oauth.GrantType
 import scalaweb.auth.model.AuthRejection
 import scalaweb.auth.service.AuthService
 
-class AuthRoute(val authService: AuthService) extends AbstractRoute with AuthDirectives with StrictLogging {
-
+class AuthRoute(val authService: AuthService)
+    extends AbstractRoute
+    with AuthDirectives
+    with StrictLogging {
   override def route: Route =
     pathPrefix("auth") {
       authorizeSigninHTML ~
@@ -26,7 +28,16 @@ class AuthRoute(val authService: AuthService) extends AbstractRoute with AuthDir
     htmlRoute
 
   val authorizePDM =
-    ('account, 'password, 'response_type, 'client_id, 'redirect_uri, 'scope, 'state.?, 'access_type.?, 'login_hint.?)
+    (
+      'account,
+      'password,
+      'response_type,
+      'client_id,
+      'redirect_uri,
+      'scope,
+      'state.?,
+      'access_type.?,
+      'login_hint.?)
 
   def authorizeSigninHTML: Route = pathGet("authorize") {
     getFromDirectory("oauth/web/auth/authorize.html")
@@ -36,7 +47,8 @@ class AuthRoute(val authService: AuthService) extends AbstractRoute with AuthDir
   def signinRoute: Route = pathPost("signin") {
     formFields(authorizePDM).as(AuthorizeSigninRequest.apply _) { req =>
       onSuccess(authService.authorizeSignin(req)) { redirectUri =>
-        complete(HttpResponse(StatusCodes.Found, headers = List(Location(redirectUri))))
+        complete(
+          HttpResponse(StatusCodes.Found, headers = List(Location(redirectUri))))
       }
     }
   }
@@ -80,8 +92,9 @@ class AuthRoute(val authService: AuthService) extends AbstractRoute with AuthDir
     }
   }
 
-  def refreshTokenRoute: Route = pathGet("refresh_token" / Segment) { refreshToken =>
-    futureComplete(authService.refreshToken(refreshToken))
+  def refreshTokenRoute: Route = pathGet("refresh_token" / Segment) {
+    refreshToken =>
+      futureComplete(authService.refreshToken(refreshToken))
   }
 
   def callbackRoute: Route = pathGet("callback") {
@@ -92,5 +105,4 @@ class AuthRoute(val authService: AuthService) extends AbstractRoute with AuthDir
 
   def htmlRoute: Route = //getFromResourceDirectory("html")
     getFromDirectory("oauth/web")
-
 }

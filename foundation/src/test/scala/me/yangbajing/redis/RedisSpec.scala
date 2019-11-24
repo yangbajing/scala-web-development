@@ -15,5 +15,4 @@ trait RedisSpec extends BeforeAndAfterAll {
     redisSession.close()
     super.afterAll()
   }
-
 }

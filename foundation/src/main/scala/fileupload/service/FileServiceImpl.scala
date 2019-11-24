@@ -16,8 +16,9 @@ import fileupload.util.FileUtils
 import scala.concurrent.Future
 import scala.concurrent.duration._
 
-class FileServiceImpl(val system: ActorSystem, implicit val mat: Materializer) extends FileService with StrictLogging {
-
+class FileServiceImpl(val system: ActorSystem, implicit val mat: Materializer)
+    extends FileService
+    with StrictLogging {
   // #progressByHash
   override def progressByHash(hash: String): Future[Option[FileMeta]] = {
     require(Objects.nonNull(hash) && hash.nonEmpty, "hash 不能为空。")
@@ -45,7 +46,8 @@ class FileServiceImpl(val system: ActorSystem, implicit val mat: Materializer) e
    * @param fileInfo
    * @return
    */
-  private def processFile(fileInfo: FileInfo)(implicit mat: Materializer): Future[FileBO] = {
+  private def processFile(fileInfo: FileInfo)(
+      implicit mat: Materializer): Future[FileBO] = {
     import system.dispatcher
     val bodyPart = fileInfo.bodyPart
     fileInfo.hash.flatMap(FileUtils.getFileMeta) match {
@@ -63,7 +65,9 @@ class FileServiceImpl(val system: ActorSystem, implicit val mat: Materializer) e
     }
   }
 
-  private def mergeBodyPart(fileInfo: FileInfo, part: Multipart.FormData.BodyPart): Future[FileInfo] = {
+  private def mergeBodyPart(
+      fileInfo: FileInfo,
+      part: Multipart.FormData.BodyPart): Future[FileInfo] = {
     import system.dispatcher
     part.name.split('.') match {
       case Array(_) =>
@@ -77,9 +81,15 @@ class FileServiceImpl(val system: ActorSystem, implicit val mat: Materializer) e
             Future.successful(fileInfo.copy(hash = Some(hash.toLowerCase)))
         }
       case Array(_, "contentLength") =>
-        part.entity.toStrict(1.second).map(entity => fileInfo.copy(contentLength = entity.data.utf8String.toLong))
+        part.entity
+          .toStrict(1.second)
+          .map(entity =>
+            fileInfo.copy(contentLength = entity.data.utf8String.toLong))
       case Array(_, "startPosition") =>
-        part.entity.toStrict(1.second).map(entity => fileInfo.copy(startPosition = entity.data.utf8String.toLong))
+        part.entity
+          .toStrict(1.second)
+          .map(entity =>
+            fileInfo.copy(startPosition = entity.data.utf8String.toLong))
       case _ =>
         Future.failed(new IllegalArgumentException(s"未知的FormData字段：${part.name}"))
     }

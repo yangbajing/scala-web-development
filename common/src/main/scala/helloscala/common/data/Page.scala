@@ -21,7 +21,6 @@ import scala.util.Try
 trait PageSort {}
 
 object Page {
-
   /**
    * 默认页码
    */
@@ -49,10 +48,12 @@ trait Pager[T] {
   def params: Map[String, Any]
 }
 
-case class PageInput(@BeanProperty page: Int, @BeanProperty size: Int, @BeanProperty params: Map[String, Any] = Map())
+case class PageInput(
+    @BeanProperty page: Int,
+    @BeanProperty size: Int,
+    @BeanProperty params: Map[String, Any] = Map())
     extends Page
     with StrictLogging {
-
   def toParamSeq: List[(String, Any)] =
     ("page", page) :: ("size", size) :: params.toList
 
@@ -138,16 +139,13 @@ case class PageInput(@BeanProperty page: Int, @BeanProperty size: Int, @BeanProp
       case s: String if StringUtils.isNoneBlank(s) => Some(s)
       case _                                       => None
     }
-
 }
 
 object PageInput {
-
   val default = PageInput(Page.DEFAULT_PAGE, Page.DEFAULT_SIZE)
 
   def apply(params: Map[String, Any]): PageInput =
     PageInput(Page.DEFAULT_SIZE, Page.DEFAULT_SIZE, params)
-
 }
 
 trait PageResult[T] extends Page {
@@ -159,10 +157,12 @@ trait PageResult[T] extends Page {
 }
 
 object PageResult {
-
-  def apply[T](page: Int, size: Int, content: Seq[T], totalElements: Int): PageResult[T] =
+  def apply[T](
+      page: Int,
+      size: Int,
+      content: Seq[T],
+      totalElements: Int): PageResult[T] =
     DefaultPageResult(page, size, content, totalElements)
-
 }
 
 case class DefaultPageResult[T](
@@ -171,7 +171,6 @@ case class DefaultPageResult[T](
     @BeanProperty content: Seq[T],
     @BeanProperty totalElements: Long)
     extends PageResult[T] {
-
   override def toString =
     s"DefaultPageResult($page, $size, $content, $totalElements, $totalPages)"
 }

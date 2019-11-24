@@ -7,12 +7,14 @@ import com.typesafe.config.ConfigParseOptions
 import helloscala.common.Configuration
 
 object ConfigurationHelper {
-
   def fromProperties(props: Properties): Configuration = {
     ConfigFactory.systemProperties()
     val config =
-      Parseable.newProperties(props, ConfigParseOptions.defaults()).parse().asInstanceOf[AbstractConfigObject].toConfig
+      Parseable
+        .newProperties(props, ConfigParseOptions.defaults())
+        .parse()
+        .asInstanceOf[AbstractConfigObject]
+        .toConfig
     Configuration(config)
   }
-
 }

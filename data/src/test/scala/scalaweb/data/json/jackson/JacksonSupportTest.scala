@@ -20,20 +20,23 @@ case class Foo(name: String, since: Int)
 case class FooTime(name: String, since: OffsetDateTime)
 
 class JacksonSupportTest extends HelloscalaSpec with ScalatestRouteTest {
-
   // #default-ObjectMapper
   "Default ObjectMapper" should {
     import de.heikoseeberger.akkahttpjackson.JacksonSupport._
 
     "从case class序列化和反序列化" in {
       val foo = Foo("bar", 2018)
-      val result = Marshal(foo).to[RequestEntity].flatMap(Unmarshal(_).to[Foo]).futureValue
+      val result =
+        Marshal(foo).to[RequestEntity].flatMap(Unmarshal(_).to[Foo]).futureValue
       foo shouldBe result
     }
 
     "从数组case class序列化和反序列化" in {
       val foos = Seq(Foo("bar", 2018))
-      val result = Marshal(foos).to[RequestEntity].flatMap(Unmarshal(_).to[Seq[Foo]]).futureValue
+      val result = Marshal(foos)
+        .to[RequestEntity]
+        .flatMap(Unmarshal(_).to[Seq[Foo]])
+        .futureValue
       foos shouldBe result
     }
 
@@ -50,7 +53,8 @@ class JacksonSupportTest extends HelloscalaSpec with ScalatestRouteTest {
   // #custom-ObjectMapper
   "Custom ObjectMapper" should {
     import de.heikoseeberger.akkahttpjackson.JacksonSupport._
-    implicit val objectMapper: ObjectMapper = helloscala.common.json.Jackson.defaultObjectMapper
+    implicit val objectMapper: ObjectMapper =
+      helloscala.common.json.Jackson.defaultObjectMapper
 
     "支持OffsetDateTime" in {
       val foo = FooTime("羊八井", OffsetDateTime.now())
@@ -61,7 +65,11 @@ class JacksonSupportTest extends HelloscalaSpec with ScalatestRouteTest {
 
     "从数组case class序列化和反序列化" in {
       val foos = Seq(FooTime("羊八井", OffsetDateTime.now()))
-      val results = Marshal(foos).to[RequestEntity].flatMap(Unmarshal(_).to[Seq[FooTime]]).futureValue
+      val results =
+        Marshal(foos)
+          .to[RequestEntity]
+          .flatMap(Unmarshal(_).to[Seq[FooTime]])
+          .futureValue
       foos shouldBe results
     }
   }
@@ -97,7 +105,8 @@ class JacksonSupportTest extends HelloscalaSpec with ScalatestRouteTest {
   "routing-dsl" should {
     import akka.http.scaladsl.server.Directives._
     import de.heikoseeberger.akkahttpjackson.JacksonSupport._
-    implicit val objectMapper: ObjectMapper = helloscala.common.json.Jackson.defaultObjectMapper
+    implicit val objectMapper: ObjectMapper =
+      helloscala.common.json.Jackson.defaultObjectMapper
 
     val route: Route = path("api") {
       post {
@@ -119,5 +128,4 @@ class JacksonSupportTest extends HelloscalaSpec with ScalatestRouteTest {
     }
   }
   // #routing-dsl
-
 }

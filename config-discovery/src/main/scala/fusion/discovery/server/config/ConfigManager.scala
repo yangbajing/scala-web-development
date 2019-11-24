@@ -40,10 +40,21 @@ object ConfigManager {
       replyTo: ActorRef[immutable.Seq[ConfigContent]])
       extends Command
 
-  case class UpdateContent(namespace: String, dataId: String, content: String, replyTo: ActorRef[Configs.ModifyReply])
+  case class UpdateContent(
+      namespace: String,
+      dataId: String,
+      content: String,
+      replyTo: ActorRef[Configs.ModifyReply])
       extends Command
-  case class RemoveContent(namespace: String, dataId: String, replyTo: ActorRef[Configs.ModifyReply]) extends Command
-  case class AllContent(namespace: String, replyTo: ActorRef[immutable.Seq[ConfigContent]]) extends Command
+  case class RemoveContent(
+      namespace: String,
+      dataId: String,
+      replyTo: ActorRef[Configs.ModifyReply])
+      extends Command
+  case class AllContent(
+      namespace: String,
+      replyTo: ActorRef[immutable.Seq[ConfigContent]])
+      extends Command
 
   case class RegisterChangeListener(
       listenerId: UUID,
@@ -63,7 +74,9 @@ object ConfigManager {
   private def active(
       context: ActorContext[Command],
       children: Map[String, ActorRef[Configs.Command]]): Behavior[Command] = {
-    def activeThan(namespace: String, childFunc: ActorRef[Configs.Command] => Unit): Behavior[Command] = {
+    def activeThan(
+        namespace: String,
+        childFunc: ActorRef[Configs.Command] => Unit): Behavior[Command] = {
       children.get(namespace) match {
         case Some(child) =>
           childFunc(child)
@@ -73,7 +86,6 @@ object ConfigManager {
           childFunc(child)
           active(context, children.updated(namespace, child))
       }
-
     }
 
     Behaviors.receiveMessagePartial {
@@ -86,8 +98,9 @@ object ConfigManager {
       case AllContent(namespace, replyTo) =>
         activeThan(namespace, _ ! Configs.AllContent(replyTo))
       case RegisterChangeListener(listenerId, in, queue) =>
-        activeThan(in.namespace, _ ! Configs.RegisterListener(listenerId, in.dataId, queue))
+        activeThan(
+          in.namespace,
+          _ ! Configs.RegisterListener(listenerId, in.dataId, queue))
     }
   }
-
 }

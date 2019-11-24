@@ -18,7 +18,8 @@ import scala.concurrent.Future
 object Schema {
   def apply(config: Config): Schema = new Schema(Configuration(config))
   def apply(config: Configuration): Schema = new Schema(config)
-  def apply(path: String = "scalaweb.persistence.datasource"): Schema = apply(ConfigFactory.load().getConfig(path))
+  def apply(path: String = "scalaweb.persistence.datasource"): Schema =
+    apply(ConfigFactory.load().getConfig(path))
 }
 
 class Schema private (conf: Configuration) {
@@ -30,12 +31,16 @@ class Schema private (conf: Configuration) {
 
   final def run[R](a: DBIOAction[R, NoStream, Nothing]): Future[R] = db.run(a)
 
-  final def runTransaction[R, E <: Effect.Transactional](a: DBIOAction[R, NoStream, E]): Future[R] =
+  final def runTransaction[R, E <: Effect.Transactional](
+      a: DBIOAction[R, NoStream, E]): Future[R] =
     db.run(a.transactionally)
 
-  final def stream[T](a: DBIOAction[_, Streaming[T], Nothing]): DatabasePublisher[T] = db.stream(a)
+  final def stream[T](
+      a: DBIOAction[_, Streaming[T], Nothing]): DatabasePublisher[T] =
+    db.stream(a)
 
-  final def streamTransaction[T, E <: Effect.Transactional](a: DBIOAction[_, Streaming[T], E]): DatabasePublisher[T] =
+  final def streamTransaction[T, E <: Effect.Transactional](
+      a: DBIOAction[_, Streaming[T], E]): DatabasePublisher[T] =
     db.stream(a.transactionally)
 
   def tOrg = TableQuery[TableOrg]
@@ -60,5 +65,7 @@ class TableOrg(tag: Tag) extends Table[Org](tag, "t_org") {
 
   def updatedAt = column[Option[OffsetDateTime]]("updated_at")
 
-  def * = (id, code, name, contact, parent, parents, status, createdAt, updatedAt).mapTo[Org]
+  def * =
+    (id, code, name, contact, parent, parents, status, createdAt, updatedAt)
+      .mapTo[Org]
 }

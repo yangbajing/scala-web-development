@@ -13,5 +13,6 @@ import org.scalatest.time.Span
 trait FusionTestWordSpec extends WordSpecLike with OptionValues with EitherValues
 
 trait HelloscalaSpec extends FusionTestWordSpec with ScalaFutures with Matchers {
-  implicit override val patienceConfig: PatienceConfig = PatienceConfig(Span(60, Seconds), Span(200, Milliseconds))
+  implicit override val patienceConfig: PatienceConfig =
+    PatienceConfig(Span(60, Seconds), Span(200, Milliseconds))
 }

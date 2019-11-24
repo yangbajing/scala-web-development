@@ -49,11 +49,14 @@ class HelloScalaSpec extends ScalaTestWithActorTestKit with WordSpecLike {
     "ask" in {
       import akka.actor.typed.scaladsl.AskPattern._
       val actorRef = spawn(HelloScala(), "ask")
-      val reply = actorRef.ask[Reply](replyTo => Hello("Hello", replyTo)).mapTo[HelloReply].futureValue
+      val reply =
+        actorRef
+          .ask[Reply](replyTo => Hello("Hello", replyTo))
+          .mapTo[HelloReply]
+          .futureValue
       reply.message should be("Hello, scala!")
     }
     // #HelloScalaSpec
   }
-
 }
 // #HelloScala-scala

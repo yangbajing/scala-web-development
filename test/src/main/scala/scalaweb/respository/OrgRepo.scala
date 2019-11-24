@@ -9,10 +9,13 @@ import scalaweb.respository.SlickProfile.api._
 import scala.concurrent.ExecutionContext
 
 object OrgRepo {
-
   def page(req: OrgPageReq)(implicit ec: ExecutionContext) =
     for {
-      content <- tOrgFilter(req).sortBy(_.updatedAt.desc).drop(req.offset).take(req.size).result
+      content <- tOrgFilter(req)
+        .sortBy(_.updatedAt.desc)
+        .drop(req.offset)
+        .take(req.size)
+        .result
       totalElements <- tOrgFilter(req).length.result
     } yield OrgPageResp(content, totalElements, req.page, req.size)
 
@@ -42,5 +45,4 @@ object OrgRepo {
   def removeByIds(orgIds: Iterable[Int]) = tOrg.filter(_.id.inSet(orgIds)).delete
 
   def tOrg = TableQuery[TableOrg]
-
 }

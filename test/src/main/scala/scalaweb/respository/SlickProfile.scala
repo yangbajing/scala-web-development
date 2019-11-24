@@ -22,7 +22,9 @@ trait SlickProfile
     with PgJsonSupport {
   override val api: MyAPI.type = MyAPI
 
-  val plainApi = new Date2DateTimePlainImplicits with SimpleHStorePlainImplicits with SimpleJsonPlainImplicits {
+  val plainApi = new Date2DateTimePlainImplicits
+    with SimpleHStorePlainImplicits
+    with SimpleJsonPlainImplicits {
     import com.github.tminglei.slickpg.utils.PlainSQLUtils._
 
     ///
@@ -32,14 +34,18 @@ trait SlickProfile
     }
 
     implicit val getObjectNodeOption: GetResult[Option[ObjectNode]] =
-      mkGetResult(_.nextJsonOption().map(js => Jackson.defaultObjectMapper.readTree(js.value).asInstanceOf[ObjectNode]))
+      mkGetResult(_.nextJsonOption().map(js =>
+        Jackson.defaultObjectMapper.readTree(js.value).asInstanceOf[ObjectNode]))
 
     implicit val setObjectNode =
-      mkSetParameter[ObjectNode](pgjson, jstr => Jackson.defaultObjectMapper.writeValueAsString(jstr))
+      mkSetParameter[ObjectNode](
+        pgjson,
+        jstr => Jackson.defaultObjectMapper.writeValueAsString(jstr))
 
     implicit val setObjectNodeOption =
-      mkOptionSetParameter[ObjectNode](pgjson, jstr => Jackson.defaultObjectMapper.writeValueAsString(jstr))
-
+      mkOptionSetParameter[ObjectNode](
+        pgjson,
+        jstr => Jackson.defaultObjectMapper.writeValueAsString(jstr))
   }
 
   override def pgjson: String = "jsonb"
@@ -47,8 +53,12 @@ trait SlickProfile
   override protected def computeCapabilities: Set[Capability] =
     super.computeCapabilities + JdbcCapabilities.insertOrUpdate
 
-  object MyAPI extends super.API with DateTimeImplicits with HStoreImplicits with ArrayImplicits with JsonImplicits {
-
+  object MyAPI
+      extends super.API
+      with DateTimeImplicits
+      with HStoreImplicits
+      with ArrayImplicits
+      with JsonImplicits {
     implicit val objectNodeColumnType: BaseColumnType[ObjectNode] =
       MappedColumnType.base[ObjectNode, JsonString]({ node =>
         JsonString(node.toString)
@@ -64,26 +74,29 @@ trait SlickProfile
         .reduceLeftOption(_ && _)
         .getOrElse(Some(true): Rep[Option[Boolean]])
 
-    def dynamicFilter(item: Option[Rep[Boolean]], list: Option[Rep[Boolean]]*): Rep[Boolean] =
-      (item +: list).collect({ case Some(criteria) => criteria }).reduceLeftOption(_ && _).getOrElse(true: Rep[Boolean])
+    def dynamicFilter(
+        item: Option[Rep[Boolean]],
+        list: Option[Rep[Boolean]]*): Rep[Boolean] =
+      (item +: list)
+        .collect({ case Some(criteria) => criteria })
+        .reduceLeftOption(_ && _)
+        .getOrElse(true: Rep[Boolean])
 
     def dynamicFilterOr(list: Seq[FilterCriteriaType]): Rep[Option[Boolean]] =
       list
         .collect({ case Some(criteria) => criteria })
         .reduceLeftOption(_ || _)
         .getOrElse(Some(true): Rep[Option[Boolean]])
-
   }
-
 }
 
 object SlickProfile extends SlickProfile {
-
   def createDatabase(configuration: Configuration): backend.DatabaseDef = {
     val ds = createHikariDataSource(configuration)
     val poolName = configuration.getOrElse[String]("poolName", "default")
     val numThreads = configuration.getOrElse[Int]("numThreads", 20)
-    val maximumPoolSize = configuration.getOrElse[Int]("maximumPoolSize", numThreads)
+    val maximumPoolSize =
+      configuration.getOrElse[Int]("maximumPoolSize", numThreads)
     val registerMbeans = configuration.getOrElse[Boolean]("registerMbeans", false)
     val executor = AsyncExecutor(
       poolName,
@@ -95,7 +108,9 @@ object SlickProfile extends SlickProfile {
     api.Database.forDataSource(ds, Some(maximumPoolSize), executor)
   }
 
-  def createHikariDataSource(data: (String, String), datas: (String, String)*): HikariDataSource = {
+  def createHikariDataSource(
+      data: (String, String),
+      datas: (String, String)*): HikariDataSource = {
     val props = new Properties()
     props.put(data._1, data._2)
     for ((key, value) <- datas) {
@@ -128,10 +143,11 @@ object SlickProfile extends SlickProfile {
     createHikariDataSource(Configuration(config))
 
   @inline def createHikariDataSource(props: Properties): HikariDataSource =
-    createHikariDataSource(new HikariConfig(REMOVED_KEYS.foldLeft(props) { (props, key) =>
-      props.remove(key); props
+    createHikariDataSource(new HikariConfig(REMOVED_KEYS.foldLeft(props) {
+      (props, key) =>
+        props.remove(key); props
     }))
 
-  def createHikariDataSource(config: HikariConfig): HikariDataSource = new HikariDataSource(config)
-
+  def createHikariDataSource(config: HikariConfig): HikariDataSource =
+    new HikariDataSource(config)
 }

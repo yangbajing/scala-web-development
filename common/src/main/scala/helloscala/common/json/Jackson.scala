@@ -1,7 +1,7 @@
 package helloscala.common.json
 
 import java.lang.reflect.ParameterizedType
-import java.lang.reflect.{Type => JType}
+import java.lang.reflect.{ Type => JType }
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.JsonParser
@@ -33,11 +33,14 @@ object Jackson {
     new ObjectMapper()
     val FILTER_ID_CLASS: Class[GeneratedMessage] = classOf[GeneratedMessage]
     new ObjectMapper()
-      .setFilterProvider(new SimpleFilterProvider()
-        .addFilter(FILTER_ID_CLASS.getName, SimpleBeanPropertyFilter.serializeAllExcept("allFields")))
+      .setFilterProvider(new SimpleFilterProvider().addFilter(
+        FILTER_ID_CLASS.getName,
+        SimpleBeanPropertyFilter.serializeAllExcept("allFields")))
       .setAnnotationIntrospector(new JacksonAnnotationIntrospector() {
         override def findFilterId(a: Annotated): AnyRef =
-          if (FILTER_ID_CLASS.isAssignableFrom(a.getRawType)) FILTER_ID_CLASS.getName else super.findFilterId(a)
+          if (FILTER_ID_CLASS.isAssignableFrom(a.getRawType))
+            FILTER_ID_CLASS.getName
+          else super.findFilterId(a)
       })
       .findAndRegisterModules
       //.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"))
@@ -56,13 +59,17 @@ object Jackson {
     // #defaultObjectMapper
   }
 
-  def stringify(value: AnyRef): String = defaultObjectMapper.writeValueAsString(value)
+  def stringify(value: AnyRef): String =
+    defaultObjectMapper.writeValueAsString(value)
 
   def prettyString(value: AnyRef): String =
-    Jackson.defaultObjectMapper.writer(new DefaultPrettyPrinter()).writeValueAsString(value)
+    Jackson.defaultObjectMapper
+      .writer(new DefaultPrettyPrinter())
+      .writeValueAsString(value)
 
-  def readValue[A](
-      content: String)(implicit ct: ClassTag[A], objectMapper: ObjectMapper = Jackson.defaultObjectMapper): A =
+  def readValue[A](content: String)(
+      implicit ct: ClassTag[A],
+      objectMapper: ObjectMapper = Jackson.defaultObjectMapper): A =
     objectMapper.readValue(content, ct.runtimeClass).asInstanceOf[A]
 
   def createObjectNode: ObjectNode = defaultObjectMapper.createObjectNode
@@ -80,7 +87,8 @@ object Jackson {
         new ParameterizedType {
           def getRawType: Class[_] = mirror.runtimeClass(t)
 
-          def getActualTypeArguments: Array[JType] = t.typeArgs.map(mapType).toArray
+          def getActualTypeArguments: Array[JType] =
+            t.typeArgs.map(mapType).toArray
 
           def getOwnerType: JType = null
         }
@@ -89,5 +97,4 @@ object Jackson {
       override def getType: JType = mapType(t.tpe)
     }
   }
-
 }

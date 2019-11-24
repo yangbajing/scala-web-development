@@ -11,9 +11,12 @@ import scala.util.Success
  * Created by yangbajing(yangbajing@gmail.com) on 2017-04-17.
  */
 object Boot {
-
   def main(args: Array[String]): Unit = {
-    val bindingFuture = Http().bindAndHandle(handler = new Routes().route, interface = "0.0.0.0", port = 9999)
+    val bindingFuture =
+      Http().bindAndHandle(
+        handler = new Routes().route,
+        interface = "0.0.0.0",
+        port = 9999)
 
     bindingFuture.onComplete {
       case Success(binding) =>
@@ -23,5 +26,4 @@ object Boot {
         System.exit(-1)
     }
   }
-
 }

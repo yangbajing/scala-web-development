@@ -24,5 +24,4 @@ trait JDBCSpec extends BeforeAndAfterAll {
     //dataSource
     super.afterAll()
   }
-
 }

@@ -237,7 +237,13 @@ yangbajing/scala-web-development
     <li><a href="../engineering/swagger.html" class="page">使用Swagger编写API文档</a></li>
     <li><a href="../engineering/guice.html" class="page">使用Guice管理类依赖</a></li>
   </ul></li>
-  <li><a href="../grpc/index.html" class="page">Akka Grpc</a></li>
+  <li><a href="../grpc/index.html" class="page">Akka gRPC</a>
+  <ul>
+    <li><a href="../grpc/grpc.html" class="page">gRPC服务</a></li>
+    <li><a href="../grpc/build-tool.html" class="page">构建工具</a></li>
+    <li><a href="../grpc/deployment.html" class="page">部署</a></li>
+    <li><a href="../grpc/grpc.z.html" class="page">小结</a></li>
+  </ul></li>
   <li><a href="../config-discovery/index.html" class="page">实战：配置管理、服务发现系统</a></li>
   <li><a href="../appendix/index.html" class="page">附录</a>
   <ul>
@@ -353,7 +359,7 @@ res25: scala.collection.immutable.Map[String,String] = Map(a -&gt; A, b -&gt; B)
 <p>（注：Scala中也<code>scala.collection.mutable._</code>集合，它定义了不可变集合的相应可变集合版本。一般情况下，除非一此性能优先的操作（其实Scala集合采用了共享存储的优化，生成一个新集合并不会生成所有元素的复本，它将会和老的集合共享大元素。因为Scala中变量默认都是不可变的），推荐还是采用不可变集合。因为它更直观、线程安全，你可以确定你的变量不会在其它地方被不小心的更改。）</p>
 </div>
 <div>
-<a href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/main/paradox/scala/scala.4.md" title="Edit this page" class="md-source-file md-edit">
+<a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/scala/scala.4.md" title="Edit this page" class="md-source-file md-edit">
 Edit this page
 </a>
 </div>

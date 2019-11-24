@@ -22,11 +22,11 @@ trait MeSpec
   implicit val mat = Materializer(system)
   implicit def ec = system.dispatcher
 
-  implicit override def patienceConfig: PatienceConfig = PatienceConfig(Span(90, Seconds), Span(50, Milliseconds))
+  implicit override def patienceConfig: PatienceConfig =
+    PatienceConfig(Span(90, Seconds), Span(50, Milliseconds))
 
   override protected def afterAll(): Unit = {
     system.terminate()
     super.afterAll()
   }
-
 }

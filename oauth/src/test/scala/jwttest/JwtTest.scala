@@ -10,12 +10,16 @@ import pdi.jwt.JwtClaim
 import pdi.jwt.JwtHeader
 
 class JwtTest extends FunSuite with Matchers {
-
   test("claim") {
     val str =
-      Jwt.encode(JwtClaim("""{"name":"John Doe","admin":true,"iat":1516239022}""", subject = Some("1234567890")))
+      Jwt.encode(
+        JwtClaim(
+          """{"name":"John Doe","admin":true,"iat":1516239022}""",
+          subject = Some("1234567890")))
     val str1 = Base64.getUrlEncoder.encode(
-      JwtClaim("""{"name":"John Doe","admin":true}""", subject = Some("1234567890")).toJson.getBytes("UTF-8"))
+      JwtClaim(
+        """{"name":"John Doe","admin":true}""",
+        subject = Some("1234567890")).toJson.getBytes("UTF-8"))
     println(str)
     println(str1)
   }
@@ -23,7 +27,10 @@ class JwtTest extends FunSuite with Matchers {
   test("jwt") {
     val token = Jwt.encode(
       JwtHeader(JwtAlgorithm.RS256, "JWT"),
-      JwtClaim("""{"name":"John Doe","admin":true}""", subject = Some("1234567890"), issuedAt = Some(1516239022L)),
+      JwtClaim(
+        """{"name":"John Doe","admin":true}""",
+        subject = Some("1234567890"),
+        issuedAt = Some(1516239022L)),
       """-----BEGIN RSA PRIVATE KEY-----
         |MIICWwIBAAKBgQDdlatRjRjogo3WojgGHFHYLugdUWAY9iR3fy4arWNA1KoS8kVw
         |33cJibXr8bvwUAUparCwlvdbH6dvEOfou0/gCFQsHUfQrSDv+MuSUMAe8jzKE4qW
@@ -68,7 +75,8 @@ class JwtTest extends FunSuite with Matchers {
   }
 
   test("decode") {
-    val publicKey = """-----BEGIN PUBLIC KEY-----
+    val publicKey =
+      """-----BEGIN PUBLIC KEY-----
                                                   |MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDdlatRjRjogo3WojgGHFHYLugd
                                                   |UWAY9iR3fy4arWNA1KoS8kVw33cJibXr8bvwUAUparCwlvdbH6dvEOfou0/gCFQs
                                                   |HUfQrSDv+MuSUMAe8jzKE4qW+jK+xQU9a03GUnKHkkle+Q0pX/g6jXZ7r1/xAK5D

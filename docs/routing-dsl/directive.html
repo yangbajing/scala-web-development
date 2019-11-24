@@ -237,7 +237,13 @@ yangbajing/scala-web-development
     <li><a href="../engineering/swagger.html" class="page">使用Swagger编写API文档</a></li>
     <li><a href="../engineering/guice.html" class="page">使用Guice管理类依赖</a></li>
   </ul></li>
-  <li><a href="../grpc/index.html" class="page">Akka Grpc</a></li>
+  <li><a href="../grpc/index.html" class="page">Akka gRPC</a>
+  <ul>
+    <li><a href="../grpc/grpc.html" class="page">gRPC服务</a></li>
+    <li><a href="../grpc/build-tool.html" class="page">构建工具</a></li>
+    <li><a href="../grpc/deployment.html" class="page">部署</a></li>
+    <li><a href="../grpc/grpc.z.html" class="page">小结</a></li>
+  </ul></li>
   <li><a href="../config-discovery/index.html" class="page">实战：配置管理、服务发现系统</a></li>
   <li><a href="../appendix/index.html" class="page">附录</a>
   <ul>
@@ -351,7 +357,7 @@ object StandardRoute {
 <p>指令已经包含了路由（<code>Route</code>）可以用的所有功能，可以对请求和响应进行任意复杂的转换处理。</p>
 <h2><a href="#组合指令" name="组合指令" class="anchor"><span class="anchor-link"></span></a>组合指令</h2>
 <p>Akka HTTP提供的Routing DSL构造出来的路由结构是一颗树，所以编写指令时通常也是通过“嵌套”的方式来组装到一起的。看一个简单的例子：</p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/main/scala/book/example/route/RouteExample.scala#L17-L39" target="_blank" title="Go to snippet source"></a><code class="language-scala">val route: Route =
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/scala/book/example/route/RouteExample.scala#L16-L38" target="_blank" title="Go to snippet source"></a><code class="language-scala">val route: Route =
   pathPrefix(&quot;user&quot;) {
     pathEndOrSingleSlash { // POST /user
       post {
@@ -376,7 +382,7 @@ object StandardRoute {
   }</code></pre>
 <p>Akka HTTP提供的Routing DSL以树型结构的方式来构造路由结构，它与 <strong>Playframework</strong> 和 <strong>Spring</strong> 定义路由的方式不太一样，很难说哪一种更好。也许刚开始时你会不大习惯这种路由组织方式，一但熟悉以后你会认为它非常的有趣和高效，且很灵活。</p>
 <p>可以看到，若我们的路由非常复杂，它由很多个指令组成，这时假若还把所有路由定义都放到一个代码块里实现就显得非常的臃肿。因为每一个指令都是一个独立的代码块，它通过函数调用的形式组装到一起，我们可以这样对上面定义的路由进行拆分。</p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/main/scala/book/example/route/RouteExample.scala#L43-L68" target="_blank" title="Go to snippet source"></a><code class="language-scala">val route1: Route =
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/scala/book/example/route/RouteExample.scala#L42-L67" target="_blank" title="Go to snippet source"></a><code class="language-scala">val route1: Route =
   pathPrefix(&quot;user&quot;) {
     pathEndOrSingleSlash {
       post {
@@ -403,7 +409,7 @@ def innerUser(userId: Int): Route =
     complete(&quot;Deleted&quot;)
   }</code></pre>
 <p>通过<code>&amp;</code>操作符将多个指令组合成一个，所有指令都符合时通过。</p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/main/scala/book/example/route/RouteExample.scala#L72-L78" target="_blank" title="Go to snippet source"></a><code class="language-scala">val pathEndPost: Directive[Unit] = pathEndOrSingleSlash &amp; post
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/scala/book/example/route/RouteExample.scala#L71-L77" target="_blank" title="Go to snippet source"></a><code class="language-scala">val pathEndPost: Directive[Unit] = pathEndOrSingleSlash &amp; post
 
 val createUser: Route = pathEndPost {
   entity(as[User]) { payload =&gt;
@@ -411,7 +417,7 @@ val createUser: Route = pathEndPost {
   }
 }</code></pre>
 <p>通过<code>|</code>操作符将多个指令组合成一个，只要其中一个指令符合则通过。</p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/main/scala/book/example/route/RouteExample.scala#L82-L87" target="_blank" title="Go to snippet source"></a><code class="language-scala">val deleteEnhance: Directive1[Int] =
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/scala/book/example/route/RouteExample.scala#L81-L86" target="_blank" title="Go to snippet source"></a><code class="language-scala">val deleteEnhance: Directive1[Int] =
   (pathPrefix(IntNumber) &amp; delete) | (path(IntNumber / &quot;_delete&quot;) &amp; put)
 
 val deleteUser: Route = deleteEnhance { userId =&gt;
@@ -419,7 +425,7 @@ val deleteUser: Route = deleteEnhance { userId =&gt;
 }</code></pre><div class="callout note "><div class="callout-title">Note</div>
 <p>上面这段代码来自真实的业务，因为某些落后于时代的安全原因，网管将HTTP的PUT、DELETE、HEAD等方法都禁用了，只保留了GET、POST两个方法。使用如上的技巧可以同时支持两种方式来访问路由。</p>
 <p><strong>还有一种方案来解决这个问题</strong></p>
-<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/main/scala/book/example/route/RouteExample.scala#L91-L97" target="_blank" title="Go to snippet source"></a><code class="language-scala">val deleteUser2 = pathPrefix(IntNumber) { userId =&gt;
+<pre class="prettyprint"><a class="icon go-to-source" href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/scala/book/example/route/RouteExample.scala#L90-L96" target="_blank" title="Go to snippet source"></a><code class="language-scala">val deleteUser2 = pathPrefix(IntNumber) { userId =&gt;
   overrideMethodWithParameter(&quot;httpMethod&quot;) {
     delete {
       complete(s&quot;Deleted User, userId: $userId&quot;)
@@ -480,7 +486,7 @@ val route =
 <p>对于<code>Unit</code>，它比较特殊。<code>onSuccess(futureOfUnit)</code>返回<code>Directive[Tuple1[Unit]]</code>。DSL将会自动转换为<code>Directive[Unit]</code>，等价于<code>Directive0</code>。</p>
 </div>
 <div>
-<a href="https://github.com/yangbajing/scala-web-development/tree/v1.0.0/book/src/main/paradox/routing-dsl/directive.md" title="Edit this page" class="md-source-file md-edit">
+<a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/routing-dsl/directive.md" title="Edit this page" class="md-source-file md-edit">
 Edit this page
 </a>
 </div>

@@ -1,7 +1,8 @@
 package scalaweb.ant.design.pro.mock
 
 object Api {
-  val variables = """const titles = [
+  val variables =
+    """const titles = [
                     |  'Alipay',
                     |  'Angular',
                     |  'Ant Design',
@@ -124,5 +125,4 @@ object Api {
       |  }
       |  return list;
       |}""".stripMargin
-
 }

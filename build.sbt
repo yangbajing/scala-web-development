@@ -14,6 +14,7 @@ lazy val root = Project("scala-web-development", file(".")).aggregate(
   `config-discovery`,
   `engineering-guice`,
   oauth,
+  grpc,
   monitor,
   data,
   foundation,
@@ -26,6 +27,7 @@ lazy val book = project
   .dependsOn(
     `config-discovery`,
     `engineering-guice`,
+    grpc,
     monitor,
     test,
     oauth,
@@ -96,6 +98,16 @@ lazy val monitor = project
     //    test in assembly := {},
     libraryDependencies ++= Seq() ++ _kamons)
 
+lazy val grpc = project
+  .in(file("grpc"))
+  .enablePlugins(AkkaGrpcPlugin, JavaAgent)
+  .dependsOn(common % "compile->compile;test->test")
+  .settings(basicSettings: _*)
+  .settings(
+    javaAgents += _alpnAgent % "runtime;test",
+    libraryDependencies ++= Seq(
+        "com.thesamet.scalapb" %% "scalapb-runtime" % scalapb.compiler.Version.scalapbVersion % "protobuf"))
+
 lazy val data = project
   .in(file("data"))
   .dependsOn(common % "compile->compile;test->test")
@@ -106,13 +118,15 @@ lazy val oauth = project
   .in(file("oauth"))
   .dependsOn(common % "compile->compile;test->test")
   .settings(basicSettings: _*)
-  .settings(libraryDependencies ++= Seq(_jwtCore) ++ _akkaClusters ++ _akkaManagements)
+  .settings(
+    libraryDependencies ++= Seq(_jwtCore) ++ _akkaClusters ++ _akkaManagements)
 
 lazy val foundation = project
   .in(file("foundation"))
   .dependsOn(common % "compile->compile;test->test")
   .settings(basicSettings: _*)
-  .settings(libraryDependencies ++= Seq(_redisclient, _alpakkaCassandra) ++ _cassandraDrivers)
+  .settings(
+    libraryDependencies ++= Seq(_redisclient, _alpakkaCassandra) ++ _cassandraDrivers)
 
 lazy val database = project
   .in(file("database"))
@@ -133,4 +147,5 @@ lazy val common = project
         _akkaHttpTestkit % Test,
         _scalaCollectionCompat,
         _scalaJava8Compat) ++ _akkas ++ _akkaHttps ++ _logs,
-    PB.targets in Compile := Seq(scalapb.gen(flatPackage = true) -> (sourceManaged in Compile).value))
+    PB.targets in Compile := Seq(
+        scalapb.gen(flatPackage = true) -> (sourceManaged in Compile).value))

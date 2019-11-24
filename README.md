@@ -3,11 +3,13 @@
 ## 在线阅读
 
 [https://www.yangbajing.me/scala-web-development/](https://www.yangbajing.me/scala-web-development/)
+或
+[https://yangbajing.gitee.io/akka-cookbook/](https://yangbajing.gitee.io/akka-cookbook/)
 
 ## 本地阅读
 
 ```
-git clone https://github.com/yangbajing/scala-web-development.git
+git clone https://github.com/yangbajing/scala-web-development.git # git clone https://gitee.com/yangbajing/scala-web-development.git 
 cd scala-web-development
 sbt "project book" paradox
 google-chrome google-chrome book/target/paradox/site/main/index.html  # Mac 下使用 open 命令打开
@@ -23,6 +25,6 @@ google-chrome google-chrome book/target/paradox/site/main/index.html  # Mac 下�
 - 作者：杨景（羊八井）
 - 邮箱：yangbajing at gmail com
 - Weibo: @yangbajing
-- 微信公众号：yangbajing-garden
+- 微信公众号：yangbajing-garden / 羊八井花园
 
     ![yangbajing-garden](book/src/main/paradox/assets/imgs/qrcode_for_gh_70b815e4a7cd_344.jpg)

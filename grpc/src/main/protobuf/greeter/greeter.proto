@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+//#options
+option java_multiple_files = true;
+
+package greeter;
+//#options
+
+//#messages
+message HelloRequest {
+    string name = 1;
+}
+
+message HelloReply {
+    string message = 1;
+}
+//#messages
+
+//#services
+service GreeterService {
+    // req-resp
+    rpc SayHello (HelloRequest) returns (HelloReply) {}
+
+    // keep requests
+    rpc ItKeepsTalking (stream HelloRequest) returns (HelloReply) {}
+
+    // keep responses
+    rpc ItKeepsReplying (HelloRequest) returns (stream HelloReply) {}
+
+    // keep requests & responses
+    rpc StreamHellos (stream HelloRequest) returns (stream HelloReply) {}
+}
+//#services

@@ -6,7 +6,6 @@ import helloscala.http.JacksonSupport._
 import akkahttp.server.BaseRoute
 
 class PageRoute extends BaseRoute {
-
   def route: Route =
     path("page") {
       post {
@@ -15,5 +14,4 @@ class PageRoute extends BaseRoute {
         }
       }
     }
-
 }

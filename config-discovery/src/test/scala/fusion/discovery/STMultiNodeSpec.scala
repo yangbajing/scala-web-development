@@ -52,10 +52,13 @@ trait STMultiNodeSpec
   }
 
   // Might not be needed anymore if we find a nice way to tag all logging from a node
-  implicit override def convertToWordSpecStringWrapper(s: String): WordSpecStringWrapper =
+  implicit override def convertToWordSpecStringWrapper(
+      s: String): WordSpecStringWrapper =
     new WordSpecStringWrapper(s"$s (on node '${self.myself.name}', $getClass)")
 }
 
 abstract class FusionMultiNodeSpec(multiNodeConfig: MultiNodeConfig)
-    extends MultiNodeSpec(multiNodeConfig, config => akka.actor.ActorSystem(config.getString("fusion.name"), config))
+    extends MultiNodeSpec(
+      multiNodeConfig,
+      config => akka.actor.ActorSystem(config.getString("fusion.name"), config))
     with STMultiNodeSpec

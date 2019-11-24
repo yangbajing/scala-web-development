@@ -18,7 +18,8 @@ import scala.concurrent.Future
 object FileUtils extends StrictLogging {
   val TMP_DIR: Path = getOrCreateDirectories(Paths.get("/tmp/file-upload/tmp"))
 
-  val LOCAL_PATH: String = getOrCreateDirectories(Paths.get("/tmp/file-upload")).toString
+  val LOCAL_PATH
+      : String = getOrCreateDirectories(Paths.get("/tmp/file-upload")).toString
 
   def getOrCreateDirectories(path: Path): Path = {
     if (!Files.isDirectory(path)) {
@@ -36,16 +37,22 @@ object FileUtils extends StrictLogging {
       None
     } else {
       val path = getLocalPath(hash)
-      if (Files.exists(path) && Files.isReadable(path)) Some(FileMeta(hash, Files.size(path), path)) else None
+      if (Files.exists(path) && Files.isReadable(path))
+        Some(FileMeta(hash, Files.size(path), path))
+      else None
     }
   }
 
   // #uploadFile
-  def uploadFile(fileInfo: FileInfo)(implicit mat: Materializer, ec: ExecutionContext): Future[FileBO] = {
+  def uploadFile(fileInfo: FileInfo)(
+      implicit mat: Materializer,
+      ec: ExecutionContext): Future[FileBO] = {
     // TODO 需要校验上传完成文件的hash值与提交hash值是否匹配？
     val maybeMeta = fileInfo.hash.flatMap(FileUtils.getFileMeta)
     val beContinue = maybeMeta.isDefined && fileInfo.startPosition > 0L
-    val f = if (beContinue) uploadContinue(fileInfo, maybeMeta.get) else uploadNewFile(fileInfo)
+    val f =
+      if (beContinue) uploadContinue(fileInfo, maybeMeta.get)
+      else uploadNewFile(fileInfo)
     f.andThen {
       case tryValue =>
         logger.debug(s"文件上传完成：$tryValue")
@@ -54,23 +61,34 @@ object FileUtils extends StrictLogging {
   // #uploadFile
 
   // #uploadContinue
-  private def uploadContinue(fileInfo: FileInfo, meta: FileMeta)(implicit mat: Materializer, ec: ExecutionContext) = {
+  private def uploadContinue(fileInfo: FileInfo, meta: FileMeta)(
+      implicit mat: Materializer,
+      ec: ExecutionContext) = {
     val bodyPart = fileInfo.bodyPart
     val localPath = FileUtils.getLocalPath(fileInfo.hash.get)
     logger.debug(s"断点续传，startPosition：${fileInfo.startPosition}，路径：$localPath")
     bodyPart.entity.dataBytes
       .runWith(FileIO.toPath(localPath, Set(APPEND), fileInfo.startPosition))
-      .map(ioResult =>
-        FileBO(fileInfo.hash, None, localPath, meta.size + ioResult.count, bodyPart.filename, bodyPart.headers))
+      .map(
+        ioResult =>
+          FileBO(
+            fileInfo.hash,
+            None,
+            localPath,
+            meta.size + ioResult.count,
+            bodyPart.filename,
+            bodyPart.headers))
   }
   // #uploadContinue
 
   // #uploadNewFile
-  private def uploadNewFile(fileInfo: FileInfo)(implicit mat: Materializer, ec: ExecutionContext) = {
+  private def uploadNewFile(
+      fileInfo: FileInfo)(implicit mat: Materializer, ec: ExecutionContext) = {
     val bodyPart = fileInfo.bodyPart
     val tmpPath = fileInfo.hash // (1)
       .map(h => FileUtils.getLocalPath(h))
-      .getOrElse(Files.createTempFile(FileUtils.TMP_DIR, bodyPart.filename.getOrElse(""), ""))
+      .getOrElse(Files
+        .createTempFile(FileUtils.TMP_DIR, bodyPart.filename.getOrElse(""), ""))
     val sha = MessageDigest.getInstance("SHA-256")
     logger.debug(s"新文件，路径：$tmpPath")
     bodyPart.entity.dataBytes
@@ -88,16 +106,23 @@ object FileUtils extends StrictLogging {
           case Some(_) => tmpPath
           case _       => move(computedHash, tmpPath, ioResult.count)
         }
-        FileBO(fileInfo.hash, Some(computedHash), localPath, ioResult.count, bodyPart.filename, bodyPart.headers)
+        FileBO(
+          fileInfo.hash,
+          Some(computedHash),
+          localPath,
+          ioResult.count,
+          bodyPart.filename,
+          bodyPart.headers)
       }
   }
   // #uploadNewFile
 
   def move(hash: String, tmpFile: Path, contentLength: Long): Path = {
-    val targetDir = FileUtils.getOrCreateDirectories(Paths.get(FileUtils.LOCAL_PATH, hash.take(2)))
+    val targetDir =
+      FileUtils.getOrCreateDirectories(
+        Paths.get(FileUtils.LOCAL_PATH, hash.take(2)))
     val target = targetDir.resolve(hash)
     require(!Files.exists(target), s"目标文件已存在，$target")
     Files.move(tmpFile, target)
   }
-
 }

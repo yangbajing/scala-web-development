@@ -14,7 +14,6 @@ import scala.util.Failure
 import scala.util.Success
 
 object Main extends StrictLogging {
-
   def main(args: Array[String]): Unit = {
     implicit val system = ActorSystem()
     implicit val mat = Materializer(system)
@@ -36,5 +35,4 @@ object Main extends StrictLogging {
         system.terminate()
     }(system.dispatcher)
   }
-
 }

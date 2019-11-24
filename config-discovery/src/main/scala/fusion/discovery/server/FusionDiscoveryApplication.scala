@@ -21,9 +21,12 @@ import akka.actor.typed.scaladsl.Behaviors
 import com.typesafe.config.ConfigFactory
 
 object FusionDiscoveryApplication {
-
   def main(args: Array[String]): Unit = {
-    val system = ActorSystem[Nothing](Behaviors.ignore, "config-discovery", ConfigFactory.load())
+    val system =
+      ActorSystem[Nothing](
+        Behaviors.ignore,
+        "config-discovery",
+        ConfigFactory.load())
     val route = new Routes(system).route
     DiscoveryServer(system).startRouteSync(route)
   }

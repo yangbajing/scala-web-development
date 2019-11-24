@@ -13,7 +13,8 @@ trait AkkaSpec extends BeforeAndAfterAll {
 
   protected def createActorSystem() = ActorSystem("AkkaTest")
 
-  protected def createActorMaterializer()(implicit system: ActorSystem) = Materializer(system)
+  protected def createActorMaterializer()(implicit system: ActorSystem) =
+    Materializer(system)
 
   implicit val system: ActorSystem = createActorSystem()
 
@@ -24,5 +25,4 @@ trait AkkaSpec extends BeforeAndAfterAll {
     system.terminate()
     Await.result(system.whenTerminated, 30.seconds)
   }
-
 }

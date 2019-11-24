@@ -8,8 +8,11 @@ import fileupload.Constants
 
 import scala.collection.immutable
 
-case class FileInfo(bodyPart: FormData.BodyPart, hash: Option[String], contentLength: Long, startPosition: Long) {
-
+case class FileInfo(
+    bodyPart: FormData.BodyPart,
+    hash: Option[String],
+    contentLength: Long,
+    startPosition: Long) {
   override def toString: String =
     s"FileInfo(${bodyPart.name}, $hash, $contentLength, $startPosition, ${bodyPart.filename}, ${bodyPart.headers})"
 }
@@ -22,9 +25,15 @@ object FileInfo {
       case Array(a, b, c) => (a, b.toLong, c.toLong)
       case Array(a, b)    => (a, b.toLong, 0L)
       case Array(a)       => (a, 0L, 0L)
-      case _              => throw new IllegalArgumentException(s"Multipart.FormData name格式不符合要求：${part.name}")
+      case _ =>
+        throw new IllegalArgumentException(
+          s"Multipart.FormData name格式不符合要求：${part.name}")
     }
-    new FileInfo(part, if (Constants.HASH_LENGTH == hash.length) Some(hash) else None, contentLength, startPosition)
+    new FileInfo(
+      part,
+      if (Constants.HASH_LENGTH == hash.length) Some(hash) else None,
+      contentLength,
+      startPosition)
   }
 }
 

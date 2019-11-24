@@ -7,9 +7,11 @@ import scala.collection.immutable
 
 object StringUtils {
   val BLACK_CHAR: Char = ' '
-  val PRINTER_CHARS: immutable.IndexedSeq[Char] = ('0' to '9') ++ ('a' to 'z') ++ ('A' to 'Z')
+  val PRINTER_CHARS
+      : immutable.IndexedSeq[Char] = ('0' to '9') ++ ('a' to 'z') ++ ('A' to 'Z')
   private val HEX_CHARS: Array[Char] = "0123456789abcdef".toCharArray
-  private val HEX_CHAR_SETS = Set.empty[Char] ++ ('0' to '9') ++ ('a' to 'f') ++ ('A' to 'F')
+  private val HEX_CHAR_SETS = Set
+      .empty[Char] ++ ('0' to '9') ++ ('a' to 'f') ++ ('A' to 'F')
 
   def option(text: String): Option[String] =
     if (isBlank(text)) None else Some(text)
@@ -44,7 +46,8 @@ object StringUtils {
 
   def isBlank(s: CharSequence): Boolean = {
     @tailrec def isNoneBlankChar(s: CharSequence, i: Int): Boolean =
-      if (i < s.length()) s.charAt(i) != BLACK_CHAR || isNoneBlankChar(s, i + 1) else false
+      if (i < s.length()) s.charAt(i) != BLACK_CHAR || isNoneBlankChar(s, i + 1)
+      else false
 
     isEmpty(s) || !isNoneBlankChar(s, 0)
   }
@@ -94,5 +97,4 @@ object StringUtils {
       val arr = name.split('_')
       arr.head + arr.tail.map(item => item.head.toUpper + item.tail).mkString
     }
-
 }

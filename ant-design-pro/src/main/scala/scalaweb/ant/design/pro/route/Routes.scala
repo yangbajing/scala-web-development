@@ -5,7 +5,6 @@ import helloscala.http.route.AbstractRoute
 import scalaweb.ant.design.pro.mock.Mocks
 
 class Routes extends AbstractRoute {
-
   // #routes
   def route: Route =
     pathPrefix("api") {
@@ -37,5 +36,4 @@ class Routes extends AbstractRoute {
       getFromResource("dist/index.html")
     }
   // #routes
-
 }
