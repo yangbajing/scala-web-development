@@ -10,7 +10,7 @@ ThisBuild / scalafmtOnCompile := true
 ThisBuild / shellPrompt := (s => Project.extract(s).currentProject.id + " > ")
 
 lazy val root = Project("scala-web-development", file(".")).aggregate(
-  test,
+  httpTest,
   `config-discovery`,
   `engineering-guice`,
   oauth,
@@ -29,7 +29,7 @@ lazy val book = project
     `engineering-guice`,
     grpc,
     monitor,
-    test,
+    httpTest,
     oauth,
     foundation,
     database,
@@ -55,7 +55,7 @@ lazy val book = project
         "akka.version" -> versionAkka),
     libraryDependencies ++= Seq(_akkaHttpTestkit))
 
-lazy val test = project
+lazy val httpTest = project
   .in(file("test"))
   .dependsOn(common % "compile->compile;test->test")
   .settings(basicSettings: _*)
@@ -95,16 +95,35 @@ lazy val monitor = project
   .settings(basicSettings: _*)
   .settings(
     mainClass in assembly := Some("scalaweb.monitor.boot.Main"),
-    //    test in assembly := {},
+    test in assembly := {},
     libraryDependencies ++= Seq() ++ _kamons)
 
 lazy val grpc = project
   .in(file("grpc"))
-  .enablePlugins(AkkaGrpcPlugin, JavaAgent)
+  .enablePlugins(AkkaGrpcPlugin, JavaAgent, JavaAppPackaging)
   .dependsOn(common % "compile->compile;test->test")
   .settings(basicSettings: _*)
   .settings(
     javaAgents += _alpnAgent % "runtime;test",
+    mainClass in assembly := Some("greeter.GreeterApplication"),
+    test in assembly := {},
+    assemblyMergeStrategy in assembly := {
+      case PathList("io", "netty", xs @ _*)               => MergeStrategy.first
+      case PathList("google", "protobuf", xs @ _*)        => MergeStrategy.first
+      case PathList("com", "google", "protobuf", xs @ _*) => MergeStrategy.first
+      case PathList("scalapb", xs @ _*)                   => MergeStrategy.first
+      case "application.conf"                             => MergeStrategy.concat
+      case "reference.conf"                               => MergeStrategy.concat
+      case "module-info.class"                            => MergeStrategy.concat
+      case "META-INF/io.netty.versions.properties"        => MergeStrategy.first
+      case "META-INF/native/libnetty-transport-native-epoll.so" =>
+        MergeStrategy.first
+      case n if n.endsWith(".txt")   => MergeStrategy.concat
+      case n if n.endsWith("NOTICE") => MergeStrategy.concat
+      case x =>
+        val oldStrategy = (assemblyMergeStrategy in assembly).value
+        oldStrategy(x)
+    },
     libraryDependencies ++= Seq(
         "com.thesamet.scalapb" %% "scalapb-runtime" % scalapb.compiler.Version.scalapbVersion % "protobuf"))
 

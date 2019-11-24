@@ -210,7 +210,6 @@ yangbajing/scala-web-development
   <li><a href="../actor/index.html" class="page">Akka Actor</a>
   <ul>
     <li><a href="../actor/actor.html" class="page">Akka Typed Actor</a></li>
-    <li><a href="../actor/cluster.html" class="page">Akka 集群</a></li>
     <li><a href="../actor/actor-test.html" class="page">Akka Actor 测试</a></li>
     <li><a href="../actor/actor.z.html" class="page">Actor小结</a></li>
   </ul></li>
@@ -254,6 +253,14 @@ yangbajing/scala-web-development
   <li><a href="../donate.html" class="page">赞助</a></li>
 </ul>
 <nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../grpc/deployment.html#部署" class="header">部署</a>
+  <ul>
+    <li><a href="../grpc/deployment.html#sbt-assembly" class="header">sbt-assembly</a></li>
+    <li><a href="../grpc/deployment.html#sbt-native-packager" class="header">sbt-native-packager</a></li>
+  </ul></li>
+</ul>
 </nav>
 
 </nav>
@@ -267,11 +274,114 @@ yangbajing/scala-web-development
 </div>
 </div>
 </div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">Table of contents</label>
+<ul>
+  <li><a href="../grpc/deployment.html#部署" class="header">部署</a>
+  <ul>
+    <li><a href="../grpc/deployment.html#sbt-assembly" class="header">sbt-assembly</a></li>
+    <li><a href="../grpc/deployment.html#sbt-native-packager" class="header">sbt-native-packager</a></li>
+  </ul></li>
+</ul>
+</nav>
+
+</div>
+</div>
+</div>
 <div class="md-content">
 <article class="md-content__inner md-typeset">
 <div class="md-content__searchable">
 <h1><a href="#部署" name="部署" class="anchor"><span class="anchor-link"></span></a>部署</h1>
-<p>TODO</p>
+<h2><a href="#sbt-assembly" name="sbt-assembly" class="anchor"><span class="anchor-link"></span></a>sbt-assembly</h2>
+<h3><a href="#构建" name="构建" class="anchor"><span class="anchor-link"></span></a>构建</h3>
+<p>使用<code>sbt-assembly</code>可以把程序打包成一个单一的jar包发布，需要在sbt插件配置（<code>project/plugins.sbt</code>）添加发下插件：</p>
+<pre class="prettyprint"><code class="language-sbt">addSbtPlugin(&quot;com.eed3si9n&quot; % &quot;sbt-assembly&quot; % &quot;0.14.9&quot;)
+</code></pre>
+<p>然后在<code>sbt</code>项目的<code>settings</code>中添加如下设置：</p>
+<pre class="prettyprint"><code class="language-sbt">mainClass in assembly := Some(&quot;greeter.GreeterApplication&quot;),
+test in assembly := {},
+assemblyMergeStrategy in assembly := {
+  case PathList(&quot;io&quot;, &quot;netty&quot;, xs @ _*)               =&gt; MergeStrategy.first
+  case PathList(&quot;google&quot;, &quot;protobuf&quot;, xs @ _*)        =&gt; MergeStrategy.first
+  case PathList(&quot;com&quot;, &quot;google&quot;, &quot;protobuf&quot;, xs @ _*) =&gt; MergeStrategy.first
+  case PathList(&quot;scalapb&quot;, xs @ _*)                   =&gt; MergeStrategy.first
+  case &quot;application.conf&quot;                             =&gt; MergeStrategy.concat
+  case &quot;reference.conf&quot;                               =&gt; MergeStrategy.concat
+  case &quot;module-info.class&quot;                            =&gt; MergeStrategy.concat
+  case &quot;META-INF/io.netty.versions.properties&quot;        =&gt; MergeStrategy.first
+  case &quot;META-INF/native/libnetty-transport-native-epoll.so&quot; =&gt;
+    MergeStrategy.first
+  case n if n.endsWith(&quot;.txt&quot;)   =&gt; MergeStrategy.concat
+  case n if n.endsWith(&quot;NOTICE&quot;) =&gt; MergeStrategy.concat
+  case x =&gt;
+    val oldStrategy = (assemblyMergeStrategy in assembly).value
+    oldStrategy(x)
+}
+</code></pre>
+<p><code>mainClass</code>指定当通过<code>java -jar assembly.jar</code>命令运行jar包时，默认的启动类（启动类必须有<code>main</code>函数）。</p>
+<p>因为是将所有源码和依赖打到一个jar包，所以需要配置<code>assemblyMergeStrategy</code>来决定当文件名起冲突时的合并策略。</p>
+<p><strong>assembly</strong></p>
+<p>通过在sbt shell执行<code>assembly</code>命令，即可生成可运行的jar包。</p>
+<pre class="prettyprint"><code class="language-sbtshell">&gt; grpc/assembly
+[info] Strategy &#39;concat&#39; was applied to 2 files (Run the task at debug level to see details)
+[info] Strategy &#39;deduplicate&#39; was applied to 667 files (Run the task at debug level to see details)
+[info] Strategy &#39;discard&#39; was applied to 89 files (Run the task at debug level to see details)
+[info] Strategy &#39;filterDistinctLines&#39; was applied to 2 files (Run the task at debug level to see details)
+[info] Strategy &#39;first&#39; was applied to 337 files (Run the task at debug level to see details)
+[info] Assembly up to date: /home/yangjing/workspace/scala-web-development/grpc/target/scala-2.13/grpc-assembly-1.0.0.jar
+[success] Total time: 3 s, completed Nov 24, 2019 6:24:09 PM
+</code></pre>
+<h3><a href="#运行" name="运行" class="anchor"><span class="anchor-link"></span></a>运行</h3>
+<p>通过<code>java -jar</code>命令运行<code>gprc-assembly-1.0.0.jar</code>时，需要提供 <code>jetty-alpn-agent</code> <strong>Agent</strong>，可以在此下载 <code>jetty-alpn-agent</code>：</p>
+<pre class="prettyprint"><code class="language-shell script">wget -c https://repo1.maven.org/maven2/org/mortbay/jetty/alpn/jetty-alpn-agent/2.0.9/jetty-alpn-agent-2.0.9.jar
+</code></pre>
+<p>即可使用如下命令启动gRPC服务：</p>
+<pre class="prettyprint"><code class="language-shell script">java -javaagent:jetty-alpn-agent-2.0.9.jar -jar grpc-assembly-1.0.0.jar
+</code></pre>
+<p>看到类似如下输出，则代表Greeter gRPC服务已启动：</p>
+<pre><code>18:37:04.221 [grpc-akka.actor.default-dispatcher-3] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+18:37:05.093 [grpc-akka.actor.default-dispatcher-5] INFO greeter.GreeterApplication$ - Greeter gRPC server started, bind to ServerBinding(/127.0.0.1:8000).
+</code></pre>
+<h2><a href="#sbt-native-packager" name="sbt-native-packager" class="anchor"><span class="anchor-link"></span></a>sbt-native-packager</h2>
+<h3><a href="#配置" name="配置" class="anchor"><span class="anchor-link"></span></a>配置</h3>
+<p>需要添加<code>sbt-native-packager</code> sbt插件并启动<code>JavaAppPackaging</code>插件：</p>
+<p><strong>project/plugins.sbt</strong></p>
+<pre class="prettyprint"><code class="language-sbt">addSbtPlugin(&quot;com.typesafe.sbt&quot; % &quot;sbt-native-packager&quot; % &quot;1.4.1&quot;)
+</code></pre>
+<p><strong>sbt项目配置</strong></p>
+<pre class="prettyprint"><code class="language-sbt">enablePlugins(JavaAppPackaging)
+</code></pre>
+<p><em><code>mainClass</code>设置选项在 sbt-native-packager 里也是需要的，它指定了程序运行时执行的主类。</em></p>
+<p>使用 sbt-native-packager 进行程序打包，运行时不需要再手动指定 <code>-javaagent</code>，它会在生成的启动脚本里根据sbt的<code>javaAgents</code>配置项设置后相应的启动命令行参数。 </p>
+<h3><a href="#打包" name="打包" class="anchor"><span class="anchor-link"></span></a>打包</h3>
+<h4><a href="#dist" name="dist" class="anchor"><span class="anchor-link"></span></a>dist</h4>
+<p>使用<code>dist</code>命令即可在sbt shell类打包：</p>
+<pre class="prettyprint"><code class="language-sbtshell">&gt; grpc/dist
+....
+[success] All package validations passed
+[info] Your package is ready in /home/yangjing/workspace/scala-web-development/grpc/target/universal/grpc-1.0.0.zip
+[success] Total time: 12 s, completed Nov 24, 2019 6:45:55 PM
+</code></pre>
+<p>它将生成一个zip压缩包<code>grpc-1.0.0.zip</code>在项目的<code>target/universal</code>目录，将压缩包上传到服务器上脚本后执行<code>bin</code>目录里的启动脚本（启动脚本的名字默认为项目名）即可运行程序了。</p>
+<h4><a href="#stage" name="stage" class="anchor"><span class="anchor-link"></span></a>stage</h4>
+<p>你也可以执行<code>stage</code>命令生成完整的包文件路径，而不是生成一个压缩包。<code>stage</code>命令运行后文件路径为：<code>target/universal/stage</code>。</p>
+<pre class="prettyprint"><code class="language-sbtshell">&gt; grpc/stage
+</code></pre>
+<p><strong>stage</strong> 目录结构类似：</p>
+<pre><code>├── bin
+│   ├── grpc
+│   └── grpc.bat
+├── jetty-alpn-agent
+│   └── jetty-alpn-agent-2.0.9.jar
+└── lib
+    ├── ch.qos.logback.logback-classic-1.2.3.jar
+    ├── ch.qos.logback.logback-core-1.2.3.jar
+    ├── com.fasterxml.jackson.core.jackson-annotations-2.10.0.jar
+    ├── ....
+</code></pre>
 </div>
 <div>
 <a href="https://github.com/yangbajing/scala-web-development/tree/master/book/src/main/paradox/grpc/deployment.md" title="Edit this page" class="md-source-file md-edit">
