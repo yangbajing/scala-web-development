@@ -19,9 +19,9 @@
 * [oauth](oauth/index.md)
 * [database](database/index.md)
 * [engineering](engineering/index.md)
-* [grpc](grpc/index.md)
 * [config-discovery](config-discovery/index.md)
 * [appendix](appendix/index.md)
 * [donate](donate.md)
 
 @@@
+
